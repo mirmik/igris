@@ -1,9 +1,9 @@
-#ifndef GENOS_DLIST_HEAD
-#define GENOS_DLIST_HEAD
+#ifndef IGRIS_DLIST_HEAD_H
+#define IGRIS_DLIST_HEAD_H
 
 //#include <inttypes.h>
 #include <sys/cdefs.h>
-#include <gxx/util/member.h>
+#include <igris/util/member.h>
 
 /*
  * These are non-NULL pointers that will result in page faults
