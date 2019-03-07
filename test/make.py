@@ -5,7 +5,7 @@ from licant.cxx_modules import application
 from licant.modules import submodule, module
 from licant.libs import include
 
-licant.execute("../igris.g.py")
+licant.execute("../owl.g.py")
 licant.include("nos")
 
 tests = [
@@ -19,7 +19,7 @@ application("runtests",
 
 	include_paths = ["."],
 	mdepends = [
-		"igris",
+		"owl",
 		"nos"
 	],
 

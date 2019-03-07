@@ -1,5 +1,5 @@
-#include <igris/datastruct/dlist.h>
-#include <igris/container/dlist.h>
+#include <owl/datastruct/dlist.h>
+#include <owl/container/dlist.h>
 
 #include <nos/print.h>
 
@@ -8,7 +8,7 @@ struct A
 	dlist_head lnk;
 };
 
-igris::dlist<A, &A::lnk> list;
+owl::dlist<A, &A::lnk> list;
 
 int main() 
 {

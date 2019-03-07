@@ -1,9 +1,9 @@
-#ifndef IGRIS_WARN_H
-#define IGRIS_WARN_H
+#ifndef owl_WARN_H
+#define owl_WARN_H
 
 #include <iostream>
 
-namespace igris 
+namespace owl 
 {
 	void warn(const char* info, const char* err);
 }

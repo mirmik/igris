@@ -1,14 +1,14 @@
-#ifndef IGRIS_SIMPLE_SHELL_H
-#define IGRIS_SIMPLE_SHELL_H
+#ifndef owl_SIMPLE_SHELL_H
+#define owl_SIMPLE_SHELL_H
 
-#include <igris/datastruct/argvc.h>
+#include <owl/datastruct/argvc.h>
 #include <sys/cdefs.h>
 
 #define SSHELL_OK 0
 
 //При отсутствии ноды возвращает ENOENT
 
-namespace igris {
+namespace owl {
 	namespace sshell {
 		struct command {
 			const char* name;

@@ -1,11 +1,11 @@
-#ifndef IGRIS_DLIST_H
-#define IGRIS_DLIST_H
+#ifndef owl_DLIST_H
+#define owl_DLIST_H
 
-#include <igris/datastruct/dlist.h>
-#include <igris/util/member.h>
-#include <igris/util/memberxx.h>
+#include <owl/datastruct/dlist.h>
+#include <owl/util/member.h>
+#include <owl/util/memberxx.h>
 
-namespace igris {
+namespace owl {
 
 	template<typename type, dlist_head type::* member>
 	class dlist {

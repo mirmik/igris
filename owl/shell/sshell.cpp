@@ -1,4 +1,4 @@
-#include <igris/shell/sshell.h>
+#include <owl/shell/sshell.h>
 #include <errno.h>
 #include <string.h>
 
@@ -7,9 +7,9 @@
 #define SSHELL_ARGCMAX 10
 
 //TODO: заменить SSHELL_ARGCMAX на подсчет аргументов. Использовать динамический масив.
-int igris::sshell::execute_unsafe(
+int owl::sshell::execute_unsafe(
 	char* str, 
-	const struct igris::sshell::command* cmd, 
+	const struct owl::sshell::command* cmd, 
 	int cmdlen, 
 	int* retptr
 ) {
@@ -34,9 +34,9 @@ int igris::sshell::execute_unsafe(
 	return ENOENT;
 }
 
-int igris::sshell::execute(
+int owl::sshell::execute(
 	const char* str, 
-	const struct igris::sshell::command* cmd, 
+	const struct owl::sshell::command* cmd, 
 	int cmdlen, 
 	int* retptr
 ) {
@@ -44,5 +44,5 @@ int igris::sshell::execute(
 	strcpy(locstr, str);
 	nos::println((const char*)locstr);
 	nos::println(str);
-	return igris::sshell::execute_unsafe(locstr, cmd, cmdlen, retptr);
+	return owl::sshell::execute_unsafe(locstr, cmd, cmdlen, retptr);
 }

@@ -2,12 +2,12 @@
 
 import licant
 
-licant.include("igris")
+licant.include("owl")
 licant.include("nos")
 
 licant.cxx_application("target",
 	sources=["main.cpp"],
-	mdepends=["igris", "nos"],
+	mdepends=["owl", "nos"],
 )
 
 licant.ex("target")

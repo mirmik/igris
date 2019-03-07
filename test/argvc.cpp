@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <igris/datastruct/argvc.h>
+#include <owl/datastruct/argvc.h>
 
 TEST(argvc, ARGVC) {
 	char* argv[10];
