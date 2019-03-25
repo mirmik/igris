@@ -9,19 +9,16 @@
 //В данной реализации делегат является шаблонным классом, что ограничивает
 //его возможности одной сигнатурой. Однако, позволяет возвращать результат.
 
-#ifndef GXX_DELEGATE_H
-#define GXX_DELEGATE_H
+#ifndef IGRIS_DELEGATE_H
+#define IGRIS_DELEGATE_H
 	
-
-#include "gxx/util/horrible_cast.h"
-#include "gxx/util/stub.h"
+#include "igris/util/horrible_cast.h"
+#include "igris/util/stub.h"
 #include <utility>
-
-#include <gxx/debug/dprint.h>
 
 #include "inttypes.h"
 	
-namespace gxx {
+namespace igris {
 	
 	class AbstractDelegate {};
 	
@@ -132,7 +129,7 @@ namespace gxx {
 		};
 
 		R emit_and_reset(Args ... args) {
-			gxx::delegate<R, Args ...> copy = *this;
+			delegate<R, Args ...> copy = *this;
 			clean();
 			return copy(std::forward<Args>(args) ...);
 		};
@@ -212,8 +209,8 @@ namespace gxx {
 		return fastdelegate<Ret, Args...>(fnc, obj);
 	}
 
-	using action = gxx::delegate<void>;
-	using fastaction = gxx::fastdelegate<void>;
+	using action = delegate<void>;
+	using fastaction = fastdelegate<void>;
 
 	static inline fastaction make_fastaction(void(* fnc)()) {
 		return make_fastdelegate(reinterpret_cast<void(*)(void*)>(fnc), nullptr);

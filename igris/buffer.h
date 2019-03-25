@@ -5,9 +5,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include <gxx/util/setget.h>
+#include <igris/util/setget.h>
 
-namespace gxx
+namespace igris
 {
 	class buffer
 	{
@@ -93,22 +93,15 @@ namespace gxx
 		}
 
 		template<typename T>
-		static gxx::buffer on_object(T& obj)
+		static igris::buffer on_object(T& obj)
 		{
-			return gxx::buffer((char*)&obj, sizeof(obj));
+			return buffer((char*)&obj, sizeof(obj));
 		}
 	};
 
-	[[deprecated]]
-	static inline gxx::buffer allocate_buffer(int sz)
-	{
-		void* ptr = malloc(sz);
-		return gxx::buffer(ptr, sz);
-	}
-
 	namespace buffer_literal
 	{
-		inline gxx::buffer operator"" _b(const char* str, size_t sz) { return gxx::buffer(str, sz); }
+		inline buffer operator"" _b(const char* str, size_t sz) { return buffer(str, sz); }
 	}
 }
 
