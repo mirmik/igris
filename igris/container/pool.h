@@ -1,9 +1,9 @@
-#ifndef GXX_POOL_H
-#define GXX_POOL_H
+#ifndef IGRIS_POOL_H
+#define IGRIS_POOL_H
 
-#include <gxx/datastruct/pool.h>
+#include <igris/datastruct/pool.h>
 
-namespace gxx 
+namespace igris
 {
 	class pool 
 	{

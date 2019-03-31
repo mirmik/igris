@@ -1,0 +1,169 @@
+package embox.compat.posix.net
+
+module All {
+	depends gai_strerror,
+		getaddrinfo,
+		gethostbyaddr,
+		gethostbyname,
+		gethostent,
+		getnameinfo,
+		getnetbyaddr,
+		getnetbyname,
+		getnetent,
+		getprotobyname,
+		getprotobynumber,
+		getprotoent,
+		getservbyname,
+		getservbyport,
+		getservent,
+		herror,
+		inet_addr,
+		socket
+}
+
+static module gai_strerror {
+	source "gai_strerror.c"
+}
+
+static module getaddrinfo {
+	option number addrinfo_pool_size = 10
+
+	source "getaddrinfo.c"
+
+	depends embox.compat.posix.net.herror
+	depends embox.compat.posix.net.gethostbyname
+	depends embox.compat.posix.net.getprotobynumber
+	depends embox.compat.posix.net.getservent
+	depends embox.compat.posix.net.getservbyname
+}
+
+static module getnameinfo {
+	source "getnameinfo.c"
+}
+
+static module gethostbyaddr {
+	source "gethostbyaddr.c"
+
+	depends embox.compat.posix.net.inet_addr
+	depends embox.compat.libc.str
+	depends embox.compat.libc.stdio.sprintf
+	depends embox.net.lib.dns
+	depends embox.net.util.hostent
+}
+
+static module gethostbyname {
+	source "gethostbyname.c"
+
+	depends embox.compat.posix.net.gethostent
+	depends embox.compat.posix.net.inet_addr
+	depends embox.compat.libc.str
+	depends embox.net.lib.dns
+	depends embox.net.util.hostent
+}
+
+static module gethostent {
+	option string path_to_hosts="/hosts"
+	source "gethostent.c"
+	@InitFS
+	source "hosts"
+
+	depends embox.compat.posix.net.inet_addr
+	depends embox.compat.libc.stdio.open
+	depends embox.net.util.hostent
+}
+
+static module getnetbyaddr {
+	source "getnetbyaddr.c"
+
+	depends embox.compat.posix.net.getnetent
+}
+
+static module getnetbyname {
+	source "getnetbyname.c"
+
+	depends embox.compat.posix.net.getnetent
+	depends embox.compat.libc.str
+}
+
+static module getnetent {
+	option string path_to_networks="/networks"
+	source "getnetent.c"
+
+	depends embox.compat.posix.net.inet_addr
+	depends embox.compat.libc.stdio.sprintf
+	depends embox.net.util.netent
+}
+
+static module getprotobyname {
+	source "getprotobyname.c"
+
+	depends embox.compat.posix.net.getprotoent
+	depends embox.compat.libc.str
+}
+
+static module getprotobynumber {
+	source "getprotobynumber.c"
+
+	depends embox.compat.posix.net.getprotoent
+}
+
+static module getprotoent {
+	option string path_to_protocols="/protocols"
+	source "getprotoent.c"
+
+	depends embox.compat.libc.stdio.sprintf
+	depends embox.net.util.protoent
+}
+
+static module getservbyname {
+	source "getservbyname.c"
+
+	depends embox.compat.posix.net.getservent
+	depends embox.compat.libc.str
+}
+
+static module getservbyport {
+	source "getservbyport.c"
+
+	depends embox.compat.posix.net.getservent
+	depends embox.compat.libc.str
+}
+
+static module getservent {
+	option string path_to_services="/services"
+	source "getservent.c"
+
+	depends embox.compat.libc.stdio.sprintf
+	depends embox.compat.libc.str
+	depends embox.net.util.servent
+}
+
+static module herror {
+	source "herror.c"
+
+	depends embox.compat.libc.stdio.sprintf
+}
+
+static module inet_addr {
+	source "inet_addr.c"
+
+	depends embox.compat.libc.assert
+	depends embox.compat.libc.stdio.sprintf
+	depends embox.compat.libc.stdlib.core
+	depends embox.compat.libc.str
+}
+
+static module socket {
+	option number log_level=0
+
+	source "socket.c"
+	depends embox.kernel.task.idesc
+	depends embox.compat.libc.str
+	depends embox.net.socket
+	depends embox.util.log
+
+	source "socket_index_operation.c"
+	depends embox.kernel.task.idesc
+	depends embox.compat.libc.assert
+	depends embox.net.socket
+}

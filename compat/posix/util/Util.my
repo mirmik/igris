@@ -1,0 +1,86 @@
+
+package embox.compat.posix.util
+
+module All {
+	depends time,
+		sleep,
+		gettimeofday,
+		getopt,
+		utsname,
+		getpass,
+		gethostname,
+		environ,
+		swab
+}
+
+static module getopt {
+	source "getopt.c"
+	source "getopt_long.c"
+
+	@NoRuntime depends embox.compat.libc.str
+}
+
+static module utsname {
+	/* FIXME static release version 0.3.3 */
+	option string release="0.3.3"
+	option string system="Embox"
+	option string hostname="localhost"
+	source "utsname.c"
+
+	@NoRuntime depends embox.compat.libc.str
+}
+
+static module time {
+	source "time.c"
+	source "linux_timer.c"
+
+	depends embox.kernel.time.kernel_time
+	/* for clock_sys_ticks */
+	depends embox.kernel.time.jiffies
+}
+
+static module times {
+	source "times.c"
+	depends embox.kernel.time.kernel_time
+}
+
+static module sleep {
+	option number log_level=0
+
+	source "sleep.c"
+	source "nanosleep.c"
+
+	depends embox.kernel.timer.sleep_api
+	depends embox.kernel.time.kernel_time
+}
+
+static module gettimeofday {
+	source "gettimeofday.c"
+
+	depends embox.kernel.time.timekeeper
+}
+
+static module getpass {
+	source "getpass.c"
+
+	depends embox.compat.posix.termios
+	depends embox.compat.libc.all
+}
+
+static module gethostname {
+	source "gethostname.c"
+	depends utsname
+}
+
+static module environ {
+	source "environ.c"
+
+	depends embox.kernel.task.resource.env
+	depends embox.kernel.task.resource.errno
+	@NoRuntime depends embox.compat.libc.assert
+	@NoRuntime depends embox.compat.libc.str
+}
+
+static module swab {
+	source "swab.c"
+}

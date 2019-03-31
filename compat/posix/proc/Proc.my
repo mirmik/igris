@@ -1,0 +1,89 @@
+
+package embox.compat.posix.proc
+
+module All {
+
+	depends exec,
+		exit,
+		uid,
+		nice,
+		priority,
+		pid
+}
+
+@DefaultImpl(exec_exchanged)
+abstract module exec_lib { }
+
+
+static module exec {
+	source "exec.c"
+	depends vfork
+	depends exec_lib
+	depends embox.kernel.task.resource.module_ptr
+	depends embox.kernel.task.resource.argv
+
+	depends embox.cmd.sh.shell_registry
+}
+
+@DefaultImpl(fork_copy_everything)
+abstract module fork { }
+
+static module vfork_entry {
+	source "vfork.c"
+
+	depends embox.kernel.task.resource.argv
+	depends embox.kernel.task.resource.vfork
+}
+
+@DefaultImpl(vfork_exchanged)
+abstract module vfork { }
+
+static module waitpid {
+	source "waitpid.c"
+
+	depends embox.util.LibUtil
+	depends embox.kernel.task.syslib.waitpid
+}
+
+static module signal {
+	source "signal.c"
+
+	depends embox.kernel.thread.signal_impl
+	depends embox.kernel.task.resource.sig_table
+	depends sigset
+}
+
+static module sigset {
+	source "sigset.c"
+	depends embox.util.Bitmap
+}
+
+static module exit {
+	source "exit.c"
+
+	depends vfork
+	//depends exec
+	depends signal
+}
+
+static module uid {
+	source "uid.c"
+
+	depends embox.kernel.task.resource.u_area
+}
+
+static module nice {
+	source "nice.c"
+
+	depends priority
+}
+
+static module priority {
+	source "priority.c"
+
+	depends embox.kernel.task.resource.u_area
+}
+
+static module pid {
+	source "pid.c"
+}

@@ -1,0 +1,46 @@
+#ifndef GXX_STD_MEMORY_H
+#define GXX_STD_MEMORY_H
+
+#include <new>
+#include <move.h>
+
+namespace std {
+	template <typename T>
+	class allocator {
+	public:
+		template <typename ... Args>
+		void construct(T* ptr, Args&& ... args) {
+			new (ptr) T(std::forward<Args>(args) ...);
+		}
+
+		void destroy(T* ptr) {
+			ptr->~T();
+		}
+
+		T* allocate(size_t n) {
+			return (T*) ::operator new(n * sizeof(T));
+		}
+
+		void deallocate(T* ptr) {
+			::operator delete(ptr);
+		}
+	};
+
+	template< class T >
+	T* addressof(T& arg) {
+		return reinterpret_cast<T*>( &const_cast<char&>( reinterpret_cast<const volatile char&>(arg) ) );
+	}
+}
+
+#include <shared.h>
+
+namespace std {
+	template <typename L>
+	struct lock_guard {
+		L& lock;
+		lock_guard(L& lock) : lock(lock) { lock.lock(); }
+		~lock_guard() { lock.unlock(); }
+	};
+}
+
+#endif

@@ -1,0 +1,10 @@
+#ifndef GXX_STD_SET_H
+#define GXX_STD_SET_H
+
+#include <memory>
+
+namespace std {
+	template <typename T, typename A = std::allocator<T>> struct set {};
+}
+
+#endif

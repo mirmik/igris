@@ -1,0 +1,10 @@
+#ifndef GXX_STD_ARRAY_H
+#define GXX_STD_ARRAY_H
+
+#include <memory>
+
+namespace std {
+	template <typename T, size_t N> struct array {};
+}
+
+#endif

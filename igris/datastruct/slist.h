@@ -3,7 +3,7 @@
 
 //#include <inttypes.h>
 #include <sys/cdefs.h>
-#include <gxx/util/member.h>
+#include <igris/util/member.h>
 
 struct slist_head {
 	struct slist_head *next;

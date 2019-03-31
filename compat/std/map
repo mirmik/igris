@@ -1,0 +1,11 @@
+#ifndef GXX_MAP_H
+#define GXX_MAP_H
+
+namespace std {
+	template <typename K, typename T>
+	class map {
+
+	};
+}
+
+#endif

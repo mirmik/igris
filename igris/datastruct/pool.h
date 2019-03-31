@@ -1,7 +1,7 @@
-#ifndef GXX_DATASTRUCT_POOL_H
-#define GXX_DATASTRUCT_POOL_H
+#ifndef IGRIS_DATASTRUCT_POOL_H
+#define IGRIS_DATASTRUCT_POOL_H
 
-#include <gxx/datastruct/slist.h>
+#include <igris/datastruct/slist.h>
 #include <assert.h>
 
 struct memzone_head {

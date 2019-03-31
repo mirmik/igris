@@ -1,0 +1,23 @@
+#ifndef GXX_STD_IOSTREAM_H
+#define GXX_STD_IOSTREAM_H
+
+#include <utility>
+
+namespace std 
+{
+	using streamsize = ::ssize_t;
+
+	template <class C>
+	class basic_streambuf {
+		using int_type = int;
+		using traits_type = nullptr_t;
+
+		virtual int_type overflow(int_type) = 0;
+		virtual streamsize xsputn(const C*, streamsize) = 0;
+	};
+	
+	class ostream {};
+
+}
+
+#endif

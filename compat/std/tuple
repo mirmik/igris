@@ -1,0 +1,9 @@
+#ifndef GXX_TUPLE_H
+#define GXX_TIPLE_H
+
+namespace std {
+	template <typename ... Args>
+	class tuple {};
+}
+
+#endif

@@ -1,0 +1,6 @@
+#ifndef GXX_STD_CMATH_H
+#define GXX_STD_CMATH_H
+
+#include <math.h>
+
+#endif

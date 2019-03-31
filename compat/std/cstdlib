@@ -1,0 +1,6 @@
+#ifndef GXX_STD_CSTDLIB_H
+#define GXX_STD_CSTDLIB_H
+
+#include <stdlib.h>
+
+#endif

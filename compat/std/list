@@ -1,0 +1,10 @@
+#ifndef GXX_STD_LIST_H
+#define GXX_STD_LIST_H
+
+#include <memory>
+
+namespace std {
+	template <typename T, typename A = std::allocator<T>> struct list {};
+}
+
+#endif

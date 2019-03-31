@@ -1,0 +1,22 @@
+package embox.compat.posix
+
+static module stubs {
+	source
+		"daemon.c",
+		"execl.c",
+		"execlp.c",
+		"execvp.c",
+		"flockfile.c",
+		"ftrylockfile.c",
+		"funlockfile.c",
+		"getdtablesize.c",
+		"getgroups.c",
+		"getppid.c",
+		"getpgrp.c",
+		"link.c",
+		"readlinkat.c",
+		"readlink.c",
+		"setpgid.c",
+		"sigsuspend.c",
+		"utime.c"
+}
