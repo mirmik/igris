@@ -156,13 +156,13 @@ static const double rounders[MAX_PRECISION + 1] =
 	0.00000000005       // 10
 };
 
-char * numconvert_ftoa(float f, char * buf, uint8_t precision)
+char * f32toa(float32_t f, char * buf, uint8_t precision)
 {
 	char * ptr = buf;
 	char * p = ptr;
 	char * p1;
 	char c;
-	long intPart;
+	int32_t intPart;
 	signed char r;
 
 	r = __builtin_isinf_sign(f);
@@ -252,8 +252,12 @@ char * numconvert_ftoa(float f, char * buf, uint8_t precision)
 	return buf;
 }
 
+char * f64toa(float64_t f, char * buf, uint8_t precision) 
+{
+	return f32toa(f, buf, precision);
+}
 
-double numconvert_atod(const char* str, char** pend) {
+float64_t atof64(const char* str, char** pend) {
 	if (!isdigit(*str) && *str != '-') {
 		return 0;
 	}
@@ -283,7 +287,7 @@ double numconvert_atod(const char* str, char** pend) {
 	}
 }
 
-float numconvert_atof(const char* str, char** pend) {
+float32_t atof32(const char* str, char** pend) {
 	if (!isdigit(*str) && *str != '-') {
 		return 0;
 	}
