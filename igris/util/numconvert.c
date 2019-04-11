@@ -156,7 +156,7 @@ static const double rounders[MAX_PRECISION + 1] =
 	0.00000000005       // 10
 };
 
-inline char * ftoa(double f, char * buf, int precision)
+char * numconvert_ftoa(float f, char * buf, uint8_t precision)
 {
 	char * ptr = buf;
 	char * p = ptr;
@@ -252,7 +252,8 @@ inline char * ftoa(double f, char * buf, int precision)
 	return buf;
 }
 
-double atod(const char* str, char** pend) {
+
+double numconvert_atod(const char* str, char** pend) {
 	if (!isdigit(*str) && *str != '-') {
 		return 0;
 	}
@@ -272,6 +273,36 @@ double atod(const char* str, char** pend) {
 		int d = atou32(++str, 10, &end);
 		*pend = end;
 		double ret = (double)i + d / (pow(10, end - str)); 
+		return minus ? -ret : ret;
+	} 
+
+	else 
+	{
+		*pend = end;
+		return i;
+	}
+}
+
+float numconvert_atof(const char* str, char** pend) {
+	if (!isdigit(*str) && *str != '-') {
+		return 0;
+	}
+
+	char* end;
+	int i = atoi32(str, 10, &end);
+	uint8_t minus = i < 0 ? 1 : 0; 
+	
+	if (minus) 
+	{
+		i = -i;
+	}
+
+	str = end;
+	if (*str == '.') 
+	{
+		int d = atou32(++str, 10, &end);
+		*pend = end;
+		float ret = (float)i + d / (pow(10, end - str)); 
 		return minus ? -ret : ret;
 	} 
 
