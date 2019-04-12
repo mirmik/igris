@@ -3,5 +3,4 @@
 void abort(void) {
 	debug_print("abort");
 	while(1);
-	//panic("Aborted");
 }
