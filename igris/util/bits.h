@@ -32,7 +32,6 @@
 #define bits_assign(a,m,b) (a = bits_invmask((a),(m)) | bits_mask((b),(m)))
 #define bits_assign_bias(a,m,b,s) (bits_assign(a,((m)<<(s)),((b)<<(s))))
 
-
 #define bits_multimap_uint32(input,clone,cllen) 	\
 ({													\
 	uint32_t 			__ret = 0;					\
@@ -58,13 +57,7 @@
 		__full = (__full << 1) + 1;										\
 	};																	\
 	uint32_t __ia = bits_multimap_uint32(input,__full,cllen);			\
-	bits_mask_assign(target, __ia, __or);								\
+	bits_assign(target, __ia, __or);									\
 })
-
-//		bit = __builtin_ctz(mask);
-//
-//		nmoder |= (1 << (bit*2));
-//		mask &= ~(1 << bit);
-//	
 
 #endif
