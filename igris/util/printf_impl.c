@@ -15,7 +15,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <nos/util/math.h>
+//#include <nos/util/math.h>
 #include <sys/types.h>
 //#include <framework/mod/options.h>
 
@@ -291,7 +291,7 @@ static int print_f(void (*printchar_handler)(void *d, int c),
 }
 #endif
 
-int nos_printf(void (*printchar_handler)(void *d, int c),
+int __printf(void (*printchar_handler)(void *d, int c),
 		void *printchar_data,
 		const char *format, va_list args) {
 	int pc, width, precision;
