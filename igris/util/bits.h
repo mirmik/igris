@@ -1,5 +1,5 @@
-#ifndef GENOS_UTIL_BITS_H
-#define GENOS_UTIL_BITS_H
+#ifndef IGRIS_UTIL_BITS_H
+#define IGRIS_UTIL_BITS_H
 
 //Установить все биты в переменной.	
 #define bits_set_all(a) {a = -1;}
@@ -10,10 +10,10 @@
 //#define bits_lvl_mask(a,m,l) (a = (l) ? ((a) | (m)) : ((a) & (~(m))))
 
 //Установить все биты маски в переменную.
-#define bits_set(a, b) {a |= (b);}
+#define bits_set(a, m) {a |= (m);}
 
 //Снять все биты маски в переменной.
-#define bits_clr(a, b) {a &= ~(b);}
+#define bits_clr(a, m) {a &= ~(m);}
 
 //Установить все биты маски в переменную согласно уровню.
 #define bits_lvl(a, b, c) {a = ((c) ? ((a) | (b)) : ((a) & (~(b))));}
@@ -29,8 +29,8 @@
 #define bits_mask_eq(a,m,b) (((a) & (m)) == (b))
 
 //Присвоить биты с предварительным наложением маски.
-#define bits_mask_assign(a,m,b) (a = bits_invmask((a),(m)) | bits_mask((b),(m)))
-#define bits_mask_assign_bias(a,m,b,s) (bits_mask_assign(a,((m)<<(s)),((b)<<(s))))
+#define bits_assign(a,m,b) (a = bits_invmask((a),(m)) | bits_mask((b),(m)))
+#define bits_assign_bias(a,m,b,s) (bits_assign(a,((m)<<(s)),((b)<<(s))))
 
 
 #define bits_multimap_uint32(input,clone,cllen) 	\
