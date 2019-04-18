@@ -2,8 +2,6 @@
 #include <errno.h>
 #include <string.h>
 
-#include <nos/print.h>
-
 #define SSHELL_ARGCMAX 10
 
 //TODO: заменить SSHELL_ARGCMAX на подсчет аргументов. Использовать динамический масив.
@@ -42,7 +40,5 @@ int igris::sshell::execute(
 ) {
 	char locstr[strlen(str) + 1];
 	strcpy(locstr, str);
-	nos::println((const char*)locstr);
-	nos::println(str);
 	return igris::sshell::execute_unsafe(locstr, cmd, cmdlen, retptr);
 }
