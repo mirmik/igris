@@ -6,7 +6,7 @@
 	@brief Здесь задается структура хэштаблицы на основе slist.
 */
 
-#include <gxx/datastruct/slist.h>
+#include <igris/datastruct/slist.h>
 
 struct stable_head {
 	struct slist_head* arr;

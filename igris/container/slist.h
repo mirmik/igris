@@ -1,11 +1,11 @@
-#ifndef GXX_SLIST_H
-#define GXX_SLIST_H
+#ifndef IGRIS_SLIST_H
+#define IGRIS_SLIST_H
 
-#include <gxx/datastruct/slist.h>
-#include <gxx/util/member.h>
-#include <gxx/util/memberxx.h>
+#include <igris/datastruct/slist.h>
+#include <igris/util/member.h>
+#include <igris/util/memberxx.h>
 
-namespace gxx {
+namespace igris {
 
 	template<typename type, slist_head type::* member>
 	class slist {

@@ -2,16 +2,19 @@
 #define GENOS_DATASTRUCT_RING_HEAD_H
 
 #include <sys/cdefs.h>
+//#include <stdlib.h> // for unsigned int
 
 struct ring_head {
-	size_t head;
-	size_t tail;
-	size_t size;
+	unsigned int head;
+	unsigned int tail;
+	unsigned int size;
 };
+
+#define RING_HEAD_INIT(size) {0,0,size}
 
 __BEGIN_DECLS
 
-static inline struct ring_head* ring_init(struct ring_head* r, size_t r_size) {
+static inline struct ring_head* ring_init(struct ring_head* r, unsigned int r_size) {
 	r->size = r_size;
 	r->head = 0;
 	r->tail = 0;
@@ -36,13 +39,13 @@ static inline int8_t ring_full(struct ring_head* r) {
 	return r->head == (r->tail ? r->tail : r->size) - 1;
 }
 
-static inline size_t ring_avail(struct ring_head* r) { 
+static inline unsigned int ring_avail(struct ring_head* r) { 
 		return (r->head >= r->tail) ? 
 		r->head - r->tail : 
 		r->size + r->head - r->tail; 
 }
 
-static inline size_t ring_room(struct ring_head* r) {
+static inline unsigned int ring_room(struct ring_head* r) {
 	return (r->head >= r->tail) ? 
 	r->size - 1 + ( r->tail - r->head ) : 
 	( r->tail - r->head ) - 1;
@@ -61,13 +64,13 @@ static inline struct ring_head* ring_move_tail_one(struct ring_head* r) {
 	return r;
 }
 
-static inline struct ring_head* ring_move_head(struct ring_head* r, size_t bias) {
+static inline struct ring_head* ring_move_head(struct ring_head* r, unsigned int bias) {
 	r->head += bias;
 	ring_fixup_head(r);
 	return r;
 }
 
-static inline struct ring_head* ring_move_tail(struct ring_head* r, size_t bias) {
+static inline struct ring_head* ring_move_tail(struct ring_head* r, unsigned int bias) {
 	r->tail += bias;
 	ring_fixup_tail(r);
 	return r;
@@ -87,7 +90,7 @@ static inline int ring_getc(struct ring_head* r, const char* buffer) {
 	return c;
 }
 
-static inline int ring_read(struct ring_head* r, const char* buffer, char* data, size_t size) {
+static inline int ring_read(struct ring_head* r, const char* buffer, char* data, unsigned int size) {
 	int c;
 	int ret = 0;
 	while(size--) {
@@ -99,7 +102,7 @@ static inline int ring_read(struct ring_head* r, const char* buffer, char* data,
 	return ret;
 }
 
-static inline int ring_write(struct ring_head* r, char* buffer, const char* data, size_t size) {
+static inline int ring_write(struct ring_head* r, char* buffer, const char* data, unsigned int size) {
 	int ret = 0;
 	while(size--) {
 		if(ring_putc(r, buffer, *data++) == 0) {
@@ -111,7 +114,7 @@ static inline int ring_write(struct ring_head* r, char* buffer, const char* data
 }
 
 #define ring_for_each(n,r) \
-for(size_t n = (r)->tail; n != (r)->head; n = (n+1)%(r)->size)
+for(unsigned int n = (r)->tail; n != (r)->head; n = (n+1)%(r)->size)
 
 __END_DECLS
 
