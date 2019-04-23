@@ -301,6 +301,33 @@ void debug_asmlink_args16x4(uint16_t a, uint16_t b, uint16_t c, uint16_t d)
 	debug_printhex_uint16(d); debug_putchar(':');
 }
 
+void debug_asmlink_args32x1(uint32_t a)
+{
+	debug_printhex_uint32(a); debug_putchar(':');
+}
+
+void debug_asmlink_args32x2(uint32_t a, uint32_t b)
+{
+	debug_printhex_uint32(a); debug_putchar(':');
+	debug_printhex_uint32(b); debug_putchar(':');
+}
+
+void debug_asmlink_args32x3(uint32_t a, uint32_t b, uint32_t c)
+{
+	debug_printhex_uint32(a); debug_putchar(':');
+	debug_printhex_uint32(b); debug_putchar(':');
+	debug_printhex_uint32(c); debug_putchar(':');
+}
+
+void debug_asmlink_args32x4(uint32_t a, uint32_t b, uint32_t c, uint32_t d)
+{
+	debug_printhex_uint32(a); debug_putchar(':');
+	debug_printhex_uint32(b); debug_putchar(':');
+	debug_printhex_uint32(c); debug_putchar(':');
+	debug_printhex_uint32(d); debug_putchar(':');
+}
+
+
 void dprptr(const void* ptr)
 {
 	debug_printhex_ptr(ptr);

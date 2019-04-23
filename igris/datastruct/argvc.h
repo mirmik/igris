@@ -1,6 +1,18 @@
 #ifndef GENOS_DATASTRUCT_ARGV_H
 #define GENOS_DATASTRUCT_ARGV_H
 
+static inline int argvc_length_of_first(const char* str)
+{
+	const char* strt = str;
+
+	while (*str != ' ' && *str != '\0') 
+	{
+		++str;
+	}
+
+	return str - strt;
+}
+
 static inline int argvc_internal_split(char* data, char** argv, int argcmax) {
 	int argc = 0;
 
