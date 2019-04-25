@@ -49,6 +49,12 @@ licant.module("igris.protocols.gstuff",
 	]
 )
 
+licant.module("igris.protocols.numcmd", 
+	sources= [
+		"igris/protocols/numcmd/numcmd.c"
+	]
+)
+
 #################################################################
 #########################UTILS###################################
 
