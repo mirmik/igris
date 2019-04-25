@@ -1,142 +1,43 @@
-/**
- * @file
- * @brief Tree data structure.
- *
- * @date 08.10.11
- * @author Avdyukhin Dmitry
- */
+#ifndef IGRIS_DATASTRUCT_TREE_H
+#define IGRIS_DATASTRUCT_TREE_H
 
-#ifndef UTIL_TREE_H_
-#define UTIL_TREE_H_
+#include <igris/util/macro.h>
+#include <igris/datastruct/dlist.h>
 
-#include <gxx/util/member.h>
-#include <gxx/util/macro.h>
-#include <gxx/datastruct/dlist.h>
-
-#define tree_element(link, element_type, link_member) \
-	(link == NULL ? NULL \
-		 : member_cast_out(link, element_type, link_member))
-
-/**
- * Link on element of tree, keeping in each element.
- */
-struct tree_link {
-	/** Parent node in the tree. */
-	struct tree_link *par;
-
-	/** Children are represented as a list of nodes. */
-	struct dlist_head children;
-
-	/** List link inside of list of children. */
-	struct dlist_head list_link;
+struct tree_head 
+{
+	struct dlist_head lnk;
+	struct dlist_head childs;
+	struct tree_head * parent;
 };
 
-/**
- * Type of functions, returning true or false for given tree_link.
- */
-//typedef int (*tree_predicate_t)(struct tree_link *link, void *arg);
+#define TREE_HEAD_INIT(name) \
+	{ DLIST_HEAD_INIT(name.lnk), DLIST_HEAD_INIT(name.childs), NULL }
 
 __BEGIN_DECLS
 
-/**
- * Initializes tree link.
- *
- * @param link Link to initialize.
- * @return The argument.
- */
-extern struct tree_link *tree_link_init(struct tree_link *link);
+static inline void tree_init(struct tree_head* tree) 
+{
+	dlist_init(&tree->lnk);
+	dlist_init(&tree->childs);
+	tree->parent = NULL;
+}
 
-/**
- * Add element to tree by adding new link into list of children of another node.
- *   Added tree_link must be initialized before and have no parent.
- *   Added element will be insert in the end of list of children.
- * @param parent Parent of new node.
- * @param link Added element
- */
-extern void tree_add_link(struct tree_link *parent, struct tree_link *link);
+static inline void tree_add_child(struct tree_head* node, struct tree_head* parent) 
+{
+	dlist_add(&node->lnk, &parent->childs);
+	node->parent = parent;
+} 
 
-/**
- * Unlink specified tree_link from its parent and bind it to new parent.
- * @param parent Parent of new node.
- * @param link Added element
- */
-extern void tree_move_link(struct tree_link *parent, struct tree_link *link);
-
-/**
- * Separates node from its parent.
- *   This parent can not exist.
- * @param link Unlinked element
- * @return
- * 	true, if element was in the tree before deletion.
- */
-extern int tree_unlink_link(struct tree_link *link);
-
-/**
- * Delete all subtree with this node.
- * For each element dispose method will be called,
- * @param link Link, what subtree will be deleted.
- * @param dispose Dispose method for each element.
- */
-//extern void tree_delete_link(struct tree_link *link, void dispose(struct tree_link *));
-
-/**
- * 'Next' link in the tree according to selected order. Used for iteration.
- * The order is: firstly we recursively enumerate all children of node,
- *   then the node itself.
- * @param link Current node.
- * @return Next node in the tree.
- */
-//extern struct tree_link *tree_postorder_next(struct tree_link *link);
-
-/**
- * First node for enumeration.
- * @param tree Tree to enumerate.
- */
-//extern struct tree_link *tree_postorder_begin(struct tree_link *tree);
-
-/**
- * End of iteration (exclusive).
- * @param tree Tree to enumerate.
- */
-//extern struct tree_link *tree_postorder_end(struct tree_link *tree);
-
-/**
- * Searches for a child of the given node, for which the specified predicate
- * evaluates to a non-zero value.
- *
- * @param node Target node to search.
- * @param predicate Predicate function to check each child.
- * @param arg Additional argument for predicate.
- *
- * @return
- *   The first child which satisfies the predicate (if any), NULL otherwise.
- */
-//extern struct tree_link *tree_lookup_child(struct tree_link *node,
-//		tree_predicate_t predicate, void *arg);
-
-/**
- * Find element of subtree, for what specified predicate is true.
- *
- * @param tree Node, subtree of what (including itself) is tested.
- * @param predicate Predicate, with what nodes are tested.
- *
- * @return Node, for what predicate is true, or NULL, if it doesn't exist.
- */
-//extern struct tree_link *tree_lookup(struct tree_link *tree,
-//		tree_predicate_t predicate, void *arg);
-
-//extern struct tree_link *tree_children_begin(struct tree_link *tree);
-
-//extern struct tree_link *tree_children_end(struct tree_link *tree);
-
-//extern struct tree_link *tree_children_next(struct tree_link *tree);
+static inline void tree_add_child_tail(struct tree_head* node, struct tree_head* parent) 
+{
+	dlist_add_tail(&node->lnk, &parent->childs);
+	node->parent = parent;
+} 
 
 __END_DECLS
 
-#define tree_for_each_child(pos, tree) \
-dlist_for_each(pos, &(tree)->children) 
+#define tree_for_each_child(it, lst) \
+	for (it = dlist_first_entry(&lst->childs, struct tree_head, lnk), it != lst, it = dlist_next_entry(it, lnk))
 
-#define tree_for_each_child_entry(pos, tree, member) \
-dlist_for_each_entry(pos, &(tree)->children, member.list_link) 
-
-#endif /* UTIL_TREE_H_ */
+#endif 
