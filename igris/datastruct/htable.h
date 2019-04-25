@@ -28,17 +28,17 @@ static inline struct hlist_head* htable_get_bucket(struct htable_head* stbl, uns
 
 __END_DECLS
 
-#define htable_for_each(pos, head) 						\
+#define htable_for_each(pos, head) 									\
 	__htable_for_each(pos, MACRO_GUARD(bucket), head)
 
-#define __htable_for_each(pos, bucket, head) 					\
+#define __htable_for_each(pos, bucket, head) 						\
 	for(int bucket = 0; bucket < tbl->len; ++bucket)  				\
 		hlist_for_each(pos, head->arr[bucket])
 
-#define htable_for_each_entry(pos, head, member) 		\
+#define htable_for_each_entry(pos, head, member) 					\
 	__htable_for_each_entry(pos, MACRO_GUARD(bucket), head, member)
 
-#define __htable_for_each_entry(pos, bucket, head, member) 		\
+#define __htable_for_each_entry(pos, bucket, head, member) 			\
 	for(int bucket = 0; bucket < tbl->len; ++bucket)  				\
 		hlist_for_each_entry(pos, head->arr[bucket], member)
 
