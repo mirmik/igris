@@ -5,6 +5,8 @@
 #include <igris/util/bug.h>
 #include <igris/defs/ascii.h>
 
+#include <igris/dtrace.h>
+
 #define READLINE_OVERFLOW -1
 
 #define READLINE_NOTHING 0
@@ -69,47 +71,51 @@ void readline_newline_do(struct readline * rl)
 	rl->curhist = 0;
 }
 
-static inline 
-char* readline_current_history_pointer(struct readline * rl) 
+static inline
+char* readline_current_history_pointer(struct readline * rl)
 {
-	int idx; 
+	int idx;
 
-	idx = (rl->headhist + rl->curhist) % rl->history_size;
+	idx = (rl->headhist + rl->history_size - rl->curhist) % rl->history_size;
 	return rl->history_space + idx * rl->line.cap;
 }
 
-static inline 
-void readline_load_history_line(struct readline * rl) 
+static inline
+char* readline_update_history_pointer(struct readline * rl)
 {
-	if (rl->curhist == 0) 
+	int idx;
+
+	idx = rl->headhist;
+	return rl->history_space + idx * rl->line.cap;
+}
+
+static inline
+void readline_load_history_line(struct readline * rl)
+{
+	rl -> lastsize = rl->line.len;
+
+	if (rl->curhist == 0)
 	{
 		memset(rl->line.buf, 0, rl->line.cap);
 		rl->line.len = 0;
 		rl->line.cursor = 0;
+		return;
 	}
 
-	rl -> lastsize = rl->line.len;
+	unsigned int sz = strlen(readline_current_history_pointer(rl));
 
-	int idx = (rl->headhist + rl->curhist) % rl->history_size;
-
-	unsigned int sz = strlen(rl->history_space + idx);
-	strncpy(rl->line.buf, readline_current_history_pointer(rl), sz);
+	memcpy(rl->line.buf, readline_current_history_pointer(rl), sz);
 	rl->line.len = rl->line.cursor = sz;
-
-	DPRINT(idx);
-	DPRINT(rl->curhist);
-	DPRINT(rl->headhist);
 }
 
-static inline 
-int readline_history_up(struct readline * rl) 
+static inline
+int readline_history_up(struct readline * rl)
 {
-	int next;
-
-	if (rl->history_space == NULL) 
+	//DTRACE();
+	if (rl->history_space == NULL)
 		return 0;
 
-	if (rl->curhist == rl->history_size + 1) 
+	if (rl->curhist == rl->history_size)
 		return 0;
 
 	rl->curhist++;
@@ -118,18 +124,18 @@ int readline_history_up(struct readline * rl)
 	return 1;
 }
 
-static inline 
-int readline_history_down(struct readline * rl) 
+static inline
+int readline_history_down(struct readline * rl)
 {
-	int next;
-
-	if (rl->history_space == NULL) 
+	//DTRACE();
+	//DPRINT(rl->curhist);
+	if (rl->history_space == NULL)
 		return 0;
 
-	if (rl->curhist == 0) 
+	if (rl->curhist == 0)
 		return 0;
 
-	rl->curhist--; 
+	rl->curhist--;
 
 	readline_load_history_line(rl);
 	return 1;
@@ -149,14 +155,20 @@ int readline_putchar(struct readline * rl, char c)
 				case '\r':
 				case '\n':
 					if ((rl->last == '\n' || rl->last == '\r') && rl->last != c)
-						retcode = READLINE_NOTHING;
-					else 
 					{
-						if (rl->history_space) 
+						rl->last = 0;
+						retcode = READLINE_NOTHING;
+					}
+					else
+					{
+						if (rl->history_space && rl->line.len)
 						{
-						//	memset(readline_current_history_pointer(rl), 0, rl->line.cap);
-						//	strncpy(readline_current_history_pointer(rl), rl->line.buf, rl->line.len);
-						//	rl->headhist = (rl->headhist + 1) % rl->history_size; 
+							char* ptr = readline_update_history_pointer(rl);
+							memset(ptr, 0, rl->line.cap);
+							memcpy(ptr, rl->line.buf, rl->line.len);
+							*(ptr + rl->line.len) = '\0';
+							rl->headhist = (rl->headhist + 1) % rl->history_size;
+							rl->curhist = 0;
 						}
 
 						retcode = READLINE_NEWLINE;
@@ -200,12 +212,12 @@ int readline_putchar(struct readline * rl, char c)
 			switch (c)
 			{
 				case 0x41: //up
-					//if (readline_history_up(rl));
-					//	retcode = READLINE_UPDATELINE;
+					if (readline_history_up(rl))
+						retcode = READLINE_UPDATELINE;
 					break;
 				case 0x42: //down
-					//if (readline_history_down(rl));
-					//	retcode = READLINE_UPDATELINE;
+					if (readline_history_down(rl))
+						retcode = READLINE_UPDATELINE;
 					break;
 				case 0x43: //right
 					ret = sline_right(&rl->line);
