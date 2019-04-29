@@ -6,7 +6,7 @@
 
 int numcmd_checksum_check(const char* str)
 {
-	uint8_t sum;
+	uint8_t sum = 0;
 	uint8_t csum;
 	
 	for (int i = 1; i < 11; i++)
@@ -44,7 +44,7 @@ int numcmd_do(const char* str, struct numcmd_record* table, uint32_t* result)
 
 void numcmd_form_checksum(char* str) 
 {
-	uint8_t sum;
+	uint8_t sum = 0;
 
 	for (int i = 1; i < 11; i++)
 	{
