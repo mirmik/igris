@@ -109,6 +109,24 @@ int sline_putchar(struct sline * sl, char c)
 	return 1;
 }
 
+static inline 
+char* sline_rightpart(struct sline * sl) 
+{
+	return sl->buf + sl->cursor;
+}
+
+static inline 
+unsigned int sline_rightsize(struct sline * sl) 
+{
+	return sl->len - sl->cursor;
+}
+
+static inline 
+unsigned int sline_in_rightpos(struct sline * sl) 
+{
+	return sl->len == sl->cursor;
+}
+
 /*static inline 
 int sline_write(struct sline * sl, const char* dat, int sz)
 {
