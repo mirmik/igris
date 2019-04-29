@@ -31,7 +31,13 @@ struct readline
 	int state;
 
 	char last;
+	int lastsize;
+
 	char * history_space;
+	uint8_t history_size;
+
+	uint8_t headhist;
+	uint8_t curhist;
 };
 
 __BEGIN_DECLS
@@ -44,18 +50,89 @@ void readline_init(struct readline * rl, char * buf, size_t len)
 	rl->last = 0;
 	rl->state = 0;
 	rl->history_space = NULL;
+	rl->curhist = 0;
+	rl->headhist = 0;
 }
 
 static inline
-void readline_history_init(struct readline * rl, char * hs)
+void readline_history_init(struct readline * rl, char * hs, int hsize)
 {
 	rl->history_space = hs;
+	rl->history_size = hsize;
+	memset(hs, 0, rl->line.cap * hsize);
 }
 
 static inline
 void readline_newline_do(struct readline * rl)
 {
 	sline_reset(&rl->line);
+	rl->curhist = 0;
+}
+
+static inline 
+char* readline_current_history_pointer(struct readline * rl) 
+{
+	int idx; 
+
+	idx = (rl->headhist + rl->curhist) % rl->history_size;
+	return rl->history_space + idx * rl->line.cap;
+}
+
+static inline 
+void readline_load_history_line(struct readline * rl) 
+{
+	if (rl->curhist == 0) 
+	{
+		memset(rl->line.buf, 0, rl->line.cap);
+		rl->line.len = 0;
+		rl->line.cursor = 0;
+	}
+
+	rl -> lastsize = rl->line.len;
+
+	int idx = (rl->headhist + rl->curhist) % rl->history_size;
+
+	unsigned int sz = strlen(rl->history_space + idx);
+	strncpy(rl->line.buf, readline_current_history_pointer(rl), sz);
+	rl->line.len = rl->line.cursor = sz;
+
+	DPRINT(idx);
+	DPRINT(rl->curhist);
+	DPRINT(rl->headhist);
+}
+
+static inline 
+int readline_history_up(struct readline * rl) 
+{
+	int next;
+
+	if (rl->history_space == NULL) 
+		return 0;
+
+	if (rl->curhist == rl->history_size + 1) 
+		return 0;
+
+	rl->curhist++;
+
+	readline_load_history_line(rl);
+	return 1;
+}
+
+static inline 
+int readline_history_down(struct readline * rl) 
+{
+	int next;
+
+	if (rl->history_space == NULL) 
+		return 0;
+
+	if (rl->curhist == 0) 
+		return 0;
+
+	rl->curhist--; 
+
+	readline_load_history_line(rl);
+	return 1;
 }
 
 static inline
@@ -73,8 +150,17 @@ int readline_putchar(struct readline * rl, char c)
 				case '\n':
 					if ((rl->last == '\n' || rl->last == '\r') && rl->last != c)
 						retcode = READLINE_NOTHING;
-					else
+					else 
+					{
+						if (rl->history_space) 
+						{
+						//	memset(readline_current_history_pointer(rl), 0, rl->line.cap);
+						//	strncpy(readline_current_history_pointer(rl), rl->line.buf, rl->line.len);
+						//	rl->headhist = (rl->headhist + 1) % rl->history_size; 
+						}
+
 						retcode = READLINE_NEWLINE;
+					}
 					break;
 
 				case ASCII_BS:
@@ -114,8 +200,13 @@ int readline_putchar(struct readline * rl, char c)
 			switch (c)
 			{
 				case 0x41: //up
+					//if (readline_history_up(rl));
+					//	retcode = READLINE_UPDATELINE;
+					break;
 				case 0x42: //down
-					BUG();
+					//if (readline_history_down(rl));
+					//	retcode = READLINE_UPDATELINE;
+					break;
 				case 0x43: //right
 					ret = sline_right(&rl->line);
 					if (ret)
