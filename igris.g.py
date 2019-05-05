@@ -62,7 +62,7 @@ licant.module("igris.util", sources=[
 	"igris/util/numconvert.c",
 	"igris/util/hexascii.cpp",
 	"igris/util/string.cpp",
-	"igris/util/dstring.c"
+	"igris/util/dstring.c",
 	"igris/util/stub.c",
 ])
 
