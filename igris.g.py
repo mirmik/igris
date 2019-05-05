@@ -58,11 +58,11 @@ licant.module("igris.protocols.numcmd",
 #################################################################
 #########################UTILS###################################
 
-licant.module("igris.protocols.dstring", sources= ["igris/util/dstring.c"])
-
 licant.module("igris.util", sources=[
 	"igris/util/numconvert.c",
 	"igris/util/hexascii.cpp",
+	"igris/util/string.cpp",
+	"igris/util/dstring.c"
 ])
 
 #################################################################
