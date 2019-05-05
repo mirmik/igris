@@ -23,4 +23,7 @@
 
 #define DTRACE_ARGS(...) CONCAT2(DTRACE_ARGS_,COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
 
+#define DTRACE_CONDITION(en) if (en) DTRACE(); 
+#define DTRACE_ARGS_CONDITION(en, ...) if (en) CONCAT2(DTRACE_ARGS_,COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+
 #endif

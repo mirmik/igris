@@ -65,15 +65,14 @@ namespace igris {
 	
 	public:			
 		void clean() {
-			method.method = horrible_cast<mtd_t, R(DoNothing::*)(Args ...)>(&DoNothing::do_nothing<R,Args...>);
-			object = 0;
+			*this = do_nothing_signature<R, Args ...>;
 		}
 
 		bool armed() {
-			return method.method != horrible_cast<mtd_t, R(DoNothing::*)(Args ...)>(&DoNothing::do_nothing<R,Args...>);			
+			return method.part.function != do_nothing_signature<R,Args...>;			
 		}
 
-		delegate(): delegate(&DoNothing::do_nothing<R,Args...>, (DoNothing*)0) {}		
+		delegate(): delegate(do_nothing_signature<R, Args...>) {}		
 	
 		delegate(const delegate& d) {
 			object = d.object;
@@ -99,7 +98,6 @@ namespace igris {
 
 		template <typename F>
 		delegate(const F& functor) {
-			//dprln(__PRETTY_FUNCTION__);
 			object = reinterpret_cast <obj_t> ((F*) &functor);
 			method.method = horrible_cast<mtd_t, decltype(&F::operator())>(&F::operator());
 		}
@@ -120,7 +118,7 @@ namespace igris {
 			uint8_t type = object ? METHOD : FUNCTION;
 			if (type == METHOD) 
 				return (object->*method.method)(arg ...);
-			else //FUNCTION
+			else
 				return method.part.function(arg ...);
 		};
 	
@@ -159,7 +157,7 @@ namespace igris {
 		extfnc_t extfunction;
 	
 	public:
-		fastdelegate(): fastdelegate(&DoNothing::do_nothing<R,Args...>, (DoNothing*)0) {}
+		fastdelegate(): fastdelegate(do_nothing, nullptr) {}
 	
 		fastdelegate(const fastdelegate& d)	: object(d.object), extfunction(d.extfunction) {};
 	

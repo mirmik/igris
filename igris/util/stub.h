@@ -1,23 +1,20 @@
-#ifndef GXX_STUB_H
-#define GXX_STUB_H
+#ifndef IGRIS_STUB_H
+#define IGRIS_STUB_H
 
-// Функции и объекты, не делающие ничего.
+#include <sys/cdefs.h>
 
-#ifndef __cplusplus
+__BEGIN_DECLS
 
-static void do_nothing() {  }
+// Функция не делающая ничего.
+extern void do_nothing();
 
-#else
+__END_DECLS
 
-template <typename R = void,typename ... V> 
-static R do_nothing(V...) { return R(); }
+#ifdef __cplusplus 
 
-class DoNothing {
-public:
-	template <typename R = void,typename ... V> 
-	R do_nothing(V...) { return (R)0; }
-};
+template <class R, class ... Args>
+constexpr R(*do_nothing_signature)(Args ...) = (R(*)(Args ...)) do_nothing;
 
-#endif //__cplusplus	
+#endif
 
 #endif 
