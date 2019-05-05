@@ -4,8 +4,12 @@
 #include <igris/dprint.h>
 #include <igris/util/macro.h>
 
+#if NODTRACE
+#define DTRACE()
+#else
 #define DTRACE() \
     do { dpr("DTRACE: "); dpr(__PRETTY_FUNCTION__); dln(); } while(0);
+#endif
 
 #define DPRARG(x) dpr(STRINGIFY(x)); dprchar(':'); dpr(x); dprchar(' ');
 #define DTRPRE() do { dpr("DTRACE: "); dpr(__PRETTY_FUNCTION__); dpr(" args: ");
