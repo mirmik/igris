@@ -278,4 +278,7 @@ template<typename T> void dprptrln(const T& obj)
 #define DPRINT(X) \
     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
 
+#define DPRINTHEX(X) \
+    do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprhexln(X); } while(0);
+
 #endif
