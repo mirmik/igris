@@ -4,6 +4,7 @@
 //#include <inttypes.h>
 #include <sys/cdefs.h>
 #include <igris/util/member.h>
+#include <igris/dprint.h>
 
 /*
  * These are non-NULL pointers that will result in page faults
@@ -22,7 +23,8 @@
  * generate better code by using them directly rather than
  * using the generic single-entry routines.
  */
-struct dlist_head {
+struct dlist_head
+{
     struct dlist_head *next, *prev;
 };
 
@@ -37,9 +39,10 @@ __BEGIN_DECLS
  * Init dlist head.
  *
  * It should be used before all operations with head
- * except dlist_add*,  
+ * except dlist_add*,
  */
-static inline void dlist_init(struct dlist_head* head) {
+static inline void dlist_init(struct dlist_head* head)
+{
     head->next = head->prev = head;
 }
 
@@ -49,7 +52,8 @@ static inline void dlist_init(struct dlist_head* head) {
  * This is only for internal list manipulation where we know
  * the prev/next entries already!
  */
-static inline void __dlist_add(struct dlist_head *lnk, struct dlist_head *next, struct dlist_head *prev) {
+static inline void __dlist_add(struct dlist_head *lnk, struct dlist_head *next, struct dlist_head *prev)
+{
     lnk->prev = prev;
     lnk->next = next;
     next->prev = lnk;
@@ -61,7 +65,8 @@ static inline void __dlist_add(struct dlist_head *lnk, struct dlist_head *next, 
  * @lnk: new entry to be added
  * @head: list head to add it after
  */
-static inline void dlist_add_next(struct dlist_head* lnk, struct dlist_head* head) {
+static inline void dlist_add_next(struct dlist_head* lnk, struct dlist_head* head)
+{
     __dlist_add(lnk, head->next, head);
 }
 #define dlist_add(a,b) dlist_add_next(a,b)
@@ -71,7 +76,8 @@ static inline void dlist_add_next(struct dlist_head* lnk, struct dlist_head* hea
  * @lnk: new entry to be before
  * @head: list head to add it after
  */
-static inline void dlist_add_prev(struct dlist_head* lnk, struct dlist_head* head) {
+static inline void dlist_add_prev(struct dlist_head* lnk, struct dlist_head* head)
+{
     __dlist_add(lnk, head, head->prev);
 }
 #define dlist_add_tail(a,b) dlist_add_prev(a,b)
@@ -83,7 +89,8 @@ static inline void dlist_add_prev(struct dlist_head* lnk, struct dlist_head* hea
  * This is only for internal list manipulation where we know
  * the prev/next entries already!
  */
-static inline void __dlist_del(struct dlist_head * prev, struct dlist_head * next) {
+static inline void __dlist_del(struct dlist_head * prev, struct dlist_head * next)
+{
     next->prev = prev;
     prev->next = next;
 }
@@ -94,7 +101,8 @@ static inline void __dlist_del(struct dlist_head * prev, struct dlist_head * nex
  * Note: list_empty on entry does not return true after this, the entry is
  * in an undefined state.
  */
-static inline void dlist_del(struct dlist_head *entry) {
+static inline void dlist_del(struct dlist_head *entry)
+{
     __dlist_del(entry->prev, entry->next);
     entry->next = DLIST_POISON1;
     entry->prev = DLIST_POISON2;
@@ -104,7 +112,8 @@ static inline void dlist_del(struct dlist_head *entry) {
  * Deletes entry from list and reinitialize it.
  * @entry: the element to delete from the list.
  */
-static inline void dlist_del_init(struct dlist_head *entry) {
+static inline void dlist_del_init(struct dlist_head *entry)
+{
     __dlist_del(entry->prev, entry->next);
     dlist_init(entry);
 }
@@ -114,9 +123,10 @@ static inline void dlist_del_init(struct dlist_head *entry) {
  * @list: the entry to move
  * @head: the head that will precede our entry
  */
-static inline void dlist_move(struct dlist_head *list, struct dlist_head *head) {
-        __dlist_del(list->prev, list->next);
-        dlist_add(list, head);
+static inline void dlist_move(struct dlist_head *list, struct dlist_head *head)
+{
+    __dlist_del(list->prev, list->next);
+    dlist_add(list, head);
 }
 
 /**
@@ -124,9 +134,10 @@ static inline void dlist_move(struct dlist_head *list, struct dlist_head *head) 
  * @list: the entry to move
  * @head: the head that will follow our entry
  */
-static inline void dlist_move_tail(struct dlist_head *list, struct dlist_head *head) {
-        __dlist_del(list->prev, list->next);
-        dlist_add_tail(list, head);
+static inline void dlist_move_tail(struct dlist_head *list, struct dlist_head *head)
+{
+    __dlist_del(list->prev, list->next);
+    dlist_add_tail(list, head);
 }
 #define dlist_move_prev(a,b) dlist_move_tail(a,b)
 
@@ -134,7 +145,8 @@ static inline void dlist_move_tail(struct dlist_head *list, struct dlist_head *h
  * Tests whether a list is empty
  * @head: the list to test.
  */
-static inline int dlist_empty(const struct dlist_head *head) {
+static inline int dlist_empty(const struct dlist_head *head)
+{
     return head->next == head;
 }
 
@@ -159,18 +171,79 @@ __END_DECLS
 for (pos = (head)->next; pos != (head); pos = pos->next)
 
 #define dlist_for_each_safe(pos, n, head) \
-for (pos = (head)->next, n = pos->next; pos != (head); \
-pos = n, n = pos->next)
+    for (pos = (head)->next, n = pos->next; pos != (head); \
+    pos = n, n = pos->next)
 
-#define dlist_for_each_entry(pos, head, member)                 \
-for (pos = dlist_first_entry(head, __typeof__(*pos), member);   \
-&pos->member != (head);                                         \
-pos = dlist_next_entry(pos, member))
+#define dlist_for_each_entry(pos, head, member)                     \
+    for (pos = dlist_first_entry(head, __typeof__(*pos), member);   \
+    &pos->member != (head);                                         \
+    pos = dlist_next_entry(pos, member))
 
-#define dlist_for_each_entry_safe(pos, n, head, member)         \
-for (pos = dlist_first_entry(head, __typeof__(*pos), member),   \
-n = dlist_next_entry(pos, member);          \
-&pos->member != (head);                     \
-pos = n, n = dlist_next_entry(n, member))
-    
+#define dlist_for_each_entry_safe(pos, n, head, member)             \
+    for (pos = dlist_first_entry(head, __typeof__(*pos), member),   \
+    n = dlist_next_entry(pos, member);                              \
+    &pos->member != (head);                                         \
+    pos = n, n = dlist_next_entry(n, member))
+
+__BEGIN_DECLS
+
+static inline
+int dlist_in(struct dlist_head *fnd, struct dlist_head *head)
+{
+    struct dlist_head * it;
+    dlist_for_each(it, head)
+    {
+        if (it == fnd)
+            return 1;
+    }
+    return 0;
+}
+
+static inline
+int dlist_check(struct dlist_head *fnd, int count)
+{
+    struct dlist_head * it = fnd;
+
+    while(count--) 
+    {
+        struct dlist_head * next = it->next;
+
+        if (fnd == next) 
+            return 1;
+
+        it = next;         
+    }
+
+    return 0;
+}
+
+static inline
+void dlist_debug_print(struct dlist_head *head) 
+{
+    struct dlist_head * it;
+
+    dpr("dlist_head:"); dprptrln(head); 
+    dlist_for_each(it, head) 
+    {
+        dprptrln(it);
+    }
+}
+
+static inline 
+int dlist_size(struct dlist_head *head) 
+{
+    struct dlist_head * it;
+    int sz = 0;
+
+    dlist_for_each(it, head) 
+    {
+        ++sz;
+    }
+
+    return sz;   
+}
+
+
+__END_DECLS
+
 #endif

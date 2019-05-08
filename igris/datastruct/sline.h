@@ -138,6 +138,15 @@ int sline_write(struct sline * sl, const char* dat, int sz)
 	return cap;
 }*/
 
+static inline 
+void sline_debug_info(struct sline * sl) 
+{
+	DPRINTPTR(sl->buf);	
+	DPRINT(sl->cap);
+	DPRINT(sl->len);
+	DPRINT(sl->cursor);
+}
+
 __END_DECLS
 
 #endif
