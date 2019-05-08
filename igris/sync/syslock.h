@@ -7,6 +7,7 @@ __BEGIN_DECLS
 
 void system_lock(); 
 void system_unlock(); 
+void syslock_reset(); 
 
 __END_DECLS
 

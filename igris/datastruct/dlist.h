@@ -170,6 +170,9 @@ __END_DECLS
 #define dlist_for_each(pos, head) \
 for (pos = (head)->next; pos != (head); pos = pos->next)
 
+#define dlist_for_each_reverse(pos, head) \
+for (pos = (head)->prev; pos != (head); pos = pos->prev)
+
 #define dlist_for_each_safe(pos, n, head) \
     for (pos = (head)->next, n = pos->next; pos != (head); \
     pos = n, n = pos->next)
@@ -218,6 +221,24 @@ int dlist_check(struct dlist_head *fnd, int count)
 }
 
 static inline
+int dlist_oposite_check(struct dlist_head *fnd, int count)
+{
+    struct dlist_head * it = fnd;
+
+    while(count--) 
+    {
+        struct dlist_head * prev = it->prev;
+
+        if (fnd == prev) 
+            return 1;
+
+        it = prev;         
+    }
+
+    return 0;
+}
+
+static inline
 void dlist_debug_print(struct dlist_head *head) 
 {
     struct dlist_head * it;
@@ -243,6 +264,19 @@ int dlist_size(struct dlist_head *head)
     return sz;   
 }
 
+static inline 
+int dlist_oposite_size(struct dlist_head *head) 
+{
+    struct dlist_head * it;
+    int sz = 0;
+
+    dlist_for_each_reverse(it, head) 
+    {
+        ++sz;
+    }
+
+    return sz;   
+}
 
 __END_DECLS
 
