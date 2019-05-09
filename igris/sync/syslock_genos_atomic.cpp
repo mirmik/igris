@@ -8,19 +8,16 @@ __BEGIN_DECLS
 
 void system_lock() 
 {
-	if (is_interrupt_context()) 
-		return;
-
+	irqstate_t tmpsave = irqs_save();
+	
 	if (count == 0) 
-		save = irqs_save();
+		save = tmpsave;
+
 	++count;
 }
 
 void system_unlock() 
 {
-	if (is_interrupt_context()) 
-		return;
-
 	--count;
 	if (count == 0) irqs_restore(save);
 }
