@@ -8,6 +8,6 @@
 #ifndef CLOCK_T_DEF_H_
 #define CLOCK_T_DEF_H_
 
-typedef unsigned long long clock_t;
+typedef unsigned long clock_t;
 
 #endif /* CLOCK_T_DEF_H_ */
