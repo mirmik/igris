@@ -1,6 +1,8 @@
 #ifndef IGRIS_BUFFER_H
 #define IGRIS_BUFFER_H
 
+#include <string>
+
 #include <string.h>
 #include <stdlib.h>
 
@@ -27,6 +29,11 @@ namespace igris
 
 		template<size_t N>
 		inline buffer(const char (&arr) [N]) : buf((char*)arr), sz(N) {}
+
+		explicit operator std::string() 
+		{
+			return std::string(buf, sz);
+		}
 
 	//methods:
 		bool operator==(const buffer& other) const
