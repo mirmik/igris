@@ -8,8 +8,10 @@ namespace igris
 	template <class K1, class K2, class T>
 	class dualmap
 	{
+	private:
 		struct record;
 
+	public:
 		using origin_t = std::map<std::pair<K1, K2>, record>;
 		using iter0 = typename origin_t::iterator;
 
@@ -20,6 +22,7 @@ namespace igris
 
 		using Key = std::pair<K1,K2>;
 
+	private:
 		origin_t origin;
 		hash1_t hash1;
 		hash2_t hash2;
@@ -86,6 +89,11 @@ namespace igris
 			if (it0 == origin.end())
 				return false;
 
+			return erase(it0);
+		}
+
+		bool erase(iter0 it0) 
+		{
 			hash1.erase(it0->second.it1);
 			hash2.erase(it0->second.it2);
 			origin.erase(it0);
@@ -112,6 +120,17 @@ namespace igris
 		{
 			return origin.count(k);
 		}
+
+		auto begin0() { return origin.begin(); }
+		auto end0() { return origin.end(); }
+
+		auto begin1() { return hash1.begin(); }
+		auto end1() { return hash1.end(); }
+
+		auto begin2() { return hash2.begin(); }
+		auto end2() { return hash2.end(); }
+
+		int size() { return origin.size(); }
 	};
 }
 
