@@ -21,9 +21,9 @@ static_assert(sizeof(float32_t) == 4);
 static_assert(sizeof(float64_t) == 8);
 #	endif
 #else
-_Static_assert(sizeof(float32_t) == 4);
+_Static_assert(sizeof(float32_t) == 4, "float32_t size error");
 #	ifndef WITHOUT_FLOAT64
-_Static_assert(sizeof(float64_t) == 8);
+_Static_assert(sizeof(float64_t) == 8, "float64_t size error");
 #	endif
 #endif
 
