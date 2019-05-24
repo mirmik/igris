@@ -61,7 +61,7 @@ namespace igris
 	static inline
 	int graw_read_buffer(uint8_t **pp, uint8_t *endp, uint8_t* out, size_t outmax, size_t sizelen) 
 	{
-		uint32_t size;
+		size_t size;
 
 		if (endp - *pp < sizelen)
 			return GRAW_ERROR_READOVER;
@@ -91,6 +91,38 @@ namespace igris
 
 		memcpy(out, *pp, size);
 		*pp += size;
+
+		return 0;
+	}
+
+	static inline
+	int graw_map_buffer(uint8_t **pp, uint8_t *endp, uint8_t** out, size_t* size, size_t sizelen) 
+	{
+		if (endp - *pp < sizelen)
+			return GRAW_ERROR_READOVER;
+
+		if (sizelen == 2) 
+		{
+			uint16_t _size;
+			memcpy(&_size, *pp, 2);
+			*pp += 2;
+			*size = _size;
+		} 
+		else if (sizelen == 4) 
+		{
+			uint32_t _size;
+			memcpy(&_size, *pp, 4);
+			*pp += 4;
+			*size = _size;	
+		}
+		else 
+			return GRAW_ERROR_BUFSIZE;
+
+		if (endp - *pp < size)
+			return GRAW_ERROR_READOVER;
+
+		*out = *pp;
+		*pp += *size;
 
 		return 0;
 	}
