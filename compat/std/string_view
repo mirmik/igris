@@ -1,0 +1,16 @@
+namespace std 
+{
+	class string_view 
+	{
+		char * _data;
+		size_t _size;
+
+	public:
+		size_t size() const { return _size; }
+		char * data() const { return _data; }
+
+		string_view substr(size_t strt, size_t fini) const;
+		size_t find_first_not_of(const char*) const;
+		size_t find_last_not_of(const char*) const;
+	};
+}

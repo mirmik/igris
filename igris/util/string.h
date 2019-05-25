@@ -1,7 +1,7 @@
 #ifndef IGRIS_STRING_H
 #define IGRIS_STRING_H
 
-#include <cctype>
+#include <ctype.h>
 #include <cstdint>
 #include <list>
 #include <vector>
