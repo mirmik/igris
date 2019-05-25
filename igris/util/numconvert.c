@@ -252,6 +252,37 @@ char * f32toa(float32_t f, char * buf, uint8_t precision)
 	return buf;
 }
 
+float32_t atof32(const char* str, char** pend) {
+	if (!isdigit(*str) && *str != '-') {
+		return 0;
+	}
+
+	char* end;
+	int i = atoi32(str, 10, &end);
+	uint8_t minus = i < 0 ? 1 : 0; 
+	
+	if (minus) 
+	{
+		i = -i;
+	}
+
+	str = end;
+	if (*str == '.') 
+	{
+		int d = atou32(++str, 10, &end);
+		*pend = end;
+		float ret = (float)i + d / (pow(10, end - str)); 
+		return minus ? -ret : ret;
+	} 
+
+	else 
+	{
+		*pend = end;
+		return i;
+	}
+}
+
+#ifndef WITHOUT_FLOAT64
 char * f64toa(float64_t f, char * buf, uint8_t precision) 
 {
 	return f32toa(f, buf, precision);
@@ -286,33 +317,4 @@ float64_t atof64(const char* str, char** pend) {
 		return i;
 	}
 }
-
-float32_t atof32(const char* str, char** pend) {
-	if (!isdigit(*str) && *str != '-') {
-		return 0;
-	}
-
-	char* end;
-	int i = atoi32(str, 10, &end);
-	uint8_t minus = i < 0 ? 1 : 0; 
-	
-	if (minus) 
-	{
-		i = -i;
-	}
-
-	str = end;
-	if (*str == '.') 
-	{
-		int d = atou32(++str, 10, &end);
-		*pend = end;
-		float ret = (float)i + d / (pow(10, end - str)); 
-		return minus ? -ret : ret;
-	} 
-
-	else 
-	{
-		*pend = end;
-		return i;
-	}
-}
+#endif
