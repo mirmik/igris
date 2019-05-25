@@ -3,49 +3,105 @@
 
 #include <igris/protocols/gbson/raw.h>
 
+#include <assert.h>
+
 #include <string>
 #include <vector>
+#include <map>
 
 namespace igris
 {
 	struct msgtype
 	{
-		std::string name;
 		uint8_t type;
 		uint8_t size;
+		std::string(*tostring)(uint8_t* strt, uint8_t* fini);
 
-		msgtype(const std::string& str, uint8_t type, uint8_t size):
-			name(str), type(type), size(size) {}
+		msgtype() = default;
+		msgtype(uint8_t type, uint8_t size, std::string(*tostring)(uint8_t* strt, uint8_t* fini)):
+			type(type), size(size), tostring(tostring) {}
 	};
 
-	const msgtype msgtype_i8 =  { "i8",  GRAW_SIMPLE, 1 }; 
-	const msgtype msgtype_i16 = { "i16", GRAW_SIMPLE, 2 }; 
-	const msgtype msgtype_i32 = { "i32", GRAW_SIMPLE, 4 }; 
-	const msgtype msgtype_i64 = { "i64", GRAW_SIMPLE, 8 };
+	template<class T>
+	std::string msgtype_tostring_simple(uint8_t* strt, uint8_t* fini) 
+	{
+		assert(sizeof(T) == fini - strt);
 
-	const msgtype msgtype_u8 =  { "u8",  GRAW_SIMPLE, 1 }; 
-	const msgtype msgtype_u16 = { "u16", GRAW_SIMPLE, 2 }; 
-	const msgtype msgtype_u32 = { "u32", GRAW_SIMPLE, 4 }; 
-	const msgtype msgtype_u64 = { "u64", GRAW_SIMPLE, 8 };
+		T val;
+		memcpy((void*)&val, strt, sizeof(T));
 
-	const msgtype msgtype_f32 = { "f32", GRAW_SIMPLE, 4 }; 
-	const msgtype msgtype_f64 = { "f64", GRAW_SIMPLE, 8 };
+		return std::to_string(val);
+	}
 
-	const msgtype msgtype_str =     { "str",     GRAW_BUFFER, 2 };	
-	const msgtype msgtype_longstr = { "longstr", GRAW_BUFFER, 4 };
+	static
+	std::string msgtype_tostring_buffer(uint8_t* strt, uint8_t* fini) 
+	{
+		return std::string((char*)strt, fini - strt);
+	}
 
-	class msgtype_map
+	const msgtype msgtype_i8 =  { GRAW_SIMPLE, 1, msgtype_tostring_simple<int8_t> }; 
+	const msgtype msgtype_i16 = { GRAW_SIMPLE, 2, msgtype_tostring_simple<int16_t> }; 
+	const msgtype msgtype_i32 = { GRAW_SIMPLE, 4, msgtype_tostring_simple<int32_t> }; 
+	const msgtype msgtype_i64 = { GRAW_SIMPLE, 8, msgtype_tostring_simple<int64_t> };
+
+	const msgtype msgtype_u8 =  { GRAW_SIMPLE, 1, msgtype_tostring_simple<uint8_t> }; 
+	const msgtype msgtype_u16 = { GRAW_SIMPLE, 2, msgtype_tostring_simple<uint16_t> }; 
+	const msgtype msgtype_u32 = { GRAW_SIMPLE, 4, msgtype_tostring_simple<uint32_t> }; 
+	const msgtype msgtype_u64 = { GRAW_SIMPLE, 8, msgtype_tostring_simple<uint64_t> };
+
+	const msgtype msgtype_f32 = { GRAW_SIMPLE, 4, msgtype_tostring_simple<float32_t> }; 
+	const msgtype msgtype_f64 = { GRAW_SIMPLE, 8, msgtype_tostring_simple<float64_t> };
+
+	const msgtype msgtype_str =     { GRAW_BUFFER, 2, msgtype_tostring_buffer };	
+	const msgtype msgtype_longstr = { GRAW_BUFFER, 4, msgtype_tostring_buffer };
+
+	struct msgtype_map
 	{
 		std::vector<uint8_t*> ptrs;
+		bool success;
 	};
 
-	class msgtype_reader
+	struct msgtype_reader
 	{
-		std::vector<msgtype> tstruct;
-		msgtype_map map(uint8_t* strt, uint8_t* fini);
+		std::vector<std::pair<std::string, msgtype>> tstruct;
+		
+		msgtype_map map(uint8_t* strt, uint8_t* fini) 
+		{
+			msgtype_map m;
+			uint8_t* ptr = strt;
+
+			m.ptrs.push_back(ptr);
+
+			for (auto t: tstruct) 
+			{
+				const msgtype& msgtp = t.second;
+
+				if (msgtp.type == GRAW_SIMPLE) 
+					ptr += msgtp.size;
+
+				else if(msgtp.type == GRAW_BUFFER) 
+				{
+					assert(msgtp.size == 2);
+
+					uint16_t size;
+					memcpy(&size, ptr, 2);
+					ptr += 2;
+					ptr += size;										
+				}
+
+				m.ptrs.push_back(ptr);
+			}
+
+			if (fini == ptr)
+				m.success = true;
+			else
+				m.success = false;
+
+			return m;
+		}
 	};
 
-	msgtype_reader readtype(const std::string& type, const std::string& filepath);
+	msgtype_reader msgtype_read_type(const std::string& type, const std::string& filepath);
 }
 
 #endif

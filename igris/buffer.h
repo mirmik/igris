@@ -17,8 +17,13 @@ namespace igris
 		size_t sz;
 
 	public:
-		ACCESSOR(data, buf);
-		ACCESSOR(size, sz);
+		char * data() const { return buf; }
+		char *& data() { return buf; }
+		void data(char* buf) { this->buf = buf; }
+
+		size_t size() const { return sz; }
+		size_t& size() { return sz; }
+		void size(size_t sz) { this->sz = sz; }
 
 	//ctors:
 		buffer() : buf(nullptr), sz(0) {}

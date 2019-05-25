@@ -1,10 +1,12 @@
 #ifndef IGRIS_STRING_H
 #define IGRIS_STRING_H
 
+#include <cctype>
 #include <cstdint>
 #include <list>
 #include <vector>
 #include <string>
+#include <string_view>
 
 #include <igris/buffer.h>
 
@@ -44,6 +46,34 @@ namespace igris
 		ret.append(postfix);
 
 		return ret;
+	}
+
+	static inline std::string_view trim(const std::string_view& view) 
+	{	
+		if (view.size() == 0)
+			return view;
+
+		size_t strt = view.find_first_not_of(" \n\t");
+		size_t fini = view.find_last_not_of(" \n\t") + 1;
+		return view.substr(strt, fini - strt);
+	}
+
+	static inline std::string_view trim_left(const std::string_view& view) 
+	{
+		if (view.size() == 0)
+			return view;
+
+		size_t fini = view.find_last_not_of(" \n\t") + 1;
+		return view.substr(0, fini);
+	}
+
+	static inline std::string_view trim_right(const std::string_view& view) 
+	{
+		if (view.size() == 0)
+			return view;
+
+		size_t strt = view.find_first_not_of(" \n\t");
+		return view.substr(strt, view.size() - strt);
 	}
 
 	static inline std::string serialstr8(const std::string& str)

@@ -30,29 +30,53 @@ int graw_read_simple(uint8_t **pp, uint8_t *endp, uint8_t* out, size_t typesize)
 }
 
 static inline
-int graw_read_buffer(uint8_t **pp, uint8_t *endp, uint8_t* out, size_t outmax, size_t sizelen)
+int graw_read_buf(uint8_t **pp, uint8_t *endp, uint8_t* out, size_t outmax, uint16_t* sizep)
 {
-	size_t size;
+	int ans;
 
-	if (endp - *pp < sizelen)
+	ans = graw_read_simple(pp, endp, (uint8_t*)sizep, 2);
+	if (ans)
+		return ans;
+
+	if (endp - *pp < *sizep)
 		return GRAW_ERROR_READOVER;
 
-	if (sizelen == 2)
-	{
-		uint16_t _size;
-		memcpy(&_size, *pp, 2);
-		*pp += 2;
-		size = _size;
-	}
-	else if (sizelen == 4)
-	{
-		uint32_t _size;
-		memcpy(&_size, *pp, 4);
-		*pp += 4;
-		size = _size;
-	}
-	else
-		return GRAW_ERROR_BUFSIZE;
+	if (outmax < *sizep)
+		*sizep = outmax;
+
+	memcpy(out, *pp, *sizep);
+	*pp += *sizep;
+
+	return 0;
+}
+
+static inline
+int graw_map_buf(uint8_t **pp, uint8_t *endp, uint8_t** out, uint16_t* sizep)
+{
+	int ans;
+
+	ans = graw_read_simple(pp, endp, (uint8_t*)sizep, 2);
+	if (ans)
+		return ans;
+
+	if (endp - *pp < *sizep)
+		return GRAW_ERROR_READOVER;
+
+	*out = *pp;
+	*pp += *sizep;
+
+	return 0;
+}
+
+static inline
+int graw_read_longbuf(uint8_t **pp, uint8_t *endp, uint8_t* out, size_t outmax)
+{
+	uint32_t size;
+	int ans;
+
+	ans = graw_read_simple(pp, endp, (uint8_t*)&size, 4);
+	if (ans)
+		return ans;
 
 	if (endp - *pp < size)
 		return GRAW_ERROR_READOVER;
@@ -67,27 +91,14 @@ int graw_read_buffer(uint8_t **pp, uint8_t *endp, uint8_t* out, size_t outmax, s
 }
 
 static inline
-int graw_map_buffer(uint8_t **pp, uint8_t *endp, uint8_t** out, size_t* sizep, size_t sizelen)
+int graw_map_longbuf(uint8_t **pp, uint8_t *endp, void** out, size_t* sizep)
 {
-	if (endp - *pp < sizelen)
-		return GRAW_ERROR_READOVER;
+	uint32_t size;
+	int ans;
 
-	if (sizelen == 2)
-	{
-		uint16_t _size;
-		memcpy(&_size, *pp, 2);
-		*pp += 2;
-		*sizep = _size;
-	}
-	else if (sizelen == 4)
-	{
-		uint32_t _size;
-		memcpy(&_size, *pp, 4);
-		*pp += 4;
-		*sizep = _size;
-	}
-	else
-		return GRAW_ERROR_BUFSIZE;
+	ans = graw_read_simple(pp, endp, (uint8_t*)&size, 4);
+	if (ans)
+		return ans;
 
 	if (endp - *pp < *sizep)
 		return GRAW_ERROR_READOVER;
@@ -108,6 +119,38 @@ int graw_write_simple(uint8_t **pp, uint8_t *endp, uint8_t* src, size_t size)
 	*pp += size;
 
 	return 0;
+}
+
+static inline
+int graw_write_buf(uint8_t **pp, uint8_t *endp, uint8_t* src, uint16_t size) 
+{
+	int ans;
+
+	ans = graw_write_simple(pp, endp, (uint8_t*)&size, 2);
+	if (ans)
+		return ans;
+
+	ans = graw_write_simple(pp, endp, src, size);
+	return ans;
+}
+
+static inline
+int graw_write_longbuf(uint8_t **pp, uint8_t *endp, uint8_t* src, uint32_t size) 
+{
+	int ans;
+
+	ans = graw_write_simple(pp, endp, (uint8_t*)&size, 4);
+	if (ans)
+		return ans;
+
+	ans = graw_write_simple(pp, endp, src, size);
+	return ans;
+}
+
+static inline
+int graw_write_str(uint8_t **pp, uint8_t *endp, const char* src) 
+{
+	return graw_write_buf(pp, endp, (uint8_t*)src, strlen(src));
 }
 
 static inline int graw_write_i8(uint8_t **pp, uint8_t *endp, int8_t src) { return graw_write_simple(pp, endp, (uint8_t*)&src, sizeof(src)); }

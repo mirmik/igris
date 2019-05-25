@@ -1,35 +1,35 @@
 pos2
-	flt32 x
-	flt32 y
-	int64 stamp	
+	f32 x
+	f32 y
+	i64 stamp	
 
 spd2
-	flt32 x
-	flt32 y
-	int64 stamp	
+	f32 x
+	f32 y
+	i64 stamp	
 
 acc2
-	flt32 x
-	flt32 y
-	int64 stamp	
+	f32 x
+	f32 y
+	i64 stamp	
 
 pos3
-	flt32 x
-	flt32 y
-	flt32 z
-	int64 stamp	
+	f32 x
+	f32 y
+	f32 z
+	i64 stamp	
 
 spd3
-	flt32 x
-	flt32 y
-	flt32 z
-	int64 stamp	
+	f32 x
+	f32 y
+	f32 z
+	i64 stamp	
 
 acc3
-	flt32 x
-	flt32 y
-	flt32 z
-	int64 stamp	
+	f32 x
+	f32 y
+	f32 z
+	i64 stamp	
 
 loc3
 	pos3 pos
