@@ -3,10 +3,10 @@
 
 //Набор функций конвертеров в сишним стиле.
 
-#include <sys/cdefs.h>
 #include <inttypes.h>
-
 #include <igris/util/types_extension.h>
+
+#include <igris/compiler.h>
 
 __BEGIN_DECLS
 

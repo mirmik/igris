@@ -23,10 +23,17 @@ static_assert(sizeof(float32_t) == 4, "float32_t size error");
 static_assert(sizeof(float64_t) == 8, "float64_t size error");
 #	endif
 #else
+#ifndef _MSC_VER
 _Static_assert(sizeof(float32_t) == 4, "float32_t size error");
 #	ifndef WITHOUT_FLOAT64
 _Static_assert(sizeof(float64_t) == 8, "float64_t size error");
 #	endif
+#endif
+#endif
+
+#if defined(_MSC_VER)
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
 #endif
 
 #endif

@@ -2,7 +2,10 @@
 #define GXX_UTIL_ACCESS_H
 
 #include <stdint.h>
+
+#ifndef _MSC_VER
 #include "endian.h"
+#endif
 
 static inline uint8_t HIHALF(uint8_t byte) { return (byte >> 4) & 0x0F; }
 static inline uint8_t LOHALF(uint8_t byte) { return byte & 0x0F; }

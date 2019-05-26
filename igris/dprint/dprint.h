@@ -3,8 +3,8 @@
 
 #include <inttypes.h>
 #include <stdbool.h>
-#include <sys/cdefs.h>
 #include <igris/util/macro.h>
+#include <igris/compiler.h>
 
 //#include <gxx/util/macro.h>
 

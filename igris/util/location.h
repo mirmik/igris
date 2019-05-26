@@ -3,6 +3,7 @@
 
 //Определение позиции в коде. Для трассировки.
 #include <igris/dprint.h>
+#include <igris/compiler.h>
 
 struct location {
 	int line;
@@ -15,10 +16,14 @@ struct location {
 
 #define CURRENT_LOCATION_INITARGS __LINE__,__FILE__,__func__
 
+__BEGIN_DECLS
+
 static inline void debug_print_location(struct location location) {
-	debug_print("file: "); dpr(location.file); dln();
-	debug_print("func: "); dpr(location.func); dln();
-	debug_print("line: "); dpr(location.line); dln();
+	debug_print("file: "); debug_print(location.file); dln();
+	debug_print("func: "); debug_print(location.func); dln();
+	debug_print("line: "); debug_printdec_int32(location.line); dln();
 }
+
+__END_DECLS
 
 #endif

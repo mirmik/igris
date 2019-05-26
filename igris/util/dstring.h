@@ -2,7 +2,7 @@
 #define GXX_UTIL_DSTRING_H
 
 #include <stdlib.h>
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 __BEGIN_DECLS
 
