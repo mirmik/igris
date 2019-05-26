@@ -97,7 +97,7 @@ namespace igris {
 		}
 
 		template <typename F>
-		delegate(const F& functor) {
+		explicit delegate(const F& functor) {
 			object = reinterpret_cast <obj_t> ((F*) &functor);
 			method.method = horrible_cast<mtd_t, decltype(&F::operator())>(&F::operator());
 		}

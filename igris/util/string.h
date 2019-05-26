@@ -6,7 +6,10 @@
 #include <list>
 #include <vector>
 #include <string>
+
+#if __cplusplus > 201402L
 #include <string_view>
+#endif
 
 #include <igris/buffer.h>
 
@@ -48,6 +51,7 @@ namespace igris
 		return ret;
 	}
 
+#if __cplusplus > 201402L
 	static inline std::string_view trim(const std::string_view& view) 
 	{	
 		if (view.size() == 0)
@@ -75,6 +79,7 @@ namespace igris
 		size_t strt = view.find_first_not_of(" \n\t");
 		return view.substr(strt, view.size() - strt);
 	}
+#endif
 
 	static inline std::string serialstr8(const std::string& str)
 	{
