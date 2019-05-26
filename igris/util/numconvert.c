@@ -156,18 +156,16 @@ static const double rounders[MAX_PRECISION + 1] =
 	0.00000000005       // 10
 };
 
-char * f32toa(float32_t f, char * buf, uint8_t precision)
+char * f32toa(float32_t f, char * buf, int8_t precision)
 {
 	char * ptr = buf;
 	char * p = ptr;
 	char * p1;
 	char c;
 	int32_t intPart;
-	signed char r;
 
-	r = __builtin_isinf_sign(f);
-	if (r) {
-		*buf++ = r == 1 ? '+' : '-';
+	if (isinf(f)) {
+		*buf++ = f > 0 ? '+' : '-';
 		return strcpy(buf, "inf");;
 	}
 
@@ -283,7 +281,7 @@ float32_t atof32(const char* str, char** pend) {
 }
 
 #ifndef WITHOUT_FLOAT64
-char * f64toa(float64_t f, char * buf, uint8_t precision) 
+char * f64toa(float64_t f, char * buf, int8_t precision) 
 {
 	return f32toa(f, buf, precision);
 }
