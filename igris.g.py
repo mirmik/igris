@@ -77,11 +77,10 @@ licant.module("igris.syslock", impl="genos.atomic",
 licant.module("igris.syslock", impl="mutex", 
 	sources=["igris/sync/syslock_mutex.cpp"], default=True)
 
-licant.module("igris.protocols", 
+licant.module("igris.protocols.msgtype", 
 	sources=["igris/protocols/msgtype.cpp"])
 
 licant.module("igris", mdepends=[
 	"igris.include",
 	"igris.sshell",
-	"igris.protocols"
 ])

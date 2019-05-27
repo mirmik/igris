@@ -2,9 +2,11 @@
 #define IGRIS_PROTOCOLS_MSGTYPE_H
 
 #include <igris/protocols/gbson/raw.h>
+#include <igris/buffer.h>
 
 #include <assert.h>
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <map>
@@ -98,6 +100,28 @@ namespace igris
 				m.success = false;
 
 			return m;
+		}
+
+		std::vector<std::pair<std::string,std::string>> 
+		tostring(igris::buffer data) 
+		{
+			msgtype_map m = map((uint8_t*)data.data(), (uint8_t*)data.data() + data.size());			
+			return tostring(m);
+		}
+
+		std::vector<std::pair<std::string,std::string>>
+		tostring(const msgtype_map& m) 
+		{
+			std::vector<std::pair<std::string,std::string>> ret;
+			
+			for(int i = 0; i < tstruct.size(); ++i) 
+			{
+				auto str1 = tstruct[i].first.data();
+				auto str2 = tstruct[i].second.tostring(m.ptrs[i], m.ptrs[i+1]);
+				ret.push_back(std::make_pair(str1, str2));
+			}
+
+			return ret;
 		}
 	};
 
