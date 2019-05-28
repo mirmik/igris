@@ -84,3 +84,12 @@ licant.module("igris", mdepends=[
 	"igris.include",
 	"igris.sshell",
 ])
+
+licant.module("igris.ctrobj.common",
+	sources = ["igris/ctrobj/wait.c"]
+)
+
+licant.module("igris.ctrobj", "linux",
+	sources = ["igris/ctrobj/wait-linux.cpp"],
+	mdepends= ["igris.ctrobj.common"]
+)
