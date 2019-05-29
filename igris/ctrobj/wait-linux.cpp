@@ -28,9 +28,7 @@ int wait_current_schedee(struct dlist_head * head, int priority, void ** future)
 	system_unlock();
 
 	std::unique_lock<std::mutex> lock(waiter.mut);
-	dprln("before wait");
 	waiter.cvar.wait(lock);
-	dprln("after wait");
 
 	*future = waiter.w.ctr.future;
 	return 0;
