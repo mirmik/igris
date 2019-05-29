@@ -31,6 +31,7 @@ namespace igris
 		buffer(const char* _buf) : buf((char*)_buf), sz(strlen(_buf)) {}
 
 		buffer(const void* _buf, size_t _sz) : buf((char*)_buf), sz(_sz) {}
+		buffer(const std::string& str) : buffer(str.data(), str.size()) {}
 
 		template<size_t N>
 		inline buffer(const char (&arr) [N]) : buf((char*)arr), sz(N) {}

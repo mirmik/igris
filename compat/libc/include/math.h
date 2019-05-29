@@ -19,6 +19,14 @@ static __inline unsigned long long __DOUBLE_BITS(double __f)
 	return __u.__i;
 }
 
+#define FP_NAN       0
+#define FP_INFINITE  1
+#define FP_ZERO      2
+#define FP_SUBNORMAL 3
+#define FP_NORMAL    4
+
+int __fpclassifyl(long double arg);
+
 #define fpclassify(x) ( \
 	sizeof(x) == sizeof(float) ? __fpclassifyf(x) : \
 	sizeof(x) == sizeof(double) ? __fpclassify(x) : \
