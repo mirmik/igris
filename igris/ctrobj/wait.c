@@ -34,8 +34,6 @@ void unwait_one(struct dlist_head * head, void * future)
 {
 	struct dlist_head * it;
 
-	dprln("unwait all");
-
 	system_lock();
 
 	if (dlist_empty(head)) {
