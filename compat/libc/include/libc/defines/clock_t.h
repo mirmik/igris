@@ -10,6 +10,6 @@
 
 #include <asm/types.h>
 
-typedef __u32 clock_t;
+typedef __s32 clock_t;
 
 #endif /* CLOCK_T_DEF_H_ */
