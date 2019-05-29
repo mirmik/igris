@@ -114,7 +114,7 @@ namespace igris
 		{
 			std::vector<std::pair<std::string,std::string>> ret;
 			
-			for(int i = 0; i < tstruct.size(); ++i) 
+			for(unsigned i = 0; i < tstruct.size(); ++i) 
 			{
 				auto str1 = tstruct[i].first.data();
 				auto str2 = tstruct[i].second.tostring(m.ptrs[i], m.ptrs[i+1]);

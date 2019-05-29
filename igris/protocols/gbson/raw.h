@@ -20,7 +20,7 @@ __BEGIN_DECLS
 static inline
 int graw_read_simple(uint8_t **pp, uint8_t *endp, uint8_t* out, size_t typesize)
 {
-	if (endp - *pp < typesize)
+	if (endp - *pp < (signed)typesize)
 		return GRAW_ERROR_READOVER;
 
 	memcpy(out, *pp, typesize);
@@ -100,7 +100,7 @@ int graw_map_longbuf(uint8_t **pp, uint8_t *endp, void** out, size_t* sizep)
 	if (ans)
 		return ans;
 
-	if (endp - *pp < *sizep)
+	if (endp - *pp < (signed)*sizep)
 		return GRAW_ERROR_READOVER;
 
 	*out = *pp;
@@ -112,7 +112,7 @@ int graw_map_longbuf(uint8_t **pp, uint8_t *endp, void** out, size_t* sizep)
 static inline
 int graw_write_simple(uint8_t **pp, uint8_t *endp, uint8_t* src, size_t size) 
 {
-	if (endp - *pp < size)
+	if (endp - *pp < (signed)size)
 		return GRAW_ERROR_WRITEOVER;	
 
 	memcpy(*pp, src, size);
