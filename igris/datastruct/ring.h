@@ -21,6 +21,13 @@ static inline struct ring_head* ring_init(struct ring_head* r, unsigned int r_si
 	return r;
 }
 
+static inline 
+void ring_clean(struct ring_head* r) 
+{
+	r->head = 0;
+	r->tail = 0;
+}
+
 static inline struct ring_head* ring_fixup_head(struct ring_head* r) {
 	while (r->head >= r->size) r->head -= r->size;
 	return r; 
