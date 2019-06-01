@@ -44,6 +44,7 @@
 			__member_expr__ - mcast_offsetof(type, member) : NULL); 	\
 	})
 
-#define member_cast_out(member_ptr, type, member) mcast_out(member_ptr, type, member)
+#define member_cast_out(member_ptr, type, member) \
+	mcast_out(member_ptr, type, member)
 
 #endif /* UTIL_MEMBER_H_ */

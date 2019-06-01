@@ -11,13 +11,13 @@
 #ifndef STDDEF_H_
 #define STDDEF_H_
 
-#if __GNUC__ < 4 || defined(__CDT_PARSER__)
+//#if __GNUC__ < 4 || defined(__CDT_PARSER__)
 # define offsetof(type, member) \
 	((size_t) &((type *) 0x0)->member)
-#else
-# define offsetof(type, member) \
-	__builtin_offsetof(type, member)
-#endif
+//#else
+//# define offsetof(type, member) 
+//	__builtin_offsetof(type, member)
+//#endif
 
 #include <defines/null.h>
 
