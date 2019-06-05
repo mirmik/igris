@@ -65,7 +65,7 @@ void readline_history_init(struct readline * rl, char * hs, int hsize)
 }
 
 static inline
-void readline_newline_do(struct readline * rl)
+void readline_newline_reset(struct readline * rl)
 {
 	sline_reset(&rl->line);
 	rl->curhist = 0;
@@ -238,6 +238,18 @@ int readline_putchar(struct readline * rl, char c)
 
 	rl->last = c;
 	return retcode;
+}
+
+static inline 
+int readline_linecpy(struct readline * rl, char* line, size_t maxlen) 
+{
+	int len = 
+		(int)maxlen - 1 > (int)rl->line.len ? rl->line.len : maxlen - 1;
+	
+	memcpy(line, rl->line.buf, len);
+	line[len] = 0;
+
+	return len;
 }
 
 __END_DECLS

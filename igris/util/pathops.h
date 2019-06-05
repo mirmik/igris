@@ -1,6 +1,11 @@
+#ifndef IGRIS_PATHOPS_H
+#define IGRIS_PATHOPS_H
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+
+#include <igris/util/bug.h>
 
 static inline
 int path_is_single_dot(const char *path)
@@ -87,3 +92,19 @@ const char* path_last_node(const char* path)
 
 	return it;
 }
+
+static inline 
+int path_simplify(char* dst, const char* src) 
+{
+	BUG();
+	return 0;
+}
+
+static inline 
+int path_simplify_join(char* dst, const char* src1, const char* src2) 
+{
+	BUG();
+	return 0;
+}
+
+#endif

@@ -11,7 +11,7 @@ licant.include("nos")
 tests = [
 	"argvc",
 	"bits",
-	"tree"
+#	"tree"
 ]
 
 tests_c = [
