@@ -2,7 +2,10 @@
 #define IGRIS_PROTOCOLS_MSGTYPE_H
 
 #include <igris/protocols/gbson/raw.h>
+#include <igris/util/string.h>
 #include <igris/buffer.h>
+#include <igris/dprint.h>
+#include <igris/util/bug.h>
 
 #include <assert.h>
 
@@ -18,10 +21,38 @@ namespace igris
 		uint8_t type;
 		uint8_t size;
 		std::string(*tostring)(uint8_t* strt, uint8_t* fini);
+		void(*fromstring)(const std::string & str, uint8_t** buf);
 
 		msgtype() = default;
-		msgtype(uint8_t type, uint8_t size, std::string(*tostring)(uint8_t* strt, uint8_t* fini)):
-			type(type), size(size), tostring(tostring) {}
+		msgtype(uint8_t type, uint8_t size, 
+			std::string(*tostring)(uint8_t* strt, uint8_t* fini),
+			void(*fromstring)(const std::string &, uint8_t**))
+		:
+			type(type), size(size), tostring(tostring), fromstring(fromstring) {}
+
+		std::string fromstring_as_string(const std::string& str) 
+		{
+			std::string ret;
+
+			switch (type) 
+			{
+				case GRAW_SIMPLE: {
+					ret.resize(size);
+					uint8_t * p = (uint8_t*)ret.data();
+					fromstring(str, &p);
+					return ret;
+				}
+				case GRAW_BUFFER: {
+					BUG();
+					ret.resize(size);
+					uint8_t * p = (uint8_t*)ret.data();
+					fromstring(str, &p);
+					return ret;
+				}
+				default:
+					BUG();
+			}		
+		}
 	};
 
 	template<class T>
@@ -35,27 +66,53 @@ namespace igris
 		return std::to_string(val);
 	}
 
+	template<class T>
+	void msgtype_fromstring_integer(const std::string& str, uint8_t** pp) 
+	{
+		T val = std::stoi(str);
+		memcpy(*pp, &val, sizeof(T));
+		*pp += sizeof(T);
+	}
+
+	template<class T>
+	void msgtype_fromstring_float(const std::string& str, uint8_t** pp) 
+	{
+		T val = std::stof(str);
+		memcpy(*pp, &val, sizeof(T));
+		*pp += sizeof(T);
+	}
+
+	static
+	void msgtype_fromstring_symbol(const std::string& str, uint8_t** pp) 
+	{
+		//Добавить поле размера.
+		BUG();
+		uint16_t size = str.size();
+		memcpy(*pp, str.data(), size);
+		*pp += size;
+	}
+
 	static
 	std::string msgtype_tostring_buffer(uint8_t* strt, uint8_t* fini) 
 	{
 		return std::string((char*)strt, fini - strt);
 	}
 
-	const msgtype msgtype_i8 =  { GRAW_SIMPLE, 1, msgtype_tostring_simple<int8_t> }; 
-	const msgtype msgtype_i16 = { GRAW_SIMPLE, 2, msgtype_tostring_simple<int16_t> }; 
-	const msgtype msgtype_i32 = { GRAW_SIMPLE, 4, msgtype_tostring_simple<int32_t> }; 
-	const msgtype msgtype_i64 = { GRAW_SIMPLE, 8, msgtype_tostring_simple<int64_t> };
+	const msgtype msgtype_i8 =  { GRAW_SIMPLE, 1, msgtype_tostring_simple<int8_t>, msgtype_fromstring_integer<int8_t> }; 
+	const msgtype msgtype_i16 = { GRAW_SIMPLE, 2, msgtype_tostring_simple<int16_t>, msgtype_fromstring_integer<int16_t> }; 
+	const msgtype msgtype_i32 = { GRAW_SIMPLE, 4, msgtype_tostring_simple<int32_t>, msgtype_fromstring_integer<int32_t> }; 
+	const msgtype msgtype_i64 = { GRAW_SIMPLE, 8, msgtype_tostring_simple<int64_t>, msgtype_fromstring_integer<int64_t> };
 
-	const msgtype msgtype_u8 =  { GRAW_SIMPLE, 1, msgtype_tostring_simple<uint8_t> }; 
-	const msgtype msgtype_u16 = { GRAW_SIMPLE, 2, msgtype_tostring_simple<uint16_t> }; 
-	const msgtype msgtype_u32 = { GRAW_SIMPLE, 4, msgtype_tostring_simple<uint32_t> }; 
-	const msgtype msgtype_u64 = { GRAW_SIMPLE, 8, msgtype_tostring_simple<uint64_t> };
+	const msgtype msgtype_u8 =  { GRAW_SIMPLE, 1, msgtype_tostring_simple<uint8_t>, msgtype_fromstring_integer<uint8_t> }; 
+	const msgtype msgtype_u16 = { GRAW_SIMPLE, 2, msgtype_tostring_simple<uint16_t>, msgtype_fromstring_integer<uint16_t> }; 
+	const msgtype msgtype_u32 = { GRAW_SIMPLE, 4, msgtype_tostring_simple<uint32_t>, msgtype_fromstring_integer<uint32_t> }; 
+	const msgtype msgtype_u64 = { GRAW_SIMPLE, 8, msgtype_tostring_simple<uint64_t>, msgtype_fromstring_integer<uint64_t> };
 
-	const msgtype msgtype_f32 = { GRAW_SIMPLE, 4, msgtype_tostring_simple<float32_t> }; 
-	const msgtype msgtype_f64 = { GRAW_SIMPLE, 8, msgtype_tostring_simple<float64_t> };
+	const msgtype msgtype_f32 = { GRAW_SIMPLE, 4, msgtype_tostring_simple<float32_t>, msgtype_fromstring_float<float32_t> }; 
+	const msgtype msgtype_f64 = { GRAW_SIMPLE, 8, msgtype_tostring_simple<float64_t>, msgtype_fromstring_float<float64_t> };
 
-	const msgtype msgtype_str =     { GRAW_BUFFER, 2, msgtype_tostring_buffer };	
-	const msgtype msgtype_longstr = { GRAW_BUFFER, 4, msgtype_tostring_buffer };
+	const msgtype msgtype_str =     { GRAW_BUFFER, 2, msgtype_tostring_buffer, msgtype_fromstring_symbol };	
+	const msgtype msgtype_longstr = { GRAW_BUFFER, 4, msgtype_tostring_buffer, msgtype_fromstring_symbol };
 
 	struct msgtype_map
 	{
@@ -119,6 +176,25 @@ namespace igris
 				auto str1 = tstruct[i].first.data();
 				auto str2 = tstruct[i].second.tostring(m.ptrs[i], m.ptrs[i+1]);
 				ret.push_back(std::make_pair(str1, str2));
+			}
+
+			return ret;
+		}
+
+		std::string input(const std::string & str) 
+		{
+			std::string ret;
+			igris::strvec tokens = igris::split(str, ' ');
+
+			if (tokens.size() != tstruct.size()) 
+			{
+				dprln("Warn: wrong number of tokens.");
+				return "";
+			}
+
+			for (unsigned int i=0; i < tokens.size(); ++i) 
+			{
+				ret += tstruct[i].second.fromstring_as_string(tokens[i]); 
 			}
 
 			return ret;
