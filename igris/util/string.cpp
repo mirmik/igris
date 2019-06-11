@@ -1,5 +1,6 @@
 #include <igris/util/string.h>
 #include <igris/util/hexascii.h>
+#include <igris/dprint.h>
 
 namespace igris
 {
@@ -19,9 +20,38 @@ namespace igris
 
 			strt = ptr;
 
-			while (*ptr != delim && ptr != end) ptr++;
+			while (ptr != end && *ptr != delim) 
+				ptr++;
 
 			outvec.emplace_back(strt, ptr - strt);
+		}
+
+		return outvec;
+	}
+
+	strvec split(const std::string& str, const char* delims)
+	{
+		strvec outvec;
+
+		char* strt;
+		char* ptr = (char*)str.data();
+		char* end = (char*)str.data() + str.size();
+
+		while (true)
+		{
+			//Skip delimiters
+			while (strchr(delims, *ptr) != NULL)
+				ptr++;
+
+			if (ptr == end) break;
+
+			strt = ptr;
+
+			while (ptr != end && strchr(delims, *ptr) == NULL) 
+				ptr++;
+
+			outvec.emplace_back(strt, ptr - strt);
+			if (ptr == end) break;
 		}
 
 		return outvec;
