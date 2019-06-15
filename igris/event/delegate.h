@@ -13,7 +13,7 @@
 #define IGRIS_DELEGATE_H
 	
 #include "igris/util/horrible_cast.h"
-#include "igris/util/stub.h"
+//#include "igris/util/stub.h"
 #include <utility>
 
 #include "inttypes.h"
@@ -65,14 +65,16 @@ namespace igris {
 	
 	public:			
 		void clean() {
-			*this = do_nothing_signature<R, Args ...>;
+			object = 0;
+			method.part.function = nullptr;
+			method.part.attributes = 0;
 		}
 
 		bool armed() {
-			return method.part.function != do_nothing_signature<R,Args...>;			
+			return method.part.function != nullptr;			
 		}
 
-		delegate(): delegate(do_nothing_signature<R, Args...>) {}		
+		delegate() { clean(); }		
 	
 		delegate(const delegate& d) {
 			object = d.object;
@@ -157,7 +159,13 @@ namespace igris {
 		extfnc_t extfunction;
 	
 	public:
-		fastdelegate(): fastdelegate(do_nothing, nullptr) {}
+		void clean() 
+		{
+			object = 0;
+			extfunction = nullptr;
+		}
+
+		fastdelegate() { clean(); }
 	
 		fastdelegate(const fastdelegate& d)	: object(d.object), extfunction(d.extfunction) {};
 	
