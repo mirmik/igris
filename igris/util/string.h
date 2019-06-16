@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 
-#if __cplusplus > 201402L
+#if __cplusplus > 201500L
 #include <string_view>
 #endif
 
@@ -52,7 +52,7 @@ namespace igris
 		return ret;
 	}
 
-#if __cplusplus > 201402L
+#if __cplusplus > 201500L
 	static inline std::string_view trim(const std::string_view& view) 
 	{	
 		if (view.size() == 0)
