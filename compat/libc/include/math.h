@@ -293,6 +293,10 @@ double      trunc(double);
 float       truncf(float);
 long double truncl(long double);
 
+#define MIN(a,b)	(((a)<(b))?(a):(b))
+#define MAX(a,b)	(((a)>(b))?(a):(b))
+#define ABS(a)		(((a)>=0)?(a):(-a))
+
 #define MAXFLOAT        3.40282346638528859812e+38F
 
 #define M_E             2.7182818284590452354   // e 
