@@ -1,22 +1,20 @@
 #ifndef IGRIS_SCHMIDT_H
 #define IGRIS_SCHMIDT_H
 
-#include <stdbool.h>
-
 struct incremental_schmidt 
 {
-	int cur;
 	int lo;
 	int hi;
-	int max;
+	int maxim;
+	int cur;
 	uint8_t state; 
 
-	schmidt(int lo, int hi, int max) : 
+	incremental_schmidt(int lo, int hi, int maxim, bool start_state) : 
 		lo(lo), 
 		hi(hi), 
-		max(max), 
-		cur(0), 
-		state(0) 
+		maxim(maxim), 
+		cur(start_state ? maxim : 0), 
+		state(start_state) 
 	{}
 
 	int check(int val) 
@@ -24,7 +22,7 @@ struct incremental_schmidt
 		cur += val;
 
 		if (cur < 0) cur = 0;
-		if (cur > max) cur = max;
+		if (cur > maxim) cur = maxim;
 
 		if (state == 0) 
 		{
