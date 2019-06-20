@@ -172,8 +172,8 @@ __END_DECLS
     double:             debug_printbin_double   \
 )(X)
 
-#define dprhexln(X) do{ dprhex(X);dln(); }while(0)
-#define dprbinln(X) do{ dprhex(X);dln(); }while(0)
+#define dprhexln(X) do{ dprhex(X); dln(); }while(0)
+#define dprbinln(X) do{ dprhex(X); dln(); }while(0)
 
 #define dpr_1(X)        dpr_(X)
 #define dpr_2(X,Y)      do{ dpr_(X); dprchar(' '); dpr_(Y); }while(0)
@@ -283,5 +283,7 @@ template<typename T> void dprptrln(const T& obj)
 
 #define DPRINTPTR(X) \
     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprptrln(X); } while(0);
+
+#define dprhex_noted(S,X) do{ dpr(S); dprhex(X); dln(); }while(0)
 
 #endif
