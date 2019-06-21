@@ -9,6 +9,7 @@
 /* Nonzero if X is not aligned on a "long" boundary.  */
 #define unaligned(x)   ((unsigned long) x & (sizeof(unsigned long) - 1))
 
+__attribute__((weak))
 inhibit_loop_to_libcall
 void *memset(void *addr_, int c, size_t n) {
 	char *addr = addr_;

@@ -19,6 +19,7 @@
 #define unaligned(x, y) \
   (((long) x | (long) y) & (sizeof(long) - 1))
 
+__attribute__((weak))
 void *memcpy(void *dst_, const void *src_, size_t n) {
 	char *dst = dst_;
 	long *aligned_dst;
