@@ -33,6 +33,9 @@ namespace igris
 	{
 		strvec outvec;
 
+		if (str.size() == 0)
+			return outvec;
+
 		char* strt;
 		char* ptr = (char*)str.data();
 		char* end = (char*)str.data() + str.size();
@@ -40,7 +43,7 @@ namespace igris
 		while (true)
 		{
 			//Skip delimiters
-			while (strchr(delims, *ptr) != NULL)
+			while (strchr(delims, *ptr) != NULL && ptr != end)
 				ptr++;
 
 			if (ptr == end) break;

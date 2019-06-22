@@ -1,3 +1,4 @@
+#include <stdint.h>
 
 void debug_printhex_uint4(uint8_t b){};
 
@@ -65,3 +66,6 @@ uint16_t debug_asmlink_test_uint16_ret()
 uint64_t debug_asmlink_test_uint64_ret()
 {
 };
+
+void dprptr(const void* ptr) {}
+void dprptrln(const void* ptr) {}

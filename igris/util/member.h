@@ -8,7 +8,7 @@
 
 //#ifndef __cplusplus
 #	define mcast_offsetof(type, member) \
-		offsetof(type, member)
+		((size_t) &((type *) 0x0)->member)
 
 /** typeof(foo.bar);  @a type is (an expr of) a struct or a union */
 #define member_typeof(type, member_nm) \

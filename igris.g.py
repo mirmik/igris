@@ -34,6 +34,10 @@ licant.module("igris.dprint", "stdout", srcdir="igris/dprint",
 	default = True
 )
 
+licant.module("igris.dprint", "stub", srcdir="igris/dprint",
+	mdepends = [("igris.dprint.common","stub")]
+)
+
 #################################################################
 ########################BUG######################################
 
