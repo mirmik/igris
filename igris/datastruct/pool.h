@@ -59,7 +59,7 @@ static inline size_t pool_avail(const struct pool_head* head) {
 
 
 
-static inline void memzone_init(struct memzone_head* head, void* zone, size_t size) {
+/*static inline void memzone_init(struct memzone_head* head, void* zone, size_t size) {
 	head->zone = zone; 
 	head->size = size;
 }
@@ -67,9 +67,9 @@ static inline void memzone_init(struct memzone_head* head, void* zone, size_t si
 
 static inline void pool_engage_memzone(struct pool_head* pool, struct memzone_head* zone) {
 
-}
+}*/
 
-static inline void pool_empty_zones(struct pool_head* pool, int* retarr);
+//static inline void pool_empty_zones(struct pool_head* pool, int* retarr);
 
 __END_DECLS
 
