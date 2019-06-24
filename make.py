@@ -36,5 +36,13 @@ def install():
 		symlinks=False, ignore=shutil.ignore_patterns('*.cpp', '*.c'))
 	
 	print("successfully installed")
+
+@licant.routine(deps=[target])
+def install_headers():
+	shutil.rmtree(install_include_path, True)
+	shutil.copytree("igris", install_include_path, 
+		symlinks=False, ignore=shutil.ignore_patterns('*.cpp', '*.c'))
 	
+	print("successfully installed")
+
 licant.ex(target)
