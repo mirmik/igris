@@ -19,6 +19,7 @@
 #include <sys/types.h>
 //#include <framework/mod/options.h>
 
+#include <igris/math/defs.h>
 #include "printf_impl.h"
 
 /**

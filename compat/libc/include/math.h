@@ -26,6 +26,7 @@ static __inline unsigned long long __DOUBLE_BITS(double __f)
 #define FP_NORMAL    4
 
 int __fpclassifyl(long double arg);
+int __signbitl(long double arg);
 
 #define fpclassify(x) ( \
 	sizeof(x) == sizeof(float) ? __fpclassifyf(x) : \
@@ -52,10 +53,10 @@ int __fpclassifyl(long double arg);
 	sizeof(x) == sizeof(double) ? (__DOUBLE_BITS(x) & -1ULL>>1) < 0x7ffULL<<52 : \
 	__fpclassifyl(x) > FP_INFINITE)
 
-/*#define signbit(x) ( \
+#define signbit(x) ( \
 	sizeof(x) == sizeof(float) ? (int)(__FLOAT_BITS(x)>>31) : \
 	sizeof(x) == sizeof(double) ? (int)(__DOUBLE_BITS(x)>>63) : \
-	__signbitl(x) )*/
+	__signbitl(x) )
 
 #define isunordered(x,y) (isnan((x)) ? ((void)(y),1) : isnan((y)))
 
