@@ -362,7 +362,8 @@ namespace std{
 		return mem_fun1_ref_t<S,T,A>(f);
 	}
 
-
+	template< class Key >
+	struct hash;
 }
 
 

@@ -2,6 +2,7 @@
 #define GXX_STD_IOSTREAM_H
 
 #include <utility>
+#include <string>
 
 namespace std 
 {
@@ -16,6 +17,11 @@ namespace std
 		virtual streamsize xsputn(const C*, streamsize) = 0;
 	};
 	
+	template<
+    	class CharT,
+    	class Traits = std::char_traits<CharT>
+	> class basic_ostream;
+
 	class ostream {};
 
 }

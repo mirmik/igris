@@ -3,4 +3,37 @@
 
 #include <math.h>
 
+namespace std 
+{
+	using ::sin;
+	using ::cos;
+	using ::tan;
+	//using ::ctg;
+	using ::sinh;
+	using ::cosh;
+	using ::tanh;
+	//using ::ctgh;
+
+	using ::asin;
+	using ::acos;
+	using ::atan;
+	using ::atan2;
+
+	using ::exp;
+	using ::pow;
+	using ::sqrt;
+	using ::log;
+	using ::log10;
+
+	using ::abs;
+	using ::copysign;
+
+	using ::round;
+	using ::ceil;
+	using ::floor;
+
+	using ::fmod;
+}
+
+
 #endif

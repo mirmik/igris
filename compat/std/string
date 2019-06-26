@@ -12,6 +12,12 @@
 #include <memory>
 
 namespace std {
+	template<
+	    class CharT
+	> class char_traits;
+	
+
+
 	template <class Allocator = std::allocator<char>>
 	class basic_string {
 	
