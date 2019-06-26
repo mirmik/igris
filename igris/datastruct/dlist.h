@@ -11,8 +11,8 @@
  * under normal circumstances, used to verify that nobody uses
  * non-initialized list entries.
  */
-#define DLIST_POISON1  ((struct dlist_head *) 0x00100100)
-#define DLIST_POISON2  ((struct dlist_head *) 0x00200200)
+#define DLIST_POISON1  ((struct dlist_head *) 0xDEADC0DE)
+#define DLIST_POISON2  ((struct dlist_head *) 0xDEADC9DE)
 
 /*
  * Simple doubly linked list implementation.
@@ -239,14 +239,23 @@ int dlist_oposite_check(struct dlist_head *fnd, int count)
 }
 
 static inline
+void dlist_debug_print_node(const char* prefix, struct dlist_head *node) 
+{
+    dpr(prefix); dprptr(node); 
+    dpr(" (next: "); dprptr(node->next);
+    dpr(", prev: "); dprptr(node->prev);
+    dprln(")");
+} 
+
+static inline
 void dlist_debug_print(struct dlist_head *head) 
 {
     struct dlist_head * it;
 
-    dpr("dlist_head:"); dprptrln(head); 
+    dlist_debug_print_node("head: ", head); 
     dlist_for_each(it, head) 
     {
-        dprptrln(it);
+        dlist_debug_print_node("node: ", it);
     }
 }
 
