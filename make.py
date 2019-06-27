@@ -18,7 +18,13 @@ install_library_link = os.path.join(install_directory_path, 'libigris.so')
 licant.cxx_shared_library(target,
 	mdepends = 
 	[
-		"igris"
+		"igris",
+		("igris.ctrobj", "linux"),
+		"igris.dprint",
+		"igris.syslock",
+		"igris.protocols.gstuff",
+		"igris.protocols.numcmd",
+		#"igris.protocols.msgtype"
 	],
 
 	cxx_flags = '-fPIC',
