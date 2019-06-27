@@ -23,4 +23,7 @@
 #	endif
 #endif
 
+#define IS_ALIGNED(POINTER, BYTE_COUNT) \
+    (((uintptr_t)(const void *)(POINTER)) % (BYTE_COUNT) == 0)
+
 #endif

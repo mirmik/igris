@@ -9,6 +9,8 @@ struct pool_head
 	struct slist_head free_blocks;
 };
 
+#define POOL_HEAD_INIT(name) {SLIST_HEAD_INIT(name.free_blocks)}
+
 __BEGIN_DECLS
 
 static inline void pool_init(struct pool_head* head)
@@ -46,7 +48,6 @@ static inline void pool_free(struct pool_head* head, void* ptr)
 
 static inline size_t pool_avail(const struct pool_head* head)
 {
-	dprln("EEEE");
 	return slist_size(&head->free_blocks);
 }
 

@@ -6,9 +6,15 @@
 
 #if NODTRACE
 #define DTRACE()
+#define DTRRET()
+#define DTRRET_ARG(arg)
 #else
 #define DTRACE() \
     do { dpr("DTRACE: "); dpr(__PRETTY_FUNCTION__); dln(); } while(0);
+#define DTRRET() \
+    do { dpr("DTRRET<-"); dpr(__PRETTY_FUNCTION__); dln(); } while(0);
+#define DTRRET_ARG(arg) \
+    do { dpr("DTRRET<-"); dpr(__PRETTY_FUNCTION__); dpr(" arg: "); dpr(arg); dln(); } while(0);
 #endif
 
 #define DPRARG(x) dpr(STRINGIFY(x)); dprchar(':'); dpr(x); dprchar(' ');

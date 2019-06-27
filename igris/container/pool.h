@@ -7,7 +7,8 @@ namespace igris
 {
 	class pool 
 	{
-		struct pool_head head;
+		struct pool_head head = POOL_HEAD_INIT(head);
+		
 		void* _zone;
 		size_t _size;
 		size_t _elemsz;
@@ -37,6 +38,9 @@ namespace igris
 
 		void put( void* ptr ) 
 		{
+			if (ptr == nullptr) 
+				return;
+
 			assert((uintptr_t)ptr >= (uintptr_t)_zone);
 			assert((uintptr_t)ptr < (uintptr_t)_zone + _size);
 
