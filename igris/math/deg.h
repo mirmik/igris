@@ -3,9 +3,9 @@
 
 #include <math.h>
 
-template <typename T> constexpr T deg(T x) { return x * M_PI / 180; }
-template <typename T> constexpr T deg2rad(T x) { return x * M_PI / 180; }
+static constexpr double deg(double x) { return x * M_PI / 180.0; }
+static constexpr double deg2rad(double x) { return x * M_PI / 180.0; }
 
-template <typename T> constexpr T rad2deg(T x) { return x * 180 / M_PI; }
+static constexpr double rad2deg(double x) { return x * 180.0 / M_PI; }
 
 #endif
