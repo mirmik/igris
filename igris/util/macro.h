@@ -1,14 +1,14 @@
 #ifndef NOS_UTIL_MACRO_H
 #define NOS_UTIL_MACRO_H
 
-#define ARGS_INVOKE_FOR_EACH_9(I,a,b,c,d,e,f,g,h)   I(a);I(b);I(c);I(d);I(e);I(f);I(g);I(h);
-#define ARGS_INVOKE_FOR_EACH_8(I,a,b,c,d,e,f,g)     I(a);I(b);I(c);I(d);I(e);I(f);I(g);
-#define ARGS_INVOKE_FOR_EACH_7(I,a,b,c,d,e,f)       I(a);I(b);I(c);I(d);I(e);I(f);
-#define ARGS_INVOKE_FOR_EACH_6(I,a,b,c,d,e)         I(a);I(b);I(c);I(d);I(e);
-#define ARGS_INVOKE_FOR_EACH_5(I,a,b,c,d)           I(a);I(b);I(c);I(d);
-#define ARGS_INVOKE_FOR_EACH_4(I,a,b,c)             I(a);I(b);I(c);
-#define ARGS_INVOKE_FOR_EACH_3(I,a,b)               I(a);I(b);
-#define ARGS_INVOKE_FOR_EACH_2(I,a)                 I(a)
+#define ARGS_INVOKE_FOR_EACH_9(I,a,b,c,d,e,f,g,h)   do{I(a);I(b);I(c);I(d);I(e);I(f);I(g);I(h);while(0)
+#define ARGS_INVOKE_FOR_EACH_8(I,a,b,c,d,e,f,g)     do{I(a);I(b);I(c);I(d);I(e);I(f);I(g);while(0)
+#define ARGS_INVOKE_FOR_EACH_7(I,a,b,c,d,e,f)       do{I(a);I(b);I(c);I(d);I(e);I(f);while(0)
+#define ARGS_INVOKE_FOR_EACH_6(I,a,b,c,d,e)         do{I(a);I(b);I(c);I(d);I(e);while(0)
+#define ARGS_INVOKE_FOR_EACH_5(I,a,b,c,d)           do{I(a);I(b);I(c);I(d);while(0)
+#define ARGS_INVOKE_FOR_EACH_4(I,a,b,c)             do{I(a);I(b);I(c);while(0)
+#define ARGS_INVOKE_FOR_EACH_3(I,a,b)               do{I(a);I(b);while(0)
+#define ARGS_INVOKE_FOR_EACH_2(I,a)                 do{I(a);while(0)
 
 #define ARGS_INVOKE_FOR_EACH(...) CONCAT2(ARGS_INVOKE_FOR_EACH_,COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
 
