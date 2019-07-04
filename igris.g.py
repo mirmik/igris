@@ -88,7 +88,8 @@ licant.module("igris.protocols.msgtype",
 licant.module("igris", mdepends=[
 	"igris.include",
 	"igris.sshell",
-	 "igris.bug"
+	"igris.util",
+	"igris.bug"
 ])
 
 licant.module("igris.ctrobj.common",

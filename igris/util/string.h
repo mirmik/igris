@@ -18,8 +18,11 @@ namespace igris
 	using strvec = std::vector<std::string>;
 	using strlst = std::list<std::string>;
 
-	strvec split(const std::string& str, char delim);
-	strvec split(const std::string& str, const char* delims);
+	strvec split(const igris::buffer& str, char delim = ' ');
+	strvec split(const igris::buffer& str, const char* delims);
+
+//	strvec split(const std::string& str, char delim);
+//	strvec split(const std::string& str, const char* delims);
 
 	std::string join(const strvec&, char delim);
 

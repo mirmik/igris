@@ -4,7 +4,7 @@
 
 namespace igris
 {
-	strvec split(const std::string& str, char delim)
+	strvec split(const igris::buffer& str, char delim)
 	{
 		strvec outvec;
 
@@ -29,7 +29,7 @@ namespace igris
 		return outvec;
 	}
 
-	strvec split(const std::string& str, const char* delims)
+	strvec split(const igris::buffer& str, const char* delims)
 	{
 		strvec outvec;
 
