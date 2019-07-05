@@ -11,6 +11,7 @@
 #include <string_view>
 #endif
 
+#include <igris/util/hexascii.h>
 #include <igris/buffer.h>
 
 namespace igris
@@ -99,6 +100,30 @@ namespace igris
 		ret.push_back((uint8_t) size);
 		ret.append(data, size);
 		return ret;
+	}
+
+
+
+	static inline std::string hexstring(const void* data, size_t size)
+	{
+		std::string ret;
+		ret.resize(size * 2);
+
+		char* dst = ret.data();
+		char* it = (char*) data;
+		char* eit = it + size;
+
+		for (; it != eit; ++it, ++++dst)
+		{
+			uint8_to_hex(dst, *it);
+		}
+
+		return ret;
+	}
+
+	static inline std::string hexstring(igris::buffer buf)
+	{
+		return hexstring(buf.data(), buf.size());
 	}
 }
 
