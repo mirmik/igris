@@ -109,7 +109,7 @@ namespace igris
 		std::string ret;
 		ret.resize(size * 2);
 
-		char* dst = ret.data();
+		char* dst = (char*)ret.data();
 		char* it = (char*) data;
 		char* eit = it + size;
 
