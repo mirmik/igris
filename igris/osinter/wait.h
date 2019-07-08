@@ -1,7 +1,7 @@
 #ifndef IGRIS_WAIT_H
 #define IGRIS_WAIT_H
 
-#include <igris/ctrobj/ctrobj.h>
+#include <igris/osinter/ctrobj.h>
 #include <sys/cdefs.h>
 
 #define WAIT_PRIORITY 1

@@ -93,10 +93,10 @@ licant.module("igris", mdepends=[
 ])
 
 licant.module("igris.ctrobj.common",
-	sources = ["igris/ctrobj/wait.c"]
+	sources = ["igris/osinter/wait.c"]
 )
 
 licant.module("igris.ctrobj", "linux",
-	sources = ["igris/ctrobj/wait-linux.cpp"],
+	sources = ["igris/osinter/wait-linux.cpp"],
 	mdepends= ["igris.ctrobj.common"]
 )
