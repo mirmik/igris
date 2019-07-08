@@ -5,7 +5,7 @@
 
 using namespace std::chrono::literals;
 
-void igris::spin(void(*func)(void*), void* arg) 
+void igris::start_spin(void(*func)(void*), void* arg) 
 {
 	std::thread([=]()
 	{
