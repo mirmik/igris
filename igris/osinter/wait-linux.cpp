@@ -1,4 +1,4 @@
-#include <igris/ctrobj/wait.h>
+#include <igris/osinter/wait.h>
 #include <igris/util/macro.h>
 #include <igris/sync/syslock.h>
 
