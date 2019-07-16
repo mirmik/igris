@@ -1,8 +1,6 @@
 #ifndef IGRIS_STUB_H
 #define IGRIS_STUB_H
 
-#error "deprecated"
-
 #include <sys/cdefs.h>
 
 __BEGIN_DECLS
