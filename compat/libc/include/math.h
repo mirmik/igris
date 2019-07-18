@@ -4,17 +4,19 @@
 #include <sys/cdefs.h>
 #include "../math/math_builtins.h"
 
+#include <igris/util/types_extension.h>
+
 __BEGIN_DECLS
 
-static __inline unsigned __FLOAT_BITS(float __f)
+static __inline uint32_t __FLOAT_BITS(float __f)
 {
-	union {float __f; unsigned __i;} __u;
+	union {float __f; uint32_t __i;} __u;
 	__u.__f = __f;
 	return __u.__i;
 }
-static __inline unsigned long long __DOUBLE_BITS(double __f)
+static __inline uint64_t __DOUBLE_BITS(double __f)
 {
-	union {double __f; unsigned long long __i;} __u;
+	union {double __f; uint64_t __i;} __u;
 	__u.__f = __f;
 	return __u.__i;
 }
