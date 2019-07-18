@@ -6,24 +6,7 @@
 
 namespace std 
 {
-	using streamsize = ::ssize_t;
-
-	template <class C>
-	class basic_streambuf {
-		using int_type = int;
-		using traits_type = nullptr_t;
-
-		virtual int_type overflow(int_type) = 0;
-		virtual streamsize xsputn(const C*, streamsize) = 0;
-	};
-	
-	template<
-    	class CharT,
-    	class Traits = std::char_traits<CharT>
-	> class basic_ostream;
-
 	class ostream {};
-
 }
 
 #endif

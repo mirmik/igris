@@ -23,6 +23,7 @@ namespace std
 	using ::pow;
 	using ::sqrt;
 	using ::log;
+	using ::log2;
 	using ::log10;
 
 	using ::abs;

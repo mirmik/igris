@@ -1,0 +1,16 @@
+#ifndef IGRIS_STD_ITERATOR_H
+#define IGRIS_STD_ITERATOR_H
+
+namespace std
+{
+	template<class Container>
+	class back_insert_iterator {};
+
+	template< class Container >
+	std::back_insert_iterator<Container> back_inserter( Container& c )
+	{
+		return std::back_insert_iterator<Container>(c);
+	}
+}
+
+#endif
