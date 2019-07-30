@@ -85,13 +85,6 @@ licant.module("igris.syslock", impl="mutex",
 licant.module("igris.protocols.msgtype", 
 	sources=["igris/protocols/msgtype.cpp"])
 
-licant.module("igris", mdepends=[
-	"igris.include",
-	"igris.sshell",
-	"igris.util",
-	"igris.bug"
-])
-
 licant.module("igris.ctrobj.common",
 	sources = ["igris/osinter/wait.c"]
 )
@@ -100,3 +93,11 @@ licant.module("igris.ctrobj", "linux",
 	sources = ["igris/osinter/wait-linux.cpp"],
 	mdepends= ["igris.ctrobj.common"]
 )
+
+licant.module("igris", mdepends=[
+	"igris.include",
+	"igris.sshell",
+	"igris.util",
+	"igris.bug",
+	"igris.dprint",
+])
