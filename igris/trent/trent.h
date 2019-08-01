@@ -204,18 +204,18 @@ namespace igris
 
 		trent_basic::type get_type() const { return m_type; }
 		const char * typestr() const;
-		/*
-							bool is_nil() const 		{ return m_type == type::nil; }
-							bool is_bool() const 		{ return m_type == type::boolean; }
-							bool is_numer() const 		{ return m_type == type::numer || m_type == type::integer; }
-							bool is_integer() const     { return m_type == type::integer; }
-							bool is_list() const		{ return m_type == type::list; }
-							bool is_dict() const        { return m_type == type::dict; }
-							bool is_string() const 		{ return m_type == type::string; }
 
-							//strlst check_dict(strlst lst, check_type ct);
-							//std::pair<strlst,strlst> check_dict_symmetric(strlst lst);
-						*/
+		bool is_nil() const 		{ return m_type == type::nil; }
+		bool is_bool() const 		{ return m_type == type::boolean; }
+		bool is_numer() const 		{ return m_type == type::numer; }
+		//bool is_integer() const     { return m_type == type::integer; }
+		bool is_list() const		{ return m_type == type::list; }
+		bool is_dict() const        { return m_type == type::dict; }
+		bool is_string() const 		{ return m_type == type::string; }
+
+		//strlst check_dict(strlst lst, check_type ct);
+		//std::pair<strlst,strlst> check_dict_symmetric(strlst lst);
+
 		template <class O>
 		ssize_t print_to(O& os) const;
 
