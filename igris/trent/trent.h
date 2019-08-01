@@ -89,15 +89,25 @@ namespace igris
 		}
 
 	public:
-//		void init(type t);
-//		void init(const std::string& str);
-//		void init(igris::buffer buf);
-//		void init(const char* str);
-		//void init(const float& i);
-		//void init(const double& i);
-		//void init(const long double& i);
-		void init(const numer_ctrcollect<numer_type>& i);
-		void init(const bool_ctrcollect<bool>& i);
+		void init_sint(const int64_t& i) { m_type = type::numer; m_num = i; }
+		void init_uint(const uint64_t& i) { m_type = type::numer; m_num = i; }
+		void init_flt(const long double& i) { m_type = type::numer; m_num = i; }
+
+		void init(const int8_t& i) { init_sint(i); }
+		void init(const int16_t& i) { init_sint(i); }
+		void init(const int32_t& i) { init_sint(i); }
+		void init(const int64_t& i) { init_sint(i); }
+		
+		void init(const uint8_t& i) { init_uint(i); }
+		void init(const uint16_t& i) { init_uint(i); }
+		void init(const uint32_t& i) { init_uint(i); }
+		void init(const uint64_t& i) { init_uint(i); }
+
+		void init(const float& i) { init_flt(i); }
+		void init(const double& i) { init_flt(i); }
+		void init(const long double& i) { init_flt(i); }
+		
+		void init(const bool& i) { m_type = type::boolean; m_bool = i; }
 
 		template <typename T>
 		void reset(const T& obj)
@@ -267,7 +277,7 @@ namespace igris
 		m_num = n;
 	}*/
 
-	template <template <class Allocator> class TAlloc>
+	/*template <template <class Allocator> class TAlloc>
 	void trent_basic<TAlloc>::init(
 	    const igris::numer_ctrcollect<numer_type>& n)
 	{
@@ -280,7 +290,7 @@ namespace igris
 	{
 		m_type = trent_basic::type::boolean;
 		m_bool = n;
-	}
+	}*/
 
 	template <template <class Allocator> class TAlloc>
 	ssize_t trent_basic<TAlloc>::print_to(
