@@ -51,6 +51,55 @@ namespace igris
 		}
 	}
 
+/*	template <typename S>
+	struct sint_ctrcollect
+	{
+		S s;
+
+		constexpr sint_ctrcollect(int8_t o) : s(o) {}
+		constexpr sint_ctrcollect(int16_t o) : s(o) {}
+		constexpr sint_ctrcollect(int32_t o) : s(o) {}
+		constexpr sint_ctrcollect(int64_t o) : s(o) {}
+
+		constexpr operator S() const { return s; }
+	};
+
+	template <typename S>
+	struct bool_ctrcollect
+	{
+		S s;
+
+		constexpr bool_ctrcollect(const bool& o) : s(o) {}
+		
+		constexpr operator S() const { return s; }
+	};
+
+	template <typename S>
+	struct numer_ctrcollect
+	{
+		S s;
+
+		constexpr numer_ctrcollect(bool) = delete;
+		constexpr numer_ctrcollect(bool&) = delete;
+		constexpr numer_ctrcollect(const bool&) = delete;
+
+		constexpr numer_ctrcollect(const int8_t& o) : s(o) {}
+		constexpr numer_ctrcollect(const int16_t& o) : s(o) {}
+		constexpr numer_ctrcollect(const int32_t& o) : s(o) {}
+		constexpr numer_ctrcollect(const int64_t& o) : s(o) {}
+
+		constexpr numer_ctrcollect(const uint8_t& o) : s(o) {}
+		constexpr numer_ctrcollect(const uint16_t& o) : s(o) {}
+		constexpr numer_ctrcollect(const uint32_t& o) : s(o) {}
+		constexpr numer_ctrcollect(const uint64_t& o) : s(o) {}
+
+		constexpr numer_ctrcollect(const float& o) : s(o) {}
+		constexpr numer_ctrcollect(const double& o) : s(o) {}
+		constexpr numer_ctrcollect(const long double& o) : s(o) {}
+
+		constexpr operator S() const { return s; }
+	};
+*/
 }
 
 #endif

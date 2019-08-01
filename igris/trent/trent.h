@@ -11,6 +11,9 @@
 
 #include <igris/util/ctrdtr.h>
 #include <igris/util/bug.h>
+#include <igris/buffer.h>
+
+#include <nos/print.h>
 
 namespace igris
 {
@@ -29,7 +32,7 @@ namespace igris
 			list,
 			dict,
 			numer,
-			integer,
+			//	integer,
 			boolean,
 			nil,
 		};
@@ -46,8 +49,9 @@ namespace igris
 		type m_type = type::nil;
 		union
 		{
+			bool m_bool;
 			numer_type m_num;
-			integer_type m_int;
+			//	integer_type m_int;
 			list_type m_arr;
 			dict_type m_dict;
 			string_type m_str;
@@ -60,52 +64,49 @@ namespace igris
 
 		void invalidate();
 
-		/*	inline trent(const std::string& str) { init(str); }
-			inline trent(const char* str) { init(str); }
-			inline trent(const trent::type& t) { init(t); }
-			inline trent(const float& i) { init(i); }
-			inline trent(const double& i) { init(i); }
-			inline trent(const long double& i) { init(i); }
-			inline trent(const signed char& i) { init(i); }
-			inline trent(const signed short& i) { init(i); }
-			inline trent(const signed int& i) { init(i); }
-			inline trent(const signed long& i) { init(i); }
-			inline trent(const signed long long& i) { init(i); }
-			inline trent(const unsigned char& i) { init(i); }
-			inline trent(const unsigned short& i) { init(i); }
-			inline trent(const unsigned int& i) { init(i); }
-			inline trent(const unsigned long& i) { init(i); }
-			inline trent(const unsigned long long& i) { init(i); }
-			inline trent(const bool& i) { init(i); }
+		/*inline trent_basic(const type& t) { init(t); }
+		inline trent_basic(const std::string& str) { init(str); }
+		inline trent_basic(const char* str) { init(str); }
+		inline trent_basic(const float& i) { init(i); }
+		inline trent_basic(const double& i) { init(i); }
+		inline trent_basic(const long double& i) { init(i); }
+		inline trent_basic(const signed char& i) { init(i); }
+		inline trent_basic(const signed short& i) { init(i); }
+		inline trent_basic(const signed int& i) { init(i); }
+		inline trent_basic(const signed long& i) { init(i); }
+		inline trent_basic(const signed long long& i) { init(i); }
+		inline trent_basic(const unsigned char& i) { init(i); }
+		inline trent_basic(const unsigned short& i) { init(i); }
+		inline trent_basic(const unsigned int& i) { init(i); }
+		inline trent_basic(const unsigned long& i) { init(i); }
+		inline trent_basic(const unsigned long long& i) { init(i); }
+		inline trent_basic(const bool& i) { init(i); }*/
 
-		public:
-			void init(trent::type t);
-			void init(const std::string& str);
-			void init(gxx::buffer buf);
-			void init(const char* str);
-			void init(const float& i);
-			void init(const double& i);
-			void init(const long double& i);
-			void init(const signed char& i);
-			void init(const signed short& i);
-			void init(const signed int& i);
-			void init(const signed long& i);
-			void init(const signed long long& i);
-			void init(const unsigned char& i);
-			void init(const unsigned short& i);
-			void init(const unsigned int& i);
-			void init(const unsigned long& i);
-			void init(const unsigned long long& i);
-			void init(const bool& i);
+		template <class T>
+		trent_basic(const T& obj)
+		{
+			init(obj);
+		}
 
-			template <typename T>
-			void reset(T obj)
-			{
-				invalidate();
-				init(obj);
-			}
+	public:
+//		void init(type t);
+//		void init(const std::string& str);
+//		void init(igris::buffer buf);
+//		void init(const char* str);
+		//void init(const float& i);
+		//void init(const double& i);
+		//void init(const long double& i);
+		void init(const numer_ctrcollect<numer_type>& i);
+		void init(const bool_ctrcollect<bool>& i);
 
-			void init_list(size_t reserve);
+		template <typename T>
+		void reset(const T& obj)
+		{
+			invalidate();
+			init(obj);
+		}
+
+		/*	void init_list(size_t reserve);
 
 		public:
 			const trent& operator[](int i) const;
@@ -165,106 +166,42 @@ namespace igris
 			string_type& unsafe_string_const() { return m_str; }
 			list_type& unsafe_list_const() { return m_arr; }
 			dict_type& unsafe_dict_const() { return m_dict; }
+		*/
+//			const integer_type& unsafe_integer_const() const { return m_int; }
+		const numer_type& unsafe_numer_const() const { return m_num; }
+		const string_type& unsafe_string_const() const { return m_str; }
+		const list_type& unsafe_list_const() const { return m_arr; }
+		const dict_type& unsafe_dict_const() const { return m_dict; }
+		const bool& unsafe_bool_const() const { return m_bool; }
 
-			const integer_type& unsafe_integer_const() const { return m_int; }
-			const numer_type& unsafe_numer_const() const { return m_num; }
-			const string_type& unsafe_string_const() const { return m_str; }
-			const list_type& unsafe_list_const() const { return m_arr; }
-			const dict_type& unsafe_dict_const() const { return m_dict; }
-			const integer_type& unsafe_bool_const() const { return m_int; }
+		trent_basic::type get_type() const { return m_type; }
+		const char * typestr() const;
+		/*
+							bool is_nil() const 		{ return m_type == type::nil; }
+							bool is_bool() const 		{ return m_type == type::boolean; }
+							bool is_numer() const 		{ return m_type == type::numer || m_type == type::integer; }
+							bool is_integer() const     { return m_type == type::integer; }
+							bool is_list() const		{ return m_type == type::list; }
+							bool is_dict() const        { return m_type == type::dict; }
+							bool is_string() const 		{ return m_type == type::string; }
 
-			trent::type get_type() const;
-			const char * type_to_str() const;
+							//strlst check_dict(strlst lst, check_type ct);
+							//std::pair<strlst,strlst> check_dict_symmetric(strlst lst);
+						*/
+		ssize_t print_to(nos::ostream& os) const;
 
-			bool is_nil() const 		{ return m_type == type::nil; }
-			bool is_bool() const 		{ return m_type == type::boolean; }
-			bool is_numer() const 		{ return m_type == type::numer || m_type == type::integer; }
-			bool is_integer() const     { return m_type == type::integer; }
-			bool is_list() const		{ return m_type == type::list; }
-			bool is_dict() const        { return m_type == type::dict; }
-			bool is_string() const 		{ return m_type == type::string; }
+	public:
+		template <class T>
+		trent_basic& operator= (const T& arg)
+		{
+			reset(arg);
+		}
 
-			//strlst check_dict(strlst lst, check_type ct);
-			//std::pair<strlst,strlst> check_dict_symmetric(strlst lst);
+		/*			ssize_t size();
 
-		public:
-			trent& operator= (const trent& other);
-			trent& operator= (const std::string& str);
-			trent& operator= (gxx::buffer buf);
+					bool contains(gxx::buffer buf);
+		*/
 
-			trent& operator= (float num);
-			trent& operator= (double num);
-			trent& operator= (long double num);
-
-			trent& operator= (signed char i);
-			trent& operator= (signed short i);
-			trent& operator= (signed int i);
-			trent& operator= (signed long i);
-			trent& operator= (signed long long i);
-			trent& operator= (unsigned char i);
-			trent& operator= (unsigned short i);
-			trent& operator= (unsigned int i);
-			trent& operator= (unsigned long i);
-			trent& operator= (unsigned long long i);
-			trent& operator= (bool i);
-			ssize_t size();
-
-			bool contains(gxx::buffer buf);
-
-			size_t printTo(gxx::io::ostream& os) const
-			{
-				bool sep = false;
-				switch (get_type())
-				{
-					case trent::type::boolean:
-						os.print(unsafe_bool_const() ? "true" : "false");
-						return 0;
-
-					case trent::type::numer:
-						os.print(unsafe_numer_const());
-						return 0;
-
-					case trent::type::integer:
-						os.print(unsafe_integer_const());
-						return 0;
-
-					case trent::type::string:
-						os.putchar('"');
-						gxx::print_to(os, unsafe_string_const());
-						os.putchar('"');
-						return 0;
-					case trent::type::list:
-						os.putchar('[');
-						for (auto& v : unsafe_list_const())
-						{
-							if (sep) os.putchar(',');
-							v.printTo(os);
-							sep = true;
-						}
-						os.putchar(']');
-						return 0;
-					case trent::type::dict:
-						os.putchar('{');
-						for (auto& p : unsafe_dict_const())
-						{
-							if (sep) os.putchar(',');
-							os.putchar('"');
-							gxx::print_to(os, p.first);
-							os.putchar('"');
-							os.putchar(':');
-							p.second.printTo(os);
-							sep = true;
-						}
-						os.putchar('}');
-						return 0;
-					case trent::type::nil:
-						os.print("nil");
-						return 0;
-				}
-
-				PANIC_TRACED();
-				return 0;
-			}*/
 	};
 
 	using trent = trent_basic<std::allocator>;
@@ -291,7 +228,7 @@ namespace igris
 				igris::destructor(&m_dict);
 				return;
 			case type::nil:
-			case type::integer:
+			//case type::integer:
 			case type::numer:
 			case type::boolean:
 				return;
@@ -300,6 +237,124 @@ namespace igris
 				return;
 		}
 		m_type = trent::type::nil;
+	}
+
+	/*	template <template <class Allocator> class TAlloc>
+		void trent_basic<TAlloc>::init(const std::string& str)
+		{
+			m_type = trent_basic::type::string;
+			igris::constructor(&m_str, str);
+		}
+
+		template <template <class Allocator> class TAlloc>
+		void trent_basic<TAlloc>::init(const char* str)
+		{
+			m_type = trent_basic::type::string;
+			igris::constructor(&m_str, str);
+		}
+
+		template <template <class Allocator> class TAlloc>
+		void trent_basic<TAlloc>::init(igris::buffer buf)
+		{
+			m_type = trent_basic::type::string;
+			igris::constructor(&m_str, buf.data(), buf.size());
+		}
+	*/
+	/*emplate <template <class Allocator> class TAlloc>
+	void trent_basic<TAlloc>::init(const trent_basic::numer_type& n)
+	{
+		m_type = trent_basic::type::numer;
+		m_num = n;
+	}*/
+
+	template <template <class Allocator> class TAlloc>
+	void trent_basic<TAlloc>::init(
+	    const igris::numer_ctrcollect<numer_type>& n)
+	{
+		m_type = trent_basic::type::numer;
+		m_num = n;
+	}
+
+	template <template <class Allocator> class TAlloc>
+	void trent_basic<TAlloc>::init(const bool_ctrcollect<bool>& n)
+	{
+		m_type = trent_basic::type::boolean;
+		m_bool = n;
+	}
+
+	template <template <class Allocator> class TAlloc>
+	ssize_t trent_basic<TAlloc>::print_to(
+	    nos::ostream& os) const
+	{
+		bool sep = false;
+		switch (get_type())
+		{
+			case trent::type::boolean:
+				os.print(unsafe_bool_const() ? "true" : "false");
+				return 0;
+
+			case trent::type::numer:
+				os.print(unsafe_numer_const());
+				return 0;
+
+			//case trent::type::integer:
+			//	os.print(unsafe_integer_const());
+			//	return 0;
+
+			case trent::type::string:
+				os.putchar('"');
+				nos::print_to(os, unsafe_string_const());
+				os.putchar('"');
+				return 0;
+			case trent::type::list:
+				os.putchar('[');
+				for (auto& v : unsafe_list_const())
+				{
+					if (sep) os.putchar(',');
+					v.print_to(os);
+					sep = true;
+				}
+				os.putchar(']');
+				return 0;
+			case trent::type::dict:
+				os.putchar('{');
+				for (auto& p : unsafe_dict_const())
+				{
+					if (sep) os.putchar(',');
+					os.putchar('"');
+					nos::print_to(os, p.first);
+					os.putchar('"');
+					os.putchar(':');
+					p.second.print_to(os);
+					sep = true;
+				}
+				os.putchar('}');
+				return 0;
+			case trent::type::nil:
+				os.print("nil");
+				return 0;
+		}
+
+		BUG();
+		return 0;
+	}
+
+
+	template <template <class Allocator> class TAlloc>
+	const char * trent_basic<TAlloc>::typestr() const
+	{
+		switch (m_type)
+		{
+			case trent_basic::type::string: 	return "string";
+			case trent_basic::type::list: 		return "list";
+			case trent_basic::type::dict:       return "dict";
+			case trent_basic::type::numer: 		return "numer";
+			//case trent_basic::type::integer: 		return "integer";
+			case trent_basic::type::boolean:    return "bool";
+			case trent_basic::type::nil:        return "nil";
+			default: BUG();
+		}
+		return "";
 	}
 
 }

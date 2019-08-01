@@ -94,10 +94,15 @@ licant.module("igris.ctrobj", "linux",
 	mdepends= ["igris.ctrobj.common"]
 )
 
+licant.module("igris.trent",
+	sources = ["igris/trent/trent.cpp"]
+)
+
 licant.module("igris", mdepends=[
 	"igris.include",
 	"igris.sshell",
 	"igris.util",
 	"igris.bug",
 	"igris.dprint",
+	"igris.trent",
 ])
