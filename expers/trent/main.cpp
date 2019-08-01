@@ -14,4 +14,8 @@ int main()
 
 	m = true;
 	nos::println(m, m.typestr());
+
+	m[2] = "world";
+	m[4] = "Hello";
+	nos::println(m, m.typestr());
 }

@@ -13,8 +13,6 @@
 #include <igris/util/bug.h>
 #include <igris/buffer.h>
 
-#include <nos/print.h>
-
 namespace igris
 {
 	template <template <class Allocator> class TAlloc>
@@ -88,16 +86,34 @@ namespace igris
 			init(obj);
 		}
 
+		void throw_wrong_type_exception()
+		{
+			throw std::exception();
+		}
+
+		void throw_wrong_list_size_exception()
+		{
+			throw std::exception();
+		}
+
 	public:
 		void init_sint(const int64_t& i) { m_type = type::numer; m_num = i; }
 		void init_uint(const uint64_t& i) { m_type = type::numer; m_num = i; }
 		void init_flt(const long double& i) { m_type = type::numer; m_num = i; }
+		void init_str(const char* data, size_t size);
+
+		void init(type t);
+		void init(const trent_basic& oth);
+
+		void init(const char* ptr) { init_str(ptr, strlen(ptr)); }
+		void init(const std::string& str) { init_str(str.data(), str.size()); }
+		void init(const igris::buffer& str) { init_str(str.data(), str.size()); }
 
 		void init(const int8_t& i) { init_sint(i); }
 		void init(const int16_t& i) { init_sint(i); }
 		void init(const int32_t& i) { init_sint(i); }
 		void init(const int64_t& i) { init_sint(i); }
-		
+
 		void init(const uint8_t& i) { init_uint(i); }
 		void init(const uint16_t& i) { init_uint(i); }
 		void init(const uint32_t& i) { init_uint(i); }
@@ -106,7 +122,7 @@ namespace igris
 		void init(const float& i) { init_flt(i); }
 		void init(const double& i) { init_flt(i); }
 		void init(const long double& i) { init_flt(i); }
-		
+
 		void init(const bool& i) { m_type = type::boolean; m_bool = i; }
 
 		template <typename T>
@@ -117,66 +133,68 @@ namespace igris
 		}
 
 		/*	void init_list(size_t reserve);
-
-		public:
-			const trent& operator[](int i) const;
-			const trent& operator[](const char* key) const;
-			const trent& operator[](const std::string& key) const;
-			const trent& operator[](const gxx::buffer& key) const;
-			const trent& operator[](const trent_path& path) const;
-
-			trent& operator[](int i);
-			trent& operator[](const char* key);
-			trent& operator[](const std::string& key);
-			trent& operator[](const gxx::buffer& key);
-			trent& operator[](const trent_path& path);
-
-			const trent& at(int i) const;
-			const trent& at(const char* key) const;
-			const trent& at(const std::string& key) const;
-			const trent& at(const gxx::buffer& key) const;
-			const trent& at(const trent_path& path) const;
-
-			trent& at(int i);
-			trent& at(const char* key);
-			trent& at(const std::string& key);
-			trent& at(const gxx::buffer& key);
-			trent& at(const trent_path& path);
-
-			bool have(const std::string& key) const;
-
-			std::map<std::string, trent>& as_dict();
-			const std::map<std::string, trent>& as_dict() const;
-			result<std::map<std::string, trent>&> as_dict_critical();
-			result<const std::map<std::string, trent>&> as_dict_critical() const;
-
-			std::vector<trent>& as_list();
-			const std::vector<trent>& as_list() const;
-
-			result<std::vector<trent>&> as_list_critical();
-			result<const std::vector<trent>&> as_list_critical() const;
-
-			numer_type as_numer() const;
-			numer_type as_numer_default(numer_type i) const;
-			result<numer_type> as_numer_critical() const;
-
-			integer_type as_integer() const;
-			integer_type as_integer_default(integer_type i) const;
-			result<integer_type> as_integer_critical() const;
-
-			string_type& as_string();
-			const string_type& as_string() const;
-			const gxx::buffer as_buffer() const;
-			string_type& as_string_default(string_type& str);
-			result<string_type&> as_string_critical();
-			result<const string_type&> as_string_critical() const;
-
-			integer_type& unsafe_integer_const() { return m_int; }
-			numer_type& unsafe_numer_const() { return m_num; }
-			string_type& unsafe_string_const() { return m_str; }
-			list_type& unsafe_list_const() { return m_arr; }
-			dict_type& unsafe_dict_const() { return m_dict; }
 		*/
+	public:
+		// Поведение - переписать значение, если тип не совпадает.
+		const trent_basic& operator[](int i) const;
+		const trent_basic& operator[](const char* key) const;
+		const trent_basic& operator[](const std::string& key) const;
+		const trent_basic& operator[](const igris::buffer& key) const;
+		//const trent_basic& operator[](const trent_path& path) const;
+
+		trent_basic& operator[](int i);
+		trent_basic& operator[](const char* key);
+		trent_basic& operator[](const std::string& key);
+		trent_basic& operator[](const igris::buffer& key);
+		//trent_basic& operator[](const trent_path& path);
+
+		// Поведение - выдать исключение если тип не совпадает.
+		const trent_basic& at(int i) const;
+		const trent_basic& at(const char* key) const;
+		const trent_basic& at(const std::string& key) const;
+		const trent_basic& at(const igris::buffer& key) const;
+		//const trent_basic& at(const trent_path& path) const;
+
+		trent_basic& at(int i);
+		trent_basic& at(const char* key);
+		trent_basic& at(const std::string& key);
+		trent_basic& at(const igris::buffer& key);
+		//trent_basic& at(const trent_path& path);
+
+		/*			bool have(const std::string& key) const;
+
+					std::map<std::string, trent>& as_dict();
+					const std::map<std::string, trent>& as_dict() const;
+					result<std::map<std::string, trent>&> as_dict_critical();
+					result<const std::map<std::string, trent>&> as_dict_critical() const;
+
+					std::vector<trent>& as_list();
+					const std::vector<trent>& as_list() const;
+
+					result<std::vector<trent>&> as_list_critical();
+					result<const std::vector<trent>&> as_list_critical() const;
+
+					numer_type as_numer() const;
+					numer_type as_numer_default(numer_type i) const;
+					result<numer_type> as_numer_critical() const;
+
+					integer_type as_integer() const;
+					integer_type as_integer_default(integer_type i) const;
+					result<integer_type> as_integer_critical() const;
+
+					string_type& as_string();
+					const string_type& as_string() const;
+					const igris::buffer as_buffer() const;
+					string_type& as_string_default(string_type& str);
+					result<string_type&> as_string_critical();
+					result<const string_type&> as_string_critical() const;
+
+					integer_type& unsafe_integer_const() { return m_int; }
+					numer_type& unsafe_numer_const() { return m_num; }
+					string_type& unsafe_string_const() { return m_str; }
+					list_type& unsafe_list_const() { return m_arr; }
+					dict_type& unsafe_dict_const() { return m_dict; }
+				*/
 //			const integer_type& unsafe_integer_const() const { return m_int; }
 		const numer_type& unsafe_numer_const() const { return m_num; }
 		const string_type& unsafe_string_const() const { return m_str; }
@@ -198,7 +216,8 @@ namespace igris
 							//strlst check_dict(strlst lst, check_type ct);
 							//std::pair<strlst,strlst> check_dict_symmetric(strlst lst);
 						*/
-		ssize_t print_to(nos::ostream& os) const;
+		template <class O>
+		ssize_t print_to(O& os) const;
 
 	public:
 		template <class T>
@@ -209,7 +228,7 @@ namespace igris
 
 		/*			ssize_t size();
 
-					bool contains(gxx::buffer buf);
+					bool contains(igris::buffer buf);
 		*/
 
 	};
@@ -231,45 +250,37 @@ namespace igris
 			case trent::type::string:
 				igris::destructor(&m_str);
 				return;
+
 			case trent::type::list:
 				igris::destructor(&m_arr);
 				return;
+
 			case trent::type::dict:
 				igris::destructor(&m_dict);
 				return;
+
 			case type::nil:
+
 			//case type::integer:
 			case type::numer:
 			case type::boolean:
 				return;
+
 			default:
 				BUG();
 				return;
 		}
+
 		m_type = trent::type::nil;
 	}
 
-	/*	template <template <class Allocator> class TAlloc>
-		void trent_basic<TAlloc>::init(const std::string& str)
-		{
-			m_type = trent_basic::type::string;
-			igris::constructor(&m_str, str);
-		}
+	template <template <class Allocator> class TAlloc>
+	void trent_basic<TAlloc>::init_str(const char* data, size_t size)
+	{
+		m_type = trent_basic::type::string;
+		igris::constructor(&m_str, data, size);
+	}
 
-		template <template <class Allocator> class TAlloc>
-		void trent_basic<TAlloc>::init(const char* str)
-		{
-			m_type = trent_basic::type::string;
-			igris::constructor(&m_str, str);
-		}
-
-		template <template <class Allocator> class TAlloc>
-		void trent_basic<TAlloc>::init(igris::buffer buf)
-		{
-			m_type = trent_basic::type::string;
-			igris::constructor(&m_str, buf.data(), buf.size());
-		}
-	*/
 	/*emplate <template <class Allocator> class TAlloc>
 	void trent_basic<TAlloc>::init(const trent_basic::numer_type& n)
 	{
@@ -293,10 +304,11 @@ namespace igris
 	}*/
 
 	template <template <class Allocator> class TAlloc>
-	ssize_t trent_basic<TAlloc>::print_to(
-	    nos::ostream& os) const
+	template <class O>
+	ssize_t trent_basic<TAlloc>::print_to(O& os) const
 	{
 		bool sep = false;
+
 		switch (get_type())
 		{
 			case trent::type::boolean:
@@ -313,33 +325,42 @@ namespace igris
 
 			case trent::type::string:
 				os.putchar('"');
-				nos::print_to(os, unsafe_string_const());
+				os.print(unsafe_string_const());
 				os.putchar('"');
 				return 0;
+
 			case trent::type::list:
 				os.putchar('[');
+
 				for (auto& v : unsafe_list_const())
 				{
 					if (sep) os.putchar(',');
+
 					v.print_to(os);
 					sep = true;
 				}
+
 				os.putchar(']');
 				return 0;
+
 			case trent::type::dict:
 				os.putchar('{');
+
 				for (auto& p : unsafe_dict_const())
 				{
 					if (sep) os.putchar(',');
+
 					os.putchar('"');
-					nos::print_to(os, p.first);
+					os.print(p.first);
 					os.putchar('"');
 					os.putchar(':');
 					p.second.print_to(os);
 					sep = true;
 				}
+
 				os.putchar('}');
 				return 0;
+
 			case trent::type::nil:
 				os.print("nil");
 				return 0;
@@ -356,15 +377,224 @@ namespace igris
 		switch (m_type)
 		{
 			case trent_basic::type::string: 	return "string";
+
 			case trent_basic::type::list: 		return "list";
-			case trent_basic::type::dict:       return "dict";
+
+			case type::dict:       return "dict";
+
 			case trent_basic::type::numer: 		return "numer";
+
 			//case trent_basic::type::integer: 		return "integer";
 			case trent_basic::type::boolean:    return "bool";
+
 			case trent_basic::type::nil:        return "nil";
+
 			default: BUG();
 		}
+
 		return "";
+	}
+
+
+
+
+	template <template <class Allocator> class TAlloc>
+	trent_basic<TAlloc>& trent_basic<TAlloc>::operator[](int i)
+	{
+		if (m_type != type::list)
+			init(type::list);
+
+		if (m_arr.size() <= (unsigned int)i) m_arr.resize(i + 1);
+
+		return m_arr[i];
+	}
+
+	template <template <class Allocator> class TAlloc>
+	const trent_basic<TAlloc>& trent_basic<TAlloc>::operator[](int key) const
+	{
+		if (m_type != trent_basic::type::list)
+			init(type::list);
+
+		return m_arr.at(key);
+	}
+
+	template <template <class Allocator> class TAlloc>
+	trent_basic<TAlloc>& trent_basic<TAlloc>::operator[](const char* key)
+	{
+		if (m_type != type::dict)
+			init(type::dict);
+
+		return m_dict[key];
+	}
+
+	template <template <class Allocator> class TAlloc>
+	trent_basic<TAlloc>& trent_basic<TAlloc>::operator[](const std::string& key)
+	{
+		if (m_type != type::dict) init(type::dict);
+
+		return m_dict[key];
+	}
+
+	template <template <class Allocator> class TAlloc>
+	const trent_basic<TAlloc>& trent_basic<TAlloc>::operator[](const std::string& key) const
+	{
+		if (m_type != type::dict)
+			init(type::dict);
+
+		return m_dict.at(key);
+	}
+
+	template <template <class Allocator> class TAlloc>
+	trent_basic<TAlloc>& trent_basic<TAlloc>::operator[](const igris::buffer& key)
+	{
+		if (m_type != type::dict)
+			init(type::dict);
+
+		return m_dict[std::string(key.data(), key.size())];
+	}
+
+	/*template <template <class Allocator> class TAlloc>
+	const trent_basic<TAlloc>& trent_basic::operator[] (const igris::trent_basic_path& path) const
+	{
+		const igris::trent_basic* tr = this;
+
+		for (const auto& p : path)
+		{
+			if (p.is_string)
+			{
+				tr = &tr->operator[](p.str);
+			}
+			else
+			{
+				tr = &tr->operator[](p.i32);
+			}
+		}
+
+		return *tr;
+	}*/
+
+	/*template <template <class Allocator> class TAlloc>
+	trent_basic& trent_basic::operator[] (const igris::trent_basic_path& path)
+	{
+		igris::trent_basic* tr = this;
+
+		for (auto& p : path)
+		{
+			if (p.is_string)
+			{
+				tr = &tr->operator[](p.str);
+			}
+			else
+			{
+				tr = &tr->operator[](p.i32);
+			}
+		}
+
+		return *tr;
+	}*/
+
+	template <template <class Allocator> class TAlloc>
+	const trent_basic<TAlloc>& trent_basic<TAlloc>::at(int i) const
+	{
+		if (m_type != trent_basic::type::list)
+			throw_wrong_type_exception();
+
+		if (m_arr.size() <= (unsigned int)i)
+			throw_wrong_list_size_exception();
+
+		return m_arr[i];
+	}
+
+	template <template <class Allocator> class TAlloc>
+	const trent_basic<TAlloc>& trent_basic<TAlloc>::at(const char* key) const
+	{
+		if (m_type != type::dict)
+			throw_wrong_type_exception();
+
+		return m_dict[key];
+	}
+
+	template <template <class Allocator> class TAlloc>
+	const trent_basic<TAlloc>& trent_basic<TAlloc>::at(const std::string& key) const
+	{
+		if (m_type != type::dict)
+			throw_wrong_type_exception();
+
+		return m_dict.at(key);
+	}
+
+	template <template <class Allocator> class TAlloc>
+	const trent_basic<TAlloc>& trent_basic<TAlloc>::at(const igris::buffer& key) const
+	{
+		if (m_type != type::dict)
+			throw_wrong_type_exception();
+
+		return m_dict.at(std::string(key.data(), key.size()));
+	}
+
+	template <template <class Allocator> class TAlloc>
+	void trent_basic<TAlloc>::init(trent_basic::type t)
+	{
+		m_type = t;
+
+		switch (m_type)
+		{
+			case trent_basic::type::string:
+				igris::constructor(&m_str);
+				return;
+
+			case trent_basic::type::list:
+				igris::constructor(&m_arr);
+				return;
+
+			case trent_basic::type::dict:
+				igris::constructor(&m_dict);
+				return;
+
+			//case trent_basic::type::integer:
+			case trent_basic::type::numer:
+			case trent_basic::type::nil:
+				return;
+
+			default:
+				BUG();
+		}
+	}
+
+	template <template <class Allocator> class TAlloc>
+	trent_basic<TAlloc>::trent_basic(const trent_basic<TAlloc>& other)
+	{
+		m_type = other.m_type;
+
+		switch (m_type)
+		{
+			case trent_basic::type::string:
+				igris::constructor(&m_str, other.m_str);
+				return;
+
+			case trent_basic::type::list:
+				igris::constructor(&m_arr, other.m_arr);
+				return;
+
+			case trent_basic::type::dict:
+				igris::constructor(&m_dict, other.m_dict);
+				return;
+
+			case trent_basic::type::numer:
+				m_num = other.m_num;
+				return;
+
+			case trent_basic::type::boolean:
+				//case trent_basic::type::integer:
+				//    m_int = other.m_int;
+				return;
+
+			case trent_basic::type::nil:
+				return;
+
+			default:
+				BUG();
+		}
 	}
 
 }
