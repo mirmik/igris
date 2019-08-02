@@ -1,6 +1,8 @@
 #ifndef IGRIS_TRENT_JSON_H
 #define IGRIS_TRENT_JSON_H
 
+#include <igris/cread.h>
+
 namespace igris
 {
 	namespace json
