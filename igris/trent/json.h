@@ -2,6 +2,12 @@
 #define IGRIS_TRENT_JSON_H
 
 #include <igris/cread.h>
+#include <igris/util/numconvert.h>
+
+#include <nos/print.h>
+#include <nos/trace.h>
+
+#include <exception>
 
 namespace igris
 {
@@ -25,17 +31,35 @@ namespace igris
 		{
 			char onebuf = 0;
 
+			class unexpected_symbol : public std::runtime_error 
+			{
+				char symb;
+
+			public:
+				unexpected_symbol(char symb) : symb(symb), std::runtime_error("wuuuui")
+				{
+					dprln();
+					dprchar(symb);
+					dprln();
+				}
+			};
+
 		public:
+			//parser(const std::string& str) :
+
 			virtual ~parser() {}
 			virtual char readnext() = 0;
 
-			char getnext()
+			char readnext_skipping()
 			{
 				char c;
 				char next;
 
 			__try__:
 				c = readnext();
+
+				if (c == ' ' || c == '\t' || c == '\n')
+					goto __try__;
 
 				if (c == '/')
 				{
@@ -56,9 +80,11 @@ namespace igris
 							}
 
 						case '/':
+
 							//is.ignore(INT_MAX, '\n');
 							while (c != '\n')
 								c = readnext();
+
 							goto __try__;
 
 						default:
@@ -69,202 +95,191 @@ namespace igris
 
 				//is.unget();
 				return c;
-
 			}
 
-			void parse(const char* cur, Trent& tr)
+			template <template <class Allocator> class TAlloc = std::allocator>
+			trent_basic<TAlloc> parse()
 			{
-				cur = igris::cread::skipws(cur);
+				//TRACE();
 
-				if (*cur == '/')
-					cur = igris::cread::skip_cstyle_comments(cur);
+				if (onebuf == 0)
+				{
+					onebuf = readnext_skipping();
+				}
 
-				char c = *cur;
+				if (isdigit(onebuf) || onebuf == '-')
+					return parse_numer();
 
-				if (isdigit(c) || c == '-') { parse_numer(cur, tr); return; }
-				if (c == '"') { parse_string(cur, tr); return; }
-				if (c == '\'') { parse_string(cur, tr); return; }
-				if (c == '[') { parse_list(cur, tr); return; }
-				if (c == '{') { parse_dict(cur, tr); return; }
-				if (isalpha(c)) { parse_mnemonic(cur, tr); return; }
+				if (onebuf == '"')
+					return parse_string();
 
-				throw std::exception();
+				if (onebuf == '\'')
+					return parse_string();
+
+				if (onebuf == '[')
+					return parse_list();
+
+				if (onebuf == '{')
+					return parse_dict();
+
+				//if (isalpha(c))
+				//	return parse_mnemonic(); 
+
+				throw unexpected_symbol(onebuf);
 			}
 
 
 
-			template <typename Trent>
+			/*template <typename Trent>
 			void parse_mnemonic(const char ** cur, Trent& tr)
 			{
 				igris::buffer mnem;
 				const char * strt = *cur;
 				const char * fini = *cur;
 
-				for (isalpha(*fini)) 
-					++fini;				
+				while (isalpha(*fini))
+					++fini;
 
 				mnem = igris::buffer(strt, fini);
 				*cur = fini;
 
 				if (mnem == "true") { tr = true; return; }
+
 				if (mnem == "false") { tr = true; return; }
 
 				throw std::exception();
+			}*/
+
+			template <template <class Allocator> class TAlloc = std::allocator>
+			trent_basic<TAlloc> parse_numer()
+			{
+				//TRACE();
+				char buf[32];
+				char * ptr = &buf[1];
+
+				buf[0] = onebuf;
+
+				while (isdigit(onebuf = readnext()))
+				{
+					*ptr++ = onebuf;
+				}
+
+				*ptr = 0;
+
+				return atof64(buf, nullptr);
 			}
 
-			template <typename Trent>
-			void parse_numer(const char ** cur, Trent& tr)
+			template <template <class Allocator> class TAlloc = std::allocator>
+			trent_basic<TAlloc> parse_string()
 			{
-				numer_type num;
-
-				igris::buffer mnem;
-				const char * strt = *cur;
-				const char * fini = *cur;
-
-				// digit or minus
-				fini++;
-
-				for (isdigit(*fini) || ) 
-					++fini;				
-
-				mnem = igris::buffer(strt, fini);
-				*cur = fini;
-
-				num = atof64(strt);
-
-				tr = num;
-				throw std::exception();
-			}
-/*
-			result<trent> json::parse_string(std::istream& is)
-			{
+				//TRACE();
 				trent::string_type str;
 
-				char c = detail::getnext(is);
-				is.ignore();
+				char delim = onebuf;
 
-				if (c == '"') std::getline(is, str, '"');
+				while ((onebuf = readnext()) != delim)
+					str += onebuf;
 
-				if (c == '\'') std::getline(is, str, '\'');
-
-				trent ret(str);
-
-				return ret;
+				return str;
 			}
 
-			result<trent> json::parse_list(std::istream& is)
+
+			template <template <class Allocator> class TAlloc = std::allocator>
+			trent_basic<TAlloc> parse_list()
 			{
-				char c;
-				trent js(trent::type::list);
+				//TRACE();
+				trent_basic<TAlloc> js(trent::type::list);
 
 				int counter = 0;
+				onebuf = readnext_skipping();
+
+				if (onebuf == ']')
+				{
+					return js;
+				}
 
 				while (true)
 				{
-					c = detail::getnext(is);
+					trent_basic<TAlloc> r = parse();
+					js.as_list().push_back(r);
 
-					if (c == ']')
+					onebuf = readnext_skipping();
+
+					if (onebuf == ']')
 					{
-						is.ignore();
 						return js;
 					}
 
-					if (c == ',' || c == '[')
+					if (onebuf != ',')
 					{
-						is.ignore();
-
-						c = detail::getnext(is);
-
-						if (c == ']')
-						{
-							is.ignore();
-							return js;
-						}
-
-						auto&& r = parse(is);
-
-						if (r.is_error())
-							return std::move(r.error());
-
-						js.as_list().push_back(r.value());
+						throw std::exception();
 					}
-					else return error("wrong list syntax");;
 
 					counter++;
+					onebuf = readnext_skipping();
 				}
 			}
 
-			result<trent> json::parse_dict(std::istream& is)
+			template <template <class Allocator> class TAlloc = std::allocator>
+			trent_basic<TAlloc> parse_dict()
 			{
-				char c;
-				trent js(trent::type::dict);
+				//TRACE();
+				trent_basic<TAlloc> js(trent::type::list);
+
+				int counter = 0;
+				onebuf = readnext_skipping();
+
+				if (onebuf == '}')
+				{
+					return js;
+				}
 
 				while (true)
 				{
-					c = detail::getnext(is);
+					// Изменить на строку
+					trent_basic<TAlloc> key = parse();
 
-					if (c == '}')
+					onebuf = readnext_skipping();
+
+					if (onebuf != ':')
+						throw std::exception();
+
+					// skip ':' symbol
+					onebuf = 0;
+
+					trent_basic<TAlloc> value = parse();
+
+					js.as_dict().emplace(std::move(key.as_string()), std::move(value));
+
+					onebuf = readnext_skipping();
+
+					if (onebuf == '}')
 					{
-						is.ignore();
 						return js;
 					}
 
-					if (c == ',' || c == '{')
+					if (onebuf != ',')
 					{
-						is.ignore();
-
-						c = detail::getnext(is);
-
-						if (c == '}')
-						{
-							is.ignore();
-							return js;
-						}
-
-						if ( c != '"' && c != '\'' )
-							return error("wrong dictionary syntax: not find \"");
-
-						is.ignore();
-
-						std::string key;
-
-						if (c == '"') std::getline(is, key, '"');
-
-						if (c == '\'') std::getline(is, key, '\'');
-
-						c = detail::getnext(is);
-
-						if ( c != ':' )
-							return error("wrong dicionary syntax: not find colomn");
-
-						is.ignore();
-
-						c = detail::getnext(is);
-
-						auto&& r = parse(is);
-
-						if (r.is_error())
-							return std::move(r.error());
-
-						js.as_dict().insert(std::make_pair(key, r.value()));
+						throw std::exception();
 					}
 
-					else
-						return error("trent::internal:dict_parse");
+					counter++;
+					onebuf = readnext_skipping();
 				}
 			}
+		};
 
+		class parser_cstr : public parser
+		{
+			const char * ptr;
 
+		public:
+			parser_cstr(const std::string& str) : ptr(str.data()) {}
 
-
-
-
-
-
-
-
-
-
+			char readnext()
+			{
+				return *ptr++;
+			}
 		};
 	}
 }

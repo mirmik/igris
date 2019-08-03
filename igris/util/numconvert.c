@@ -268,14 +268,14 @@ float32_t atof32(const char* str, char** pend) {
 	if (*str == '.') 
 	{
 		int d = atou32(++str, 10, &end);
-		*pend = end;
+		if (pend) *pend = end;
 		float ret = (float)i + d / (pow(10, end - str)); 
 		return minus ? -ret : ret;
 	} 
 
 	else 
 	{
-		*pend = end;
+		if (pend) *pend = end;
 		return i;
 	}
 }
@@ -304,14 +304,14 @@ float64_t atof64(const char* str, char** pend) {
 	if (*str == '.') 
 	{
 		int d = atou32(++str, 10, &end);
-		*pend = end;
+		if (pend) *pend = end;
 		double ret = (double)i + d / (pow(10, end - str)); 
 		return minus ? -ret : ret;
 	} 
 
 	else 
 	{
-		*pend = end;
+		if (pend) *pend = end;
 		return i;
 	}
 }

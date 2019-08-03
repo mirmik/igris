@@ -5,8 +5,17 @@ namespace igris
 {
 	namespace cread
 	{
+		// Вернуть указатель на первый непустой символ после текущего.
+		const char* skipws(const char *ptr)
+		{
+			while(*ptr == ' ' || *ptr != '\n' || *ptr != '\t') ++ptr;
+			return ptr;
+		}
+
+		// Вернуть указатель на первый не входящий в комментарий символ.
 		const char* skip_cstyle_comments(const char *ptr)
 		{
+			char last;
 			char fsymb = *ptr;
 			char ssymb = *(ptr + 1);
 

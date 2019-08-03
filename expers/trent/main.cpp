@@ -1,21 +1,18 @@
 #include <igris/trent/trent.h>
+#include <igris/trent/json.h>
 #include <nos/print.h>
 
 int main() 
 {
-	igris::trent m;
+	//std::string str = "{'a': 'hello'}";
+	//std::string str = "{'a': 'hello', 'b': 'world'}";
+	std::string str = "{'a': 'hello', 'b': 'world', 'c': ['hello', 'world']}";
+	//std::string str = "456";
+	//std::string str = "'hello'";
+	//std::string str = "['hello', 'world']";
+	
+	igris::json::parser_cstr parser(str);
 
-	m = 8;
-
-	nos::println(m, m.typestr());
-
-	m = 0.8;
-	nos::println(m, m.typestr());
-
-	m = true;
-	nos::println(m, m.typestr());
-
-	m[2] = "world";
-	m[4] = "Hello";
-	nos::println(m, m.typestr());
+	auto tr = parser.parse();
+	nos::println(tr);
 }
