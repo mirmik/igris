@@ -1,5 +1,6 @@
 #include <igris/trent/trent.h>
 #include <igris/trent/json.h>
+
 #include <nos/print.h>
 
 int main() 
@@ -15,4 +16,6 @@ int main()
 
 	auto tr = parser.parse();
 	nos::println(tr);
+
+	igris::json::pretty_print_to(tr, *nos::current_ostream);
 }
