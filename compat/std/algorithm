@@ -879,7 +879,7 @@
 			
 			return first;
 		}
-		
+		*/
 		template<class RandomAccessIterator>  
 		void sort(RandomAccessIterator first, RandomAccessIterator last)
 		{
@@ -981,6 +981,8 @@
 			
 			return middle;
 		}
+
+		/*
 		template<class RandomAccessIterator>  
 		void nth_element(RandomAccessIterator first, RandomAccessIterator nth, RandomAccessIterator last)
 		{

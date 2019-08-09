@@ -127,13 +127,25 @@ void debug_printdec_float_prec(float a, int prec)
 
 void debug_printdec_double_prec(double a, int prec)
 {
-	int64_t n = (int64_t) a;
-	debug_printdec_int64 ( n );
+
+	if (a < 0) 
+		debug_putchar('-');
+	
+	if (a < 0) a = -a;
+	
+	uint64_t n = (uint64_t) a;
+
+	debug_printdec_uint64 ( n );
 	debug_putchar('.');
+	
 	double o = a - n;
-	for (int _iteration = 0; _iteration < prec; ++_iteration )
+	for (int _iteration = 0; _iteration < prec; ++_iteration ) 
+	{
+		if ((int)o == 0) debug_putchar('0');
 		o *= 10;
+	}
 	o += 0.5;
+	
 	debug_printdec_int64 ( o );
 }
 
