@@ -2,7 +2,7 @@
 #define GXX_MAP_H
 
 namespace std {
-	template <typename K, typename T>
+	template <typename K, typename V, class Compare=std::less<K>, class Allocator=std::allocator<std::pair<K,V>>>
 	class map {
 
 	};

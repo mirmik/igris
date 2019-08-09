@@ -104,5 +104,4 @@ licant.module("igris", mdepends=[
 	"igris.util",
 	"igris.bug",
 	"igris.dprint",
-	"igris.trent",
 ])
