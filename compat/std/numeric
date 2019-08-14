@@ -15,7 +15,6 @@ namespace std
 	template<> struct numeric_limits<wchar_t>;
 	template<> struct numeric_limits<short>;
 	template<> struct numeric_limits<unsigned short>;
-	template<> struct numeric_limits<int>;
 	template<> struct numeric_limits<unsigned int>;
 	template<> struct numeric_limits<long>;
 	template<> struct numeric_limits<unsigned long>;
@@ -23,6 +22,11 @@ namespace std
 	template<> struct numeric_limits<unsigned long long>;
 	template<> struct numeric_limits<float>;
 	
+	template<> struct numeric_limits<int> 
+	{
+		constexpr static int maximum() { return INT_MAX; } 
+	};
+
 	template<> struct numeric_limits<double> 
 	{
 		constexpr static double epsilon() { return DBL_EPSILON; } 
