@@ -68,6 +68,7 @@ licant.module("igris.util", sources=[
 	"igris/util/string.cpp",
 	"igris/util/dstring.c",
 	"igris/util/stub.c",
+	"igris/util/emergency_stop.c",
 	"igris/util/printf_impl.c",
 ])
 

@@ -20,6 +20,13 @@ namespace igris {
 
 	using ::system_lock;
 	using ::system_unlock;	
+
+	class syslock_guard 
+	{
+	public:
+		syslock_guard() { system_lock(); }
+		~syslock_guard() { system_unlock(); }
+	};
 }
 #endif
 
