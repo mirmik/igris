@@ -26,7 +26,6 @@ namespace std
 	using ::log2;
 	using ::log10;
 
-	using ::abs;
 	using ::copysign;
 
 	using ::round;
@@ -34,6 +33,10 @@ namespace std
 	using ::floor;
 
 	using ::fmod;
+
+	static inline int       abs( int n ) 		{ return n < 0 ? -n : n; }
+	static inline long      abs( long n ) 		{ return n < 0 ? -n : n; }
+	static inline long long abs( long long n ) 	{ return n < 0 ? -n : n; }
 }
 
 
