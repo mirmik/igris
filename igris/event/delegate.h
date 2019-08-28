@@ -128,17 +128,22 @@ namespace igris
 			return *this;
 		};
 
-		R operator()(Args ... arg)
+		R operator()(Args ... args)
+		{
+			return emit(std::forward<Args>(args) ...);
+		}
+
+		R emit(Args ... args) 
 		{
 			if (!armed())
 				return R();
 
 			uint8_t type = object ? METHOD : FUNCTION;
 			if (type == METHOD)
-				return (object->*method.method)(arg ...);
+				return (object->*method.method)(std::forward<Args>(args) ...);
 			else
-				return method.part.function(arg ...);
-		};
+				return method.part.function(std::forward<Args>(args) ...);	
+		}
 
 		bool operator==(delegate<R , Args ... > b)
 		{
