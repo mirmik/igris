@@ -8,6 +8,9 @@ namespace igris
 	{
 		T* _data;
 		size_t _size;
+	public:
+		using iterator = T*;
+		using const_iterator = const T*;
 
 	public:
 
