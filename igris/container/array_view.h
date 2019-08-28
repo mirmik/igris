@@ -20,7 +20,7 @@ namespace igris
 		T* const data() const { return _data; }
 		T* data() { return _data; }
 
-		size_t size() { return _size; } 
+		size_t size() const { return _size; } 
 
 		T* begin() { return _data; }
 		T* const end() { return _data + _size; }

@@ -5,7 +5,10 @@
 
 static constexpr double deg(double x) { return x * M_PI / 180.0; }
 static constexpr double deg2rad(double x) { return x * M_PI / 180.0; }
-
 static constexpr double rad2deg(double x) { return x * 180.0 / M_PI; }
+
+static constexpr float deg(float x) { return x * M_PI / 180.0; }
+static constexpr float deg2rad(float x) { return x * M_PI / 180.0; }
+static constexpr float rad2deg(float x) { return x * 180.0 / M_PI; }
 
 #endif
