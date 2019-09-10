@@ -4,6 +4,14 @@
 #include <igris/osinter/ctrobj.h>
 #include <sys/cdefs.h>
 
+#include <sys/types.h>
+
+#include <igris/datastruct/dlist.h>
+#include <igris/datastruct/ring.h>
+
+// TODO: Заменить dlist_head на wait_queue.
+// 		Лучше использовать явно типизированную очередь.
+
 #define WAIT_PRIORITY 1
 
 struct waiter
@@ -40,6 +48,9 @@ int unwait_schedee_waiter(struct waiter* w);
 int waiter_unwait(struct dlist_head * lnk, void* future);
 void unwait_one(struct dlist_head * head, void* future);
 void unwait_all(struct dlist_head * head, void* future);
+
+ssize_t waited_ring_read(void* data, size_t size, int flags,
+	struct ring_head* ring, char* ringbuf, struct dlist_head* wq);
 
 __END_DECLS
 

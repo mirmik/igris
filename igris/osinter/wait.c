@@ -3,6 +3,11 @@
 #include <igris/util/macro.h>
 #include <igris/sync/syslock.h>
 
+#include <igris/datastruct/dlist.h>
+#include <igris/datastruct/ring.h>
+#include <igris/defs/io.h>
+#include <igris/defs/schedee.h>
+
 int waiter_unwait(struct dlist_head * lnk, void* future)
 {
 	struct ctrobj * ctr = mcast_out(lnk, struct ctrobj, lnk);
@@ -36,11 +41,12 @@ void unwait_one(struct dlist_head * head, void * future)
 
 	system_lock();
 
-	if (dlist_empty(head)) {
+	if (dlist_empty(head))
+	{
 		system_unlock();
 		return;
 	}
-	
+
 	it = head->next;
 	waiter_unwait(it, future);
 
@@ -53,10 +59,47 @@ void unwait_all(struct dlist_head * head, void* future)
 
 	system_lock();
 
-	dlist_for_each(it, head) 
+	dlist_for_each(it, head)
 	{
 		waiter_unwait(it, future);
 	}
 
 	system_unlock();
+}
+
+ssize_t waited_ring_read(void* data, size_t size, int flags,
+                         struct ring_head* rxring,
+                         char* rxbuffer,
+                         struct dlist_head* rxwait)
+{
+	int ret;
+
+	system_lock();
+
+	while (ring_empty(rxring))
+	{
+
+		if (flags & IO_NOBLOCK) 
+		{
+			system_unlock();
+			return 0;
+		}
+
+		if (wait_current_schedee(rxwait, 0, NULL) == SCHEDEE_DISPLACE_VIRTUAL)
+		{
+			system_unlock();
+			return 0;
+		}
+	}
+
+	system_unlock();
+
+	if (flags & IO_ONLYWAIT)
+		return 0;
+
+	system_lock();
+	ret = ring_read(rxring, rxbuffer, (char*)data, size);
+	system_unlock();
+
+	return ret;
 }

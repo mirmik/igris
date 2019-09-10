@@ -9,6 +9,9 @@ void system_lock();
 void system_unlock(); 
 void syslock_reset(); 
 
+int syslock_counter(); 
+void syslock_counter_set(int count); 
+
 __END_DECLS
 
 #ifdef __cplusplus
