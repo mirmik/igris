@@ -3,6 +3,12 @@
 
 #include <sys/cdefs.h>
 
+struct syslock_save_pair 
+{
+	int count;
+	int state;
+};
+
 __BEGIN_DECLS
 
 void system_lock(); 
@@ -11,6 +17,9 @@ void syslock_reset();
 
 int syslock_counter(); 
 void syslock_counter_set(int count); 
+
+struct syslock_save_pair system_lock_save();
+void system_lock_restore(struct syslock_save_pair save);
 
 __END_DECLS
 

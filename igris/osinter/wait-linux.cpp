@@ -1,15 +1,12 @@
 #include <igris/osinter/wait.h>
 #include <igris/util/macro.h>
 #include <igris/sync/syslock.h>
-
-#include <mutex>
-#include <condition_variable>
+#include <igris/sync/event.h>
 
 struct linux_waiter
 {
 	struct waiter w;
-	std::mutex mut;
-	std::condition_variable cvar;
+	igris::event event;
 };
 
 int wait_current_schedee(struct dlist_head * head, int priority, void ** future) 
@@ -27,8 +24,9 @@ int wait_current_schedee(struct dlist_head * head, int priority, void ** future)
 
 	system_unlock();
 
-	std::unique_lock<std::mutex> lock(waiter.mut);
-	waiter.cvar.wait(lock);
+	auto save = system_lock_save();
+	waiter.event.wait();
+	system_lock_restore(save);
 
 	*future = waiter.w.ctr.future;
 	return 0;
@@ -37,6 +35,7 @@ int wait_current_schedee(struct dlist_head * head, int priority, void ** future)
 int unwait_schedee_waiter(struct waiter* w) 
 {
 	struct linux_waiter * waiter = mcast_out(w, struct linux_waiter, w);
-	waiter->cvar.notify_one();
+	waiter->event.signal();
+
 	return 0;
 }
