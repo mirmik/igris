@@ -30,7 +30,8 @@ modules = [
 		#"igris.protocols.msgtype"
 	]
 
-licant.cxx_library(target("so"),
+licant.cxx_library("shared",
+	target=target("so"),
 	toolchain=toolchain,
 	mdepends = modules,
 	cxx_flags = '-fPIC',
@@ -38,14 +39,15 @@ licant.cxx_library(target("so"),
 	shared = True
 )
 
-#licant.cxx_library(target("a"),
-#	toolchain=toolchain,
-#	mdepends = modules,
-#	cxx_flags = '-fPIC',
-#	cc_flags = '-fPIC -mthumb -mcpu=cortex-m4',
-#	ccstd = "c11",
-#	shared = False
-#)
+licant.cxx_library("static",
+	target=target("a"),
+	toolchain=toolchain,
+	mdepends = modules,
+	cxx_flags = '-fPIC',
+	cc_flags = '-fPIC',
+	ccstd = "c11",
+	shared = False
+)
 
 @licant.routine(deps=[target("so")])
 def install():
@@ -67,6 +69,4 @@ def install_headers():
 	
 	print("successfully installed")
 
-licant.fileset("static", [target("a")])
-
-licant.ex(target("so"))
+licant.ex("shared")
