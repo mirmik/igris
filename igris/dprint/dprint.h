@@ -139,6 +139,7 @@ __END_DECLS
     int8_t:             debug_printdec_int8,    \
     int16_t:            debug_printdec_int16,   \
     int32_t:            debug_printdec_int32,   \
+    int_fast32_t:       debug_printdec_int32,   \
     int64_t:            debug_printdec_int64,   \
     float:              debug_printdec_float,   \
     double:             debug_printdec_double,  \
