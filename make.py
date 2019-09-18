@@ -34,7 +34,7 @@ licant.cxx_library(target("so"),
 	toolchain=toolchain,
 	mdepends = modules,
 	cxx_flags = '-fPIC',
-	cc_flags = '-fPIC  -mthumb -mcpu=cortex-m4',
+	cc_flags = '-fPIC',
 	shared = True
 )
 
