@@ -136,10 +136,10 @@ __END_DECLS
     uint16_t:           debug_printdec_uint16,  \
     uint32_t:           debug_printdec_uint32,  \
     uint64_t:           debug_printdec_uint64,  \
-    int8_t:             debug_printdec_int8,    \
-    int16_t:            debug_printdec_int16,   \
-    int32_t:            debug_printdec_int32,   \
-    int64_t:            debug_printdec_int64,   \
+    int_fast8_t:             debug_printdec_int8,    \
+    int_fast16_t:            debug_printdec_int16,   \
+    int_fast32_t:            debug_printdec_int32,   \
+    int_fast64_t:            debug_printdec_int64,   \
     float:              debug_printdec_float,   \
     double:             debug_printdec_double,  \
     bool:               debug_print_bool        \

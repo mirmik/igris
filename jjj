@@ -1,0 +1,1229 @@
+In file included from ././igris/dprint.h:4:0,
+                 from ././igris/datastruct/sline.h:4,
+                 from ./igris/protocols/gstuff/autorecv.h:8,
+                 from ./igris/protocols/gstuff/autorecv.c:1:
+././igris/datastruct/sline.h: In function 'sline_debug_info':
+././igris/dprint/dprint.h:140:5: error: '_Generic' specifies two compatible types
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:285:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprptrln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:144:2: note: in expansion of macro 'DPRINTPTR'
+  DPRINTPTR(sl->buf);
+  ^~~~~~~~~
+././igris/dprint/dprint.h:139:5: note: compatible type is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:285:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprptrln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:144:2: note: in expansion of macro 'DPRINTPTR'
+  DPRINTPTR(sl->buf);
+  ^~~~~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic' specifies two compatible types
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:285:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprptrln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:144:2: note: in expansion of macro 'DPRINTPTR'
+  DPRINTPTR(sl->buf);
+  ^~~~~~~~~
+././igris/dprint/dprint.h:139:5: note: compatible type is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:285:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprptrln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:144:2: note: in expansion of macro 'DPRINTPTR'
+  DPRINTPTR(sl->buf);
+  ^~~~~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic' specifies two compatible types
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:285:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprptrln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:144:2: note: in expansion of macro 'DPRINTPTR'
+  DPRINTPTR(sl->buf);
+  ^~~~~~~~~
+././igris/dprint/dprint.h:140:5: note: compatible type is here
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:285:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprptrln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:144:2: note: in expansion of macro 'DPRINTPTR'
+  DPRINTPTR(sl->buf);
+  ^~~~~~~~~
+././igris/dprint/dprint.h:140:5: error: '_Generic' specifies two compatible types
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: compatible type is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic' specifies two compatible types
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: compatible type is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic' specifies two compatible types
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:140:5: note: compatible type is here
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:140:5: error: '_Generic' specifies two compatible types
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: compatible type is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:140:5: error: '_Generic> selector matches multiple associations
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: other match is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic' specifies two compatible types
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: compatible type is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic' specifies two compatible types
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:140:5: note: compatible type is here
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic> selector matches multiple associations
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: other match is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:145:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cap);
+  ^~~~~~
+././igris/dprint/dprint.h:140:5: error: '_Generic' specifies two compatible types
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: compatible type is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic' specifies two compatible types
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: compatible type is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic' specifies two compatible types
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:140:5: note: compatible type is here
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:140:5: error: '_Generic' specifies two compatible types
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: compatible type is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:140:5: error: '_Generic> selector matches multiple associations
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: other match is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic' specifies two compatible types
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: compatible type is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic' specifies two compatible types
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:140:5: note: compatible type is here
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic> selector matches multiple associations
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: other match is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:146:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->len);
+  ^~~~~~
+././igris/dprint/dprint.h:140:5: error: '_Generic' specifies two compatible types
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: compatible type is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic' specifies two compatible types
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: compatible type is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic' specifies two compatible types
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:140:5: note: compatible type is here
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:279:10: note: in expansion of macro 'dpr'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+          ^~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:140:5: error: '_Generic' specifies two compatible types
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: compatible type is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:140:5: error: '_Generic> selector matches multiple associations
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: other match is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic' specifies two compatible types
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: compatible type is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic' specifies two compatible types
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:140:5: note: compatible type is here
+     int_fast16_t:            debug_printdec_int16,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:141:5: error: '_Generic> selector matches multiple associations
+     int_fast32_t:            debug_printdec_int32,   \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
+././igris/dprint/dprint.h:139:5: note: other match is here
+     int_fast8_t:             debug_printdec_int8,    \
+     ^
+././igris/dprint/dprint.h:178:25: note: in expansion of macro 'dpr_'
+ #define dpr_1(X)        dpr_(X)
+                         ^~~~
+././igris/util/macro.h:18:21: note: in expansion of macro 'dpr_1'
+ #define CONCAT(a,b) a##b
+                     ^
+././igris/util/macro.h:19:22: note: in expansion of macro 'CONCAT'
+ #define CONCAT2(a,b) CONCAT(a,b)
+                      ^~~~~~
+././igris/dprint/dprint.h:183:25: note: in expansion of macro 'CONCAT2'
+ #define dpr(...)        CONCAT2(dpr_, COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+                         ^~~~~~~
+././igris/dprint/dprint.h:184:29: note: in expansion of macro 'dpr'
+ #define dprln(...)      do{ dpr(__VA_ARGS__); dln(); }while(0)
+                             ^~~
+././igris/dprint/dprint.h:279:79: note: in expansion of macro 'dprln'
+     do { dpr(#X); debug_putchar(' '); debug_putchar(':'); debug_putchar(' '); dprln(X); } while(0);
+                                                                               ^~~~~
+././igris/datastruct/sline.h:147:2: note: in expansion of macro 'DPRINT'
+  DPRINT(sl->cursor);
+  ^~~~~~
