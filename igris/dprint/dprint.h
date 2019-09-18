@@ -92,10 +92,16 @@ void debug_printdec_uint8 (uint8_t b);
 void debug_printdec_uint16(uint16_t a);
 void debug_printdec_uint32(uint32_t a);
 void debug_printdec_uint64(uint64_t a);
-void debug_printdec_int8 (int8_t b);
-void debug_printdec_int16(int16_t a);
-void debug_printdec_int32(int32_t a);
-void debug_printdec_int64(int64_t a);
+//void debug_printdec_int8 (int8_t b);
+//void debug_printdec_int16(int16_t a);
+//void debug_printdec_int32(int32_t a);
+//void debug_printdec_int64(int64_t a);
+
+void debug_printdec_char(signed char n);
+void debug_printdec_short(signed short n);
+void debug_printdec_int(signed int n);
+void debug_printdec_long(signed long n);
+void debug_printdec_long_long(signed long long n);
 
 /// Float types debug print
 void debug_printdec_float_prec(float a, int prec);
@@ -136,14 +142,22 @@ __END_DECLS
     uint16_t:           debug_printdec_uint16,  \
     uint32_t:           debug_printdec_uint32,  \
     uint64_t:           debug_printdec_uint64,  \
-    int8_t:             debug_printdec_int8,    \
-    int16_t:            debug_printdec_int16,   \
-    int32_t:            debug_printdec_int32,   \
-    int64_t:            debug_printdec_int64,   \
+    signed char:        debug_printdec_char,         \
+    signed short:       debug_printdec_short,        \
+    signed int:         debug_printdec_int,          \
+    signed long:        debug_printdec_long,         \
+    signed long long:   debug_printdec_long_long,    \
     float:              debug_printdec_float,   \
     double:             debug_printdec_double,  \
     bool:               debug_print_bool        \
 )(X)
+
+/*
+int8_t:             debug_printdec_int8,    \
+    int16_t:            debug_printdec_int16,   \
+    int32_t:            debug_printdec_int32,   \
+    int64_t:            debug_printdec_int64,   \
+*/
 
 #define dprhex(X) _Generic((X),                 \
     char:               debug_printhex_uint8,   \
@@ -192,10 +206,17 @@ static inline void dpr(uint8_t obj)         { debug_printdec_uint8(obj); }
 static inline void dpr(uint16_t obj)        { debug_printdec_uint16(obj); }
 static inline void dpr(uint32_t obj)        { debug_printdec_uint32(obj); }
 static inline void dpr(uint64_t obj)        { debug_printdec_uint64(obj); }
-static inline void dpr(int8_t obj)          { debug_printdec_int8(obj); }
+
+static inline void dpr(signed char obj)     { debug_printdec_char(obj); }
+static inline void dpr(signed short obj)     { debug_printdec_short(obj); }
+static inline void dpr(signed int obj)     { debug_printdec_int(obj); }
+static inline void dpr(signed long obj)     { debug_printdec_long(obj); }
+static inline void dpr(signed long long obj)     { debug_printdec_long_long(obj); }
+/*static inline void dpr(int8_t obj)          { debug_printdec_int8(obj); }
 static inline void dpr(int16_t obj)         { debug_printdec_int16(obj); }
 static inline void dpr(int32_t obj)         { debug_printdec_int32(obj); }
 static inline void dpr(int64_t obj)         { debug_printdec_int64(obj); }
+*/
 static inline void dpr(double obj)          { debug_printdec_double(obj); }
 static inline void dpr(float obj)           { debug_printdec_float(obj); }
 static inline void dpr(bool obj)            { debug_print_bool(obj); }

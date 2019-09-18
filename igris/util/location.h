@@ -19,9 +19,9 @@ struct location {
 __BEGIN_DECLS
 
 static inline void debug_print_location(struct location location) {
-	debug_print("file: "); debug_print(location.file); dln();
-	debug_print("func: "); debug_print(location.func); dln();
-	debug_print("line: "); debug_printdec_int32(location.line); dln();
+	dpr("file: "); dpr(location.file); dln();
+	dpr("func: "); dpr(location.func); dln();
+	dpr("line: "); dpr(location.line); dln();
 }
 
 __END_DECLS

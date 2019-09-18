@@ -146,7 +146,7 @@ void debug_printdec_double_prec(double a, int prec)
 	}
 	o += 0.5;
 	
-	debug_printdec_int64 ( o );
+	debug_printdec_long_long ( o );
 }
 
 void debug_printhex_ptr(const void* v)
@@ -220,10 +220,11 @@ void debug_print_dump(const void *mem, uint16_t len)
 	}
 }
 
-void debug_printdec_int8(int8_t x) {	debug_printdec_int64((int64_t)x);}
-void debug_printdec_int16(int16_t x) {debug_printdec_int64((int64_t)x);}
-void debug_printdec_int32(int32_t x) {debug_printdec_int64((int64_t)x);}
-void debug_printdec_int64(int64_t x) {if (x < 0) {x = -x; debug_putchar('-');} debug_printdec_uint64(x);}
+void debug_printdec_char(signed char x)           { debug_printdec_long_long((long long)x);}
+void debug_printdec_short(signed short x)         { debug_printdec_long_long((long long)x);}
+void debug_printdec_int(signed int x)             { debug_printdec_long_long((long long)x);}
+void debug_printdec_long(signed long x)           { debug_printdec_long_long((long long)x);}
+void debug_printdec_long_long(signed long long x) {if (x < 0) {x = -x; debug_putchar('-');} debug_printdec_uint64(x);}
 void debug_printdec_uint8(uint8_t x) {debug_printdec_uint64((uint64_t)x);}
 void debug_printdec_uint16(uint16_t x) {debug_printdec_uint64((uint64_t)x);}
 void debug_printdec_uint32(uint32_t x) {debug_printdec_uint64((uint64_t)x);}
