@@ -38,14 +38,14 @@ licant.cxx_library(target("so"),
 	shared = True
 )
 
-licant.cxx_library(target("a"),
-	toolchain=toolchain,
-	mdepends = modules,
-	cxx_flags = '-fPIC',
-	cc_flags = '-fPIC -mthumb -mcpu=cortex-m4',
-	ccstd = "c11",
-	shared = False
-)
+#licant.cxx_library(target("a"),
+#	toolchain=toolchain,
+#	mdepends = modules,
+#	cxx_flags = '-fPIC',
+#	cc_flags = '-fPIC -mthumb -mcpu=cortex-m4',
+#	ccstd = "c11",
+#	shared = False
+#)
 
 @licant.routine(deps=[target("so")])
 def install():
