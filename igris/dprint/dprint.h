@@ -103,6 +103,18 @@ void debug_printdec_int(signed int n);
 void debug_printdec_long(signed long n);
 void debug_printdec_long_long(signed long long n);
 
+void debug_printhex_char(char n);
+void debug_printhex_signed_char(signed char n);
+void debug_printhex_signed_short(signed short n);
+void debug_printhex_signed_int(signed int n);
+void debug_printhex_signed_long(signed long n);
+void debug_printhex_signed_long_long(signed long long n);
+void debug_printhex_unsigned_char(unsigned char n);
+void debug_printhex_unsigned_short(unsigned short n);
+void debug_printhex_unsigned_int(unsigned int n);
+void debug_printhex_unsigned_long(unsigned long n);
+void debug_printhex_unsigned_long_long(unsigned long long n);
+
 /// Float types debug print
 void debug_printdec_float_prec(float a, int prec);
 void debug_printdec_double_prec(double a, int prec);
@@ -160,17 +172,19 @@ int8_t:             debug_printdec_int8,    \
 */
 
 #define dprhex(X) _Generic((X),                 \
-    char:               debug_printhex_uint8,   \
-    uint8_t:            debug_printhex_uint8,   \
-    uint16_t:           debug_printhex_uint16,  \
-    uint32_t:           debug_printhex_uint32,  \
-    uint64_t:           debug_printhex_uint64,  \
-    int8_t:             debug_printhex_int8,    \
-    int16_t:            debug_printhex_int16,   \
-    int32_t:            debug_printhex_int32,   \
-    int64_t:            debug_printhex_int64,   \
-    float:              debug_printhex_float,   \
-    double:             debug_printhex_double   \
+    char:                 debug_printhex_char,         \
+    unsigned char:        debug_printhex_unsigned_char,         \
+    unsigned short:       debug_printhex_unsigned_short,        \
+    unsigned int:         debug_printhex_unsigned_int,          \
+    unsigned long:        debug_printhex_unsigned_long,         \
+    unsigned long long:   debug_printhex_unsigned_long_long,    \
+    signed char:          debug_printhex_signed_char,           \
+    signed short:         debug_printhex_signed_short,        \
+    signed int:           debug_printhex_signed_int,          \
+    signed long:          debug_printhex_signed_long,         \
+    signed long long:     debug_printhex_signed_long_long,    \
+    float:                debug_printhex_float,   \
+    double:               debug_printhex_double   \
 )(X)
 
 #define dprbin(X) _Generic((X),                 \
@@ -221,14 +235,25 @@ static inline void dpr(double obj)          { debug_printdec_double(obj); }
 static inline void dpr(float obj)           { debug_printdec_float(obj); }
 static inline void dpr(bool obj)            { debug_print_bool(obj); }
 
-static inline void dprhex(uint8_t obj)      { debug_printhex_uint8(obj); }
+/*static inline void dprhex(uint8_t obj)      { debug_printhex_uint8(obj); }
 static inline void dprhex(uint16_t obj)     { debug_printhex_uint16(obj); }
 static inline void dprhex(uint32_t obj)     { debug_printhex_uint32(obj); }
-static inline void dprhex(uint64_t obj)     { debug_printhex_uint64(obj); }
-static inline void dprhex(int8_t obj)       { debug_printhex_int8(obj); }
-static inline void dprhex(int16_t obj)      { debug_printhex_int16(obj); }
-static inline void dprhex(int32_t obj)      { debug_printhex_int32(obj); }
-static inline void dprhex(int64_t obj)      { debug_printhex_int64(obj); }
+static inline void dprhex(uint64_t obj)     { debug_printhex_uint64(obj); }*/
+
+static inline void dprhex(char obj)      { debug_printhex_char(obj); }
+
+static inline void dprhex(unsigned char obj)      { debug_printhex_unsigned_char(obj); }
+static inline void dprhex(unsigned short obj)     { debug_printhex_unsigned_short(obj); }
+static inline void dprhex(unsigned int obj)       { debug_printhex_unsigned_int(obj); }
+static inline void dprhex(unsigned long obj)      { debug_printhex_unsigned_long(obj); }
+static inline void dprhex(unsigned long long obj) { debug_printhex_unsigned_long_long(obj); }
+
+static inline void dprhex(signed char obj)      { debug_printhex_signed_char(obj); }
+static inline void dprhex(signed short obj)     { debug_printhex_signed_short(obj); }
+static inline void dprhex(signed int obj)       { debug_printhex_signed_int(obj); }
+static inline void dprhex(signed long obj)      { debug_printhex_signed_long(obj); }
+static inline void dprhex(signed long long obj) { debug_printhex_signed_long_long(obj); }
+
 static inline void dprhex(double obj)       { debug_printhex_double(obj); }
 static inline void dprhex(float obj)        { debug_printhex_float(obj); }
 

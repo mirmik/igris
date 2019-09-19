@@ -7,6 +7,7 @@ licant.module("igris.include", include_paths = ["."])
 licant.execute("compat/libc/libc.g.py")
 licant.execute("compat/std/std.g.py")
 licant.execute("compat/posix/posix.g.py")
+licant.execute("compat/newlib-stub/newlib-stub.g.py")
 
 licant.module("igris.cxx_support", sources=["compat/cxx/__cxa_pure_virtual.c"])
 licant.module("igris.stdlibs", 

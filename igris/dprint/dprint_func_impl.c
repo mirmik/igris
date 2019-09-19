@@ -67,6 +67,17 @@ void debug_printhex_uint8 (uint8_t b)
 	debug_printhex_uint4(b & 0x0F);
 }
 
+void debug_printhex_n(uint8_t* arg, int n)
+{
+	uint8_t *p = arg + n;
+	while(n--) 
+	{
+		debug_printhex_uint8(*--p);
+	}
+}
+
+void debug_printhex_unsigned_long(unsigned long arg) { debug_printhex_n((uint8_t*)&arg, sizeof(unsigned long)); }
+
 void debug_printhex_uint16(uint16_t a)
 {
 	uint8_t *p = (uint8_t*) &a;
