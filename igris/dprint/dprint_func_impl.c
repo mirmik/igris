@@ -55,6 +55,21 @@ void debug_printbin_uint64(uint64_t a)
 	debug_printbin_uint8(*(p + 0));
 }
 
+void debug_printdec_uint64(uint64_t x)
+{
+	char c[24];
+	char* end_buf = c + 24;
+	char* ptr = end_buf;
+	if (x == 0) debug_putchar('0');
+	*--ptr = '\0';
+	for (; x != 0; x /= 10)
+	{
+		*--ptr = ((x % 10) + '0');
+	}
+	debug_print(ptr);
+}
+
+
 void debug_printhex_uint4(uint8_t b)
 {
 	uint8_t c = b < 10 ? b + '0' : b + 'A' - 10;
@@ -76,7 +91,11 @@ void debug_printhex_n(uint8_t* arg, int n)
 	}
 }
 
-void debug_printhex_unsigned_long(unsigned long arg) { debug_printhex_n((uint8_t*)&arg, sizeof(unsigned long)); }
+void debug_printhex_unsigned_char(unsigned char arg)           { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
+void debug_printhex_unsigned_short(unsigned short arg)         { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
+void debug_printhex_unsigned_int(unsigned int arg)             { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
+void debug_printhex_unsigned_long(unsigned long arg)           { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
+void debug_printhex_unsigned_long_long(unsigned long long arg) { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
 
 void debug_printhex_uint16(uint16_t a)
 {
@@ -157,7 +176,7 @@ void debug_printdec_double_prec(double a, int prec)
 	}
 	o += 0.5;
 	
-	debug_printdec_long_long ( o );
+	debug_printdec_signed_long_long ( o );
 }
 
 void debug_printhex_ptr(const void* v)
@@ -231,28 +250,21 @@ void debug_print_dump(const void *mem, uint16_t len)
 	}
 }
 
-void debug_printdec_char(signed char x)           { debug_printdec_long_long((long long)x);}
-void debug_printdec_short(signed short x)         { debug_printdec_long_long((long long)x);}
-void debug_printdec_int(signed int x)             { debug_printdec_long_long((long long)x);}
-void debug_printdec_long(signed long x)           { debug_printdec_long_long((long long)x);}
-void debug_printdec_long_long(signed long long x) {if (x < 0) {x = -x; debug_putchar('-');} debug_printdec_uint64(x);}
+void debug_printdec_signed_char(signed char x)           { debug_printdec_signed_long_long((long long)x);}
+void debug_printdec_signed_short(signed short x)         { debug_printdec_signed_long_long((long long)x);}
+void debug_printdec_signed_int(signed int x)             { debug_printdec_signed_long_long((long long)x);}
+void debug_printdec_signed_long(signed long x)           { debug_printdec_signed_long_long((long long)x);}
+void debug_printdec_signed_long_long(signed long long x) {if (x < 0) {x = -x; debug_putchar('-');} debug_printdec_uint64(x);}
+
+void debug_printdec_unsigned_char(unsigned char x)           { debug_printdec_unsigned_long_long((long long)x);}
+void debug_printdec_unsigned_short(unsigned short x)         { debug_printdec_unsigned_long_long((long long)x);}
+void debug_printdec_unsigned_int(unsigned int x)             { debug_printdec_unsigned_long_long((long long)x);}
+void debug_printdec_unsigned_long(unsigned long x)           { debug_printdec_unsigned_long_long((long long)x);}
+void debug_printdec_unsigned_long_long(unsigned long long x) { debug_printdec_uint64(x);}
+
 void debug_printdec_uint8(uint8_t x) {debug_printdec_uint64((uint64_t)x);}
 void debug_printdec_uint16(uint16_t x) {debug_printdec_uint64((uint64_t)x);}
 void debug_printdec_uint32(uint32_t x) {debug_printdec_uint64((uint64_t)x);}
-
-void debug_printdec_uint64(uint64_t x)
-{
-	char c[24];
-	char* end_buf = c + 24;
-	char* ptr = end_buf;
-	if (x == 0) debug_putchar('0');
-	*--ptr = '\0';
-	for (; x != 0; x /= 10)
-	{
-		*--ptr = ((x % 10) + '0');
-	}
-	debug_print(ptr);
-}
 
 void debug_asmlink_test()
 {

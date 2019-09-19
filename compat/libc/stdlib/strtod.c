@@ -13,6 +13,7 @@
 #include <stddef.h>
 #include <ctype.h>
 
+__attribute__((weak))
 double strtod(const char *nptr, char **endptr) {
 	double val= 0.0;
 	int d = 0;

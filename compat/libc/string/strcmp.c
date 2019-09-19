@@ -8,6 +8,7 @@
 
 #include <string.h>
 
+__attribute__((weak))
 int strcmp(const char *str1, const char *str2) {
 	unsigned const char *s1 = (unsigned const char *) str1;
 	unsigned const char *s2 = (unsigned const char *) str2;

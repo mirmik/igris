@@ -9,7 +9,7 @@ licant.execute("compat/std/std.g.py")
 licant.execute("compat/posix/posix.g.py")
 licant.execute("compat/newlib-stub/newlib-stub.g.py")
 
-licant.module("igris.cxx_support", sources=["compat/cxx/__cxa_pure_virtual.c"])
+licant.module("igris.cxx_support", sources=["compat/cxx/__cxa_pure_virtual.c", "compat/cxx/__dso_handle.c"])
 licant.module("igris.stdlibs", 
 	mdepends = ["igris.libc", "igris.std", "igris.posix"])
 

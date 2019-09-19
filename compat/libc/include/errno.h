@@ -20,7 +20,6 @@ int* __errno_location();
 __END_DECLS
 
 #define errno (*__errno_location())
-#define SET_ERRNO(x) (errno = x)
 
 #define ENOERR           0     /* No error */
 #define EPERM            1001  /* Not permitted */ /* FIXME: see issue 519 */

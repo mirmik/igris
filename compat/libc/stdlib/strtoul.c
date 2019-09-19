@@ -47,6 +47,8 @@
 #include <errno.h>
 #include <limits.h>
 
+#include <igris/util/errno.h>
+
 unsigned long int strtoul(const char *nptr, char **endptr, int base) {
 	const char *s = nptr;
 	unsigned long acc;

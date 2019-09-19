@@ -88,20 +88,26 @@ void debug_printbin_uint64(uint64_t a);
 #define debug_printbin_int64(a) debug_printbin_uint64(a)
 
 /// Decimal integer type`s representation
-void debug_printdec_uint8 (uint8_t b);
-void debug_printdec_uint16(uint16_t a);
-void debug_printdec_uint32(uint32_t a);
-void debug_printdec_uint64(uint64_t a);
+//void debug_printdec_uint8 (uint8_t b);
+//void debug_printdec_uint16(uint16_t a);
+//void debug_printdec_uint32(uint32_t a);
+//void debug_printdec_uint64(uint64_t a);
 //void debug_printdec_int8 (int8_t b);
 //void debug_printdec_int16(int16_t a);
 //void debug_printdec_int32(int32_t a);
 //void debug_printdec_int64(int64_t a);
 
-void debug_printdec_char(signed char n);
-void debug_printdec_short(signed short n);
-void debug_printdec_int(signed int n);
-void debug_printdec_long(signed long n);
-void debug_printdec_long_long(signed long long n);
+void debug_printdec_unsigned_char(unsigned char n);
+void debug_printdec_unsigned_short(unsigned short n);
+void debug_printdec_unsigned_int(unsigned int n);
+void debug_printdec_unsigned_long(unsigned long n);
+void debug_printdec_unsigned_long_long(unsigned long long n);
+
+void debug_printdec_signed_char(signed char n);
+void debug_printdec_signed_short(signed short n);
+void debug_printdec_signed_int(signed int n);
+void debug_printdec_signed_long(signed long n);
+void debug_printdec_signed_long_long(signed long long n);
 
 void debug_printhex_char(char n);
 void debug_printhex_signed_char(signed char n);
@@ -148,20 +154,21 @@ __END_DECLS
 #ifndef __cplusplus
 
 #define dpr_(X) _Generic((X),                    \
-    const char*:        debug_print,            \
-    char*:              debug_print,            \
-    uint8_t:            debug_printdec_uint8,   \
-    uint16_t:           debug_printdec_uint16,  \
-    uint32_t:           debug_printdec_uint32,  \
-    uint64_t:           debug_printdec_uint64,  \
-    signed char:        debug_printdec_char,         \
-    signed short:       debug_printdec_short,        \
-    signed int:         debug_printdec_int,          \
-    signed long:        debug_printdec_long,         \
-    signed long long:   debug_printdec_long_long,    \
-    float:              debug_printdec_float,   \
-    double:             debug_printdec_double,  \
-    bool:               debug_print_bool        \
+    const char*:          debug_print,            \
+    char*:                debug_print,            \
+    unsigned char:        debug_printdec_unsigned_char,         \
+    unsigned short:       debug_printdec_unsigned_short,        \
+    unsigned int:         debug_printdec_unsigned_int,          \
+    unsigned long:        debug_printdec_unsigned_long,         \
+    unsigned long long:   debug_printdec_unsigned_long_long,    \
+    signed char:          debug_printdec_signed_char,         \
+    signed short:         debug_printdec_signed_short,        \
+    signed int:           debug_printdec_signed_int,          \
+    signed long:          debug_printdec_signed_long,         \
+    signed long long:     debug_printdec_signed_long_long,    \
+    float:                debug_printdec_float,   \
+    double:               debug_printdec_double,  \
+    bool:                 debug_print_bool        \
 )(X)
 
 /*
@@ -216,16 +223,18 @@ int8_t:             debug_printdec_int8,    \
 static inline void dpr()           { }
 static inline void dpr(char* obj)           { debug_print(obj); }
 static inline void dpr(const char* obj)     { debug_print(obj); }
-static inline void dpr(uint8_t obj)         { debug_printdec_uint8(obj); }
-static inline void dpr(uint16_t obj)        { debug_printdec_uint16(obj); }
-static inline void dpr(uint32_t obj)        { debug_printdec_uint32(obj); }
-static inline void dpr(uint64_t obj)        { debug_printdec_uint64(obj); }
 
-static inline void dpr(signed char obj)     { debug_printdec_char(obj); }
-static inline void dpr(signed short obj)     { debug_printdec_short(obj); }
-static inline void dpr(signed int obj)     { debug_printdec_int(obj); }
-static inline void dpr(signed long obj)     { debug_printdec_long(obj); }
-static inline void dpr(signed long long obj)     { debug_printdec_long_long(obj); }
+static inline void dpr(unsigned char obj)     { debug_printdec_unsigned_char(obj); }
+static inline void dpr(unsigned short obj)    { debug_printdec_unsigned_short(obj); }
+static inline void dpr(unsigned int obj)      { debug_printdec_unsigned_int(obj); }
+static inline void dpr(unsigned long obj)     { debug_printdec_unsigned_long(obj); }
+static inline void dpr(unsigned long long obj){ debug_printdec_unsigned_long_long(obj); }
+
+static inline void dpr(signed char obj)     { debug_printdec_signed_char(obj); }
+static inline void dpr(signed short obj)    { debug_printdec_signed_short(obj); }
+static inline void dpr(signed int obj)      { debug_printdec_signed_int(obj); }
+static inline void dpr(signed long obj)     { debug_printdec_signed_long(obj); }
+static inline void dpr(signed long long obj){ debug_printdec_signed_long_long(obj); }
 /*static inline void dpr(int8_t obj)          { debug_printdec_int8(obj); }
 static inline void dpr(int16_t obj)         { debug_printdec_int16(obj); }
 static inline void dpr(int32_t obj)         { debug_printdec_int32(obj); }
