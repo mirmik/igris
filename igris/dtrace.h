@@ -31,7 +31,11 @@
 #define DTRACE_ARGS_2(a,b)                  DTRPRE() ARGS_INVOKE_FOR_EACH(DPRARG,a,b); DTRPOS()
 #define DTRACE_ARGS_1(a)                    DTRPRE() DPRARG(a); DTRPOS()
 
+#if NODTRACE
+#define DTRACE_ARGS(...)
+#else
 #define DTRACE_ARGS(...) CONCAT2(DTRACE_ARGS_,COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)
+#endif
 
 #define DTRACE_CONDITION(en) if (en) DTRACE(); 
 #define DTRACE_ARGS_CONDITION(en, ...) if (en) CONCAT2(DTRACE_ARGS_,COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__)

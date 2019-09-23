@@ -21,15 +21,15 @@ namespace igris
 
 		inline void wait() const
 		{
-			std::unique_lock< std::mutex > lock(m_mutex);
-			m_condition.wait(lock, [&]()->bool{ return m_bFlag; });
+			std::unique_lock< std::mutex > _lock(m_mutex);
+			m_condition.wait(_lock, [&]()->bool{ return m_bFlag; });
 		}
 
 		template< typename R, typename P >
 		bool wait(const std::chrono::duration<R, P>& crRelTime) const
 		{
-			std::unique_lock lock(m_mutex);
-			if (!m_condition.wait_for(lock, crRelTime, [&]()->bool{ return m_bFlag; }))
+			std::unique_lock< std::mutex > _lock(m_mutex);
+			if (!m_condition.wait_for(_lock, crRelTime, [&]()->bool{ return m_bFlag; }))
 				return false;
 			return true;
 		}
