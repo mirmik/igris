@@ -44,11 +44,15 @@ namespace std
 	{
 		constexpr static float max() { return FLT_MAX; } 
 		constexpr static float min() { return FLT_MIN; } 
+		constexpr static float lowest() { return -FLT_MAX; } 
 		constexpr static float epsilon() { return FLT_EPSILON; } 
 	};
 
 	template<> struct numeric_limits<double> 
 	{
+		constexpr static double max() { return DBL_MAX; } 
+		constexpr static double min() { return DBL_MIN; } 
+		constexpr static double lowest() { return -DBL_MAX; } 
 		constexpr static double epsilon() { return DBL_EPSILON; } 
 	};
 	
