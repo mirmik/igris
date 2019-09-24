@@ -33,7 +33,7 @@ modules = [
 licant.cxx_library("shared",
 	target=target("so"),
 	toolchain=toolchain,
-	mdepends = modules,
+	mdepends = modules + ["igris.syslock", ("igris.ctrobj", "linux")],
 	cxx_flags = '-fPIC',
 	cc_flags = '-fPIC',
 	shared = True
