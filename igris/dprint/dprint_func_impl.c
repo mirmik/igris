@@ -91,7 +91,8 @@ void debug_printhex_n(uint8_t* arg, int n)
 	}
 }
 
-void debug_printhex_unsigned_char(unsigned char arg)           { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
+void debug_printhex_char(char arg)           				   { debug_printhex_uint8(arg); }
+void debug_printhex_unsigned_char(unsigned char arg)           { debug_printhex_uint8(arg); }
 void debug_printhex_unsigned_short(unsigned short arg)         { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
 void debug_printhex_unsigned_int(unsigned int arg)             { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
 void debug_printhex_unsigned_long(unsigned long arg)           { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }

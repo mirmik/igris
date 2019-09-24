@@ -51,7 +51,7 @@ licant.cxx_library("static",
 
 @licant.routine(deps=[target("so")])
 def install():
-	os.system("cp {0} {1}".format(target, install_directory_path))
+	os.system("cp {0} {1}".format(target("so"), install_directory_path))
 	os.system("rm {}".format(install_library_link))
 	os.system("ln -s {0} {1}".format(install_library_path, install_library_link))
 

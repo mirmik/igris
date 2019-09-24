@@ -25,6 +25,26 @@ namespace std
 	template<> struct numeric_limits<int> 
 	{
 		constexpr static int maximum() { return INT_MAX; } 
+		constexpr static int minimum() { return INT_MIN; } 
+	};
+
+	template<> struct numeric_limits<long> 
+	{
+		constexpr static long maximum() { return LONG_MAX; } 
+		constexpr static long minimum() { return LONG_MIN; }
+	};
+
+	template<> struct numeric_limits<long long> 
+	{
+		constexpr static long long maximum() { return LLONG_MAX; } 
+		constexpr static long long minimum() { return LLONG_MIN; } 
+	};
+
+	template<> struct numeric_limits<float> 
+	{
+		constexpr static float maximum() { return FLT_MAX; } 
+		constexpr static float minimum() { return FLT_MIN; } 
+		constexpr static float epsilon() { return FLT_EPSILON; } 
 	};
 
 	template<> struct numeric_limits<double> 
