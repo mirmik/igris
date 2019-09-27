@@ -9,6 +9,7 @@ namespace std {
 		public:
 		first_type first;
 		second_type second;
+		constexpr pair(){};
 		pair(first_type _first, second_type _second) : first(_first), second(_second){};
 		pair(const pair& p) : first(p.first), second(p.second){};
 		pair(pair&& p) : first(p.first), second(p.second){};

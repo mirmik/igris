@@ -30,4 +30,22 @@ static inline int argvc_internal_split(char* data, char** argv, int argcmax) {
 	return argc;
 }
 
+static inline int argvc_internal_split_n(char* data, int maxlen, char** argv, int argcmax) {
+	int argc = 0;
+	char* eptr = data + maxlen;
+
+	newarg_search:
+	while(*data == ' ') ++data;
+	if (*data == '\0' || argc >= argcmax || data == eptr) return argc;
+
+	argv[argc++] = data;
+	while(*data != ' ' && *data != '\0' || data == eptr) ++data;
+	if (*data == ' ') { 
+		*data++ = '\0'; 
+		goto newarg_search; 
+	};
+
+	return argc;
+}
+
 #endif
