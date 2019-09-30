@@ -5,15 +5,15 @@
 
 namespace std
 {
-	template<class ... Args> class tuple;
+	template<class ... Args> struct tuple;
 
 	template<>
-	class tuple<>
+	struct tuple<>
 	{
 	};
 
 	template<class T0>
-	class tuple<T0>
+	struct tuple<T0>
 	{
 		T0 a0;
 	public:
@@ -21,7 +21,7 @@ namespace std
 	};
 
 	template<class T0, class T1>
-	class tuple<T0,T1>
+	struct tuple<T0,T1>
 	{
 		T0 a0; T1 a1;
 	public:
@@ -30,7 +30,7 @@ namespace std
 	};
 
 	template<class T0, class T1, class T2>
-	class tuple<T0,T1,T2>
+	struct tuple<T0,T1,T2>
 	{
 		T0 a0; T1 a1; T2 a2;
 	public:
@@ -39,14 +39,14 @@ namespace std
 	};
 
 	template<class T0, class T1, class T2, class T3>
-	class tuple<T0,T1,T2,T3>
+	struct tuple<T0,T1,T2,T3>
 	{
 		T0 a0; T1 a1; T2 a2; T3 a3;
 	};
 
 	template<class T0, class T1, class T2, class T3,
 	         class T4>
-	class tuple<T0,T1,T2,T3,T4>
+	struct tuple<T0,T1,T2,T3,T4>
 	{
 		T0 a0; T1 a1; T2 a2; T3 a3;
 		T4 a4;
@@ -54,7 +54,7 @@ namespace std
 
 	template<class T0, class T1, class T2, class T3,
 	         class T4, class T5>
-	class tuple<T0,T1,T2,T3,T4,T5>
+	struct tuple<T0,T1,T2,T3,T4,T5>
 	{
 		T0 a0; T1 a1; T2 a2; T3 a3;
 		T4 a4; T5 a5;
@@ -62,7 +62,7 @@ namespace std
 
 	template<class T0, class T1, class T2, class T3,
 	         class T4, class T5, class T6>
-	class tuple<T0,T1,T2,T3,T4,T5,T6>
+	struct tuple<T0,T1,T2,T3,T4,T5,T6>
 	{
 		T0 a0; T1 a1; T2 a2; T3 a3;
 		T4 a4; T5 a5; T6 a6;
@@ -70,7 +70,7 @@ namespace std
 
 	template<class T0, class T1, class T2, class T3,
 	         class T4, class T5, class T6, class T7>
-	class tuple<T0,T1,T2,T3,T4,T5,T6,T7>
+	struct tuple<T0,T1,T2,T3,T4,T5,T6,T7>
 	{
 		T0 a0; T1 a1; T2 a2; T3 a3;
 		T4 a4; T5 a5; T6 a6; T7 a7;
@@ -79,7 +79,7 @@ namespace std
 	template<class T0, class T1, class T2, class T3,
 	         class T4, class T5, class T6, class T7,
 	         class T8>
-	class tuple<T0,T1,T2,T3,T4,T5,T6,T7,T8>
+	struct tuple<T0,T1,T2,T3,T4,T5,T6,T7,T8>
 	{
 		T0 a0; T1 a1; T2 a2; T3 a3;
 		T4 a4; T5 a5; T6 a6; T7 a7;
@@ -89,12 +89,29 @@ namespace std
 	template<class T0, class T1, class T2, class T3,
 	         class T4, class T5, class T6, class T7,
 	         class T8, class T9>
-	class tuple<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9>
+	struct tuple<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9>
 	{
 		T0 a0; T1 a1; T2 a2; T3 a3;
 		T4 a4; T5 a5; T6 a6; T7 a7;
 		T8 a8; T9 a9;
 	};
+
+	template<int N> 
+	struct get_impl;
+
+	template<> struct get_impl<0> { template <class Tpl> static inline auto get(Tpl& tpl) { return tpl.a0; } };
+	template<> struct get_impl<1> { template <class Tpl> static inline auto get(Tpl& tpl) { return tpl.a1; } };
+	template<> struct get_impl<2> { template <class Tpl> static inline auto get(Tpl& tpl) { return tpl.a2; } };
+	template<> struct get_impl<3> { template <class Tpl> static inline auto get(Tpl& tpl) { return tpl.a3; } };
+	template<> struct get_impl<4> { template <class Tpl> static inline auto get(Tpl& tpl) { return tpl.a4; } };
+	template<> struct get_impl<5> { template <class Tpl> static inline auto get(Tpl& tpl) { return tpl.a5; } };
+	template<> struct get_impl<6> { template <class Tpl> static inline auto get(Tpl& tpl) { return tpl.a6; } };
+	template<> struct get_impl<7> { template <class Tpl> static inline auto get(Tpl& tpl) { return tpl.a7; } };
+	template<> struct get_impl<8> { template <class Tpl> static inline auto get(Tpl& tpl) { return tpl.a8; } };
+	template<> struct get_impl<9> { template <class Tpl> static inline auto get(Tpl& tpl) { return tpl.a9; } };
+
+	template <int N, class Tpl>
+	auto get(Tpl& tpl) { return get_impl<N>::get(tpl); }
 }
 
 #endif
