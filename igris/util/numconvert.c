@@ -1,5 +1,6 @@
 #include <igris/util/numconvert.h>
 #include <igris/util/hexascii.h>
+#include <igris/dprint.h>
 
 #include <ctype.h>
 #include <string.h>
@@ -15,25 +16,27 @@ char *i64toa( int64_t num, char *buf, uint8_t base )
 	p1 = buf;	/* start of buffer */
 
 	// check base
-	if( base < 2 || base > 36 )
-		{ return buf; }
+	if ( base < 2 || base > 36 )
+	{ return buf; }
 
 	/* If num < 0, put `-' in the head.  */
-	if( num < 0 )
+	if ( num < 0 )
 	{
 		*(p++) = '-';
 		p1++;
 		ud = -num;
 	}
 	else
-		{ ud = num; }
+	{ ud = num; }
 
 	/* Divide ud by base until ud == 0.  */
 	int16_t remainder = 0;
-	do {
+	do
+	{
 		remainder = ud % base;
 		*(p++) = (remainder < 10) ? remainder + '0' : remainder + 'a' - 10;
-	} while( ud /= base );
+	}
+	while ( ud /= base );
 
 	/* Terminate buf.  */
 	*p = '\0';
@@ -41,7 +44,7 @@ char *i64toa( int64_t num, char *buf, uint8_t base )
 	/* Reverse buffer.  */
 	p2 = p - 1;	/* end of buffer */
 	char tmp;
-	while( p1 < p2 )
+	while ( p1 < p2 )
 	{
 		tmp = *p1;
 		*p1 = *p2;
@@ -52,15 +55,18 @@ char *i64toa( int64_t num, char *buf, uint8_t base )
 	return p;
 }
 
-char *i32toa( int32_t num, char *buf, uint8_t base ) {
+char *i32toa( int32_t num, char *buf, uint8_t base )
+{
 	return i64toa(num, buf, base);
 }
 
-char *i16toa( int16_t num, char *buf, uint8_t base ) {
+char *i16toa( int16_t num, char *buf, uint8_t base )
+{
 	return i64toa(num, buf, base);
 }
 
-char *i8toa( int8_t num, char *buf, uint8_t base ) {
+char *i8toa( int8_t num, char *buf, uint8_t base )
+{
 	return i64toa(num, buf, base);
 }
 
@@ -74,17 +80,19 @@ char *u64toa( uint64_t num, char *buf, uint8_t base )
 	p1 = buf;	/* start of buffer */
 
 	// check base
-	if( base < 2 || base > 36 )
-		{ return buf; }
+	if ( base < 2 || base > 36 )
+	{ return buf; }
 
 	ud = num;
 
 	/* Divide ud by base until ud == 0.  */
 	int16_t remainder = 0;
-	do {
+	do
+	{
 		remainder = ud % base;
 		*(p++) = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
-	} while( ud /= base );
+	}
+	while ( ud /= base );
 
 	/* Terminate buf.  */
 	*p = '\0';
@@ -92,7 +100,7 @@ char *u64toa( uint64_t num, char *buf, uint8_t base )
 	/* Reverse buffer.  */
 	p2 = p - 1;	/* end of buffer */
 	char tmp;
-	while( p1 < p2 )
+	while ( p1 < p2 )
 	{
 		tmp = *p1;
 		*p1 = *p2;
@@ -103,39 +111,45 @@ char *u64toa( uint64_t num, char *buf, uint8_t base )
 	return p;
 }
 
-char *u32toa( uint64_t num, char *buf, uint8_t base ) {
+char *u32toa( uint64_t num, char *buf, uint8_t base )
+{
 	return u64toa(num, buf, base);
 }
 
-char *u16toa( uint64_t num, char *buf, uint8_t base ) {
+char *u16toa( uint64_t num, char *buf, uint8_t base )
+{
 	return u64toa(num, buf, base);
 }
 
-char *u8toa( uint64_t num, char *buf, uint8_t base ) {
+char *u8toa( uint64_t num, char *buf, uint8_t base )
+{
 	return u64toa(num, buf, base);
 }
 
-uint32_t atou32(const char *buf, uint8_t base, char** end) {
+uint32_t atou32(const char *buf, uint8_t base, char** end)
+{
 	char c;
 	uint32_t res = 0;
-	
-	while(isxdigit(c = *buf++)) {
+
+	while (isxdigit(c = *buf++))
+	{
 		res = res * base + hex2half(c);
 	}
-	
-	if (end) 
+
+	if (end)
 		*end = (char*) buf - 1;
-	
-	return res; 
+
+	return res;
 }
 
-int32_t atoi32(const char *buf, uint8_t base, char** end) {
+int32_t atoi32(const char *buf, uint8_t base, char** end)
+{
 	uint8_t minus;
 	int32_t u;
 
 	minus = *buf == '-';
 	if (minus) ++buf;
-	
+
 	u = atou32(buf, base, end);
 	return minus ? -u : u;
 }
@@ -164,7 +178,8 @@ char * f32toa(float32_t f, char * buf, int8_t precision)
 	char c;
 	int32_t intPart;
 
-	if (isinf(f)) {
+	if (isinf(f))
+	{
 		*buf++ = f > 0 ? '+' : '-';
 		return strcpy(buf, "inf");;
 	}
@@ -250,30 +265,43 @@ char * f32toa(float32_t f, char * buf, int8_t precision)
 	return buf;
 }
 
-float32_t atof32(const char* str, char** pend) {
-	if (!isdigit(*str) && *str != '-') {
+static inline float local_pow(int b, int n) 
+{
+	int res = 1;
+	while(n--) 
+	{
+		res *= b;
+	}
+	return res;
+}
+
+float32_t atof32(const char* str, char** pend)
+{
+	uint8_t minus;
+	char* end;
+
+	minus = '-' == *str ? 1 : 0;
+
+	if (!isdigit(*str) && *str != '-')
+	{
 		return 0;
 	}
 
-	char* end;
 	int i = atoi32(str, 10, &end);
-	uint8_t minus = i < 0 ? 1 : 0; 
-	
-	if (minus) 
-	{
-		i = -i;
-	}
 
 	str = end;
-	if (*str == '.') 
+	if (*str == '.')
 	{
+		i = minus ? -i : i;
+
 		int d = atou32(++str, 10, &end);
 		if (pend) *pend = end;
-		float ret = (float)i + d / (pow(10, end - str)); 
-		return minus ? -ret : ret;
-	} 
 
-	else 
+		float ret = (float)i + (float)d / (local_pow(10, end - str));
+		return minus ? -ret : ret;
+	}
+
+	else
 	{
 		if (pend) *pend = end;
 		return i;
@@ -281,35 +309,37 @@ float32_t atof32(const char* str, char** pend) {
 }
 
 #ifndef WITHOUT_FLOAT64
-char * f64toa(float64_t f, char * buf, int8_t precision) 
+char * f64toa(float64_t f, char * buf, int8_t precision)
 {
 	return f32toa(f, buf, precision);
 }
 
-float64_t atof64(const char* str, char** pend) {
-	if (!isdigit(*str) && *str != '-') {
+float64_t atof64(const char* str, char** pend)
+{
+	if (!isdigit(*str) && *str != '-')
+	{
 		return 0;
 	}
 
 	char* end;
 	int i = atoi32(str, 10, &end);
-	uint8_t minus = i < 0 ? 1 : 0; 
-	
-	if (minus) 
-	{
-		i = -i;
-	}
+	uint8_t minus = i < 0 ? 1 : 0;
 
 	str = end;
-	if (*str == '.') 
+	if (*str == '.')
 	{
+		if (minus)
+		{
+			i = -i;
+		}
+
 		int d = atou32(++str, 10, &end);
 		if (pend) *pend = end;
-		double ret = (double)i + d / (pow(10, end - str)); 
+		double ret = (double)i + d / (local_pow(10, end - str));
 		return minus ? -ret : ret;
-	} 
+	}
 
-	else 
+	else
 	{
 		if (pend) *pend = end;
 		return i;
