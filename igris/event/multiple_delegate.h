@@ -1,10 +1,10 @@
 #ifndef GXX_MULTIPLE_DELEGATE_H
 #define GXX_MULTIPLE_DELEGATE_H
 
-#include <gxx/event/delegate.h>
+#include <igris/event/delegate.h>
 #include <vector> 
 
-namespace gxx {
+namespace igris {
 	template<typename ... Args>
 	class multiple_delegate {
 	public:
