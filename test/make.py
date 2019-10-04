@@ -12,7 +12,7 @@ tests = [
 	"argvc",
 	"bits",
 	"event",
-#	"tree"
+	"trent"
 ]
 
 tests_c = [

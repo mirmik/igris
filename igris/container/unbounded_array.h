@@ -1,14 +1,14 @@
-#ifndef GXX_ARRAY_H
-#define GXX_ARRAY_H
+#ifndef igris_ARRAY_H
+#define igris_ARRAY_H
 
 //#include <algorithm>
 #include <memory>
-#include <gxx/objbuf.h>
-#include <gxx/print/printable.h>
+#include <igris/objbuf.h>
+//#include <igris/print/printable.h>
 
-namespace gxx {
+namespace igris {
 	template<typename T, typename A = std::allocator<T>>
-	class unbounded_array : public gxx::array_printable<unbounded_array<T>> {
+	class unbounded_array {
 	public:
 		using allocator_type = A;
 		using value_type = T;

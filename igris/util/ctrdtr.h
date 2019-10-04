@@ -26,7 +26,7 @@ namespace igris
 	template<typename T>
 	void move_constructor(T* ptr, T&& other)
 	{
-		new(ptr) T(std::forward<T>(other));
+		new(ptr) T(std::move(other));
 	}
 
 	template<class InputIterator>

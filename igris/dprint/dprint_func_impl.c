@@ -3,8 +3,11 @@
  */
 
 #include <stdint.h>
+#include <stdarg.h>
 #include <ctype.h>
+
 #include <igris/dprint/dprint.h>
+#include <igris/util/printf_impl.h>
 
 void debug_printbin_uint4 (uint8_t b)
 {
@@ -377,7 +380,7 @@ void dprptrln(const void* ptr)
 	debug_putchar('\n');
 }
 
-/*static void __debug_putchar(void * _, int c)
+static void __debug_putchar(void * _, int c)
 {
 	(void)_;
 	debug_putchar(c);
@@ -385,7 +388,7 @@ void dprptrln(const void* ptr)
 
 int dprf_v(const char* format, va_list args)
 {
-	return nos_printf(__debug_putchar, NULL, format, args);
+	return __printf(__debug_putchar, 0, format, args);
 }
 
 int dprf(const char* format, ...)
@@ -398,4 +401,4 @@ int dprf(const char* format, ...)
 	va_end(args);
 
 	return ret;
-}*/
+}

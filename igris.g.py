@@ -100,10 +100,20 @@ licant.module("igris.trent",
 	sources = ["igris/trent/trent.cpp"]
 )
 
+licant.module("igris.path",
+	sources = ["igris/path/path.cpp"]
+)
+
 licant.module("igris", mdepends=[
 	"igris.include",
 	"igris.sshell",
 	"igris.util",
 	"igris.bug",
 	"igris.dprint",
+	"igris.path"
 ])
+
+#################################################################
+licant.module("igris.os_extension", "unix",
+	sources=["igris/osutil/src/posix.cpp"]
+)
