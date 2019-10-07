@@ -303,6 +303,7 @@ namespace igris
 		result<const string_type&> as_string_critical() const { if (!is_string()) return error("is't string"); return m_str; }
 		string_type& as_string_except();
 		const string_type& as_string_except() const;
+		const string_type& as_string_default(const string_type& def) const { if (!is_string()) return def; return m_str; }
 
 		dict_type& as_dict();
 		const dict_type& as_dict() const;
@@ -340,7 +341,6 @@ namespace igris
 
 
 		const igris::buffer as_buffer() const;
-		string_type& as_string_default(string_type& str);
 
 		//integer_type& unsafe_integer_const() { return m_int; }
 		numer_type& unsafe_numer_const() { return m_num; }
