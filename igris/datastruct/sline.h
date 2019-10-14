@@ -11,6 +11,14 @@ struct sline
 	int cap;
 	int len;
 	int cursor;
+
+#ifdef __cplusplus
+	sline(char* buffer, int bufcap) : 
+		buf(buffer), cap(bufcap), len(0), cursor(0)
+	{}
+
+	sline(){}
+#endif	
 };
 
 __BEGIN_DECLS
