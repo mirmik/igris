@@ -118,6 +118,7 @@ namespace igris
 			void dump(float i) { dump_data((char*)&i, sizeof(i)); }
 			void dump(double i) { dump_data((char*)&i, sizeof(i)); }
 			void dump(long double i) { dump_data((char*)&i, sizeof(i)); }
+			void dump(igris::buffer buf) { dump((uint16_t)buf.size()); dump_data(buf.data(), buf.size()); }
 
 			template<typename T>
 			void dump(const T& ref)
@@ -171,6 +172,7 @@ namespace igris
 			void load(float& i) { load_data((char*)&i, sizeof(i)); }
 			void load(double& i) { load_data((char*)&i, sizeof(i)); }
 			void load(long double& i) { load_data((char*)&i, sizeof(i)); }
+			//void load(igris::buffer buf) { lo }
 
 			template<typename T>
 			void load(T&& ref)
@@ -237,8 +239,26 @@ namespace igris
 
 		static void deserialize(Archive& keeper, std::string& str)
 		{
-			BUG();
-			//igris::panic("todo");
+			uint16_t size; 
+			igris::deserialize(keeper, size);
+			str.resize(size);
+			keeper.load_data(str.data(), str.size());			
+		}
+	};
+
+	template<typename Archive, class F, class S>
+	struct serialize_helper<Archive, std::pair<F,S>>
+	{
+		static void serialize(Archive& keeper, const std::pair<F,S>& pair)
+		{
+			igris::serialize(keeper, pair.first);
+			igris::serialize(keeper, pair.second);
+		}
+
+		static void deserialize(Archive& keeper, std::pair<F,S>& pair)
+		{
+			igris::deserialize(keeper, pair.first);
+			igris::deserialize(keeper, pair.second);
 		}
 	};
 
@@ -247,16 +267,51 @@ namespace igris
 	{
 		static void serialize(Archive& keeper, const std::vector<T>& vec)
 		{
-			igris::serialize(keeper, vec.size());
+			igris::serialize(keeper, (uint16_t)vec.size());
 			igris::serialize(keeper, igris::archive::data<T> {vec.data(), vec.size()});
 		}
 
 		static void deserialize(Archive& keeper, std::vector<T>& vec)
 		{
-			size_t sz;
-			igris::deserialize(keeper, sz);
-			vec.resize(sz);
-			igris::deserialize(keeper, igris::archive::data<T> {vec.data(), sz});
+			uint16_t size;
+			igris::deserialize(keeper, size);
+		
+			for (int i = 0; i < size; i++) 
+			{
+				T value;
+				igris::deserialize(keeper, value);
+				vec.push_back(value);
+			}
+		}
+	};
+
+	template<typename Archive, class K, class T>
+	struct serialize_helper<Archive, std::map<K,T>>
+	{
+		static void serialize(Archive& keeper, const std::map<K,T>& map)
+		{
+			igris::serialize(keeper, (uint16_t)map.size());
+			//igris::serialize(keeper, igris::archive::data<T> {vec.data(), vec.size()});
+			for (auto pair : map) 
+			{
+				igris::serialize(keeper, pair);
+			}
+		}
+
+		static void deserialize(Archive& keeper, std::map<K,T>& map)
+		{
+			uint16_t size;
+			igris::deserialize(keeper, size);
+		
+			for (int i = 0; i < size; i++) 
+			{
+				//typename std::map<K,T>::value_type pair;
+				K first;
+				T second;
+				igris::deserialize(keeper, first);
+				igris::deserialize(keeper, second);
+				map.insert(std::make_pair(first, second));
+			}
 		}
 	};
 
@@ -266,7 +321,7 @@ namespace igris
 		std::string ret;
 		igris::archive::binary_string_writer writer(ret);
 
-		writer.dump(obj);
+		igris::serialize(writer, obj);
 
 		return ret;
 	}
@@ -277,7 +332,9 @@ namespace igris
 		T ret;
 		
 		igris::archive::binary_string_reader reader(in);
-		reader.load(ret);
+//		reader.load(ret);
+
+		igris::deserialize(reader, ret);
 
 		return ret;
 	}	
