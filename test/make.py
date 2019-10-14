@@ -12,7 +12,8 @@ tests = [
 	"argvc",
 	"bits",
 	"event",
-	"trent"
+	"trent",
+	"serialize"
 ]
 
 tests_c = [
@@ -28,7 +29,8 @@ application("runtests",
 
 	include_paths = ["."],
 	mdepends = [
-		"igris"
+		"igris",
+		"nos"
 	],
 
 	libs = ["gtest", "pthread"]

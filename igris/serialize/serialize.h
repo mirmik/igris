@@ -11,10 +11,12 @@
 namespace igris
 {
 	template <typename M, typename T, typename U = int>
-	struct is_have_serialize : std::false_type { };
+	struct is_have_serialize : std::false_type
+	{ };
 
 	template <typename M, typename T>
-struct is_have_serialize <M, T, decltype((void) &T::template serialize<M>, 0)> : std::true_type { };
+	struct is_have_serialize <M, T,
+       decltype((void) &T::template serialize<M>, 0)> : std::true_type { };
 
 	template <typename M, typename T, bool HaveSerialize = true>
 	struct serialize_helper_basic
@@ -79,10 +81,10 @@ struct is_have_serialize <M, T, decltype((void) &T::template serialize<M>, 0)> :
 			size_t sz;
 			data(T* ptr, size_t sz) : ptr(ptr), sz(sz) {}
 			data(const T* ptr, size_t sz) : ptr((T*)ptr), sz(sz) {}
-			template<typename R> 
-			void reflect(R& r) 
-			{ 
-				r.do_data((char*)ptr, sz * sizeof(T)); 
+			template<typename R>
+			void reflect(R& r)
+			{
+				r.do_data((char*)ptr, sz * sizeof(T));
 			}
 		};
 
@@ -257,6 +259,28 @@ struct is_have_serialize <M, T, decltype((void) &T::template serialize<M>, 0)> :
 			igris::deserialize(keeper, igris::archive::data<T> {vec.data(), sz});
 		}
 	};
+
+	template <class T>
+	std::string serialize(const T& obj) 
+	{
+		std::string ret;
+		igris::archive::binary_string_writer writer(ret);
+
+		writer.dump(obj);
+
+		return ret;
+	}
+
+	template <class T>
+	T deserialize(const std::string& in) 
+	{
+		T ret;
+		
+		igris::archive::binary_string_reader reader(in);
+		reader.load(ret);
+
+		return ret;
+	}	
 }
 
 #endif
