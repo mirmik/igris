@@ -2,6 +2,7 @@
 #define GXX_UTIL_CRC_H
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <sys/cdefs.h>
 
 static inline void strmcrc8(uint8_t* crc, char c) 
