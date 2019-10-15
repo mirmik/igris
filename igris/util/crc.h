@@ -2,6 +2,7 @@
 #define GXX_UTIL_CRC_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 __BEGIN_DECLS
 
