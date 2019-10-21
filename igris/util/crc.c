@@ -43,7 +43,7 @@ uint8_t crc8(const uint8_t *addr, uint8_t len)
 	}
 	return crc;
 }
-
+/*
 bool check_crc16(const uint8_t* input, uint16_t len, const uint8_t* inverted_crc, uint16_t crc)
 {
     crc = ~crc16(input, len, crc);
@@ -76,4 +76,4 @@ uint16_t crc16(const uint8_t* input, uint16_t len, uint16_t crc)
     }
 
     return crc;
-}
+}*/
