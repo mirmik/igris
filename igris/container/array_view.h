@@ -1,6 +1,8 @@
 #ifndef IGRIS_CONTAINER_ARRAY_VIEW_H
 #define IGRIS_CONTAINER_ARRAY_VIEW_H
 
+#include <stdlib.h>
+
 namespace igris 
 {
 	template <class T>
