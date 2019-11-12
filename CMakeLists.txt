@@ -27,4 +27,4 @@ install(TARGETS ${PROJECT_NAME}
 
 install(DIRECTORY ${PROJECT_NAME}
         DESTINATION /usr/local/include
-        PATTERN ".h" EXCLUDE)
+        PATTERN "*HIDE*" EXCLUDE)
