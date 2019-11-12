@@ -3,17 +3,19 @@ compiler: gcc
 
 matrix:
   include:
-    os: linux
-    addons:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+            - libgtest-dev
       env:
-        - MYCC=gcc-7
-        - MYCXX=g++-7
-      apt:
-        sources:
-          - ubuntu-toolchain-r-test
-        packages:
-          - g++-7
-          - libgtest-dev
+         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+
+before_install:
+  eval ${MATRIX_EVAL}
 
 install: 
   - mkdir ~/gtest && cd ~/gtest
@@ -28,8 +30,6 @@ install:
 script:
   - export GTEST_COLOR=1
   - export GTEST_ROOT="~/gtest"
-  - export CC = $MYCC
-  - export CXX = $MYCXX
   - cmake --version
   - cmake CMakeLists.txt
   - make
