@@ -40,5 +40,4 @@ install(DIRECTORY ${PROJECT_NAME}
         DESTINATION /usr/local/include
         PATTERN "*HIDE*" EXCLUDE)
 
-enable_testing ()
-add_test(NAME Test COMMAND ./igris_test)
+add_test(NAME igris_test COMMAND igris_test)
