@@ -8,7 +8,7 @@
 #include <igris/trent/json.h>
 #include <igris/trent/settings.h>
 
-#include <nos/io/file.h>
+//#include <nos/io/file.h>
 
 #include <exception>
 

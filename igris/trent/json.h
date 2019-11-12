@@ -5,8 +5,8 @@
 #include <igris/util/numconvert.h>
 #include <igris/trent/trent.h>
 
-#include <nos/print.h>
-#include <nos/trace.h>
+//#include <nos/print.h>
+//#include <nos/trace.h>
 
 #include <exception>
 
