@@ -9,6 +9,26 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
+           - clang-8
+           - libgtest-dev
+      env:
+         - MATRIX_EVAL="CC=clang-8 && CXX=clang-8"
+
+    - addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+           - g++-8
+           - libgtest-dev
+      env:
+         - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
+
+    - addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
            - g++-7
            - libgtest-dev
       env:
@@ -23,16 +43,6 @@ matrix:
            - libgtest-dev
       env:
          - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
-
-    - addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-           - g++-8
-           - libgtest-dev
-      env:
-         - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
 
     - addons:
         apt:
