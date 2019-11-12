@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
+import sys
 import licant
 from licant.cxx_modules import application
 from licant.modules import submodule, module
 from licant.libs import include
 
 licant.execute("../igris.g.py")
-licant.include("nos")
 
 tests = [
 	"argvc",
@@ -28,12 +28,23 @@ application("runtests",
 	ld_flags = "-L/usr/local/lib/",
 
 	include_paths = ["."],
-	mdepends = [
-		"igris",
-		"nos"
-	],
+	mdepends = [ "igris" ],
 
-	libs = ["gtest", "pthread"]
+	libs = ["gtest", "pthread", "nos"]
+)
+
+application("runtests_installed",
+	sources = (
+		["main.cpp"] 
+		+ [t+".cpp" for t in tests] 
+		+ [t+".c" for t in tests_c]),
+
+	ld_flags = "-L/usr/local/lib/",
+
+	include_paths = ["."],
+	mdepends = [],
+
+	libs = ["gtest", "pthread", "nos", "igris"]
 )
 
 licant.ex("runtests")

@@ -1,9 +1,9 @@
-#ifndef GXX_UTIL_BASE64_H
-#define GXX_UTIL_BASE64_H
+#ifndef IGRIS_UTIL_BASE64_H
+#define IGRIS_UTIL_BASE64_H
 
 #include <string>
 
-namespace gxx {
+namespace igris {
 	//bool is_base64(unsigned char c);
 	std::string base64_encode(const uint8_t *indata, size_t size);
 	std::string base64_encode(std::string const& str);

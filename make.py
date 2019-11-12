@@ -69,4 +69,10 @@ def install_headers():
 	
 	print("successfully installed")
 
+@licant.routine
+def uninstall():
+	os.system("rm -r {}".format(install_include_path))
+	os.system("rm {}".format(install_library_path))
+	os.system("rm {}".format(install_library_link))
+
 licant.ex("shared")
