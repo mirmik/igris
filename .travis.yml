@@ -1,21 +1,17 @@
 language: cpp
 compiler: gcc
 
-os: linux
-dist: trusty
-
 matrix:
   include:
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
-            - libgtest-dev
-      env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    os: linux
+    addons:
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-7
+          - libgtest-dev
+
 install: 
   - mkdir ~/gtest && cd ~/gtest
   - export LIBRARY_PATH=$(pwd)
@@ -29,6 +25,8 @@ install:
 script:
   - export GTEST_COLOR=1
   - export GTEST_ROOT="~/gtest"
+  - export CC=gcc-7
+  - export CXX=g++-7
   - cmake --version
   - cmake CMakeLists.txt
   - make
