@@ -19,6 +19,7 @@ file(GLOB SOURCES
 )
 
 add_library(igris SHARED ${SOURCES})
+target_include_directories(igris PRIVATE .)
 
 install(TARGETS ${PROJECT_NAME}
 	LIBRARY DESTINATION /usr/lib
