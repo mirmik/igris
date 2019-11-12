@@ -9,10 +9,10 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-           - clang-8
+           - clang++-6.0
            - libgtest-dev
       env:
-         - MATRIX_EVAL="CC=clang-8 && CXX=clang-8"
+         - MATRIX_EVAL="CC=clang++-6.0 && CXX=clang++-6.0"
 
     - addons:
         apt:
