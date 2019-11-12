@@ -13,6 +13,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-6
+            - libgtest-dev
       env:
         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
 install: 
