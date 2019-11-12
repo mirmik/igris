@@ -60,7 +60,7 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-           - clang++-7.0
+           - clang-7
            - libgtest-dev
       env:
          - MATRIX_EVAL="CC=clang-7 && CXX=clang++-7.0"
