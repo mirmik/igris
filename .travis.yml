@@ -6,8 +6,8 @@ matrix:
     os: linux
     addons:
       env:
-        - CC=gcc-7
-        - CXX=g++-7
+        - MYCC=gcc-7
+        - MYCXX=g++-7
       apt:
         sources:
           - ubuntu-toolchain-r-test
@@ -28,6 +28,8 @@ install:
 script:
   - export GTEST_COLOR=1
   - export GTEST_ROOT="~/gtest"
+  - export CC = $MYCC
+  - export CXX = $MYCXX
   - cmake --version
   - cmake CMakeLists.txt
   - make
