@@ -8,8 +8,21 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-7
+      - libgtest-dev
+
+install: 
+  - mkdir ~/gtest && cd ~/gtest
+  - export LIBRARY_PATH=$(pwd)
+  - cp -r /usr/src/gtest/* ./
+  - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./
+  - make
+  - mkdir include && cp -r /usr/include/gtest include
+  - mkdir lib && cp libgtest* lib
+  - cd -
 
 script:
+  - export GTEST_COLOR=1
+  - export GTEST_ROOT="~/gtest"
   - export CC=gcc-7
   - export CXX=g++-7
   - cmake --version
