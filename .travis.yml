@@ -39,10 +39,10 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-           - clang-5
+           - clang-7
            - libgtest-dev
       env:
-         - MATRIX_EVAL="CC=clang-5 && CXX=clang-5"
+         - MATRIX_EVAL="CC=clang-7 && CXX=clang-7"
 
 before_install:
   eval ${MATRIX_EVAL}
