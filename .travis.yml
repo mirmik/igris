@@ -4,6 +4,9 @@ os: linux
 
 matrix:
   include:
+    - os: "osx"
+      compiler: clang
+      
     - addons:
         apt:
           sources:
@@ -14,9 +17,6 @@ matrix:
       env:
          - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
 
-    - os: "osx"
-      compiler: clang
-      
     - addons:
         apt:
           sources:
@@ -27,48 +27,28 @@ matrix:
       env:
          - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
 
-    - addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-           - g++-7
-           - libgtest-dev
-      env:
-         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-
-    - addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-           - g++-6
-           - libgtest-dev
-      env:
-         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
-
-    - addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-           - clang-7
-           - libgtest-dev
-      env:
-         - MATRIX_EVAL="CC=clang-7 && CXX=clang++-7.0"
-
 before_install:
   eval ${MATRIX_EVAL}
 
 install: 
+
   - mkdir ~/gtest && cd ~/gtest
   - export LIBRARY_PATH=$(pwd)
-  - cp -r /usr/src/gtest/* ./
+
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
+    git clone https://github.com/google/googletest
+    cd googletest
+  fi
+
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    cp -r /usr/src/gtest/* ./
+  fi
+  
   - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./
   - make
   - mkdir include && cp -r /usr/include/gtest include
   - mkdir lib && cp libgtest* lib
-  - cd -
+  - cd ~
 
 script:
   - export GTEST_COLOR=1
