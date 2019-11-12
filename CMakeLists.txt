@@ -16,9 +16,7 @@ file(GLOB SOURCES
 	igris/dprint/dprint_func_impl.c
 	igris/event/*.cpp
 	igris/datastruct/*.cpp
-	igris/trent/*.cpp
 )
-
 
 file(GLOB SOURCES_TEST 
 	test/*.cpp
