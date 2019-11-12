@@ -7,7 +7,7 @@ dist: trusty
 matrix:
   include:
     # GCC 7
-    - env: COMPILER=g++-7 BUILD_TYPE=Debug GSL_CXX_STANDARD=14
+    - env: COMPILER=g++-7 BUILD_TYPE=Debug GSL_CXX_STANDARD=14 GSL_CC_STANDARD=11
       addons: &gcc7
         apt:
           packages: 
@@ -16,14 +16,14 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
 
-    - env: COMPILER=g++-7 BUILD_TYPE=Release GSL_CXX_STANDARD=14
+    - env: COMPILER=g++-7 BUILD_TYPE=Release GSL_CXX_STANDARD=14 GSL_CC_STANDARD=11
       addons: *gcc7
 
     # GCC 7 c++17 
-    - env: COMPILER=g++-7 BUILD_TYPE=Debug GSL_CXX_STANDARD=17
+    - env: COMPILER=g++-7 BUILD_TYPE=Debug GSL_CXX_STANDARD=17 GSL_CC_STANDARD=11
       addons: *gcc7
 
-    - env: COMPILER=g++-7 BUILD_TYPE=Release GSL_CXX_STANDARD=17
+    - env: COMPILER=g++-7 BUILD_TYPE=Release GSL_CXX_STANDARD=17 GSL_CC_STANDARD=11
       addons: *gcc7
 
 install: 
