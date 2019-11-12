@@ -1,20 +1,28 @@
 language: cpp
 compiler: gcc
 
-os: 
-  - linux
-  - osx
+os: linux
+dist: trusty
 
-compiler:
-  - gcc
-  - clang
+matrix:
+  include:
+    # GCC 7
+    - env: COMPILER=g++-7 BUILD_TYPE=Debug GSL_CXX_STANDARD=14
+      addons: &gcc7
+        apt:
+          packages: g++-7
+          sources:
+            - ubuntu-toolchain-r-test
 
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - libgtest-dev
+    - env: COMPILER=g++-7 BUILD_TYPE=Release GSL_CXX_STANDARD=14
+      addons: *gcc7
+
+    # GCC 7 c++17 
+    - env: COMPILER=g++-7 BUILD_TYPE=Debug GSL_CXX_STANDARD=17
+      addons: *gcc7
+
+    - env: COMPILER=g++-7 BUILD_TYPE=Release GSL_CXX_STANDARD=17
+      addons: *gcc7
 
 install: 
   - mkdir ~/gtest && cd ~/gtest
@@ -29,8 +37,6 @@ install:
 script:
   - export GTEST_COLOR=1
   - export GTEST_ROOT="~/gtest"
-  - export CC=gcc-7
-  - export CXX=g++-7
   - cmake --version
   - cmake CMakeLists.txt
   - make
