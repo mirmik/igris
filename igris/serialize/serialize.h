@@ -242,7 +242,7 @@ namespace igris
 			uint16_t size; 
 			igris::deserialize(keeper, size);
 			str.resize(size);
-			keeper.load_data(str.data(), str.size());			
+			keeper.load_data((char*)str.data(), str.size());			
 		}
 	};
 

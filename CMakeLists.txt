@@ -16,10 +16,22 @@ file(GLOB SOURCES
 	igris/dprint/dprint_func_impl.c
 	igris/event/*.cpp
 	igris/datastruct/*.cpp
+	igris/trent/*.cpp
 )
 
+
+file(GLOB SOURCES_TEST 
+	test/*.cpp
+)
+
+add_executable(igris_test ${SOURCES_TEST})
 add_library(igris SHARED ${SOURCES})
+
+target_include_directories(igris_test PRIVATE .)
 target_include_directories(igris PRIVATE .)
+target_link_libraries(igris_test igris)
+target_link_libraries(igris_test gtest)
+target_link_libraries(igris_test pthread)
 
 install(TARGETS ${PROJECT_NAME}
 	LIBRARY DESTINATION /usr/lib
@@ -29,3 +41,6 @@ install(TARGETS ${PROJECT_NAME}
 install(DIRECTORY ${PROJECT_NAME}
         DESTINATION /usr/local/include
         PATTERN "*HIDE*" EXCLUDE)
+
+enable_testing ()
+add_test(NAME Test COMMAND ./igris_test)
