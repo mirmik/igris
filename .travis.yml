@@ -15,16 +15,8 @@ matrix:
          - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
 
     - os: "osx"
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-           - clang++-6.0
-           - libgtest-dev
-      env:
-         - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
-
+      compiler: clang
+      
     - addons:
         apt:
           sources:
