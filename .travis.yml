@@ -6,26 +6,15 @@ dist: trusty
 
 matrix:
   include:
-    # GCC 7
-    - env: COMPILER=g++-7 BUILD_TYPE=Debug GSL_CXX_STANDARD=14 GSL_CC_STANDARD=11
-      addons: &gcc7
+    - os: linux
+      addons:
         apt:
-          packages: 
-            - g++-7
-            - libgtest-dev
           sources:
             - ubuntu-toolchain-r-test
-
-    - env: COMPILER=g++-7 BUILD_TYPE=Release GSL_CXX_STANDARD=14 GSL_CC_STANDARD=11
-      addons: *gcc7
-
-    # GCC 7 c++17 
-    - env: COMPILER=g++-7 BUILD_TYPE=Debug GSL_CXX_STANDARD=17 GSL_CC_STANDARD=11
-      addons: *gcc7
-
-    - env: COMPILER=g++-7 BUILD_TYPE=Release GSL_CXX_STANDARD=17 GSL_CC_STANDARD=11
-      addons: *gcc7
-
+          packages:
+            - g++-6
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
 install: 
   - mkdir ~/gtest && cd ~/gtest
   - export LIBRARY_PATH=$(pwd)
