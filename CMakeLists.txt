@@ -33,13 +33,28 @@ target_link_libraries(igris_test igris)
 target_link_libraries(igris_test gtest)
 target_link_libraries(igris_test pthread)
 
-install(TARGETS ${PROJECT_NAME}
-	LIBRARY DESTINATION /usr/lib
-	PUBLIC_HEADER DESTINATION /usr/local/include
-)
+if (UNIX)
+	install(TARGETS ${PROJECT_NAME}
+		LIBRARY DESTINATION /usr/lib
+		PUBLIC_HEADER DESTINATION /usr/local/include
+	)
 
-install(DIRECTORY ${PROJECT_NAME}
-        DESTINATION /usr/local/include
-        PATTERN "*HIDE*" EXCLUDE)
+	install(DIRECTORY ${PROJECT_NAME}
+    	    DESTINATION /usr/local/include
+    	    PATTERN "*HIDE*" EXCLUDE
+   	)
+endif()
+
+
+if (APPLE)
+	install(TARGETS ${PROJECT_NAME}
+		LIBRARY DESTINATION /usr/lib
+	)
+
+	install(DIRECTORY ${PROJECT_NAME}
+    	    DESTINATION /usr/local/include
+    	    PATTERN "*HIDE*" EXCLUDE
+   	)
+endif()
 
 add_test(NAME igris_test COMMAND igris_test)

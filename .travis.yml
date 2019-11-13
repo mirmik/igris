@@ -39,6 +39,7 @@ install:
   - cd googletest
   - cmake .
   - make
+  - sudo make install
   
   - cd ..
 
@@ -47,10 +48,8 @@ script:
   - pwd
   - ls
 
-  - cp googletest/lib/* /usr/local/lib
-  - cp -r googletest/googletest/include/gtest igris/
-
   - cmake --version
   - cmake CMakeLists.txt
   - make
+  - sudo make install
   - make test
