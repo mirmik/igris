@@ -33,7 +33,7 @@ target_link_libraries(igris_test igris)
 target_link_libraries(igris_test gtest)
 target_link_libraries(igris_test pthread)
 
-if (UNIX)
+if (UNIX AND NOT APPLE)
 	install(TARGETS ${PROJECT_NAME}
 		LIBRARY DESTINATION /usr/lib
 		PUBLIC_HEADER DESTINATION /usr/local/include
