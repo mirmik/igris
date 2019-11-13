@@ -48,7 +48,7 @@ endif()
 
 if (APPLE)
 	install(TARGETS ${PROJECT_NAME}
-		LIBRARY DESTINATION /Library/"Application Support"
+		LIBRARY DESTINATION /Library/Application\ Support
 	)
 
 	install(DIRECTORY ${PROJECT_NAME}
