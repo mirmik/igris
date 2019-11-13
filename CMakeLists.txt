@@ -29,7 +29,6 @@ add_library(igris SHARED ${SOURCES})
 
 target_include_directories(igris_test PRIVATE .)
 target_include_directories(igris PRIVATE .)
-link_directories(.)
 target_link_libraries(igris_test igris)
 target_link_libraries(igris_test gtest)
 target_link_libraries(igris_test pthread)

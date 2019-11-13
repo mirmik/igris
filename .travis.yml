@@ -47,7 +47,7 @@ script:
   - pwd
   - ls
 
-  - cp googletest/lib/* .
+  - cp googletest/lib/* /usr/local/lib
   - cp -r googletest/googletest/include/gtest igris/
 
   - cmake --version
