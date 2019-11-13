@@ -36,7 +36,6 @@ target_link_libraries(igris_test pthread)
 if (UNIX AND NOT APPLE)
 	install(TARGETS ${PROJECT_NAME}
 		LIBRARY DESTINATION /usr/lib
-		PUBLIC_HEADER DESTINATION /usr/local/include
 	)
 
 	install(DIRECTORY ${PROJECT_NAME}
