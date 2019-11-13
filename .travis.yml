@@ -38,7 +38,7 @@ install:
   - mkdir ~/gtest && cd ~/gtest
   - export LIBRARY_PATH=$(pwd)
 
-  - git clone https://github.com/google/googletest gtest/
+  - git clone https://github.com/google/googletest googletest/
   - cd googletest
   - cmake . -DBUILD_SHARED_LIBS=ON
   - make
@@ -53,8 +53,6 @@ script:
   - cp googletest/lib/* .
   - cp -r googletest/googletest/include/gtest igris/
 
-  - export GTEST_COLOR=1
-  - export GTEST_ROOT="~/gtest"
   - cmake --version
   - cmake CMakeLists.txt
   - make
