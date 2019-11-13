@@ -35,14 +35,11 @@ install:
   - mkdir ~/gtest && cd ~/gtest
   - export LIBRARY_PATH=$(pwd)
 
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
-    git clone https://github.com/google/googletest
-    cd googletest
-  fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then git clone https://github.com/google/googletest fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd googletest fi
+  
 
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-    cp -r /usr/src/gtest/* ./
-  fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cp -r /usr/src/gtest/* ./ fi
   
   - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./
   - make
