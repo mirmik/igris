@@ -37,7 +37,7 @@ install:
 
   - git clone https://github.com/google/googletest googletest/
   - cd googletest
-  - cmake . -DBUILD_SHARED_LIBS=ON
+  - cmake .
   - make
   
   - cd ..
