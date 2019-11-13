@@ -35,15 +35,12 @@ install:
   - pwd
   - ls
 
-  - mkdir ~/gtest && cd ~/gtest
-  - export LIBRARY_PATH=$(pwd)
-
   - git clone https://github.com/google/googletest googletest/
   - cd googletest
   - cmake . -DBUILD_SHARED_LIBS=ON
   - make
   
-  - cd ~
+  - cd ..
 
 script:
   - echo "SCRIPT"
