@@ -48,7 +48,7 @@ endif()
 
 if (APPLE)
 	install(TARGETS ${PROJECT_NAME}
-		LIBRARY DESTINATION /usr/lib
+		LIBRARY DESTINATION /Library/"Application Support"
 	)
 
 	install(DIRECTORY ${PROJECT_NAME}
@@ -57,4 +57,5 @@ if (APPLE)
    	)
 endif()
 
+enable_testing()
 add_test(NAME igris_test COMMAND igris_test)

@@ -43,6 +43,7 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
+igris_test
 test/runtests
 test/runtests_installed
 travis.log
