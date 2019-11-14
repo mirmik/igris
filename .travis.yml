@@ -53,7 +53,7 @@ install:
   - cd googletest
   - cmake .
   - cmake --build .
-  - cmake . --build --target install
+  - sudo -E cmake --build . --target install
   
   - cd ..
 
@@ -65,4 +65,5 @@ script:
   - cmake --version
   - cmake .
   - cmake --build .
+  - sudo -E cmake --build . --target install
   - ctest .
