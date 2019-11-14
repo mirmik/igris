@@ -63,7 +63,7 @@ script:
   - ls
 
   - cmake --version
-  - cmake CMakeLists.txt
-  - make
-  - sudo make install
-  - make test
+  - cmake .
+  - cmake --build .
+  - sudo cmake --build . --target install
+  - cmake --test
