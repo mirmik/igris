@@ -53,7 +53,7 @@ install:
   - cd googletest
   - cmake .
   - cmake --build .
-  - if [ $TRAVIS_OS_NAME = 'linux' || $TRAVIS_OS_NAME = 'macosx' ]; then sudo -E cmake --build . --target install; fi
+  - if [ $TRAVIS_OS_NAME = 'linux' || $TRAVIS_OS_NAME = 'osx' ]; then sudo -E cmake --build . --target install; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
   
   - cd ..
@@ -66,6 +66,6 @@ script:
   - cmake --version
   - cmake .
   - cmake --build .
-  - if [ $TRAVIS_OS_NAME = 'linux' || $TRAVIS_OS_NAME = 'macosx' ]; then sudo -E cmake --build . --target install; fi
+  - if [ $TRAVIS_OS_NAME = 'linux' || $TRAVIS_OS_NAME = 'osx' ]; then sudo -E cmake --build . --target install; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
   - ctest .
