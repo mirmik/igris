@@ -27,6 +27,17 @@ matrix:
       env:
          - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
 
+    - addons:
+        arch: "arm64"
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+           - g++-8
+           - libgtest-dev
+      env:
+         - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
+
     - os: "windows"
       compiler: "clang"
 
