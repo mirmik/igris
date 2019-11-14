@@ -52,8 +52,8 @@ install:
   - git clone https://github.com/google/googletest googletest/
   - cd googletest
   - cmake .
-  - make
-  - sudo make install
+  - cmake --build .
+  - cmake . --build --target install
   
   - cd ..
 
