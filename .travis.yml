@@ -65,5 +65,4 @@ script:
   - cmake --version
   - cmake .
   - cmake --build .
-  - sudo cmake --build . --target install
-  - cmake --test
+  - ctest .
