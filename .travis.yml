@@ -38,8 +38,9 @@ matrix:
       env:
          - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
 
-    - os: "windows"
-      compiler: "clang"
+# Windows: TODO
+#    - os: "windows"
+#      compiler: "clang"
 
 before_install:
   eval ${MATRIX_EVAL}
