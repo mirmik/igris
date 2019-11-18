@@ -94,7 +94,8 @@ licant.module("igris.ctrobj.common",
 
 licant.module("igris.ctrobj", "linux",
 	sources = ["igris/osinter/wait-linux.cpp"],
-	mdepends= ["igris.ctrobj.common"]
+	mdepends= ["igris.ctrobj.common"],
+	default=True
 )
 
 licant.module("igris.trent",
@@ -111,7 +112,12 @@ licant.module("igris", mdepends=[
 	"igris.util",
 	"igris.bug",
 	"igris.dprint",
-	"igris.path"
+	"igris.path",
+
+	"igris.syslock",
+	"igris.ctrobj",
+
+	"igris.protocols.gstuff"
 ])
 
 #################################################################

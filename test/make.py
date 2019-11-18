@@ -12,7 +12,6 @@ tests = [
 	"argvc",
 	"bits",
 	"event",
-	"trent",
 	"serialize"
 ]
 
