@@ -18,6 +18,7 @@ file(GLOB SOURCES
 	igris/dprint/dprint_func_impl.c
 	igris/event/*.cpp
 	igris/datastruct/*.cpp
+	igris/sync/syslock_mutex.cpp
 )
 
 file(GLOB SOURCES_TEST 

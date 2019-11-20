@@ -12,7 +12,8 @@ tests = [
 	"argvc",
 	"bits",
 	"event",
-	"serialize"
+	"serialize",
+	"sync"
 ]
 
 tests_c = [
