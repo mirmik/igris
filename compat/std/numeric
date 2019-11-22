@@ -2,6 +2,7 @@
 #define IGRIS_STD_NUMERIC_H
 
 #include <igris/util/types_extension.h>
+#include <stdint.h>
 #include <cfloat>
 
 namespace std
