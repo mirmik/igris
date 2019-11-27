@@ -142,6 +142,22 @@ uint32_t atou32(const char *buf, uint8_t base, char** end)
 	return res;
 }
 
+uint64_t atou64(const char *buf, uint8_t base, char** end)
+{
+	char c;
+	uint64_t res = 0;
+
+	while (isxdigit(c = *buf++))
+	{
+		res = res * base + hex2half(c);
+	}
+
+	if (end)
+		*end = (char*) buf - 1;
+
+	return res;
+}
+
 int32_t atoi32(const char *buf, uint8_t base, char** end)
 {
 	uint8_t minus;
@@ -153,6 +169,19 @@ int32_t atoi32(const char *buf, uint8_t base, char** end)
 	u = atou32(buf, base, end);
 	return minus ? -u : u;
 }
+
+int64_t atoi64(const char *buf, uint8_t base, char** end)
+{
+	uint8_t minus;
+	int64_t u;
+
+	minus = *buf == '-';
+	if (minus) ++buf;
+
+	u = atou64(buf, base, end);
+	return minus ? -u : u;
+}
+
 
 #define MAX_PRECISION   (10)
 static const double rounders[MAX_PRECISION + 1] =

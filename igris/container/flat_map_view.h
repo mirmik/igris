@@ -8,9 +8,8 @@ namespace igris
 	template <class K, class T, class KeyEqual = std::equal_to<K>>
 	class flat_map_view 
 	{
-		size_t _size;
 		std::pair<K,T> * _data;
-
+		size_t _size;
 		KeyEqual equal;
 
 	public:

@@ -3,6 +3,7 @@
 
 #include <igris/util/types_extension.h>
 #include <stdint.h>
+#include <limits.h>
 #include <cfloat>
 
 namespace std
