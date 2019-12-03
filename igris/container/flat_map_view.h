@@ -28,7 +28,7 @@ namespace igris
 
 		T& operator[] (const K& key) 
 		{
-			for (auto p : *this) 
+			for (auto& p : *this) 
 			{
 				if (equal(p.first, key)) return p.second;
 			}

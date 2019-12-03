@@ -7,7 +7,7 @@
  * @date 10.01.2018
  */
 
-//#include <gxx/debug/dprint.h>
+#include <igris/dprint.h>
 
 double modf(double x, double *i_ptr) {
 	return __builtin_modf(x, i_ptr);
@@ -29,9 +29,16 @@ long double roundl(long double x) {
 	return __builtin_roundl(x);
 }
 
-double round(double x) {
-	return __builtin_round(x);
+double round(double x)
+{
+    if (x < 0.0)
+        return (int)(x - 0.5);
+    else
+        return (int)(x + 0.5);
 }
+//	dprln("HERE");
+//	return __builtin_round(x);
+//}
 
 double pow(double x, double y) {
 	return __builtin_pow(x,y);
