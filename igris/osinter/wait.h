@@ -2,7 +2,7 @@
 #define IGRIS_WAIT_H
 
 #include <igris/osinter/ctrobj.h>
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 #include <sys/types.h>
 

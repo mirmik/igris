@@ -4,7 +4,7 @@
 #include <util/math.h>
 
 #include <assert.h>
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 #include <stdlib.h>
 #include <stdint.h>

@@ -2,7 +2,7 @@
 #define UTIL_SLIST_H_
 
 //#include <inttypes.h>
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 #include <igris/util/member.h>
 
 struct slist_head {

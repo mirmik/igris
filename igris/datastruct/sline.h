@@ -2,7 +2,7 @@
 #define GXX_DATASTRUCT_SLINE_H
 
 #include <igris/dprint.h>
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 #include <string.h>
 
 struct sline

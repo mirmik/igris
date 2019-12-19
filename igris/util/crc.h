@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 static inline void strmcrc8(uint8_t* crc, char c) 
 {

@@ -12,7 +12,7 @@
 #ifndef __LDS__
 
 #include <stddef.h>
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 #include <gxx/util/macro.h>
 

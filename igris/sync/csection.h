@@ -1,7 +1,7 @@
 #ifndef IGRIS_CSECTION_H
 #define IGRIS_CSECTION_H
 
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 __BEGIN_DECLS
 

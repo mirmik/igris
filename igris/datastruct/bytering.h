@@ -1,7 +1,7 @@
 #ifndef GXX_DATASTRUCT_BYTERING_H
 #define GXX_DATASTRUCT_BYTERING_H
 
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 struct bytering_head {
 	unsigned char* start;

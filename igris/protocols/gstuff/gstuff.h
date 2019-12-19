@@ -1,7 +1,7 @@
 #ifndef GSTUFF_BASE_H
 #define GSTUFF_BASE_H
 
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 #define GSTUFF_START ((char)0xAC)
 #define GSTUFF_STUB ((char)0xAD)

@@ -1,8 +1,8 @@
 #ifndef GENOS_HLIST_HEAD
 #define GENOS_HLIST_HEAD
 
-//#include <sys/cdefs.h>
-#include <sys/cdefs.h>
+//#include <igris/compiler.h>
+#include <igris/compiler.h>
 
 struct hlist_node {
 	struct hlist_node* next;

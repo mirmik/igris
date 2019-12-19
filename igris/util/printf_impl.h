@@ -2,7 +2,7 @@
 #define PRINTF_IMPL_H_
 
 #include <stdarg.h>
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 __BEGIN_DECLS
 

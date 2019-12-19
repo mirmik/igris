@@ -1,7 +1,7 @@
 #ifndef IGRIS_PROTOCOLS_GBSON_H
 #define IGRIS_PROTOCOLS_GBSON_H
 
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 #define GBSON_TYPE_INT8 0
 #define GBSON_TYPE_INT16 1

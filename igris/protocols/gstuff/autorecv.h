@@ -1,7 +1,7 @@
 #ifndef GXX_GSTUFF_CAUTOMATE_H
 #define GXX_GSTUFF_CAUTOMATE_H
 
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 #include <igris/protocols/gstuff/gstuff.h>
 

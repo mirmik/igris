@@ -1,7 +1,7 @@
 #ifndef IGRIS_STUB_H
 #define IGRIS_STUB_H
 
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 __BEGIN_DECLS
 

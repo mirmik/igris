@@ -2,7 +2,7 @@
 #define GXX_DATASTRUCT_GRAPH_H
 
 /*#include <gxx/datastruct/dlist_head.h>
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 struct vertex_head {
 	struct dlist_head inhead;

@@ -3,7 +3,7 @@
 
 #include <igris/util/types_extension.h>
 
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 #include <string.h>
 
 #define GRAW_SIMPLE 0

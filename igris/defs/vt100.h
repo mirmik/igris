@@ -1,7 +1,7 @@
 #ifndef IGRIS_VT100_DEFS_H
 #define IGRIS_VT100_DEFS_H
 
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 #include <igris/util/numconvert.h>
 
 #define VT100_ERASE_LINE_AFTER_CURSOR "\x1B[K"

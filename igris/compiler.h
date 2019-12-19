@@ -3,8 +3,10 @@
 
 #ifdef _MSC_VER
 #define __NORETURN
+#define __WEAK
 #else
 #define __NORETURN __attribute__((noreturn))
+#define __WEAK __attribute__((weak))
 #endif
 
 #ifndef __BEGIN_DECLS

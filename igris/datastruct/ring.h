@@ -1,7 +1,7 @@
 #ifndef GENOS_DATASTRUCT_RING_HEAD_H
 #define GENOS_DATASTRUCT_RING_HEAD_H
 
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 //#include <stdlib.h> // for unsigned int
 
 struct ring_head

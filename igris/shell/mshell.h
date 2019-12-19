@@ -2,7 +2,7 @@
 #define IGRIS_SIMPLE_SHELL_H
 
 #include <igris/datastruct/argvc.h>
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 #define SSHELL_OK 0
 

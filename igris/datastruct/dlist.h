@@ -2,7 +2,7 @@
 #define IGRIS_DLIST_HEAD_H
 
 //#include <inttypes.h>
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 #include <igris/util/member.h>
 #include <igris/dprint.h>
 

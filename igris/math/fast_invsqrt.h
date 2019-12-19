@@ -1,7 +1,7 @@
 #ifndef IGRIS_MATH_INVSQRT_H
 #define IGRIS_MATH_INVSQRT_H
 
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 #include <stdint.h>
 
 union float_int32_u

@@ -1,7 +1,8 @@
 #include <igris/dprint.h>
+#include <igris/compiler.h>
 
-__attribute__((weak))
+__WEAK
 void emergency_stop() 
 {
-	dprln("std_emergency_stop");
+	debug_print("std_emergency_stop");
 }
