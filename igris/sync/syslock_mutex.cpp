@@ -11,7 +11,6 @@ static std::recursive_mutex mtx;
 //static std::mutex mtx;
 static volatile int count = 0;
 
-
 __BEGIN_DECLS
 
 void system_lock() 

@@ -2,6 +2,7 @@
 #define IGRIS_CONTAINER_ARRAY_VIEW_H
 
 #include <stdlib.h>
+#include <utility>
 
 namespace igris 
 {
@@ -17,7 +18,7 @@ namespace igris
 	public:
 
 		array_view(T* data, size_t size) : _data(data), _size(size) {}
-		array_view(){}
+		array_view() : _data(nullptr), _size(0) {}
 
 		T* const data() const { return _data; }
 		T* data() { return _data; }
@@ -37,8 +38,14 @@ namespace igris
 		T& operator [] (int i) { return *(_data + i); }
 		const T& operator [] (int i) const { return *(_data + i); }
 
+		array_view slice(int start, int size)
+		{ return array_view(_data + start, size); }
+
 		template<size_t N>
 		array_view(T(&arr)[N]) : _data(arr), _size(N) {}
+
+		array_view& operator=(std::nullptr_t null) 
+		{ _data = nullptr; _size = 0; return *this; }
 	};
 }
 

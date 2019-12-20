@@ -42,7 +42,7 @@ newarg_search:
 	if (*data == '\0' || argc >= argcmax || data == eptr) return argc;
 
 	argv[argc++] = data;
-	while (*data != ' ' && *data != '\0' || data == eptr) ++data;
+	while (*data != ' ' && *data != '\0') ++data;
 	if (*data == ' ')
 	{
 		*data++ = '\0';
@@ -67,7 +67,7 @@ namespace igris
 		if (*data == '\0' || argc >= argcmax || data == eptr) return argc;
 
 		argv[argc++] = data;
-		while (*data != delim && *data != '\0' || data == eptr) ++data;
+		while (*data != delim && *data != '\0') ++data;
 		if (*data == delim)
 		{
 			*data++ = '\0';
