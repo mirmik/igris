@@ -40,7 +40,7 @@ target_link_libraries(igris_test igris)
 target_link_libraries(igris_test gtest)
 
 if (UNIX AND NOT APPLE)
-	target_link_libraries(igris_test gtest)
+	target_link_libraries(igris_test pthread)
 endif()
 
 if (UNIX AND NOT APPLE)
