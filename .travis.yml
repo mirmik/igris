@@ -58,11 +58,7 @@ install:
   - cmake --build .
   - if [ $TRAVIS_OS_NAME = 'linux' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then sudo make install; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
-  - ls
-  - ls googletest
-  - ls googlemock
   - ls lib
-  - ls lib/Debug
   - ls lib/Release
   - find -name "*.lib"
 
