@@ -63,6 +63,7 @@ install:
   - ls googlemock
   - ls lib
   - ls lib/Debug
+  - find -name "*.lib"
 
   - cd ..
   - echo `pwd`
