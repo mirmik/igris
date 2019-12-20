@@ -58,10 +58,7 @@ install:
   - cmake --build . --config Release
   - if [ $TRAVIS_OS_NAME = 'linux' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then sudo make install; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
-  - ls lib
-  - ls lib/Release
-  - find -name "*.lib"
-
+  
   - cd ..
   - echo `pwd`
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then export "PATH=`pwd`/googletest/lib/Release:$PATH"; fi
