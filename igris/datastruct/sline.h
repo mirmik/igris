@@ -1,5 +1,5 @@
-#ifndef GXX_DATASTRUCT_SLINE_H
-#define GXX_DATASTRUCT_SLINE_H
+#ifndef IGRIS_DATASTRUCT_SLINE_H
+#define IGRIS_DATASTRUCT_SLINE_H
 
 #include <igris/dprint.h>
 #include <igris/compiler.h>

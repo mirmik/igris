@@ -60,7 +60,8 @@ install:
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
   
   - cd ..
-
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then set PATH=%cd%/googletest/googletest/include;%cd%/googletest/googletest;%PATH% fi
+  
 script:
   - echo "SCRIPT"
   - pwd
