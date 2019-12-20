@@ -52,13 +52,13 @@ install:
   - pwd
   - ls
 
-  - if [ $TRAVIS_OS_NAME = 'windows' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then git clone https://github.com/google/googletest googletest/  ; fi
-  - if [ $TRAVIS_OS_NAME = 'windows' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then cd googletest  ; fi
-  - if [ $TRAVIS_OS_NAME = 'windows' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then cmake -DBUILD_SHARED_LIBS=ON --config Release . ; fi
-  - if [ $TRAVIS_OS_NAME = 'windows' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then cmake --build . --config Release ; fi
-  - if [ $TRAVIS_OS_NAME = 'osx' ]; then sudo make install; fi
+  - git clone https://github.com/google/googletest googletest/
+  - cd googletest
+  - cmake -DBUILD_SHARED_LIBS=ON --config Release 
+  - cmake --build . --config Release
+  - if [ $TRAVIS_OS_NAME = 'osx' || $TRAVIS_OS_NAME = 'linux' ]; then sudo make install; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
-  - if [ $TRAVIS_OS_NAME = 'windows' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then cd .. ; fi
+  - cd ..
 
   - echo `pwd`
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cp googletest/googletest/gtest.dll .; fi
