@@ -59,7 +59,8 @@ install:
 
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then ls googletest/lib/Release/ ; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then ls googletest/googletest/ ; fi
-  - if [ $TRAVIS_OS_NAME = 'windows' ]; then find -name "*.dll" ; fi
+  - find -name "*.dll"
+  - find -name "*.so"
 
   - echo `pwd`
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cp googletest/bin/Release/gtest.dll .; fi
