@@ -30,6 +30,7 @@ add_executable(igris_test ${SOURCES_TEST})
 add_library(igris SHARED ${SOURCES})
 
 target_include_directories(igris_test PRIVATE .)
+target_include_directories(igris_test PRIVATE ./googletest/googletest/include)
 target_include_directories(igris PRIVATE .)
 target_link_libraries(igris_test igris)
 target_link_libraries(igris_test gtest)
