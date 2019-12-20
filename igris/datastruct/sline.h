@@ -149,10 +149,10 @@ int sline_write(struct sline * sl, const char* dat, int sz)
 static inline 
 void sline_debug_info(struct sline * sl) 
 {
-	DPRINTPTR(sl->buf);	
-	DPRINT(sl->cap);
-	DPRINT(sl->len);
-	DPRINT(sl->cursor);
+	debug_print("buffer:"); debug_printhex_ptr(sl->buf); dln();	
+	debug_print("capacity:"); debug_printdec_signed_int(sl->cap); dln();
+	debug_print("length:"); debug_printdec_signed_int(sl->len); dln();
+	debug_print("cursor:"); debug_printdec_signed_int(sl->cursor); dln();
 }
 
 __END_DECLS

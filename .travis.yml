@@ -4,9 +4,15 @@ os: linux
 
 matrix:
   include:
+    # Windows
+    - os: "windows"
+      compiler: "clang"
+
+    # OSX
     - os: "osx"
       compiler: clang
       
+    # Ubuntu
     - addons:
         apt:
           sources:
@@ -37,10 +43,6 @@ matrix:
            - libgtest-dev
       env:
          - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
-
-# Windows: TODO
-    - os: "windows"
-      compiler: "clang"
 
 before_install:
   eval ${MATRIX_EVAL}
