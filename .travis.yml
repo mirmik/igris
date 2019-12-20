@@ -58,6 +58,7 @@ install:
   - cmake --build .
   - if [ $TRAVIS_OS_NAME = 'linux' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then sudo make install; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
+  - ls
   
   - cd ..
   - echo `pwd`
