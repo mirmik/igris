@@ -67,6 +67,8 @@ install:
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then export "INCLUDE=`pwd`/googletest/googletest/include:$INCLUDE"; fi
   - echo $PATH
   - echo $INCLUDE
+  - echo $LIB
+  - echo $LIBPATH
 
 script:
   - echo "SCRIPT"
