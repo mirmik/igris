@@ -8,7 +8,7 @@
 
 static inline uint32_t ctz( uint32_t value )
 {
-    uint32_t trailing_zero = 0;
+    unsigned long trailing_zero = 0;
 
     if ( _BitScanForward( &trailing_zero, value ) )
     {
@@ -23,7 +23,7 @@ static inline uint32_t ctz( uint32_t value )
 
 static inline uint32_t clz( uint32_t value )
 {
-    uint32_t leading_zero = 0;
+    unsigned long leading_zero = 0;
 
     if ( _BitScanReverse( &leading_zero, value ) )
     {
