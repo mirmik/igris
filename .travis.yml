@@ -60,7 +60,7 @@ install:
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
   
   - cd ..
-  - if [ $TRAVIS_OS_NAME = 'windows' ]; then set PATH=%cd%/googletest/googletest/include;%cd%/googletest/googletest;%PATH% fi
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then ./tools/travis_windows.bat fi
   
 script:
   - echo "SCRIPT"
@@ -72,4 +72,4 @@ script:
   - cmake --build .
   - if [ $TRAVIS_OS_NAME = 'linux' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then sudo make install; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
-  - if [ $TRAVIS_OS_NAME = 'linux' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then ctest .; fi
+  - ctest .
