@@ -37,15 +37,8 @@ static inline uint32_t clz( uint32_t value )
 }
 #else
 
-static inline uint32_t clz( uint32_t value ) 
-{
-	return __builtin_clz(value);
-}
-
-static inline uint32_t ctz( uint32_t value ) 
-{
-	return __builtin_ctz(value);
-}
+#define ctz(v) __builtin_ctz(v)
+#define clz(v) __builtin_clz(v)
 
 #endif
 
@@ -101,7 +94,7 @@ uint32_t bits_multimap(uint16_t input, uint32_t clone, uint8_t cllen)
 		uint8_t nbit = ctz(input);		
 		ret |= (clone << (cllen * nbit));		
 		input &= ~(1 << nbit);					
-	}												
+	}												 
 
 	return ret;											
 }

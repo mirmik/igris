@@ -10,10 +10,10 @@ licant.execute("../igris.g.py")
 
 tests = [
 	"argvc",
-	"bits",
 	"event",
 	"serialize",
 	"sync"
+	"bits",
 ]
 
 tests_c = [
