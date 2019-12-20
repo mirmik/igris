@@ -38,7 +38,6 @@ target_include_directories(igris_test PRIVATE ./googletest/googletest/include)
 target_include_directories(igris PRIVATE .)
 target_link_libraries(igris_test igris)
 target_link_libraries(igris_test gtest)
-target_link_libraries(igris_test pthread)
 
 if (UNIX AND NOT APPLE)
 	install(TARGETS ${PROJECT_NAME}
