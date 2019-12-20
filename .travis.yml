@@ -69,8 +69,8 @@ install:
   - echo `pwd`
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cp googletest/bin/Release/gtest.dll .; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cp googletest/lib/Release/gtest.lib .; fi
-  - if [ $TRAVIS_OS_NAME = 'linux' ]; then cp googletest/lib/libgtest.so .; fi
-  - if [ $TRAVIS_OS_NAME = 'linux' ]; then set LD_LIBRARY_PATH=$PWD:$LD_LIBRARY_PATH; fi
+  #- if [ $TRAVIS_OS_NAME = 'linux' ]; then cp googletest/lib/libgtest.so .; fi
+  #- if [ $TRAVIS_OS_NAME = 'linux' ]; then set LD_LIBRARY_PATH=$PWD:$LD_LIBRARY_PATH; fi
   
 script:
   - echo "SCRIPT"
