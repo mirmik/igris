@@ -55,7 +55,7 @@ install:
   - git clone https://github.com/google/googletest googletest/
   - cd googletest
   - cmake -DBUILD_SHARED_LIBS=ON --config Release .
-  - cmake --build .
+  - cmake --build --config Release .
   - if [ $TRAVIS_OS_NAME = 'linux' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then sudo make install; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
   - ls lib
