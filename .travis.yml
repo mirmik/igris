@@ -61,15 +61,10 @@ install:
   
   - cd ..
   - echo `pwd`
-  - if [ $TRAVIS_OS_NAME = 'windows' ]; then export "PATH=`pwd`/googletest/lib/Release:$PATH"; fi
-  - if [ $TRAVIS_OS_NAME = 'windows' ]; then export "LIB=`pwd`/googletest/lib/Release:$LIB"; fi
-  - if [ $TRAVIS_OS_NAME = 'windows' ]; then export "LIBPATH=`pwd`/googletest/lib/Release:$LIBPATH"; fi
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then cp googletest/googletest/gtest.dll .; fi
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then cp googletest/lib/Release/gtest.lib .; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then export "INCLUDE=`pwd`/googletest/googletest/include:$INCLUDE"; fi
-  - echo $PATH
-  - echo $INCLUDE
-  - echo $LIB
-  - echo $LIBPATH
-
+  
 script:
   - echo "SCRIPT"
   - pwd
