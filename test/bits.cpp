@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <igris/util/bits.h>
 
+#ifndef _MSC_VER
 TEST(bits, BITS) 
 {
 	uint32_t a = 0b101101101101;
@@ -9,3 +10,4 @@ TEST(bits, BITS)
 	EXPECT_EQ(bits_multimap(0b1011, 0b101, 3), 0b101000101101);
 	EXPECT_EQ(a, 0b101011101011);
 }
+#endif

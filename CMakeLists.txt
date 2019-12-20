@@ -4,6 +4,10 @@ project(igris)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CC_STANDARD 11)
 
+if (WIN32 OR WIN64)
+	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
+
 file(GLOB HEADERS 
 	igris/util/*.h	
 	igris/dprint/*.h
@@ -30,10 +34,14 @@ add_executable(igris_test ${SOURCES_TEST})
 add_library(igris SHARED ${SOURCES})
 
 target_include_directories(igris_test PRIVATE .)
+target_include_directories(igris_test PRIVATE ./googletest/googletest/include)
 target_include_directories(igris PRIVATE .)
 target_link_libraries(igris_test igris)
 target_link_libraries(igris_test gtest)
-target_link_libraries(igris_test pthread)
+
+if (UNIX AND NOT APPLE)
+	target_link_libraries(igris_test pthread)
+endif()
 
 if (UNIX AND NOT APPLE)
 	install(TARGETS ${PROJECT_NAME}

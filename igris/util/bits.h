@@ -1,6 +1,47 @@
 #ifndef IGRIS_UTIL_BITS_H
 #define IGRIS_UTIL_BITS_H
 
+#include <igris/compiler.h>
+
+#ifdef _MSC_VER
+#include <intrin.h>
+
+static inline uint32_t ctz( uint32_t value )
+{
+    unsigned long trailing_zero = 0;
+
+    if ( _BitScanForward( &trailing_zero, value ) )
+    {
+        return trailing_zero;
+    }
+    else
+    {
+        // This is undefined, I better choose 32 than 0
+        return 32;
+    }
+}
+
+static inline uint32_t clz( uint32_t value )
+{
+    unsigned long leading_zero = 0;
+
+    if ( _BitScanReverse( &leading_zero, value ) )
+    {
+       return 31 - leading_zero;
+    }
+    else
+    {
+         // Same remarks as above
+         return 32;
+    }
+}
+#else
+
+#define ctz(v) __builtin_ctz(v)
+#define clz(v) __builtin_clz(v)
+
+#endif
+
 //Установить все биты в переменной.	
 #define bits_set_all(a) {a = -1;}
 
@@ -50,10 +91,10 @@ uint32_t bits_multimap(uint16_t input, uint32_t clone, uint8_t cllen)
 	uint32_t ret = 0;
 
 	while(input) {								
-		uint8_t nbit = __builtin_ctz(input);		
+		uint8_t nbit = ctz(input);		
 		ret |= (clone << (cllen * nbit));		
 		input &= ~(1 << nbit);					
-	}												
+	}												 
 
 	return ret;											
 }

@@ -4,9 +4,15 @@ os: linux
 
 matrix:
   include:
+    # Windows
+    - os: "windows"
+      compiler: "clang"
+
+    # OSX
     - os: "osx"
       compiler: clang
       
+    # Ubuntu
     - addons:
         apt:
           sources:
@@ -38,10 +44,6 @@ matrix:
       env:
          - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
 
-# Windows: TODO
-#    - os: "windows"
-#      compiler: "clang"
-
 before_install:
   eval ${MATRIX_EVAL}
 
@@ -52,13 +54,24 @@ install:
 
   - git clone https://github.com/google/googletest googletest/
   - cd googletest
-  - cmake .
-  - cmake --build .
-  - if [ $TRAVIS_OS_NAME = 'linux' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then sudo make install; fi
+  - if [ $TRAVIS_OS_NAME = 'windows' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then cmake -DBUILD_SHARED_LIBS=ON --config Release .; fi
+  - if [ $TRAVIS_OS_NAME = 'linux' ]; then cmake --config Release .; fi
+  - cmake --build . --config Release
+  - if [ $TRAVIS_OS_NAME = 'osx' ] || [ $TRAVIS_OS_NAME = 'linux' ]; then sudo make install; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
-  
   - cd ..
 
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then ls googletest/lib/Release/ ; fi
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then ls googletest/googletest/ ; fi
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then find -name "*.dll"; fi
+#  - if [ $TRAVIS_OS_NAME = 'linux' ]; then find -name "*.so"; fi
+
+  - echo `pwd`
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then cp googletest/bin/Release/gtest.dll .; fi
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then cp googletest/lib/Release/gtest.lib .; fi
+  #- if [ $TRAVIS_OS_NAME = 'linux' ]; then cp googletest/lib/libgtest.so .; fi
+  #- if [ $TRAVIS_OS_NAME = 'linux' ]; then set LD_LIBRARY_PATH=$PWD:$LD_LIBRARY_PATH; fi
+  
 script:
   - echo "SCRIPT"
   - pwd
@@ -68,5 +81,6 @@ script:
   - cmake .
   - cmake --build .
   - if [ $TRAVIS_OS_NAME = 'linux' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then sudo make install; fi
-  - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
-  - ctest .
+#  - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
+  - if [ $TRAVIS_OS_NAME != 'windows' ]; then ./igris_test; fi
+  - if [ $TRAVIS_OS_NAME != 'windows' ]; then ctest .; fi
