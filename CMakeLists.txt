@@ -40,6 +40,10 @@ target_link_libraries(igris_test igris)
 target_link_libraries(igris_test gtest)
 
 if (UNIX AND NOT APPLE)
+	target_link_libraries(igris_test gtest)
+endif()
+
+if (UNIX AND NOT APPLE)
 	install(TARGETS ${PROJECT_NAME}
 		LIBRARY DESTINATION /usr/lib
 	)
