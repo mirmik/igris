@@ -58,8 +58,8 @@ install:
   - if [ $TRAVIS_OS_NAME = 'windows' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then cmake --build . --config Release ; fi
   - if [ $TRAVIS_OS_NAME = 'osx' ]; then sudo make install; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
-  
-  - cd ..
+  - if [ $TRAVIS_OS_NAME = 'windows' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then cd .. ; fi
+
   - echo `pwd`
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cp googletest/googletest/gtest.dll .; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cp googletest/lib/Release/gtest.lib .; fi
