@@ -62,6 +62,7 @@ install:
   - ls googletest
   - ls googlemock
   - ls lib
+  - ls lib/Debug
 
   - cd ..
   - echo `pwd`
