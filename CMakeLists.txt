@@ -4,6 +4,10 @@ project(igris)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CC_STANDARD 11)
 
+if (WIN32 OR WIN64)
+	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
+
 file(GLOB HEADERS 
 	igris/util/*.h	
 	igris/dprint/*.h
