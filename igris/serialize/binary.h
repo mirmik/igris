@@ -108,22 +108,22 @@ namespace igris
 			return
 		}
 
-		void size(char& i) { return load_data((char*)&i, sizeof(i)); }
-		void size(short& i) { return load_data((char*)&i, sizeof(i)); }
-		void size(int& i) { return load_data((char*)&i, sizeof(i)); }
-		void size(long& i) { return load_data((char*)&i, sizeof(i)); }
-		void size(unsigned char& i) { return load_data((char*)&i, sizeof(i)); }
-		void size(unsigned short& i) { return load_data((char*)&i, sizeof(i)); }
-		void size(unsigned int& i) { return load_data((char*)&i, sizeof(i)); }
-		void size(unsigned long& i) { return load_data((char*)&i, sizeof(i)); }
-		void size(unsigned long long& i) { return load_data((char*)&i, sizeof(i)); }
-		void size(float& i) { return load_data((char*)&i, sizeof(i)); }
-		void size(double& i) { return load_data((char*)&i, sizeof(i)); }
-		void size(long double& i) { return load_data((char*)&i, sizeof(i)); }
+		int size(char& i) { return load_data((char*)&i, sizeof(i)); }
+		int size(short& i) { return load_data((char*)&i, sizeof(i)); }
+		int size(int& i) { return load_data((char*)&i, sizeof(i)); }
+		int size(long& i) { return load_data((char*)&i, sizeof(i)); }
+		int size(unsigned char& i) { return load_data((char*)&i, sizeof(i)); }
+		int size(unsigned short& i) { return load_data((char*)&i, sizeof(i)); }
+		int size(unsigned int& i) { return load_data((char*)&i, sizeof(i)); }
+		int size(unsigned long& i) { return load_data((char*)&i, sizeof(i)); }
+		int size(unsigned long long& i) { return load_data((char*)&i, sizeof(i)); }
+		int size(float& i) { return load_data((char*)&i, sizeof(i)); }
+		int size(double& i) { return load_data((char*)&i, sizeof(i)); }
+		int size(long double& i) { return load_data((char*)&i, sizeof(i)); }
 		//int load(igris::buffer buf) { lo }
 
 		template<typename T>
-		void size(T&& ref)
+		int size(T&& ref)
 		{
 			archive_adaptor_size adaptor {*this};
 			((std::remove_cv_t<std::remove_reference_t<T>>&)(ref)).reflect(adaptor);
