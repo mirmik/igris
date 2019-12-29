@@ -129,8 +129,13 @@ namespace igris
 			((std::remove_cv_t<std::remove_reference_t<T>>&)(ref)).reflect(adaptor);
 			return adaptor.result();
 		}
-
 	};
+
+	class binary_buffer_archive 
+	{
+		uint8_t * data;
+		size_t size;
+	}
 }
 
 #endif
