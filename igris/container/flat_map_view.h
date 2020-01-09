@@ -21,6 +21,8 @@ namespace igris
 		const_iterator begin() const { return _data; };
 		const_iterator const end() const { return _data + _size; };
 
+		size_t size() const { return _size; }
+
 		template <unsigned int N>
 		constexpr flat_map_view(std::pair<K,T> (&arr)[N]) : 
 			_data(arr), _size(N)
