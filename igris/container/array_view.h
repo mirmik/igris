@@ -14,6 +14,7 @@ namespace igris
 	public:
 		using iterator = T*;
 		using const_iterator = const T*;
+		using value_type = T;
 
 	public:
 
