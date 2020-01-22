@@ -12,6 +12,7 @@ tests = [
 	"argvc",
 	"event",
 	"serialize",
+	"dprint",
 	"sync",
 	"bits",
 	"array_view"
@@ -27,6 +28,8 @@ application("runtests",
 		+ [t+".c" for t in tests_c]),
 
 	ld_flags = "-L/usr/local/lib/",
+	cxx_flags = "-g",
+	cc_flags = "-g",
 
 	include_paths = ["."],
 	mdepends = [ "igris" ],

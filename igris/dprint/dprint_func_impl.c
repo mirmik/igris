@@ -175,8 +175,8 @@ void debug_printdec_double_prec(double a, int prec)
 	double o = a - n;
 	for (int _iteration = 0; _iteration < prec; ++_iteration ) 
 	{
-		if ((int)o == 0) debug_putchar('0');
 		o *= 10;
+		if ((int)o == 0) debug_putchar('0');
 	}
 	o += 0.5;
 	
