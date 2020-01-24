@@ -1,6 +1,8 @@
 #ifndef IGRIS_SIMPLE_SHELL_H
 #define IGRIS_SIMPLE_SHELL_H
 
+#warning "SSHELL is deprecated"
+
 #include <igris/datastruct/argvc.h>
 #include <igris/compiler.h>
 

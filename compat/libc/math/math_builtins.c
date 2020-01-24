@@ -9,15 +9,17 @@
 
 #include <igris/dprint.h>
 
-double modf(double x, double *i_ptr) {
+/*double modf(double x, double *i_ptr) {
 	return __builtin_modf(x, i_ptr);
-}
+}*/
 
-double fmod(double x, double y) {
+/*double fmod(double x, double y) {
+	dprln("fmod");
 	return __builtin_fmod(x, y);
-}
+}*/
 
-int signbit(double x) {
+
+/*int signbit(double x) {
 	return __builtin_signbit(x);
 }
 
@@ -35,20 +37,20 @@ double round(double x)
         return (int)(x - 0.5);
     else
         return (int)(x + 0.5);
-}
+}*/
 //	dprln("HERE");
 //	return __builtin_round(x);
 //}
 
-double pow(double x, double y) {
+/*double pow(double x, double y) {
 	return __builtin_pow(x,y);
-}
+}*/
 
-double log10(double x) {
+/*double log10(double x) {
 	return __builtin_log10(x);
-}
+}*/
 
-long double ceill(long double x) {
+/*long double ceill(long double x) {
 	return __builtin_ceill(x);
 }
 
@@ -70,4 +72,4 @@ float floorf(float x) {
 
 long double floorl(long double x) {
 	return __builtin_floorl(x);
-}
+}*/

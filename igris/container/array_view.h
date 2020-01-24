@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <utility>
+#include <initializer_list> 
 
 namespace igris 
 {
