@@ -15,7 +15,8 @@ tests = [
 	"dprint",
 	"sync",
 	"bits",
-	"array_view"
+	"array_view",
+	"util"
 ]
 
 tests_c = [
