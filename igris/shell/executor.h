@@ -1,7 +1,7 @@
 #ifndef IGRIS_SHELL_EXECUTOR_H
 #define IGRIS_SHELL_EXECUTOR_H
 
-#include <igris/syscmd.h>
+#include <igris/shell/conscmd.h>
 #include <igris/datastruct/argvc.h>
 
 #include <unistd.h>
@@ -17,16 +17,17 @@ namespace igris
 	class executor
 	{
 	public:
+		bool debug_mode = false;
 		virtual int execute(
 		    char* str, int len, int flags, int* p_ret) = 0;
 	};
 
 	class syscmd_executor : public executor
 	{
-		system_command ** tbl;
+		console_command ** tbl;
 
 	public:
-		syscmd_executor(genos::system_command** syscmdtbl)
+		syscmd_executor(igris::console_command** syscmdtbl)
 			: tbl(syscmdtbl) {}
 
 		int execute(char * str, int len, int flags, int * retptr) override
@@ -35,8 +36,15 @@ namespace igris
 			int argc;
 			int res;
 			char * argv[10];
-			struct system_command ** it0;
-			struct system_command * it1;
+			igris::console_command ** it0;
+			igris::console_command * it1;
+
+			if (debug_mode) 
+			{
+				dpr("execinput: len: "); dpr(len); dpr("data: "); 
+				debug_write(str, len); dprln();
+				debug_print_dump(str, len);
+			}
 
 			if (!(flags & SH_INTERNAL_SPLIT))
 			{
@@ -47,17 +55,25 @@ namespace igris
 			{
 				return 0;
 			}
-
+			
 			// Скипаем ведущие пробелы
-			while (*str == ' ')
+			while (*str == ' ' || *str == '\n') 
+			{
 				++str;
+				--len;
+			}
 
 			// Ищем длину первого слова
-			while (flen != len && str[flen] != '\0' && str[flen] != ' ')
+			while (flen != len && str[flen] != '\0' && str[flen] != ' ' && str[flen] != '\n')
 				++flen;
 
+			if (flen <= 0)
+			{
+				return 0;
+			}
+
 			// Встроенная функция help
-			if (flen == 4 && !strncmp(str, "help", 4))
+			if ((str[4] == 0 || str[4] == ' ' || str[4] == '\n') && !strncmp(str, "help", 4))
 			{
 				for (it0 = tbl; *it0 != nullptr; ++it0)
 				{
@@ -65,15 +81,15 @@ namespace igris
 					{
 						if (it1->help)
 						{
-							write(0, it1->name, strlen(it1->name));
-							write(0, " - ", 3);
-							write(0, it1->help, strlen(it1->help));
-							write(0, "\r\n", 2);
+							write(1, it1->name, strlen(it1->name));
+							write(1, " - ", 3);
+							write(1, it1->help, strlen(it1->help));
+							write(1, "\r\n", 2);
 						}
 						else
 						{
-							write(0, it1->name, strlen(it1->name));
-							write(0, "\r\n", 2);
+							write(1, it1->name, strlen(it1->name));
+							write(1, "\r\n", 2);
 						}
 					}
 				}
@@ -85,7 +101,7 @@ namespace igris
 			{
 				for (it1 = *it0; it1->func != NULL; ++it1)
 				{
-					if (!strncmp(str, it1->name, flen))
+					if (strlen(it1->name) == flen && !strncmp(str, it1->name, flen))
 					{
 						switch (it1->type)
 						{
@@ -109,16 +125,17 @@ namespace igris
 				}
 			}
 
+			puts("Not enough command");
 			return ENOENT;
 		}
 	};
 
 	class syscmd_executor_onelevel : public executor
 	{
-		system_command * tbl;
+		console_command * tbl;
 
 	public:
-		syscmd_executor_onelevel(genos::system_command* syscmdtbl)
+		syscmd_executor_onelevel(igris::console_command* syscmdtbl)
 			: tbl(syscmdtbl) {}
 
 		int execute(char * str, int len, int flags, int * retptr) override
@@ -127,7 +144,7 @@ namespace igris
 			int argc;
 			int res;
 			char * argv[10];
-			struct system_command * it;
+			igris::console_command * it;
 
 			if (!(flags & SH_INTERNAL_SPLIT))
 			{
@@ -154,15 +171,15 @@ namespace igris
 				{
 					if (it->help)
 					{
-						write(0, it->name, strlen(it->name));			
-						write(0, " - ", 3);
-						write(0, it->help, strlen(it->help));
-						write(0, "\r\n", 2);
+						write(1, it->name, strlen(it->name));			
+						write(1, " - ", 3);
+						write(1, it->help, strlen(it->help));
+						write(1, "\r\n", 2);
 					}
 					else
 					{
-						write(0, it->name, strlen(it->name));
-						write(0, "\r\n", 2);
+						write(1, it->name, strlen(it->name));
+						write(1, "\r\n", 2);
 					}
 				}
 				return 0;
