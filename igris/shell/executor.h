@@ -39,9 +39,9 @@ namespace igris
 			igris::console_command ** it0;
 			igris::console_command * it1;
 
-			if (debug_mode) 
+			if (debug_mode)
 			{
-				dpr("execinput: len: "); dpr(len); dpr("data: "); 
+				dpr("execinput: len: "); dpr(len); dpr("data: ");
 				debug_write(str, len); dprln();
 				debug_print_dump(str, len);
 			}
@@ -55,9 +55,9 @@ namespace igris
 			{
 				return 0;
 			}
-			
+
 			// Скипаем ведущие пробелы
-			while (*str == ' ' || *str == '\n') 
+			while (*str == ' ' || *str == '\n')
 			{
 				++str;
 				--len;
@@ -81,15 +81,11 @@ namespace igris
 					{
 						if (it1->help)
 						{
-							write(1, it1->name, strlen(it1->name));
-							write(1, " - ", 3);
-							write(1, it1->help, strlen(it1->help));
-							write(1, "\r\n", 2);
+							printf("%s - %s\r\n", it1->name, it1->help);
 						}
 						else
 						{
-							write(1, it1->name, strlen(it1->name));
-							write(1, "\r\n", 2);
+							printf("%s\r\n", it1->name);
 						}
 					}
 				}
@@ -125,7 +121,7 @@ namespace igris
 				}
 			}
 
-			puts("Not enough command");
+			printf("Not enough command\r\n");
 			return ENOENT;
 		}
 	};
@@ -171,15 +167,11 @@ namespace igris
 				{
 					if (it->help)
 					{
-						write(1, it->name, strlen(it->name));			
-						write(1, " - ", 3);
-						write(1, it->help, strlen(it->help));
-						write(1, "\r\n", 2);
+						printf("%s - %s\r\n", it->name, it->help);
 					}
 					else
 					{
-						write(1, it->name, strlen(it->name));
-						write(1, "\r\n", 2);
+						printf("%s\r\n", it->name);
 					}
 				}
 				return 0;
@@ -216,9 +208,5 @@ namespace igris
 		}
 	};
 }
-
-#define EXECUTOR(name, ...) \
-genos::system_command* name##_syscmd_table[] {__VA_ARGS__, EXECUTOR_TBLFIN}; \
-genos::executor name{name##_syscmd_table}
 
 #endif

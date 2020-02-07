@@ -6,6 +6,9 @@
 
 #include <igris/util/types_extension.h>
 
+typedef float float_t;
+typedef double double_t;
+
 __BEGIN_DECLS
 
 static __inline uint32_t __FLOAT_BITS(float __f)

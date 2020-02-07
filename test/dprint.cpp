@@ -14,3 +14,10 @@ TEST(dprint, float_print) {
 	std::string output = testing::internal::GetCapturedStdout();
 	EXPECT_EQ(output, "0.10000000");
 }
+
+TEST(dprint, dprf_float) {
+	testing::internal::CaptureStdout();
+	dprf("%f", 0.1);
+	std::string output = testing::internal::GetCapturedStdout();
+	EXPECT_EQ(output, "0.100000");
+}

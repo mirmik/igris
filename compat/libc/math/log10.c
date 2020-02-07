@@ -19,7 +19,6 @@
 
 #include <math.h>
 #include <stdint.h>
-#include <igris/dtrace.h>
 
 static const double
 ivln10hi  = 4.34294481878168880939e-01, /* 0x3fdbcb7b, 0x15200000 */
@@ -36,9 +35,8 @@ Lg7 = 1.479819860511658591e-01;  /* 3FC2F112 DF3E5244 */
 
 double log10(double x)
 {
-	DTRACE();
 	union {double f; uint64_t i;} u = {x};
-	double hfsq,f,s,z,R,w,t1,t2,dk,y,hi,lo,val_hi,val_lo;
+	double_t hfsq,f,s,z,R,w,t1,t2,dk,y,hi,lo,val_hi,val_lo;
 	uint32_t hx;
 	int k;
 

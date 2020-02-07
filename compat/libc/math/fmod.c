@@ -1,7 +1,6 @@
 #include <math.h>
-#include <igris/dtrace.h>
+#include <stdint.h>
 
-// https://git.musl-libc.org/cgit/musl/tree/src/math/fmod.c	
 double fmod(double x, double y)
 {
 	union {double f; uint64_t i;} ux = {x}, uy = {y};

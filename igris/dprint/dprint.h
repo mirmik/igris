@@ -241,6 +241,7 @@ static inline void dpr(int32_t obj)         { debug_printdec_int32(obj); }
 static inline void dpr(int64_t obj)         { debug_printdec_int64(obj); }
 */
 static inline void dpr(double obj)          { debug_printdec_double(obj); }
+static inline void dpr(long double obj)          { debug_printdec_double(obj); }
 static inline void dpr(float obj)           { debug_printdec_float(obj); }
 static inline void dpr(bool obj)            { debug_print_bool(obj); }
 

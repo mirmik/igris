@@ -3,6 +3,17 @@
 
 namespace std
 {
+	template <class T, int N> constexpr T* begin(T(&a)[N]) { return a; }
+	template <class T, int N> constexpr T* end(T(&a)[N]) { return a + N; }
+
+	template <class T> constexpr auto begin(T& a) { return a.begin(); }
+	template <class T> constexpr auto end(T& a) { return a.end(); }
+	template <class T> constexpr auto begin(const T& a) { return a.begin(); }
+	template <class T> constexpr auto end(const T& a) { return a.end(); }
+
+	template <class T> constexpr auto cbegin(const T& a) { return std::begin(a); }
+	template <class T> constexpr auto cend(const T& a) { return std::end(a); }
+
 	template<class Container>
 	class back_insert_iterator {};
 
