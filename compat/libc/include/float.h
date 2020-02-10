@@ -486,4 +486,7 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 
 #endif /* __STDC_WANT_DEC_FP__ */
 
+typedef float float_t;
+typedef double double_t;
+
 #endif /* _FLOAT_H___ */

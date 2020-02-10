@@ -5,6 +5,11 @@ long double roundl(long double x)
 {
 	return round(x);
 }
+#elif LDBL_MANT_DIG == 24
+long double roundl(long double x)
+{
+	return round(x);
+}
 #elif (LDBL_MANT_DIG == 64 || LDBL_MANT_DIG == 113) && LDBL_MAX_EXP == 16384
 
 static const long double toint = 1/LDBL_EPSILON;

@@ -7,7 +7,6 @@
  * @author Ilia Vaprol
  */
 
-#include <assert.h>
 #include <ctype.h>
 #include <stddef.h>
 #include <math.h>
@@ -15,14 +14,12 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-//#include <nos/util/math.h>
-#include <sys/types.h>
+//#include <util/math.h>
 //#include <framework/mod/options.h>
 
-#include <igris/util/types_extension.h>
-
-#include <igris/math/defs.h>
 #include "printf_impl.h"
+
+#include <igris/dprint.h>
 
 /**
  * Format specifiers
@@ -60,20 +57,15 @@
 //#define PRINT_F_PREC_SHORTENED 4 /* shortened precision for real numbers */
 #define PRINT_F_PREC_DEFAULT   6 /* default precision for real numbers */
 
-static int print_s(void (*printchar_handler)(void *d, int c),
+static int print_s(void (*printchar_handler)(void* d, int c),
 		void *printchar_data,
 		const char *str, int width, int max_len, unsigned int ops) {
 	int pc, len, space_count;
 
-	assert(printchar_handler != NULL);
-	assert(str != NULL);
-	assert(width >= 0);
-	assert(max_len >= 0);
-
 	pc = 0;
 	len = strlen(str);
 	if (ops & OPS_PREC_IS_GIVEN) {
-		len = __MIN__(max_len, len);
+		len = MIN(max_len, len);
 	}
 	space_count = width > len ? width - len : 0;
 
@@ -96,10 +88,6 @@ static int print_i(void (*printchar_handler)(void *d, int c),
 		int is_signed, int width, int min_len, unsigned int ops, int base) {
 	char buff[PRINT_I_BUFF_SZ], *str, *end, *prefix;
 	int pc, ch, len, prefix_len, zero_count, space_count, letter_base;
-
-	assert(printchar_handler != NULL);
-	assert(width >= 0);
-	assert(min_len >= 0);
 
 	str = end = &buff[0] + sizeof buff / sizeof buff[0] - 1;
 	*end = '\0';
@@ -124,9 +112,9 @@ static int print_i(void (*printchar_handler)(void *d, int c),
 	len = end - str;
 	zero_count = (len < min_len ? min_len : (ops & OPS_FLAG_ZERO_PAD)
 			&& !(ops & OPS_FLAG_LEFT_ALIGN) ? width : 0) - len - prefix_len;
-	zero_count = __MAX__(zero_count, 0);
+	zero_count = MAX(zero_count, 0);
 	space_count = width - len - prefix_len - zero_count;
-	space_count = __MAX__(space_count, 0);
+	space_count = MAX(space_count, 0);
 
 	if (!(ops & OPS_FLAG_LEFT_ALIGN)) {
 		pc += space_count;
@@ -148,8 +136,7 @@ static int print_i(void (*printchar_handler)(void *d, int c),
 	return pc;
 }
 
-#define PRINTF_SUPPORT_FLOATING 1
-#if PRINTF_SUPPORT_FLOATING
+#if 1 //OPTION_GET(NUMBER, support_floating)
 #ifdef LONG_DOUBLE
 #define DOUBLE long double
 #define MODF modfl
@@ -166,16 +153,21 @@ static int print_i(void (*printchar_handler)(void *d, int c),
 #define FABS fabs
 #endif
 
-static int print_f(void (*printchar_handler)(void *d, int c),
+static int print_f(void (*printchar_handler)(void* d, int c),
 		void *printchar_data, long double r, int width,
 		int precision, unsigned int ops, int base, int with_exp, int is_shortened) {
+
+	// ip - Целая часть.
+	// fp - Дробная часть.
+	// ep - ???.
+
 	char buff[PRINT_F_BUFF_SZ], *str, *end, *prefix, *postfix;
 	DOUBLE ip, fp, ep;
 	int pc, i, ch, len, prefix_len, postfix_len, pad_count, sign_count, zero_left, letter_base;
 
-	assert(printchar_handler != NULL);
-	assert(width >= 0);
-	assert(precision >= 0);
+	if (isnan(r)) {
+		r = 0.0;
+	}
 
 	postfix = end = str = &buff[0] + sizeof buff / sizeof buff[0] - 1;
 	*end = '\0';
@@ -194,10 +186,11 @@ static int print_f(void (*printchar_handler)(void *d, int c),
 	prefix_len = strlen(prefix);
 	letter_base = ops & OPS_SPEC_UPPER_CASE ? 'A' : 'a';
 	precision = ops & OPS_PREC_IS_GIVEN ? is_shortened ?
-				__MAX__(precision, 1) : precision
+				MAX(precision, 1) : precision
 			: base == 16 ? 12 : PRINT_F_PREC_DEFAULT;
 
 	fp = MODF(r, &ip);
+
 	if (with_exp || is_shortened) {
 		ep = 0.0L;
 		while (ip >= base) fp = MODF((ip + fp) / base, &ip), ep += 1.0L;
@@ -206,9 +199,9 @@ static int print_f(void (*printchar_handler)(void *d, int c),
 	}
 	fp = with_exp ? fp : MODF(r, &ip);
 	precision -= is_shortened ? ceill(LOG10(ip)) + (ip != 0.0L) : 0;
-	assert(precision >= 0);
 	for (; (sign_count < precision) && (FMOD(fp, 1.0L) != 0.0L); ++sign_count) fp *= base;
 	fp = roundl(fp);
+
 	ip = precision ? fp != POW(base, sign_count)
 			? ip : ip + 1.0L : roundl(ip + fp);
 	fp = fp != POW(base, sign_count) ? fp : 0.0L;
@@ -217,7 +210,6 @@ static int print_f(void (*printchar_handler)(void *d, int c),
 	if (with_exp) {
 		do {
 			ch = FMOD(FABS(ep), base);
-			assert((ch >= 0) && (ch < base));
 			if (ch >= 10) ch += letter_base - 10 - '0';
 			*--postfix = ch + '0';
 			MODF(ep / base, &ep);
@@ -233,7 +225,6 @@ static int print_f(void (*printchar_handler)(void *d, int c),
 
 	for (; i < sign_count; ++i) {
 		ch = FMOD(fp, base);
-		assert((ch >= 0) && (ch < base));
 		if (ch >= 10) ch += letter_base - 10 - '0';
 		*--str = ch + '0';
 		MODF(fp / base, &fp);
@@ -246,7 +237,6 @@ static int print_f(void (*printchar_handler)(void *d, int c),
 
 	do {
 		ch = (int)FMOD(ip, (long double)base);
-		assert((ch >= 0) && (ch < base));
 		if (ch >= 10) ch += letter_base - 10 - '0';
 		*--str = ch + '0';
 		MODF(ip / base, &ip);
@@ -255,7 +245,7 @@ static int print_f(void (*printchar_handler)(void *d, int c),
 	len = end - str;
 	postfix_len = strlen(postfix);
 	zero_left = is_shortened ? 0 : precision - sign_count;
-	pad_count = __MAX__(width - prefix_len - len - zero_left - postfix_len, 0);
+	pad_count = MAX(width - prefix_len - len - zero_left - postfix_len, 0);
 
 	if (!(ops & (OPS_FLAG_ZERO_PAD | OPS_FLAG_LEFT_ALIGN))) {
 		pc += pad_count;
@@ -287,14 +277,14 @@ static int print_f(void (*printchar_handler)(void *d, int c),
 	return pc;
 }
 #else
-static int print_f(void (*printchar_handler)(void *d, int c),
-		void *printchar_data, double r, int width,
+static int print_f(void (*printchar_handler)(struct printchar_handler_data *d, int c),
+		struct printchar_handler_data *printchar_data, double r, int width,
 		int precision, unsigned int ops, int base, int with_exp, int is_shortened) {
 	return print_s(printchar_handler, printchar_data, "%f", 0, 0, 0);
 }
 #endif
 
-int __printf(void (*printchar_handler)(void *d, int c),
+int __printf(void (*printchar_handler)(void* d, int c),
 		void *printchar_data,
 		const char *format, va_list args) {
 	int pc, width, precision;
@@ -307,9 +297,6 @@ int __printf(void (*printchar_handler)(void *d, int c),
 		unsigned long long int ulli;
 		long double ld;
 	} tmp;
-
-	assert(printchar_handler != NULL);
-	assert(format != NULL);
 
 	pc = 0;
 
@@ -344,7 +331,7 @@ after_flags:
 		/* get width */
 		if (*format == '*') { width = va_arg(args, int); ++format; }
 		else { width = atoi(format); while (isdigit(*format)) ++format; }
-		width = __MAX__(width, 0);
+		width = MAX(width, 0);
 
 		/* get precision */
 		ops |= *format == '.' ? OPS_PREC_IS_GIVEN : 0;

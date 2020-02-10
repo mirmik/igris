@@ -126,6 +126,7 @@ void debug_printdec_float_prec(float a, int prec);
 void debug_printdec_double_prec(double a, int prec);
 static inline void debug_printdec_float(float a) { debug_printdec_float_prec(a,8); }
 static inline void debug_printdec_double(double a) { debug_printdec_double_prec(a,8); }
+static inline void debug_printdec_long_double(long double a) { debug_printdec_double_prec(a,8); }
 
 void debug_printhex_float(float a);
 void debug_printhex_double(double a);
@@ -168,6 +169,7 @@ __END_DECLS
     signed long long:     debug_printdec_signed_long_long,    \
     float:                debug_printdec_float,   \
     double:               debug_printdec_double,  \
+    long double:          debug_printdec_long_double,  \
     bool:                 debug_print_bool        \
 )(X)
 

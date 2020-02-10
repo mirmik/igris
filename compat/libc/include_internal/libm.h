@@ -20,6 +20,7 @@
 #include <endian.h>
 
 #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
+#elif LDBL_MANT_DIG == 24
 #elif LDBL_MANT_DIG == 64 && LDBL_MAX_EXP == 16384 && __BYTE_ORDER == __LITTLE_ENDIAN
 union ldshape {
 	long double f;

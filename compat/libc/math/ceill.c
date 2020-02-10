@@ -31,4 +31,10 @@ long double ceill(long double x)
 		return x + y + 1;
 	return x + y;
 }
+#else 
+long double ceill(long double x)
+{
+	return ceil(x);
+}
 #endif
+
