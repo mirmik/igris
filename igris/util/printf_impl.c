@@ -19,7 +19,7 @@
 
 #include "printf_impl.h"
 
-#include <sys/types.h>
+#include <igris/util/types_extension.h>
 #include <igris/dprint.h>
 #include <igris/math/defs.h>
 
