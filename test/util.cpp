@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <igris/util/graycode.h>
+#include <igris/util/size.h>
 
 TEST(util, graycode) 
 {
@@ -11,4 +12,11 @@ TEST(util, graycode)
 	EXPECT_EQ(igris::graycode(5), 0b111);
 	EXPECT_EQ(igris::graycode(6), 0b101);
 	EXPECT_EQ(igris::graycode(7), 0b100);
+}
+
+
+TEST(util, size) 
+{
+	char c[3];
+	EXPECT_EQ(igris::size(c), 3);
 }
