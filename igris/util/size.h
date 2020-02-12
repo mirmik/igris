@@ -12,12 +12,9 @@ namespace igris
 	}
 
 	template <class C>
-	constexpr auto ssize(const C& c)
-	-> std::common_type_t<std::ptrdiff_t,
-	std::make_signed_t<decltype(c.size())>>
+	constexpr auto ssize(const C& c) -> decltype(c.size() - c.size())
 	{
-		using R = std::common_type_t<std::ptrdiff_t,
-		std::make_signed_t<decltype(c.size())>>;
+		using R = decltype(c.size() - c.size());
 		return static_cast<R>(c.size());
 	}
 
@@ -27,8 +24,9 @@ namespace igris
 		return N;
 	}
 
-	template <class T, std::ptrdiff_t N>
-	constexpr std::ptrdiff_t ssize(const T (&array)[N]) noexcept
+	template <class T, int N>
+	constexpr auto ssize(const T (&array)[N]) noexcept
+		-> decltype(std::size_t() - std::size_t())
 	{
 		return N;
 	}
