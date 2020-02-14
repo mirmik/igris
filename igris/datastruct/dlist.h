@@ -241,10 +241,10 @@ int dlist_oposite_check(struct dlist_head *fnd, int count)
 static inline
 void dlist_debug_print_node(const char* prefix, struct dlist_head *node) 
 {
-    dpr(prefix); dprptr(node); 
-    dpr(" (next: "); dprptr(node->next);
-    dpr(", prev: "); dprptr(node->prev);
-    dprln(")");
+    debug_print(prefix); debug_printhex_ptr(node); 
+    debug_print(" (next: "); debug_printhex_ptr(node->next);
+    debug_print(", prev: "); debug_printhex_ptr(node->prev);
+    debug_print_line(")");
 } 
 
 static inline
