@@ -13,7 +13,6 @@
 #define IGRIS_DELEGATE_H
 
 #include "igris/util/horrible_cast.h"
-//#include "igris/util/stub.h"
 #include <utility>
 
 #include "inttypes.h"
