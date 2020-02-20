@@ -51,6 +51,18 @@ static inline size_t pool_avail(const struct pool_head* head)
 	return slist_size(&head->free_blocks);
 }
 
+static inline int pool_in_freelist(const struct pool_head* head, void * ptr) 
+{
+	struct slist_head* mimic_sh = (struct slist_head*) ptr;
+	return slist_in(&head->free_blocks, mimic_sh);
+}
+
+static inline void debug_print_pool_head(const struct pool_head* head)
+{
+	debug_print("free_blocks: "); 
+	debug_print_slist_head(&head->free_blocks);
+}
+
 __END_DECLS
 
 #endif

@@ -19,7 +19,7 @@ namespace igris
 	public:
 		bool debug_mode = false;
 		virtual int execute(
-		    char* str, int len, int flags, int* p_ret) = 0;
+		    char* str, size_t len, int flags, int* p_ret) = 0;
 	};
 
 	class syscmd_executor : public executor
@@ -30,9 +30,9 @@ namespace igris
 		syscmd_executor(igris::console_command** syscmdtbl)
 			: tbl(syscmdtbl) {}
 
-		int execute(char * str, int len, int flags, int * retptr) override
+		int execute(char * str, size_t len, int flags, int * retptr) override
 		{
-			int flen = 0;
+			size_t flen = 0;
 			int argc;
 			int res;
 			char * argv[10];
@@ -41,9 +41,9 @@ namespace igris
 
 			if (debug_mode)
 			{
-				dpr("execinput: len: "); dpr(len); dpr("data: ");
+				dpr("execinput: len: "); dpr(len); dpr(" data: ");
 				debug_write(str, len); dprln();
-				debug_print_dump(str, len);
+				//debug_print_dump(str, len);
 			}
 
 			if (!(flags & SH_INTERNAL_SPLIT))
@@ -54,8 +54,10 @@ namespace igris
 			if (len <= 0)
 			{
 				return 0;
-			}
+			}	
 
+			str[len] = 0;
+			
 			// Скипаем ведущие пробелы
 			while (*str == ' ' || *str == '\n')
 			{
@@ -134,9 +136,9 @@ namespace igris
 		syscmd_executor_onelevel(igris::console_command* syscmdtbl)
 			: tbl(syscmdtbl) {}
 
-		int execute(char * str, int len, int flags, int * retptr) override
+		int execute(char * str, size_t len, int flags, int * retptr) override
 		{
-			int flen = 0;
+			size_t flen = 0;
 			int argc;
 			int res;
 			char * argv[10];

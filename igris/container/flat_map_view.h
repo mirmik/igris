@@ -35,6 +35,7 @@ namespace igris
 				if (equal(p.first, key)) return p.second;
 			}
 			abort();
+			return *(T*)nullptr;
 		}
 
 		iterator find(const K& key) 
