@@ -123,7 +123,7 @@ namespace igris
 				}
 			}
 
-			printf("Not enough command\r\n");
+			printf("Not enough command: %s\r\n", argv[0]);
 			return ENOENT;
 		}
 	};
