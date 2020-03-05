@@ -4,9 +4,11 @@
 #ifdef _MSC_VER
 #define __NORETURN
 #define __WEAK
+#define __NORETURN_PRESENT 0
 #else
 #define __NORETURN __attribute__((noreturn))
 #define __WEAK __attribute__((weak))
+#define __NORETURN_PRESENT 1
 #endif
 
 #ifndef __BEGIN_DECLS

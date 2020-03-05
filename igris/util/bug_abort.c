@@ -3,4 +3,5 @@
 
 void bug_impl() {
 	abort();
+	while(1);
 }
