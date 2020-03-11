@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.10)
 project(igris)
 set( CMAKE_VERBOSE_MAKEFILE on )
 
@@ -27,7 +28,7 @@ file(GLOB SOURCES
 )
 
 file(GLOB SOURCES_TEST 
-	test/*.cpp
+	ltest/*.cpp
 )
 
 add_library(igris SHARED ${SOURCES})

@@ -1,0 +1,29 @@
+In file included from /usr/include/features.h:424:0,
+                 from /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h:39,
+                 from /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h:533,
+                 from /usr/include/c++/7/string:38,
+                 from ./littletest.hpp:26,
+                 from ./main.cpp:1:
+/usr/include/unistd.h:973:25: error: ‘void sync()’ redeclared as different kind of symbol
+ extern void sync (void) __THROW;
+                         ^
+In file included from ./main.cpp:1:0:
+./sync.hpp:8:13: note: previous declaration ‘sync_class sync’
+ LT_END_TEST(sync)
+             ^
+./littletest.hpp:84:32: note: in definition of macro ‘LT_END_TEST’
+     __lt_test_name__ ## _class __lt_test_name__; \
+                                ^~~~~~~~~~~~~~~~
+In file included from ./main.cpp:15:0:
+./event.hpp:14:7: error: redefinition of ‘class A’
+ class A
+       ^
+In file included from ./main.cpp:14:0:
+./serialize.hpp:3:8: note: previous definition of ‘class A’
+ struct A
+        ^
+In file included from ./main.cpp:15:0:
+./event.hpp: In member function ‘virtual void delegate_EVENT_Test::TestBody()’:
+./event.hpp:36:34: error: ‘inc’ is not a member of ‘A’
+  func = igris::make_delegate(&A::inc, &a_obj);
+                                  ^~~
