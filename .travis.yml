@@ -5,16 +5,18 @@ os: linux
 matrix:
   include:
     # Windows
-    - os: "windows"
+    - name: windows clang
+      os: "windows"
       compiler: "clang"
 
     # OSX
-    - env: COMPILER=clang++ BUILD_TYPE=Release GSL_CXX_STANDARD=14
+    - name: "osx clang"
       os: "osx"
       compiler: clang
       
     # Ubuntu
-    - addons:
+    - name: "ubuntu clang++6 gtest"
+      addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
@@ -24,7 +26,8 @@ matrix:
       env:
          - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
 
-    - addons:
+    - name: "ubuntu g++8 gtest"
+      addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
@@ -34,7 +37,8 @@ matrix:
       env:
          - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
 
-    - arch: "arm64"
+    - name: "arm64 ubuntu g++8 gtest"
+      arch: "arm64"
       addons:
         apt:
           sources:
