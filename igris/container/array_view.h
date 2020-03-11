@@ -22,6 +22,17 @@ namespace igris
 		array_view(T* data, size_t size) : _data(data), _size(size) {}
 		array_view() : _data(nullptr), _size(0) {}
 
+		template<size_t N>
+		array_view(T(&arr)[N]) : _data(arr), _size(N) {}
+
+		// Warning: UB
+		array_view(const std::initializer_list<T>& lst) :
+			_data((T*)lst.begin()), _size(lst.size())
+		{}
+
+		array_view& operator=(std::nullptr_t null) 
+		{ _data = nullptr; _size = 0; return *this; }
+
 		T* const data() const { return _data; }
 		T* data() { return _data; }
 
@@ -42,17 +53,6 @@ namespace igris
 
 		array_view slice(int start, int size)
 		{ return array_view(_data + start, size); }
-
-		template<size_t N>
-		array_view(T(&arr)[N]) : _data(arr), _size(N) {}
-
-		// Warning: UB
-		array_view(const std::initializer_list<T>& lst) :
-			_data((T*)lst.begin()), _size(lst.size())
-		{}
-
-		array_view& operator=(std::nullptr_t null) 
-		{ _data = nullptr; _size = 0; return *this; }
 	};
 }
 
