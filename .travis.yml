@@ -9,7 +9,8 @@ matrix:
       compiler: "clang"
 
     # OSX
-    - os: "osx"
+    - env: COMPILER=clang++ BUILD_TYPE=Release GSL_CXX_STANDARD=14
+      os: "osx"
       compiler: clang
       
     # Ubuntu
