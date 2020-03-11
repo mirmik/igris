@@ -182,6 +182,11 @@ for (pos = (head)->prev; pos != (head); pos = pos->prev)
     &pos->member != (head);                                         \
     pos = dlist_next_entry(pos, member))
 
+#define dlist_for_each_entry_reverse(pos, head, member)             \
+    for (pos = dlist_last_entry(head, __typeof__(*pos), member);    \
+    &pos->member != (head);                                         \
+    pos = dlist_prev_entry(pos, member))
+
 #define dlist_for_each_entry_safe(pos, n, head, member)             \
     for (pos = dlist_first_entry(head, __typeof__(*pos), member),   \
     n = dlist_next_entry(pos, member);                              \
