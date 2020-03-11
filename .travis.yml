@@ -37,19 +37,6 @@ matrix:
       env:
          - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
 
-    - name: "arm64 ubuntu g++8 gtest"
-      arch: "arm64"
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-           - g++-8
-           - libgtest-dev
-           - cmake
-      env:
-         - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
-
 before_install:
   eval ${MATRIX_EVAL}
 
