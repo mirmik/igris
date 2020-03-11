@@ -10,10 +10,10 @@ matrix:
       compiler: "clang"
 
 #google test is broken
-   # OSX
-    - name: "osx clang"
-      os: "osx"
-      compiler: clang
+    # OSX
+#    - name: "osx clang"
+#      os: "osx"
+#      compiler: clang
       
     # Ubuntu
     - name: "ubuntu clang++6 gtest"
@@ -46,23 +46,23 @@ install:
   - pwd
   - ls
 
-  #- git clone https://github.com/google/googletest googletest/
-  #- cd googletest
-  #- if [ $TRAVIS_OS_NAME = 'windows' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then CMAKE_CXX_STANDARD=14 cmake -DBUILD_SHARED_LIBS=ON .; fi
-  #- if [ $TRAVIS_OS_NAME = 'linux' ]; then cmake .; fi
-  #- cmake --build . --config Release
-  #- if [ $TRAVIS_OS_NAME = 'osx' ] || [ $TRAVIS_OS_NAME = 'linux' ]; then sudo make install; fi
-  #- if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
-  #- cd ..
+  - git clone https://github.com/google/googletest googletest/
+  - cd googletest
+  - if [ $TRAVIS_OS_NAME = 'windows' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then CMAKE_CXX_STANDARD=14 cmake -DBUILD_SHARED_LIBS=ON .; fi
+  - if [ $TRAVIS_OS_NAME = 'linux' ]; then cmake .; fi
+  - cmake --build . --config Release
+  - if [ $TRAVIS_OS_NAME = 'osx' ] || [ $TRAVIS_OS_NAME = 'linux' ]; then sudo make install; fi
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
+  - cd ..
 
-  #- if [ $TRAVIS_OS_NAME = 'windows' ]; then ls googletest/lib/Release/ ; fi
-  #- if [ $TRAVIS_OS_NAME = 'windows' ]; then ls googletest/googletest/ ; fi
-  #- if [ $TRAVIS_OS_NAME = 'windows' ]; then find -name "*.dll"; fi
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then ls googletest/lib/Release/ ; fi
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then ls googletest/googletest/ ; fi
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then find -name "*.dll"; fi
 #  - if [ $TRAVIS_OS_NAME = 'linux' ]; then find -name "*.so"; fi
 
-  #- echo `pwd`
-  #- if [ $TRAVIS_OS_NAME = 'windows' ]; then cp googletest/bin/Release/gtest.dll .; fi
-  #- if [ $TRAVIS_OS_NAME = 'windows' ]; then cp googletest/lib/Release/gtest.lib .; fi
+  - echo `pwd`
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then cp googletest/bin/Release/gtest.dll .; fi
+  - if [ $TRAVIS_OS_NAME = 'windows' ]; then cp googletest/lib/Release/gtest.lib .; fi
   #- if [ $TRAVIS_OS_NAME = 'linux' ]; then cp googletest/lib/libgtest.so .; fi
   #- if [ $TRAVIS_OS_NAME = 'linux' ]; then set LD_LIBRARY_PATH=$PWD:$LD_LIBRARY_PATH; fi
   
