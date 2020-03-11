@@ -61,7 +61,7 @@ install:
   - cd googletest
   - if [ $TRAVIS_OS_NAME = 'windows' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then cmake -DBUILD_SHARED_LIBS=ON --config Release .; fi
   - if [ $TRAVIS_OS_NAME = 'linux' ]; then cmake --config Release .; fi
-  - cmake --build . --config Release
+  - CMAKE_CXX_STANDARD=c++14 cmake --build . --config Release
   - if [ $TRAVIS_OS_NAME = 'osx' ] || [ $TRAVIS_OS_NAME = 'linux' ]; then sudo make install; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
   - cd ..
