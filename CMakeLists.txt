@@ -1,4 +1,5 @@
 project(igris)
+set( CMAKE_VERBOSE_MAKEFILE on )
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CC_STANDARD 11)
