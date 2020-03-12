@@ -11,6 +11,9 @@
 
 #define EXECUTOR_TBLFIN nullptr
 
+// COMMENT: Флаги фактически не используются, а если будут, то возможно, 
+// лучше сделать их полем.
+
 namespace igris
 {
 
@@ -22,6 +25,8 @@ namespace igris
 		    char* str, size_t len, int flags, int* p_ret) = 0;
 	};
 
+	// Этот executor делает обход по двухуровневой таблице,
+	// тем самым, он может обойти несколько единиц трансляции. 
 	class syscmd_executor : public executor
 	{
 		console_command ** tbl;
@@ -81,6 +86,7 @@ namespace igris
 				{
 					for (it1 = *it0; it1->func != NULL; ++it1)
 					{
+						//Если у функции есть справка, печатаем её. Иначе - просто имя.
 						if (it1->help)
 						{
 							printf("%s - %s\r\n", it1->name, it1->help);
@@ -94,7 +100,9 @@ namespace igris
 				return 0;
 			}
 
-			// Основной цикл
+			argc = argvc_internal_split(str, argv, 10);
+
+			// Основной цикл, пробегаем бо двухуровневой таблице в поисках нужной функции.
 			for (it0 = tbl; *it0 != nullptr; ++it0)
 			{
 				for (it1 = *it0; it1->func != NULL; ++it1)
@@ -104,7 +112,6 @@ namespace igris
 						switch (it1->type)
 						{
 							case CMDFUNC:
-								argc = argvc_internal_split(str, argv, 10);
 								res = ((syscmd_func_t)(it1->func))(argc, argv);
 
 								if (retptr) *retptr = res;

@@ -35,11 +35,11 @@ struct readline
 	char last;
 	int lastsize;
 
-	char * history_space;
-	uint8_t history_size;
+	char * history_space; // Указатель на буффер истории.
+	uint8_t history_size; // Количество строк в буффере истории.
 
-	uint8_t headhist;
-	uint8_t curhist;
+	uint8_t headhist; // Индекс в массиве, куда будет перезаписываться новая строка истории.
+	uint8_t curhist; // Индекс выбора строки истории (0-пустая, 1-последняя, 2-предпоследняя и т.д.)
 };
 
 __BEGIN_DECLS
@@ -67,26 +67,36 @@ void readline_history_init(struct readline * rl, char * hs, int hsize)
 static inline
 void readline_newline_reset(struct readline * rl)
 {
+	// Когда случается новая линия, сбрасываем буффер ввода и скидываем
+	// переключатель строки истории на последнюю строку.
 	sline_reset(&rl->line);
 	rl->curhist = 0;
 }
 
+// Указатель на строку, взятую от последней пришедшей. (1 - последняя)
 static inline
-char* readline_current_history_pointer(struct readline * rl)
+char* readline_history_pointer(struct readline * rl, int num)
 {
-	int idx;
-
-	idx = (rl->headhist + rl->history_size - rl->curhist) % rl->history_size;
+	int idx = (rl->headhist + rl->history_size - num) % rl->history_size;
 	return rl->history_space + idx * rl->line.cap;
 }
 
+// Вернуть указатель на строку истории, на которую указывает curhist.
+// Вызывается на кнопки вверх/вниз
 static inline
-char* readline_update_history_pointer(struct readline * rl)
+char* readline_current_history_pointer(struct readline * rl)
 {
-	int idx;
+	return readline_history_pointer(rl, rl->curhist);
+}
 
-	idx = rl->headhist;
-	return rl->history_space + idx * rl->line.cap;
+// Обновить историю, записав туда новую строку.
+static inline
+void readline_push_line_to_history(struct readline * rl)
+{
+	char* ptr = rl->history_space + rl->headhist * rl->line.cap;
+	memcpy(ptr, rl->line.buf, rl->line.len);
+	*(ptr + rl->line.len) = '\0';
+	rl->headhist = (rl->headhist + 1) % rl->history_size;
 }
 
 static inline
@@ -125,6 +135,12 @@ int readline_history_up(struct readline * rl)
 }
 
 static inline
+int readline_is_not_same_as_last(struct readline * rl) 
+{
+	return sline_strcmp(&rl->line, readline_history_pointer(rl, 1)) != 0;
+}
+
+static inline
 int readline_history_down(struct readline * rl)
 {
 	//DTRACE();
@@ -154,6 +170,7 @@ int readline_putchar(struct readline * rl, char c)
 			{
 				case '\r':
 				case '\n':
+					// TODO: Возможно тут некорректно отрабатывается комбинация rnrnrnrn 
 					if ((rl->last == '\n' || rl->last == '\r') && rl->last != c)
 					{
 						rl->last = 0;
@@ -161,15 +178,13 @@ int readline_putchar(struct readline * rl, char c)
 					}
 					else
 					{
-						if (rl->history_space && rl->line.len)
+						if (rl->history_space && rl->line.len && readline_is_not_same_as_last(rl))
 						{
-							char* ptr = readline_update_history_pointer(rl);
-							memset(ptr, 0, rl->line.cap);
-							memcpy(ptr, rl->line.buf, rl->line.len);
-							*(ptr + rl->line.len) = '\0';
-							rl->headhist = (rl->headhist + 1) % rl->history_size;
-							rl->curhist = 0;
+							// Если есть буффер истории и введенная строка не нулевая и 
+							// отличается от последней, сохраняем строку в историю.
+							readline_push_line_to_history(rl);
 						}
+						rl->curhist = 0;
 
 						retcode = READLINE_NEWLINE;
 					}
@@ -240,12 +255,12 @@ int readline_putchar(struct readline * rl, char c)
 	return retcode;
 }
 
-static inline 
-int readline_linecpy(struct readline * rl, char* line, size_t maxlen) 
+static inline
+int readline_linecpy(struct readline * rl, char* line, size_t maxlen)
 {
-	int len = 
-		(int)maxlen - 1 > (int)rl->line.len ? rl->line.len : maxlen - 1;
-	
+	int len =
+	    (int)maxlen - 1 > (int)rl->line.len ? rl->line.len : maxlen - 1;
+
 	memcpy(line, rl->line.buf, len);
 	line[len] = 0;
 

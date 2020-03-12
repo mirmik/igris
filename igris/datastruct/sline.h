@@ -38,6 +38,12 @@ void sline_reset(struct sline * sl)
 }
 
 static inline 
+int sline_strcmp(struct sline * sl, const char * str) 
+{
+	return strncmp(sl->buf, str, sl->len);
+} 
+
+static inline 
 int sline_left(struct sline * sl) 
 {
 	if (sl->cursor == 0) return 0;
