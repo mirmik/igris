@@ -5,15 +5,19 @@ os: linux
 matrix:
   include:
     # Windows
-    - os: "windows"
+    - name: windows clang
+      os: "windows"
       compiler: "clang"
 
+#google test is broken
     # OSX
-    - os: "osx"
-      compiler: clang
+#    - name: "osx clang"
+#      os: "osx"
+#      compiler: clang
       
     # Ubuntu
-    - addons:
+    - name: "ubuntu clang++6 gtest"
+      addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
@@ -23,17 +27,7 @@ matrix:
       env:
          - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
 
-    - addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-           - g++-8
-           - libgtest-dev
-      env:
-         - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
-
-    - arch: "arm64"
+    - name: "ubuntu g++8 gtest"
       addons:
         apt:
           sources:
@@ -54,8 +48,8 @@ install:
 
   - git clone https://github.com/google/googletest googletest/
   - cd googletest
-  - if [ $TRAVIS_OS_NAME = 'windows' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then cmake -DBUILD_SHARED_LIBS=ON --config Release .; fi
-  - if [ $TRAVIS_OS_NAME = 'linux' ]; then cmake --config Release .; fi
+  - if [ $TRAVIS_OS_NAME = 'windows' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then CMAKE_CXX_STANDARD=14 cmake -DBUILD_SHARED_LIBS=ON .; fi
+  - if [ $TRAVIS_OS_NAME = 'linux' ]; then cmake .; fi
   - cmake --build . --config Release
   - if [ $TRAVIS_OS_NAME = 'osx' ] || [ $TRAVIS_OS_NAME = 'linux' ]; then sudo make install; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
