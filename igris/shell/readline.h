@@ -89,14 +89,26 @@ char* readline_current_history_pointer(struct readline * rl)
 	return readline_history_pointer(rl, rl->curhist);
 }
 
-// Обновить историю, записав туда новую строку.
 static inline
-void readline_push_line_to_history(struct readline * rl)
+void _readline_push_line_to_history(struct readline * rl, const char* str, size_t len)
 {
 	char* ptr = rl->history_space + rl->headhist * rl->line.cap;
-	memcpy(ptr, rl->line.buf, rl->line.len);
-	*(ptr + rl->line.len) = '\0';
+	memcpy(ptr, str, len);
+	*(ptr + len) = '\0';
 	rl->headhist = (rl->headhist + 1) % rl->history_size;
+}
+
+static inline
+void readline_push_line_to_history(struct readline * rl, const char* str)
+{
+	_readline_push_line_to_history(rl, str, strlen(str));
+}
+
+// Обновить историю, записав туда новую строку.
+static inline
+void readline_push_current_line_to_history(struct readline * rl)
+{
+	_readline_push_line_to_history(rl, rl->line.buf, rl->line.len);
 }
 
 static inline
@@ -182,7 +194,7 @@ int readline_putchar(struct readline * rl, char c)
 						{
 							// Если есть буффер истории и введенная строка не нулевая и 
 							// отличается от последней, сохраняем строку в историю.
-							readline_push_line_to_history(rl);
+							readline_push_current_line_to_history(rl);
 						}
 						rl->curhist = 0;
 
