@@ -11,9 +11,9 @@ matrix:
 
 #google test is broken
     # OSX
-#    - name: "osx clang"
-#      os: "osx"
-#      compiler: clang
+    - name: "osx clang"
+      os: "osx"
+      compiler: clang
       
     # Ubuntu
     - name: "ubuntu clang++6 gtest"
