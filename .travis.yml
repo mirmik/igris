@@ -40,6 +40,5 @@ script:
   - cmake .
   - cmake --build .
   - if [ $TRAVIS_OS_NAME = 'linux' ] || [ $TRAVIS_OS_NAME = 'osx' ]; then sudo make install; fi
-  - if [ $TRAVIS_OS_NAME = 'windows' ]; then cmake --build . --target install; fi
   - if [ $TRAVIS_OS_NAME = 'windows' ]; then /C/Users/travis/build/mirmik/igris/Debug/igris_test.exe; fi
   - if [ $TRAVIS_OS_NAME != 'windows' ]; then ctest .; fi
