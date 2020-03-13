@@ -29,9 +29,7 @@
 #include <algorithm>
 #include <vector>
 
-#ifndef __WIN32__ ||  _MSC_VER
-#include <sys/time.h>
-#else
+#if defined(__WIN32) || defined(_MSC_VER)
 
 /*
  * gettimeofday.c
@@ -93,6 +91,8 @@ gettimeofday(struct timeval * tp, struct timezone * tzp)
     return 0;
 }
 
+#else
+#include <sys/time.h>
 #endif
 
 
