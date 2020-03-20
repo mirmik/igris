@@ -22,7 +22,7 @@ modules = [
 	]
 
 licant.cxx_library("shared",
-	target=target("so"),
+	target="libigris.so",
 	toolchain=toolchain,
 	mdepends = modules + ["igris.syslock", ("igris.ctrobj", "linux")],
 	cxx_flags = '-fPIC -Wall',
@@ -31,7 +31,7 @@ licant.cxx_library("shared",
 )
 
 licant.cxx_library("static",
-	target=target("a"),
+	target="libigris.a",
 	toolchain=toolchain,
 	mdepends = modules,
 	cxx_flags = '-fPIC',
@@ -40,12 +40,11 @@ licant.cxx_library("static",
 	shared = False
 )
 
-licant.install.install_library(tgt="install", libtgt=target("so"), headers="igris", hroot="igris")
-
-@licant.routine
-def uninstall():
-	os.system("rm -r {}".format(install_include_path))
-	os.system("rm {}".format(install_library_path))
-	os.system("rm {}".format(install_library_link))
+licant.install.install_library(
+	tgt="install",
+	uninstall="uninstall",
+	libtgt="libigris.so",
+	hroot="igris",
+	headers="igris")
 
 licant.ex("shared")

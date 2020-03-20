@@ -26,6 +26,7 @@
 #define READLINE_STATE_NORMAL 0
 #define READLINE_STATE_ESCSEQ 1
 #define READLINE_STATE_ESCSEQ_MOVE 2
+#define READLINE_STATE_ESCSEQ_MOVE_WAIT_7E 3
 
 struct readline
 {
@@ -147,7 +148,7 @@ int readline_history_up(struct readline * rl)
 }
 
 static inline
-int readline_is_not_same_as_last(struct readline * rl) 
+int readline_is_not_same_as_last(struct readline * rl)
 {
 	return sline_strcmp(&rl->line, readline_history_pointer(rl, 1)) != 0;
 }
@@ -182,7 +183,7 @@ int readline_putchar(struct readline * rl, char c)
 			{
 				case '\r':
 				case '\n':
-					// TODO: Возможно тут некорректно отрабатывается комбинация rnrnrnrn 
+					// TODO: Возможно тут некорректно отрабатывается комбинация rnrnrnrn
 					if ((rl->last == '\n' || rl->last == '\r') && rl->last != c)
 					{
 						rl->last = 0;
@@ -192,7 +193,7 @@ int readline_putchar(struct readline * rl, char c)
 					{
 						if (rl->history_space && rl->line.len && readline_is_not_same_as_last(rl))
 						{
-							// Если есть буффер истории и введенная строка не нулевая и 
+							// Если есть буффер истории и введенная строка не нулевая и
 							// отличается от последней, сохраняем строку в историю.
 							readline_push_current_line_to_history(rl);
 						}
@@ -234,6 +235,7 @@ int readline_putchar(struct readline * rl, char c)
 			}
 			retcode = READLINE_NOTHING;
 			break;
+
 		case READLINE_STATE_ESCSEQ_MOVE:
 			retcode = READLINE_NOTHING;
 			switch (c)
@@ -256,9 +258,26 @@ int readline_putchar(struct readline * rl, char c)
 					if (ret)
 						retcode = READLINE_LEFT;
 					break;
+				case 0x33:
+					ret = sline_delete(&rl->line, 1);
+					if (ret)
+						retcode = READLINE_DELETE;
+					rl->state = READLINE_STATE_ESCSEQ_MOVE_WAIT_7E;
+					rl->last = c;
+					return retcode;
+				default:
+					dpr("unr esc: hex:"); dprhex(c); dpr(" dec:"); dprln((int)c);
 			}
 			rl->state = READLINE_STATE_NORMAL;
 			break;
+
+		case READLINE_STATE_ESCSEQ_MOVE_WAIT_7E:
+			if (c != '\x7E')
+				dprln("?esc?");
+			rl->state = READLINE_STATE_NORMAL;
+			retcode = READLINE_NOTHING;
+			break;
+
 		default:
 			BUG();
 	}

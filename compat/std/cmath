@@ -37,6 +37,14 @@ namespace std
 	static inline int       abs( int n ) 		{ return n < 0 ? -n : n; }
 	static inline long      abs( long n ) 		{ return n < 0 ? -n : n; }
 	static inline long long abs( long long n ) 	{ return n < 0 ? -n : n; }
+
+	static inline float       abs( float n ) 		{ return n < 0 ? -n : n; }
+	static inline double      abs( double n ) 		{ return n < 0 ? -n : n; }
+	static inline long double abs( long double n ) 	{ return n < 0 ? -n : n; }
+
+	static inline float       fabs( float n ) 		{ return n < 0 ? -n : n; }
+	static inline double      fabs( double n ) 		{ return n < 0 ? -n : n; }
+	static inline long double fabs( long double n ) 	{ return n < 0 ? -n : n; }
 }
 
 

@@ -31,6 +31,25 @@ const char* sline_getline(struct sline * sl)
 }
 
 static inline 
+char* sline_rightpart(struct sline * sl) 
+{
+	return sl->buf + sl->cursor;
+}
+
+static inline 
+unsigned int sline_rightsize(struct sline * sl) 
+{
+	return sl->len - sl->cursor;
+}
+
+static inline 
+unsigned int sline_in_rightpos(struct sline * sl) 
+{
+	return sl->len == sl->cursor;
+}
+
+
+static inline 
 void sline_reset(struct sline * sl)
 {
 	sl->len = 0;
@@ -94,6 +113,23 @@ int sline_backspace(struct sline * sl, int count)
 }
 
 static inline 
+int sline_delete(struct sline * sl, unsigned int count) 
+{
+	if (count > sline_rightsize(sl)) 
+		count = sline_rightsize(sl);
+
+	sl->len -= count;
+
+	if (sl->cursor != sl->len) 
+	{
+		memmove(sl->buf + sl->cursor, sl->buf + sl->cursor + count, 
+			sl->len - sl->cursor);
+	}
+
+	return count;
+}
+
+static inline 
 int sline_empty(struct sline * sl)
 {
 	return sl->len == 0;
@@ -121,24 +157,6 @@ int sline_putchar(struct sline * sl, char c)
 	sl->len++;	
 
 	return 1;
-}
-
-static inline 
-char* sline_rightpart(struct sline * sl) 
-{
-	return sl->buf + sl->cursor;
-}
-
-static inline 
-unsigned int sline_rightsize(struct sline * sl) 
-{
-	return sl->len - sl->cursor;
-}
-
-static inline 
-unsigned int sline_in_rightpos(struct sline * sl) 
-{
-	return sl->len == sl->cursor;
 }
 
 /*static inline 
