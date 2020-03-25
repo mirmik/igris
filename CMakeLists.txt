@@ -27,24 +27,15 @@ file(GLOB SOURCES
 )
 
 file(GLOB SOURCES_TEST 
-	test/*.cpp
+	ltest/*.cpp
 )
 
 add_library(igris SHARED ${SOURCES})
-
 target_include_directories(igris PRIVATE .)
 
-if (NOT APPLE)
-	add_executable(igris_test ${SOURCES_TEST})
-	target_include_directories(igris_test PRIVATE .)
-	target_include_directories(igris_test PRIVATE ./googletest/googletest/include)
-	target_link_libraries(igris_test igris)
-	target_link_libraries(igris_test gtest)
-endif()
-
-if (UNIX AND NOT APPLE)
-	target_link_libraries(igris_test pthread)
-endif()
+add_executable(igris_test ${SOURCES_TEST})
+target_include_directories(igris_test PRIVATE .)
+target_link_libraries(igris_test igris)
 
 if (UNIX AND NOT APPLE)
 	install(TARGETS ${PROJECT_NAME}
@@ -69,7 +60,5 @@ if (APPLE)
    	)
 endif()
 
-if (NOT APPLE)
-	enable_testing()
-	add_test(NAME igris_test COMMAND igris_test)
-endif()
+enable_testing()
+add_test(NAME igris_test COMMAND igris_test)

@@ -45,5 +45,7 @@ _deps
 
 igris_test
 test/runtests
+ltest/runtests
 test/runtests_installed
 travis.log
+
