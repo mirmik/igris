@@ -15,6 +15,7 @@ LT_END_SUITE(igris_test_suite)
 #include "event.hpp"
 #include "array_view.hpp"
 #include "argvc.hpp"
+#include "signature.hpp"
 
 LT_BEGIN_AUTO_TEST_ENV()
     AUTORUN_TESTS()

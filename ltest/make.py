@@ -23,12 +23,11 @@ tests_c = [
 ]
 
 application("runtests",
-	sources = (
-		["main.cpp"]),
+	sources = ["main.cpp"],
 		#+ [t+".cpp" for t in tests] 
 		#+ [t+".c" for t in tests_c]),
 
-	ld_flags = "-L/usr/local/lib/",
+	#ld_flags = "-L/usr/local/lib/",
 	cxx_flags = "-g",
 	cc_flags = "-g",
 
@@ -38,18 +37,18 @@ application("runtests",
 	libs = ["gtest", "pthread"]
 )
 
-application("runtests_installed",
-	sources = (
-		["main.cpp"] 
-		+ [t+".cpp" for t in tests] 
-		+ [t+".c" for t in tests_c]),
-
-	ld_flags = "-L/usr/local/lib/",
-
-	include_paths = ["."],
-	mdepends = [],
-
-	libs = ["gtest", "pthread", "nos", "igris"]
-)
+#application("runtests_installed",
+#	sources = (
+#		["main.cpp"] 
+#		+ [t+".cpp" for t in tests] 
+#		+ [t+".c" for t in tests_c]),
+#
+#	ld_flags = "-L/usr/local/lib/",
+#
+#	include_paths = ["."],
+#	mdepends = [],
+#
+#	libs = ["gtest", "pthread", "nos", "igris"]
+#)
 
 licant.ex("runtests")
