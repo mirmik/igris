@@ -1,8 +1,6 @@
 #include <igris/util/numconvert.h>
 #include <math.h>
 
-#include <nos/print.h>
-
 LT_BEGIN_TEST(igris_test_suite, numconvert)
 {
 	char buf[256];
