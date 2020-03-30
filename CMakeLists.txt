@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.5.1)
 project(igris)
 set( CMAKE_VERBOSE_MAKEFILE on )
 
@@ -27,6 +28,14 @@ file(GLOB SOURCES
 )
 
 file(GLOB SOURCES_TEST 
+	igris/util/*.cpp 
+	igris/util/*.c
+	igris/dprint/dprint_manually.c
+	igris/dprint/dprint_func_impl.c
+	igris/event/*.cpp
+	igris/datastruct/*.cpp
+	igris/protocols/gstuff/*.c
+	igris/sync/syslock_mutex.cpp
 	ltest/*.cpp
 )
 
@@ -35,7 +44,7 @@ target_include_directories(igris PRIVATE .)
 
 add_executable(igris_test ${SOURCES_TEST})
 target_include_directories(igris_test PRIVATE .)
-target_link_libraries(igris_test igris)
+target_link_libraries(igris_test)
 
 if (UNIX AND NOT APPLE)
 	install(TARGETS ${PROJECT_NAME}
