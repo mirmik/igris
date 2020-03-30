@@ -213,6 +213,11 @@ char * f32toa(float32_t f, char * buf, int8_t precision)
 		return strcpy(buf, "inf");;
 	}
 
+	if (isnan(f))
+	{
+		return strcpy(buf, "nan");;
+	}
+
 	// check precision bounds
 	if (precision > MAX_PRECISION)
 		precision = MAX_PRECISION;

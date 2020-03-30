@@ -63,12 +63,16 @@ void debug_printdec_uint64(uint64_t x)
 	char c[24];
 	char* end_buf = c + 24;
 	char* ptr = end_buf;
+
 	if (x == 0) debug_putchar('0');
+
 	*--ptr = '\0';
+
 	for (; x != 0; x /= 10)
 	{
 		*--ptr = ((x % 10) + '0');
 	}
+
 	debug_print(ptr);
 }
 
@@ -88,7 +92,8 @@ void debug_printhex_uint8 (uint8_t b)
 void debug_printhex_n(uint8_t* arg, int n)
 {
 	uint8_t *p = arg + n;
-	while(n--) 
+
+	while (n--)
 	{
 		debug_printhex_uint8(*--p);
 	}
@@ -133,24 +138,28 @@ void debug_printhex_uint64(uint64_t a)
 void debug_writehex(const void* ptr, uint16_t size)
 {
 	uint8_t* _ptr = (uint8_t*) ptr;
+
 	while (size--) {debug_printhex_uint8(*_ptr++);}
 }
 
 void debug_writehex_reversed(const void* ptr, uint16_t size)
 {
 	uint8_t* _ptr = (uint8_t*) ptr + size;
+
 	while (size--) {debug_printhex_uint8(*--_ptr);}
 }
 
 void debug_writebin(const void* ptr, uint16_t size)
 {
 	uint8_t* _ptr = (uint8_t*) ptr;
+
 	while (size--) {debug_printbin_uint8(*_ptr++);}
 }
 
 void debug_writebin_reversed(const void* ptr, uint16_t size)
 {
 	uint8_t* _ptr = (uint8_t*) ptr + size;
+
 	while (size--) {debug_printbin_uint8(*--_ptr);}
 }
 
@@ -159,27 +168,71 @@ void debug_printdec_float_prec(float a, int prec)
 	debug_printdec_double_prec((double)a, prec);
 }
 
+static inline __inline unsigned __FLOAT_BITS(float __f)
+{
+	union {float __f; unsigned __i;} __u;
+	__u.__f = __f;
+	return __u.__i;
+}
+static inline __inline unsigned long long __DOUBLE_BITS(double __f)
+{
+	union {double __f; unsigned long long __i;} __u;
+	__u.__f = __f;
+	return __u.__i;
+}
+
+static inline uint8_t __isnan(double x)
+{
+	return
+	    sizeof(x) == 4 ? (__FLOAT_BITS(x) & 0x7fffffff) > 0x7f800000 :
+	    (__DOUBLE_BITS(x) & -1ULL >> 1) > 0x7ffULL << 52;
+}
+
+static inline uint8_t __isinf(double x)
+{
+	return
+	    sizeof(x) == 4 ? (__FLOAT_BITS(x) & 0x7fffffff) == 0x7f800000 :
+	    (__DOUBLE_BITS(x) & -1ULL >> 1) == 0x7ffULL << 52;
+}
+
 void debug_printdec_double_prec(double a, int prec)
 {
+	if (__isnan(a))
+	{
+		debug_print("nan");
+		return;
+	}
 
-	if (a < 0) 
+	if (__isinf(a))
+	{
+		if (a>0)
+			debug_print("+inf");
+		else 
+			debug_print("-inf");
+		return;
+	}
+
+	if (a < 0)
 		debug_putchar('-');
-	
+
 	if (a < 0) a = -a;
-	
+
 	uint64_t n = (uint64_t) a;
 
 	debug_printdec_uint64 ( n );
 	debug_putchar('.');
-	
+
 	double o = a - n;
-	for (int _iteration = 0; _iteration < prec; ++_iteration ) 
+
+	for (int _iteration = 0; _iteration < prec; ++_iteration )
 	{
 		o *= 10;
+
 		if ((int)o == 0) debug_putchar('0');
 	}
+
 	o += 0.5;
-	
+
 	debug_printdec_signed_long_long ( o );
 }
 
@@ -249,6 +302,7 @@ void debug_print_dump(const void *mem, uint16_t len)
 					debug_putchar('.');
 				}
 			}
+
 			debug_print_newline();
 		}
 	}

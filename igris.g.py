@@ -24,7 +24,7 @@ licant.module("igris.dprint.common", "stub", srcdir="igris/dprint",
 	sources = "dprint_func_stub.c dprint_stub.c dprintxx.cpp".split(" ")
 )
 
-licant.module("igris.dprint", "manually", srcdir="igris/dprint",
+licant.module("igris.dprint", "user", srcdir="igris/dprint",
 	sources = ["dprint_manually.c"],
 	mdepends = [("igris.dprint.common","impl")],
 )

@@ -7,6 +7,7 @@ from licant.modules import submodule, module
 from licant.libs import include
 
 licant.execute("../igris.g.py")
+licant.include("nos")
 
 tests = [
 	"argvc",
@@ -32,9 +33,7 @@ application("runtests",
 	cc_flags = "-g",
 
 	include_paths = ["."],
-	mdepends = [ "igris" ],
-
-	libs = ["gtest", "pthread"]
+	mdepends = [ "igris", ("igris.dprint", "user") ],
 )
 
 #application("runtests_installed",
