@@ -38,8 +38,6 @@ void system_unlock()
 
 struct syslock_save_pair system_lock_save() 
 {
-	assert(0);
-	dprln("system_lock_save");
 	auto ret = syslock_save_pair{count, 0};
 
 	if (count) 
@@ -53,8 +51,6 @@ struct syslock_save_pair system_lock_save()
 
 void system_lock_restore(struct syslock_save_pair save) 
 {
-	assert(0);
-	dprln("system_lock_restore");
 	count = save.count;
 	
 	if (count) 

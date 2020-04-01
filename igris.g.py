@@ -1,5 +1,20 @@
 import licant
 
+licant.module("igris", mdepends=[
+	"igris.include",
+	"igris.sshell",
+	"igris.util",
+	"igris.bug",
+	"igris.dprint",
+	"igris.path",
+	"igris.time",
+
+	"igris.syslock",
+	"igris.ctrobj",
+
+	"igris.protocols.gstuff"
+])
+
 licant.module("igris.include", include_paths = ["."])
 
 ######################STDLIBS#COMPAT############################
@@ -106,21 +121,13 @@ licant.module("igris.path",
 	sources = ["igris/path/path.cpp"]
 )
 
-licant.module("igris", mdepends=[
-	"igris.include",
-	"igris.sshell",
-	"igris.util",
-	"igris.bug",
-	"igris.dprint",
-	"igris.path",
-
-	"igris.syslock",
-	"igris.ctrobj",
-
-	"igris.protocols.gstuff"
-])
-
 #################################################################
 licant.module("igris.os_extension", "unix",
 	sources=["igris/osutil/src/posix.cpp"]
+)
+
+
+licant.module("igris.time", "posix",
+	sources = ["igris/time/time_posix.cpp"],
+	default = True
 )

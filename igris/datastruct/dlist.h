@@ -226,7 +226,7 @@ int dlist_check(struct dlist_head *fnd, int count)
 }
 
 static inline
-int dlist_oposite_check(struct dlist_head *fnd, int count)
+int dlist_check_reversed(struct dlist_head *fnd, int count)
 {
     struct dlist_head * it = fnd;
 
@@ -279,7 +279,7 @@ int dlist_size(struct dlist_head *head)
 }
 
 static inline 
-int dlist_oposite_size(struct dlist_head *head) 
+int dlist_size_reversed(struct dlist_head *head) 
 {
     struct dlist_head * it;
     int sz = 0;
