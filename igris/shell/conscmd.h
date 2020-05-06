@@ -31,10 +31,12 @@ namespace igris
 			const char* help) 
 		:
 			name(name),
-			func((void*)func),
+			func(nullptr),
 			type(type),
 			help(help)
-		{}		
+		{
+			this->func = (void*)func;
+		}		
 
 		constexpr console_command(
 			const char* name,
@@ -42,10 +44,12 @@ namespace igris
 			const char* help = nullptr) 
 		:
 			name(name),
-			func((void*)func),
+			func(nullptr),
 			type(CMDFUNC),
 			help(help)
-		{}
+		{
+			this->func = (void*)func;
+		}
 
 		constexpr console_command(
 			const char* name,
@@ -53,10 +57,12 @@ namespace igris
 			const char* help = nullptr) 
 		:
 			name(name),
-			func((void*)func),
+			func(nullptr),
 			type(CMDFUNC),
 			help(help)
-		{}
+		{
+			this->func = (void*)func;
+		}
 
 		constexpr console_command(
 			const char* name,
@@ -64,10 +70,12 @@ namespace igris
 			const char* help = nullptr) 
 		:
 			name(name),
-			func((void*)func),
+			func(nullptr),
 			type(CMDFUNC),
 			help(help)
-		{}
+		{
+			this->func = (void*)func;
+		}
 	};
 }
 
