@@ -18,7 +18,7 @@
 #include <defines/ssize_t.h>
 #include <defines/wchar_t.h>
 #include <defines/null.h>
-#include <compiler.h>
+#include <igris/compiler.h>
 
 /* In addition, the following symbolic names and macros shall be defined as in
  * <sys/wait.h> , for use in decoding the return value from system():

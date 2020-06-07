@@ -11,13 +11,19 @@
 
 #ifdef __GNUC__
 
+#ifndef _NORETURN
 #define _NORETURN __attribute__ ((noreturn))
+#endif
+
 #define _PRINTF_FORMAT(format_i, arg_start_i) \
 	__attribute__ ((format (printf, format_i, arg_start_i)))
 
 #else /* __GNUC__ */
 
+#ifndef _NORETURN
 #define _NORETURN
+#endif
+
 #define _PRINTF_FORMAT(format_i, arg_start_i)
 
 #endif /* __GNUC__ */

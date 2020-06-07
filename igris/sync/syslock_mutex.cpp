@@ -59,4 +59,20 @@ void system_lock_restore(struct syslock_save_pair save)
 	}
 }
 
+void syslock_reset() 
+{
+	count = 0;
+}
+
+int syslock_counter() 
+{
+	return count;
+}
+
+void syslock_counter_set(int newcount) 
+{
+	count = newcount;
+}
+
+
 __END_DECLS
