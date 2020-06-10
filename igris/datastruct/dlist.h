@@ -143,17 +143,19 @@ static inline void dlist_move_tail(struct dlist_head *list, struct dlist_head *h
 }
 #define dlist_move_prev(a,b) dlist_move_tail(a,b)
 
-#define dlist_move_sorted(_added, _head, member, comparator) 	\
+/**
+ 	Добавляет элемент added перед элементом, который первым вернёт true на вызов
+ 	comparator(added, pos).
+ */
+#define dlist_move_sorted(added, head, member, comparator) 			\
 {                                                               	\
-	decltypeof(_added) added = _added;                          	\
-	decltypeof(_added) pos;                                     	\
-	decltypeof(_head) head = _head;									\
-	dlist_for_each_entry(pos, head, member)                     	\
+	decltypeof(added) pos;                                     		\
+	dlist_for_each_entry(pos, (head), member)                     	\
 	{                                                           	\
-		if (comparator(added, pos))                             	\
+		if (comparator((added), pos))                             	\
 			break;                                              	\
 	}                                                           	\
-	dlist_add_prev(&added->member, &pos->member);                  	\
+	dlist_add_prev(&(added)->member, &pos->member);                 \
 }
 
 /**
