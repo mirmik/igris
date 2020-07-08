@@ -16,29 +16,34 @@
 
 enum TrentType {
 	TRENT_NIL = 0,
-	TRENT_INT = 1,
-	TRENT_NUM = 2,
-	TRENT_STR = 3,
-	TRENT_BOOL = 4,
+	TRENT_NUM = 1,
+	TRENT_STR = 2,
+	TRENT_PTR = 3,
 
 	TRENT_TABL = 8,
-	TRENT_LIST = 9,
-	TRENT_DICT = 10,
+	TRENT_LIST = 9,   // TABL type
+	TRENT_DICT = 10,  // TABL type
 };
 
 #define TRENT_TABL_MASK 0b1000
 
+struct __trent_buffer 
+{
+	char * data;
+	size_t size;
+}
+
 struct trent_node {
 	struct dlist_head 	lnk;
-	struct trent_node* 	parent;
+	//struct trent_node* 	parent;
 	struct cbuf_s 		name;
 	uint8_t 			type;
 
 	union {
-		long long 			m_int;
-		long double 		m_num;
-		struct cbuf_s   	m_str;
-		struct dlist_head 	m_childs;
+		void *					m_ptr;
+		long double 			m_num;
+		struct __trent_buffer   m_str;
+		struct dlist_head 		m_childs;
 	};
 };
 
@@ -113,6 +118,9 @@ static inline int trent_equal(struct trent_node* a, struct trent_node* b) {
 			PANIC_TRACED("undefined operation");		 
 	}
 }
+
+void trent_unlink(struct trent_node * node);
+void trent_dealloc(struct trent_node * node, void(*free)(void*));
 
 __END_DECLS
 
