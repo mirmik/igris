@@ -12,7 +12,8 @@ licant.module("igris", mdepends=[
 	"igris.syslock",
 	"igris.ctrobj",
 
-	"igris.protocols.gstuff"
+	"igris.protocols.gstuff",
+	"igris.crypt.aes"
 ])
 
 licant.module("igris.include", include_paths = ["."])
@@ -131,3 +132,6 @@ licant.module("igris.time", "posix",
 	sources = ["igris/time/time_posix.cpp"],
 	default = True
 )
+
+licant.module("igris.crypt.aes", 
+	sources = ["igris/crypt/aes.c"])
