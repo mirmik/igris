@@ -8,6 +8,7 @@ licant.module("igris", mdepends=[
 	"igris.dprint",
 	"igris.path",
 	"igris.time",
+	"igris.sched",
 
 	"igris.syslock",
 	"igris.ctrobj",
@@ -135,3 +136,6 @@ licant.module("igris.time", "posix",
 
 licant.module("igris.crypt.aes", 
 	sources = ["igris/crypt/aes.c"])
+
+licant.module("igris.sched", 
+	sources = ["igris/sched/stimer.c"])
