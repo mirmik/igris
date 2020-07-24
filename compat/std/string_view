@@ -1,6 +1,8 @@
 #ifndef IGRIS_COMPAT_STRING_VIEW_H
 #define IGRIS_COMPAT_STRING_VIEW_H
 
+#include <cstring>
+
 namespace std 
 {
 	class string_view 
