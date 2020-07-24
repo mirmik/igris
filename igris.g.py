@@ -1,6 +1,10 @@
 import licant
 
-licant.module("igris", mdepends=[
+licant.module("igris", 
+sources = [
+	"igris/datastruct/stimer.c"
+],
+mdepends=[
 	"igris.include",
 	"igris.sshell",
 	"igris.util",
@@ -8,7 +12,6 @@ licant.module("igris", mdepends=[
 	"igris.dprint",
 	"igris.path",
 	"igris.time",
-	"igris.sched",
 
 	"igris.syslock",
 	"igris.ctrobj",
@@ -136,6 +139,3 @@ licant.module("igris.time", "posix",
 
 licant.module("igris.crypt.aes", 
 	sources = ["igris/crypt/aes.c"])
-
-licant.module("igris.sched", 
-	sources = ["igris/sched/stimer.c"])
