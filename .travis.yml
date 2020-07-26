@@ -11,16 +11,17 @@ matrix:
     - name: "OSX clang"
       os: "osx"
       compiler: clang
-      
-    - name: "Ubuntu clang++6 gtest"
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-           - clang++-6.0
-      env:
-         - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
+     
+    # Fault: string_view 
+    #- name: "Ubuntu clang++6 gtest"
+    #  addons:
+    #    apt:
+    #      sources:
+    #        - ubuntu-toolchain-r-test
+    #      packages:
+    #       - clang++-6.0
+    #  env:
+    #     - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
 
     - name: "Ubuntu g++8 gtest"
       addons:
