@@ -1,4 +1,4 @@
-#include <igris/sched/stimer.h>
+#include <igris/datastruct/stimer.h>
 
 int stimer_check(struct stimer_head * timer, unsigned long curtime) 
 {
