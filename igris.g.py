@@ -2,7 +2,6 @@ import licant
 
 licant.module("igris", mdepends=[
 	"igris.include",
-	"igris.sshell",
 	"igris.util",
 	"igris.bug",
 	"igris.dprint",
@@ -93,8 +92,8 @@ licant.module("igris.util", sources=[
 
 #################################################################
 
-licant.module("igris.sshell", 
-	sources=["igris/shell/sshell.cpp"])
+#licant.module("igris.sshell", 
+#	sources=["igris/shell/sshell.cpp"])
 
 licant.module("igris.syslock", impl="genos.atomic", 
 	sources=["igris/sync/syslock_genos_atomic.cpp"])
