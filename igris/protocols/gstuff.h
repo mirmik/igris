@@ -2,8 +2,8 @@
 #define GSTUFF2_H
 
 #include <stdint.h>
-#include <compiler.h>
-#include <sline.h>
+#include <igris/compiler.h>
+#include <igris/datastruct/sline.h>
 
 #define GSTUFF_START ((char)0xA8)
 #define GSTUFF_STOP ((char)0xB2)

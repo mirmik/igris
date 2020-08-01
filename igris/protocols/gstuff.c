@@ -1,5 +1,5 @@
-#include "gstuff2.h"
-#include "igris_crc.h"
+#include "igris/protocols/gstuff.h"
+#include "igris/util/crc.h"
 
 int gstuffing(const char* data, int size, char* outdata)
 {
@@ -37,7 +37,7 @@ int gstuffing(const char* data, int size, char* outdata)
 		}
 	}
 
-	switch (crc)
+	switch ((char)crc)
 	{
 		case GSTUFF_START:
 			*outdata++ = GSTUFF_STUB;
