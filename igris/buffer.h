@@ -18,17 +18,19 @@ namespace igris
 		size_t sz;
 
 	public:
-		char * data() const { return buf; }
-		char *& data() { return buf; }
+		const char *  data() const { return buf; }
+		      char *  data()       { return buf; }
+
+		const uint8_t *  bytes() const { return (const uint8_t*) buf; }
+		      uint8_t *  bytes()       { return (      uint8_t*) buf; }
+
+		size_t   size() const { return sz; }
+
 		void data(char* buf) { this->buf = buf; }
-
-		size_t size() const { return sz; }
-		size_t& size() { return sz; }
-		void size(size_t sz) { this->sz = sz; }
-
+		void size(size_t sz) { this->sz  = sz; }
+		
 	//ctors:
 		buffer() : buf(nullptr), sz(0) {}
-
 		buffer(const char* _buf) : buf((char*)_buf), sz(strlen(_buf)) {}
 
 		buffer(const void* _buf, size_t _sz) : buf((char*)_buf), sz(_sz) {}

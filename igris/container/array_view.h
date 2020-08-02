@@ -53,6 +53,13 @@ namespace igris
 
 		array_view slice(int start, int size)
 		{ return array_view(_data + start, size); }
+
+		/*template <class U>
+		operator array_view<U>() 
+		{
+			static_assert(std::is_convertible<T,U>::value);
+			return reinterpret_cast<array_view<U>>(this);
+		}*/
 	};
 }
 
