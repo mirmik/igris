@@ -16,7 +16,9 @@ mdepends=[
 	"igris.ctrobj",
 
 	"igris.protocols.gstuff",
-	"igris.crypt.aes"
+	"igris.crypt.aes",
+
+	"igris.os_extension"
 ])
 
 licant.module("igris.include", include_paths = ["."])
@@ -127,7 +129,8 @@ licant.module("igris.path",
 
 #################################################################
 licant.module("igris.os_extension", "unix",
-	sources=["igris/osutil/src/posix.cpp"]
+	sources=["igris/osutil/src/posix.cpp"],
+	default = True
 )
 
 
