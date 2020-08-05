@@ -17,6 +17,8 @@ tests = [
 	"sync",
 	"bits",
 	"array_view",
+	"test_allocator",
+	"chunked_vector",
 	"util"
 ]
 
@@ -33,7 +35,7 @@ application("runtests",
 	cc_flags = "-g",
 
 	include_paths = ["."],
-	mdepends = [ "igris", ("igris.dprint", "user") ],
+	mdepends = [ "igris", ("igris.dprint", "user"), "nos" ],
 )
 
 #application("runtests_installed",

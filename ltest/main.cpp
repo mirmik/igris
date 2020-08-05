@@ -33,6 +33,8 @@ LT_END_SUITE(dprint_suite)
 #include "argvc.hpp"
 #include "signature.hpp"
 #include "numconvert.hpp"
+#include "test_allocator.hpp"
+#include "chunked_vector.hpp"
 
 LT_BEGIN_AUTO_TEST_ENV()
     AUTORUN_TESTS()
