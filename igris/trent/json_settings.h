@@ -49,7 +49,7 @@ namespace igris
 			//{
 			//	BUG();
 			//}
-			nos::file file(pathstr.c_str(), "w");
+			nos::file file(pathstr.c_str(), O_WRONLY);
 			json::pretty_print_to(tr, file);
 			//file.close();
 		}
@@ -98,7 +98,7 @@ namespace igris
 			//{
 			//	BUG();
 			//}
-			nos::file file(pathstr.c_str(), "w");
+			nos::file file(pathstr.c_str(), O_WRONLY);
 			json::pretty_print_to(tr, file);
 			//file.close();
 			return 0;
