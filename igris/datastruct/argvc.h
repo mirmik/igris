@@ -1,6 +1,7 @@
 #ifndef GENOS_DATASTRUCT_ARGV_H
 #define GENOS_DATASTRUCT_ARGV_H
 
+// Вычислить длину первого слова строки.
 static inline int argvc_length_of_first(const char* str)
 {
 	const char* strt = str;
@@ -13,6 +14,10 @@ static inline int argvc_length_of_first(const char* str)
 	return str - strt;
 }
 
+// Выполняет разбиение строки data, терминированной нулём
+// Разбиение выполняется путём записи нулей в тело строки,
+// вектор результата возвращается в массив argv,
+// Максимальное количество элементов вектора argcmax
 static inline int argvc_internal_split(char* data, char** argv, int argcmax)
 {
 	int argc = 0;
@@ -32,6 +37,8 @@ newarg_search:
 	return argc;
 }
 
+// Безопасный вариант функции argvc_internal_split, дополнительно 
+// проверяющий длину строки (может не быть терминирована).
 static inline int argvc_internal_split_n(char* data, int maxlen, char** argv, int argcmax)
 {
 	int argc = 0;
@@ -56,6 +63,7 @@ newarg_search:
 
 namespace igris
 {
+	// аналог с возможностью задания разделителя delim.
 	static inline int internal_split(
 	    char* data, int maxlen, char** argv, int argcmax, char delim = ' ')
 	{
