@@ -36,7 +36,7 @@ file(GLOB SOURCES_TEST
 	igris/datastruct/*.cpp
 	igris/protocols/gstuff/*.c
 	igris/sync/syslock_mutex.cpp
-	ltest/*.cpp
+	tests/*.cpp
 )
 
 add_library(igris SHARED ${SOURCES})
