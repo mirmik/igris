@@ -23,6 +23,7 @@ LT_BEGIN_SUITE(dprint_suite)
 	}
 LT_END_SUITE(dprint_suite)
 
+#include "osutil.hpp"
 #include "bits.hpp"
 #include "util.hpp"
 #include "sync.hpp"
