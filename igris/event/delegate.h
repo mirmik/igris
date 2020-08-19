@@ -56,13 +56,23 @@ namespace igris
 			mtd_t method;
 			struct
 			{
-				fnc_t function;
-				fnc_t attributes;
+				union {
+					fnc_t function;
+					extfnc_t external_function;
+				};
+				union {
+					fnc_t attributes;
+					uintptr_t external_attributes;
+				};
 			} part;
 		};
 
 	protected:
-		obj_t object;
+		union 
+		{
+			obj_t object;
+			void * external_object;
+		};
 		method_union method;
 
 	public:
@@ -97,6 +107,13 @@ namespace igris
 			object = 0;
 			method.part.function = func;
 			method.part.attributes = 0;
+		};
+
+		delegate(const extfnc_t func, void * obj)
+		{
+			external_object = obj;
+			method.part.external_function = func;
+			method.part.external_attributes = -1;
 		};
 
 		template <typename T>
@@ -136,6 +153,11 @@ namespace igris
 		{
 			if (!armed())
 				return R();
+
+			if (method.part.external_attributes == (uintptr_t) -1) 
+			{
+				return method.part.external_function(external_object, std::forward<Args>(args) ...);			
+			}
 
 			uint8_t type = object ? METHOD : FUNCTION;
 			if (type == METHOD)
@@ -234,6 +256,12 @@ namespace igris
 	delegate<Ret, Args ...> make_delegate(Ret(* fnc)(Args...))
 	{
 		return delegate<Ret, Args...>(fnc);
+	}
+
+	template<typename Ret, typename ... Args>
+	delegate<Ret, Args ...> make_delegate(Ret(* fnc)(void *, Args...), void * extobj)
+	{
+		return delegate<Ret, Args...>(fnc, extobj);
 	}
 
 	template<typename T, typename Ret, typename ... Args>

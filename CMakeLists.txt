@@ -5,6 +5,8 @@ set( CMAKE_VERBOSE_MAKEFILE on )
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CC_STANDARD 11)
 
+set (PLATFORM_SOURCES )
+
 if (WIN32 OR WIN64)
 	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif()
@@ -23,9 +25,15 @@ file(GLOB SOURCES
 	igris/dprint/dprint_func_impl.c
 	igris/event/*.cpp
 	igris/datastruct/*.cpp
-	igris/protocols/gstuff/*.c
+	igris/protocols/gstuff.c
 	igris/sync/syslock_mutex.cpp
 )
+
+if (UNIX)
+	set(PLATFORM_SOURCES 
+		igris/osutil/src/posix.cpp
+	)
+endif()
 
 file(GLOB SOURCES_TEST 
 	igris/util/*.cpp 
@@ -36,10 +44,10 @@ file(GLOB SOURCES_TEST
 	igris/datastruct/*.cpp
 	igris/protocols/gstuff/*.c
 	igris/sync/syslock_mutex.cpp
-	ltest/*.cpp
+	tests/*.cpp
 )
 
-add_library(igris SHARED ${SOURCES})
+add_library(igris SHARED ${SOURCES} ${PLATFORM_SOURCES})
 target_include_directories(igris PRIVATE .)
 
 add_executable(igris_test ${SOURCES_TEST})
