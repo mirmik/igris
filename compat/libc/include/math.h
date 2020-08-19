@@ -4,6 +4,8 @@
 #include <sys/cdefs.h>
 //#include "../math/math_builtins.h"
 
+#undef round //Arduino compat
+
 #include <igris/util/types_extension.h>
 
 typedef float float_t;

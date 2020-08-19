@@ -18,7 +18,7 @@ mdepends=[
 	"igris.protocols.gstuff",
 	"igris.crypt.aes",
 
-	"igris.os_extension"
+#	"igris.os_extension"
 ])
 
 licant.module("igris.include", include_paths = ["."])
