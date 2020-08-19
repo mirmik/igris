@@ -1,7 +1,7 @@
-#include <igris/protocols/gstuff/gstuff.h>
+#include <igris/protocols/gstuff_v1/gstuff.h>
 #include <igris/util/crc.h>
 
-int gstuffing(char* data, int size, char* outdata) 
+int gstuffing_v1(char* data, int size, char* outdata) 
 {
 	char* outstrt;
 	uint8_t crc;
@@ -9,7 +9,7 @@ int gstuffing(char* data, int size, char* outdata)
 	crc = 0xFF;
 	outstrt = outdata;
 
-	*outdata++ = GSTUFF_START;
+	*outdata++ = GSTUFF_START_V1;
 	
 	while(size--) 
 	{
@@ -18,14 +18,14 @@ int gstuffing(char* data, int size, char* outdata)
 
 		switch(c) 
 		{
-			case GSTUFF_START:
-				*outdata++ = GSTUFF_STUB;
-				*outdata++ = GSTUFF_STUB_START;
+			case GSTUFF_START_V1:
+				*outdata++ = GSTUFF_STUB_V1;
+				*outdata++ = GSTUFF_STUB_START_V1;
 				break;
 		
-			case GSTUFF_STUB:
-				*outdata++ = GSTUFF_STUB;
-				*outdata++ = GSTUFF_STUB_STUB;
+			case GSTUFF_STUB_V1:
+				*outdata++ = GSTUFF_STUB_V1;
+				*outdata++ = GSTUFF_STUB_STUB_V1;
 				break;
 	
 			default:
@@ -34,7 +34,7 @@ int gstuffing(char* data, int size, char* outdata)
 	}
 
 	*outdata++ = crc;
-	*outdata++ = GSTUFF_START;
+	*outdata++ = GSTUFF_START_V1;
 
 	return outdata - outstrt;
 }
