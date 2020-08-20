@@ -54,8 +54,8 @@ int _exit()
 	return -1;
 }
 
-int _sbrk()
-{
+void *_sbrk(int incr) {
 	dprln("newlib:_sbrk");
-	return -1;
+	return NULL;
 }
+

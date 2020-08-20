@@ -31,7 +31,7 @@ void gstuff_autorecv_setbuf_v1(struct gstuff_autorecv_v1 * autom,
 	void * buf, int len);
 
 void gstuff_autorecv_init_v1(
-	struct gstuff_autorecv * autom, 
+	struct gstuff_autorecv_v1 * autom, 
 	void(*callback)(void*, int sts, char* dat, int len), 
 	void * arg
 );

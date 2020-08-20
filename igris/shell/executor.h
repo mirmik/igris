@@ -1,14 +1,14 @@
 #ifndef IGRIS_SHELL_EXECUTOR_H
 #define IGRIS_SHELL_EXECUTOR_H
 
+#include <igris/util/bug.h>
 #include <igris/shell/conscmd.h>
 #include <igris/datastruct/argvc.h>
 
 #include <unistd.h>
+#include <errno.h>
 
 #define EXECUTOR_PROCESS_STARTED 2
-#define EXECUTOR_ERROR -1
-
 #define EXECUTOR_TBLFIN nullptr
 
 // COMMENT: Флаги фактически не используются, а если будут, то возможно, 
