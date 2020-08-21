@@ -32,32 +32,5 @@ if (_concate(INTERNAL_VAR, __LINE__) < b) if (++_concate(INTERNAL_VAR, __LINE__)
 #define do_after else;else
 
 #undef INTERNAL_VAR
-
-//Структура счётчик инструкций.
-/*struct iteration_counter
-{
-	long long iteration;
-	long long helper;
-};
-
-#define iter_start(obj) \
-static iteration_counter obj = {0, 0}; \
-obj.iteration++;\
-switch(obj.helper){case 0:
-
-//
-#define iter(obj,a) if (obj.iteration == a) obj.helper = a; break; case a:
-
-//Завершение процессора.
-#define iter_end(obj,a) if (obj.iteration == a) obj.helper = a; break; default: break; }
-
-//Неостанавливающие завершение.
-#define iter_end_unstoped(obj) if (obj.iteration >= obj.helper) obj.iteration = obj.helper; break;}*/
-
-//Формат использования.
-//iter_start(obj)     do_something0();	//выполнять до второй итерации 
-//iter(obj,2)         do_something1();	//выполнять со второй до четвертой итерации
-//iter(obj,4)         do_something2();	//выполнять с четвертой по десятую итерации
-//iter_end(obj,10); 
 	
 #endif

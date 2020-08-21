@@ -1,7 +1,8 @@
 #ifndef GENOS_SETTER_GETTER_H
 #define GENOS_SETTER_GETTER_H
 
-//Примитивы для написания интерфейса доступа к полям класса в setter/getter стиле.
+// Примитивы для написания интерфейса доступа к полям 
+// класса в setter/getter стиле.
 
 #define SETTER(name,param) 					\
 void name(decltype(param) value) {			\
