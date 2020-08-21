@@ -1,9 +1,10 @@
 
 //debug_putchar реализуется в основной программе.
+
+#include <igris/dprint.h>
 	
-void debug_write(const void * c, int i) {
-	const char * chr = c; 
+void debug_write(const char * c, int i) {
 	while(i--) 
-		debug_putchar(*chr++);
+		debug_putchar(*c++);
 };
 	
