@@ -1,6 +1,5 @@
 #include <igris/util/string.h>
 #include <igris/util/hexascii.h>
-#include <igris/dprint.h>
 
 namespace igris
 {
@@ -118,10 +117,6 @@ namespace igris
 
 		return ret;
 	}
-
-	/*std::string dstring(nod::buffer buf) {
-		return dstring(buf.data(), buf.size());
-	}*/
 
 	std::string dstring(const std::string& buf)
 	{

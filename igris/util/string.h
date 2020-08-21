@@ -22,9 +22,6 @@ namespace igris
 	strvec split(const igris::buffer& str, char delim = ' ');
 	strvec split(const igris::buffer& str, const char* delims);
 
-//	strvec split(const std::string& str, char delim);
-//	strvec split(const std::string& str, const char* delims);
-
 	std::string join(const strvec&, char delim);
 
 	template<class Iter>
@@ -86,7 +83,7 @@ namespace igris
 	}
 #endif
 
-	static inline std::string serialstr8(const std::string& str)
+	/*static inline std::string serialstr8(const std::string& str)
 	{
 		std::string ret;
 		ret.push_back((uint8_t)str.size());
@@ -100,11 +97,9 @@ namespace igris
 		ret.push_back((uint8_t) size);
 		ret.append(data, size);
 		return ret;
-	}
+	}*/
 
-
-
-	static inline std::string hexstring(const void* data, size_t size)
+	/*static inline std::string hexstring(const void* data, size_t size)
 	{
 		std::string ret;
 		ret.resize(size * 2);
@@ -124,7 +119,7 @@ namespace igris
 	static inline std::string hexstring(igris::buffer buf)
 	{
 		return hexstring(buf.data(), buf.size());
-	}
+	}*/
 }
 
 #endif
