@@ -1,6 +1,8 @@
 #ifndef IGRIS_TOKENIZER_H
 #define IGRIS_TOKENIZER_H
 
+#error to delete
+
 namespace igris 
 {
 	struct tokenizer 
