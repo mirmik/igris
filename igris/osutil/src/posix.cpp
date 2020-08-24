@@ -4,6 +4,7 @@
 //#include <igris/osutil/fd.h>
 
 #include <string>
+#include <string.h>
 #include <igris/osutil/fd.h>
 
 int igris::osutil::nonblock(int fd, bool en)
