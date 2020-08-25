@@ -328,7 +328,7 @@ __try__:
 			}
 		};
 
-		igris::trent parse(const char * str) 
+		static igris::trent parse(const char * str) 
 		{
 			parser_cstr parser(str);
 			return parser.parse();

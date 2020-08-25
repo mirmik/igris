@@ -1,10 +1,6 @@
 import licant
 
-licant.module("igris", 
-sources = [
-	"igris/datastruct/stimer.c"
-],
-mdepends=[
+MODULES = [
 	"igris.include",
 	"igris.util",
 	"igris.bug",
@@ -19,7 +15,16 @@ mdepends=[
 	"igris.crypt.aes",
 
 #	"igris.os_extension"
-])
+]
+
+if sys.platform == "linux":
+		MODULES.append("igris.os_extension")
+
+licant.module("igris", 
+sources = [
+	"igris/datastruct/stimer.c"
+],
+mdepends=MODULES)
 
 licant.module("igris.include", include_paths = ["."])
 
