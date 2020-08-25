@@ -3,7 +3,7 @@
 
 #include <igris/cread.h>
 #include <igris/util/numconvert.h>
-#include <kaisel/trent/trent.h>
+#include <igris/trent/trent.h>
 
 //#include <nos/print.h>
 //#include <nos/trace.h>
@@ -70,8 +70,7 @@ namespace igris
 			char readnext_skipping()
 			{
 				char c;
-				char next;
-
+		
 __try__:
 				c = readnext();
 
@@ -82,7 +81,7 @@ __try__:
 				{
 					c = readnext();
 
-					switch (next)
+					switch (c)
 					{
 						case '*':
 							while (true)
@@ -328,6 +327,12 @@ __try__:
 				return is.get();
 			}
 		};
+
+		igris::trent parse(const char * str) 
+		{
+			parser_cstr parser(str);
+			return parser.parse();
+		}
 
 		/*template <template <class Allocator> class TAlloc = std::allocator>
 		void print_to(const trent_basic<TAlloc>& tr, std::ostream& os)

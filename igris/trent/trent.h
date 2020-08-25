@@ -14,7 +14,7 @@
 #include <igris/buffer.h>
 #include <igris/result.h>
 
-#include <kaisel/trent/trent_path.h>
+#include <igris/trent/trent_path.h>
 
 using namespace igris::result_type;
 
