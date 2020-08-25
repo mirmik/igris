@@ -5,8 +5,8 @@
 #include <sstream>
 #include <fstream>
 
-#include <kaisel/trent/json.h>
-#include <kaisel/trent/settings.h>
+#include <igris/trent/json.h>
+#include <igris/trent/settings.h>
 
 #include <nos/io/file.h>
 

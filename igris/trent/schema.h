@@ -3,7 +3,7 @@
 
 #include <set>
 #include <igris/util/string.h>
-#include <kaisel/trent/trent.h>
+#include <igris/trent/trent.h>
 
 #include <nos/print.h>
 #include <nos/fprint.h>

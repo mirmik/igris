@@ -1,8 +1,8 @@
 #ifndef IGRIS_TRENT_SETTINGS_H
 #define IGRIS_TRENT_SETTINGS_H
 
-#include <kaisel/trent/trent.h>
-#include <kaisel/trent/trent_path.h>
+#include <igris/trent/trent.h>
+#include <igris/trent/trent_path.h>
 
 namespace igris {
 
