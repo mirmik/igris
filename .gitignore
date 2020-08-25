@@ -44,7 +44,7 @@ CTestTestfile.cmake
 _deps
 
 igris_test
-test/runtests
+tests/runtests
 ltest/runtests
 test/runtests_installed
 travis.log
