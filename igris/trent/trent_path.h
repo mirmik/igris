@@ -1,7 +1,6 @@
 #ifndef TRENT_PATH_H
 #define TRENT_PATH_H
 
-#include <nos/print.h>
 #include <igris/util/string.h>
 #include <vector>
 
@@ -50,11 +49,11 @@ namespace igris {
 			if (is_string) igris::destructor(&str);
 		}
 
-		size_t print_to(nos::ostream& o) const
+		/*size_t print_to(nos::ostream& o) const
 		{
 			if (is_string) return nos::print_to(o, str);
 			return nos::print_to(o, i32);
-		}
+		}*/
 
 		igris::trent_path_node& operator= (const igris::trent_path_node& oth) 
 		{
