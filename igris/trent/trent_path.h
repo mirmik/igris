@@ -3,6 +3,7 @@
 
 #include <igris/util/string.h>
 #include <vector>
+#include <iostream>
 
 namespace igris {
 	struct trent_path_node
@@ -69,13 +70,14 @@ namespace igris {
 		trent_path(const char* path)
 		{
 			igris::strvec svec = igris::split(path, '/');
+
 			for (const auto& s : svec)
 			{
-				emplace_back(s);
+				std::vector<trent_path_node>::emplace_back(s);
 			}
 		}
 
-		std::string to_string() 
+		std::string to_string() const
 		{
 			std::vector<std::string> svec;
 			svec.resize(size());

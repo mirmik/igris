@@ -47,15 +47,18 @@ namespace igris
 		class wrong_path : public std::exception
 		{
 			trent_path path;
+			std::string str;
 
 		public:
 			wrong_path(const igris::trent_path& path) :
 				path(path)
-			{}
-
-			const char * what()
 			{
-				std::string str = std::string("trent:wrong_path: ") + path.to_string();
+				str = std::string("trent:wrong_path: ") + 
+					path.to_string();
+			}
+
+			const char * what() const noexcept override
+			{
 				return str.c_str();
 			}
 		};
@@ -64,17 +67,21 @@ namespace igris
 		{
 			trent_path path;
 			type t;
+			std::string str;
 
 		public:
-			wrong_type(const trent_path& path, type t) :
+			wrong_type(const trent_path& path, type t, type rt) :
 				path(path), t(t)
-			{}
-
-			const char * what()
 			{
-				std::string str =
-				    std::string("trent:wrong_type: path: ") + path.to_string() +
-				    std::string(" type: ") + typestr(t);
+				str =
+				    std::string("trent:wrong_type:") +
+				    std::string(" path:") + path.to_string() +
+				    std::string(" request:") + igris::typestr(t) +
+				    std::string(" realtype:") + igris::typestr(rt);
+			}
+
+			const char * what() const noexcept override
+			{
 				return str.c_str();
 			}
 		};
@@ -89,7 +96,7 @@ namespace igris
 				path(path), t(t)
 			{}
 
-			const char * what()
+			const char * what() const override
 			{
 				std::string str =
 				    std::string("trent:wrong_index: path: ") + path.to_string() +
@@ -309,7 +316,7 @@ namespace igris
 			return m_dict.at(std::string(key.data(), key.size()));
 		}
 
-		const trent_basic * get(const std::string& str) const
+		const trent_basic * _get(const std::string& str) const
 		{
 			if (is_dict())
 			{
@@ -322,14 +329,14 @@ namespace igris
 			return nullptr;
 		}
 
-		const trent_basic * get(const char * str) const
+		const trent_basic * _get(const char * str) const
 		{
 			return get(std::string(str));
 		}
 
-		const trent_basic * get(int index) const
+		const trent_basic * _get(int index) const
 		{
-			if (is_dict())
+			if (is_list())
 				return &m_arr[index];
 
 			return nullptr;
@@ -344,11 +351,11 @@ namespace igris
 				{
 					if (!tr->is_dict())
 						return nullptr;
-					tr = tr->get(p.str);
+					tr = tr->_get(p.str);
 				}
 				else
 				{
-					tr = tr->get(p.i32);
+					tr = tr->_get(p.i32);
 				}
 
 				if (tr == nullptr)
@@ -373,7 +380,7 @@ namespace igris
 
 			if (tr.m_type != trent_type::numer)
 			{
-				throw wrong_type(path, trent_type::numer);
+				throw wrong_type(path, trent_type::numer, tr.m_type);
 			}
 
 			return tr.m_num;
@@ -385,7 +392,7 @@ namespace igris
 
 			if (tr.m_type != trent_type::string)
 			{
-				throw wrong_type(path, trent_type::string);
+				throw wrong_type(path, trent_type::string, tr.m_type);
 			}
 
 			return tr.m_str;
