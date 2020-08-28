@@ -398,6 +398,42 @@ namespace igris
 			return tr.m_str;
 		}
 
+		const string_type& get_as_boolean_ex(const trent_path& path) const
+		{
+			const trent_basic & tr = get_except(path);
+
+			if (tr.m_type != trent_type::boolean)
+			{
+				throw wrong_type(path, trent_type::string, tr.m_type);
+			}
+
+			return tr.m_bool;
+		}
+
+		numer_type get_as_numer_def(const trent_path& path, numer_type def) const
+		{
+			const trent_basic * tr = get(path);
+			if (tr == nullptr || tr->m_type != trent_type::numer)
+				return def;
+			return tr->m_num;
+		}
+
+		const string_type& get_as_string_def(const trent_path& path, const std::string& def) const
+		{
+			const trent_basic * tr = get(path);
+			if (tr == nullptr || tr->m_type != trent_type::string)
+				return def;
+			return tr->m_str;
+		}
+
+		const string_type& get_as_boolean_def(const trent_path& path, bool def) const
+		{
+			const trent_basic * tr = get(path);
+			if (tr == nullptr || tr->m_type != trent_type::boolean)
+				return def;
+			return tr->m_bool;
+		}
+
 		bool have(const std::string& key) const
 		{
 			if (m_type != type::dict) BUG_ON("wrong trent type");
