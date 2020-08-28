@@ -49,12 +49,6 @@ namespace igris {
 			if (is_string) igris::destructor(&str);
 		}
 
-		/*size_t print_to(nos::ostream& o) const
-		{
-			if (is_string) return nos::print_to(o, str);
-			return nos::print_to(o, i32);
-		}*/
-
 		igris::trent_path_node& operator= (const igris::trent_path_node& oth) 
 		{
 			this->is_string = oth.is_string;
@@ -79,6 +73,27 @@ namespace igris {
 			{
 				emplace_back(s);
 			}
+		}
+
+		std::string to_string() 
+		{
+			std::vector<std::string> svec;
+			svec.resize(size());
+
+			for (int i = 0; i < size(); ++i) 
+			{
+				auto& cur = operator[](i);
+				if (cur.is_string) 
+				{
+					svec[i] = cur.str;
+				}
+				else 
+				{
+					svec[i] = std::to_string(cur.i32);
+				}
+			}
+
+			return igris::join(svec, '/');
 		}
 	};
 }

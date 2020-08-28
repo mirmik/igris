@@ -7,6 +7,7 @@ MODULES = [
 	"igris.dprint",
 	"igris.path",
 	"igris.time",
+	"igris.trent",
 
 	"igris.syslock",
 	"igris.ctrobj",
