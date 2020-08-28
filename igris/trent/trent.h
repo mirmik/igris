@@ -374,7 +374,7 @@ namespace igris
 			return *tr;
 		}
 
-		numer_type get_as_numer_except(const trent_path& path) const
+		numer_type get_as_numer_ex(const trent_path& path) const
 		{
 			const trent_basic & tr = get_except(path);
 
@@ -386,7 +386,7 @@ namespace igris
 			return tr.m_num;
 		}
 
-		const string_type& get_as_string_except(const trent_path& path) const
+		const string_type& get_as_string_ex(const trent_path& path) const
 		{
 			const trent_basic & tr = get_except(path);
 
