@@ -22,11 +22,11 @@ int wait_current_schedee(struct dlist_head * head, int priority, void ** future)
 	else 
 		dlist_move_tail(&waiter.w.ctr.lnk, head);
 
-	system_unlock();
-
 	auto save = system_lock_save();
 	waiter.event.wait();
 	system_lock_restore(save);
+
+	system_unlock();
 
 	*future = waiter.w.ctr.future;
 	return 0;

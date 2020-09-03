@@ -9,7 +9,7 @@
 
 static std::recursive_mutex mtx;
 //static std::mutex mtx;
-static volatile int count = 0;
+static __thread int count = 0;
 
 __BEGIN_DECLS
 
@@ -39,10 +39,10 @@ void system_unlock()
 struct syslock_save_pair system_lock_save() 
 {
 	auto ret = syslock_save_pair{count, 0};
+	assert(count != 0);
 
-	if (count) 
+	while (count--) 
 	{
-		count = 0;
 		mtx.unlock();
 	}
 
@@ -51,10 +51,14 @@ struct syslock_save_pair system_lock_save()
 
 void system_lock_restore(struct syslock_save_pair save) 
 {
+	mtx.lock();
+
 	count = save.count;
-	
-	if (count) 
+	int curcount = 1;
+
+	while(curcount != count) 
 	{
+		curcount++;
 		mtx.lock();
 	}
 }

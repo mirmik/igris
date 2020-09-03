@@ -6,20 +6,20 @@
 
 namespace igris 
 {
-	template<class T>
-	T clamp(T c, T a, T b) 
+	template<class T, class A, class B>
+	T clamp(const T& c, const A& a, const B& b) 
 	{
 		return c < a ? a : c > b ? b : c;
 	}
 
-	template<class T>
-	bool inside(T c, T a, T b) 
+	template<class T, class A, class B>
+	bool inside(const T& c, const A& a, const B& b) 
 	{
 		return c > a && c < b;	
 	}
 
-	template<class T>
-	bool outside(T c, T a, T b) 
+	template<class T, class A, class B>
+	bool outside(const T& c, const A& a, const B& b) 
 	{
 		return c < a || c > b;	
 	}
