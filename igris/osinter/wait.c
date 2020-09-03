@@ -25,7 +25,6 @@ int waiter_unwait(struct dlist_head * lnk, void* future)
 		case CTROBJ_WAITER_DELEGATE:
 			{
 				struct waiter_delegate * w = mcast_out(ctr, struct waiter_delegate, ctr);
-				dlist_del(lnk);
 				w->func(w->obj);
 			}
 			return 0;
@@ -48,6 +47,7 @@ void unwait_one(struct dlist_head * head, void * future)
 	}
 
 	it = head->next;
+	dlist_del_init(it);
 	waiter_unwait(it, future);
 
 	system_unlock();
@@ -59,8 +59,10 @@ void unwait_all(struct dlist_head * head, void* future)
 
 	system_lock();
 
-	dlist_for_each(it, head)
+	while (!dlist_empty(head))
 	{
+		it = head->next;
+		dlist_del_init(it);
 		waiter_unwait(it, future);
 	}
 
@@ -79,7 +81,7 @@ ssize_t waited_ring_read(void* data, size_t size, int flags,
 	while (ring_empty(rxring))
 	{
 
-		if (flags & IO_NOBLOCK) 
+		if (flags & IO_NOBLOCK)
 		{
 			system_unlock();
 			return 0;

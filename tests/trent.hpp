@@ -64,26 +64,26 @@ LT_BEGIN_TEST(igris_test_suite, get_test)
 	LT_CHECK_EQ(tr.get("7/a/b"), &tr[7]["a"]["b"]);
 
 	tr["a"]["b"] = 3;
-	LT_CHECK_EQ(tr.get_as_numer_except("a/b"), 3);
+	LT_CHECK_EQ(tr.get_as_numer_ex("a/b"), 3);
 
 	tr["A"][7] = 8;
-	LT_CHECK_EQ(tr.get_as_numer_except("A/7"), 8);
+	LT_CHECK_EQ(tr.get_as_numer_ex("A/7"), 8);
 	
 	tr[7] = 8;
-	LT_CHECK_EQ(tr.get_as_numer_except("7"), 8);
+	LT_CHECK_EQ(tr.get_as_numer_ex("7"), 8);
 	
 	tr[7]["A"] = 8;
-	LT_CHECK_EQ(tr.get_as_numer_except("7/A"), 8);
+	LT_CHECK_EQ(tr.get_as_numer_ex("7/A"), 8);
 	
 	tr["a"]["b"][28] = 42;
-	LT_CHECK_EQ(tr.get_as_numer_except("a/b/28"), 42);
+	LT_CHECK_EQ(tr.get_as_numer_ex("a/b/28"), 42);
 
 	int except = 0;
-	LT_CHECK_THROW(tr.get_as_numer_except("a/c/28"));
+	LT_CHECK_THROW(tr.get_as_numer_ex("a/c/28"));
 
 	try 
 	{
-		tr.get_as_numer_except("a/c/28");
+		tr.get_as_numer_ex("a/c/28");
 	}	
 	catch(std::exception& ex) 
 	{
@@ -94,7 +94,7 @@ LT_BEGIN_TEST(igris_test_suite, get_test)
 	tr["a"]["b"][28] = "hello";
 	try 
 	{
-		tr.get_as_numer_except("a/b/28");
+		tr.get_as_numer_ex("a/b/28");
 	}	
 	catch(std::exception& ex) 
 	{
