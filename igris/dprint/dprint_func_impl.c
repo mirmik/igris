@@ -100,11 +100,18 @@ void debug_printhex_n(uint8_t* arg, int n)
 }
 
 void debug_printhex_char(char arg)           				   { debug_printhex_uint8(arg); }
+
 void debug_printhex_unsigned_char(unsigned char arg)           { debug_printhex_uint8(arg); }
 void debug_printhex_unsigned_short(unsigned short arg)         { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
 void debug_printhex_unsigned_int(unsigned int arg)             { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
 void debug_printhex_unsigned_long(unsigned long arg)           { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
 void debug_printhex_unsigned_long_long(unsigned long long arg) { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
+
+void debug_printhex_signed_char(signed char arg)           { debug_printhex_uint8(arg); }
+void debug_printhex_signed_short(signed short arg)         { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
+void debug_printhex_signed_int(signed int arg)             { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
+void debug_printhex_signed_long(signed long arg)           { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
+void debug_printhex_signed_long_long(signed long long arg) { debug_printhex_n((uint8_t*)&arg, sizeof(arg)); }
 
 void debug_printhex_uint16(uint16_t a)
 {
