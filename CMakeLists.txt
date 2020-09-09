@@ -24,6 +24,7 @@ file(GLOB SOURCES
 	igris/dprint/dprint_stdout.c
 	igris/dprint/dprint_func_impl.c
 	igris/event/*.cpp
+	igris/trent/*.cpp
 	igris/datastruct/*.cpp
 	igris/protocols/gstuff.c
 	igris/sync/syslock_mutex.cpp
@@ -41,6 +42,7 @@ file(GLOB SOURCES_TEST
 	igris/dprint/dprint_manually.c
 	igris/dprint/dprint_func_impl.c
 	igris/event/*.cpp
+	igris/trent/*.cpp
 	igris/datastruct/*.cpp
 	igris/protocols/gstuff/*.c
 	igris/sync/syslock_mutex.cpp
