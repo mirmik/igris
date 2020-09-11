@@ -1,6 +1,10 @@
 #ifndef IGRIS_CTROBJ_H
 #define IGRIS_CTROBJ_H
 
+// Объект синхронизации для построения очередей, корутин и прочей гадости.
+// Живёт в памяти процесса или его структуре и подключается 
+// в очереди ожидания (см. файл wait.h)  
+
 #include <stdint.h>
 #include <igris/datastruct/dlist.h>
 
