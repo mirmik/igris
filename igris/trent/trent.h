@@ -398,7 +398,7 @@ namespace igris
 			return tr.m_str;
 		}
 
-		const string_type& get_as_boolean_ex(const trent_path& path) const
+		const bool get_as_boolean_ex(const trent_path& path) const
 		{
 			const trent_basic & tr = get_except(path);
 
@@ -426,7 +426,7 @@ namespace igris
 			return tr->m_str;
 		}
 
-		const string_type& get_as_boolean_def(const trent_path& path, bool def) const
+		const bool get_as_boolean_def(const trent_path& path, bool def) const
 		{
 			const trent_basic * tr = get(path);
 			if (tr == nullptr || tr->m_type != trent_type::boolean)
