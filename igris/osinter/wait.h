@@ -47,10 +47,6 @@ int waiter_unwait(struct dlist_head * lnk, void* future);
 void unwait_one(struct dlist_head * head, void* future);
 void unwait_all(struct dlist_head * head, void* future);
 
-[[deprecated]]
-ssize_t waited_ring_read(void* data, size_t size, int flags,
-	struct ring_head* ring, char* ringbuf, struct dlist_head* wq);
-
 __END_DECLS
 
 #endif

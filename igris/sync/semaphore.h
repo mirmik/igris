@@ -8,64 +8,24 @@
 struct semaphore
 {
 	dlist_head wait_list;
-	unsigned_int count;
+	int count;
 };
 
-#define SEMAPHORE_INIT(name, n)
+#define SEMAPHORE_INIT(name, n)                             \
 {                                                           \
-	.wait_list      = LIST_HEAD_INIT((name).wait_list),     \
+	.wait_list      = DLIST_HEAD_INIT((name).wait_list),    \
 	.count          = n,                                    \
 }
 
 __BEGIN_DECLS
 
-static void sema_init(struct semaphore * sem, int val)
-{
-	*sem = SEMAPHORE_INIT(*sem, val);
-}
+void semaphore_init(struct semaphore * sem, int val);
 
-static void sema_down(struct semaphore * sem)
-{
-	void * _;
-	system_lock();
+void semaphore_down(struct semaphore * sem);
 
-	while(1)
-	{
-		if (sem->count >= 1)
-		{
-			sem->count--;
-			system_unlock();
-			return;
-		}
+int semaphore_down_trylock(struct semaphore * sem);
 
-		wait_current_schedee(&sem->wait_list, 0, &_);
-	}
-}
-
-static int sema_down_trylock(struct semaphore * sem)
-{
-	system_lock();
-
-	if (sem->count >= 1) 
-	{
-		sem->count--;
-		system_unlock();
-		return 0;
-	}
-
-	system_unlock();
-	return 1;
-}
-
-static void sema_up(struct semaphore * sem)
-{
-	system_lock();
-
-	sem->count++;
-	unwait_one(&sem->wait_list);
-
-	system_unlock();
-}
+void semaphore_up(struct semaphore * sem);
 
 __END_DECLS
 
