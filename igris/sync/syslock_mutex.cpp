@@ -9,7 +9,7 @@
 
 static std::recursive_mutex mtx;
 //static std::mutex mtx;
-static __thread int count = 0;
+static thread_local int count = 0;
 
 __BEGIN_DECLS
 
