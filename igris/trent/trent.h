@@ -97,11 +97,11 @@ namespace igris
 				path(path), t(t)
 			{}
 
-			const char * what() const override
+			const char * what() const noexcept override
 			{
 				std::string str =
 				    std::string("trent:wrong_index: path: ") + path.to_string() +
-				    std::string(" index: ") + typestr(t);
+				    std::string(" index: ") + igris::typestr(t);
 				return str.c_str();
 			}
 		};
