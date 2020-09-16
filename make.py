@@ -25,8 +25,8 @@ licant.cxx_library("shared",
 	target="libigris.so",
 	toolchain=toolchain,
 	mdepends = modules + ["igris.syslock", ("igris.ctrobj", "linux")],
-	cxx_flags = '-fPIC -Wall',
-	cc_flags = '-fPIC -Wall',
+	cxx_flags = '-fPIC -Wall -pedantic-errors',
+	cc_flags = '-fPIC -Wall -pedantic-errors',
 	shared = True
 )
 
@@ -34,8 +34,8 @@ licant.cxx_library("static",
 	target="libigris.a",
 	toolchain=toolchain,
 	mdepends = modules,
-	cxx_flags = '-fPIC',
-	cc_flags = '-fPIC',
+	cxx_flags = '-fPIC -pedantic-errors',
+	cc_flags = '-fPIC -pedantic-errors',
 	ccstd = "c11",
 	shared = False
 )
