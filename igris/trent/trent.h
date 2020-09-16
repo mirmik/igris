@@ -582,6 +582,7 @@ namespace igris
 		trent_basic& operator= (const T& arg)
 		{
 			reset(arg);
+			return *this;
 		}
 
 		/*			ssize_t size();
