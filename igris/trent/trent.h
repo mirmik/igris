@@ -90,10 +90,10 @@ namespace igris
 		class wrong_index : public std::exception
 		{
 			trent_path path;
-			int t;
+			type t;
 
 		public:
-			wrong_index(const trent_path& path, int t) :
+			wrong_index(const trent_path& path, type t) :
 				path(path), t(t)
 			{}
 
