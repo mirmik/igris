@@ -9,6 +9,7 @@
 #include <vector>
 #include <map>
 
+#include <igris/util/types_extension.h>
 #include <igris/util/ctrdtr.h>
 #include <igris/util/bug.h>
 #include <igris/buffer.h>
