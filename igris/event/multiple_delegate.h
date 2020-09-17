@@ -1,5 +1,10 @@
-#ifndef GXX_MULTIPLE_DELEGATE_H
-#define GXX_MULTIPLE_DELEGATE_H
+#ifndef IGRIS_MULTIPLE_DELEGATE_H
+#define IGRIS_MULTIPLE_DELEGATE_H
+
+/*
+	Делегат для последовательного вызова
+	множественных обработчиков.
+*/
 
 #include <igris/event/delegate.h>
 #include <vector> 
@@ -30,24 +35,6 @@ namespace igris {
 		void add(const TArgs& ... args) {
 			vect.emplace_back(args ...);
 		}
-
-	//	template <typename T>
-	//	void add(member<T> mbr, T* obj) {
-	//		vect.emplace_back(mbr, obj);
-	//	}
-	
-	//	void add(fnc_t func) {
-	//		vect.emplace_back(func);
-	//	}
-	
-		/*template <typename T>
-		void priorityConnect(member<T> mbr, T* obj) {
-			vect.emplace(vect.begin(),mbr, obj);
-		}
-	
-		void priorityConnect(fnc_t func) {
-			vect.emplace(vect.begin(),func);
-		}*/
 	
 		bool erase(const delegate<void,Args...>& dlg) {
 			for(auto it = vect.begin(); it != vect.end(); it++) {

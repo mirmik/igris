@@ -1,5 +1,8 @@
-#ifndef GXX_ABSTRACT_METHOD_H
-#define GXX_ABSTRACT_METHOD_H
+#ifndef IGRIS_ABSTRACT_METHOD_H
+#define IGRIS_ABSTRACT_METHOD_H
+
+// Упрощенный делегат, не сохраняющий указатель на объект,
+// а только указатель на метод класса
 
 #include <igris/event/delegate.h>
 
