@@ -150,7 +150,7 @@ int readline_history_up(struct readline * rl)
 static inline
 int readline_is_not_same_as_last(struct readline * rl)
 {
-	return sline_strcmp(&rl->line, readline_history_pointer(rl, 1)) != 0;
+	return !sline_equal(&rl->line, readline_history_pointer(rl, 1));
 }
 
 static inline

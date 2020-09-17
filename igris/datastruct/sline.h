@@ -11,14 +11,6 @@ struct sline
 	int cap;
 	int len;
 	int cursor;
-
-#ifdef __cplusplus
-	sline(char* buffer, int bufcap) : 
-		buf(buffer), cap(bufcap), len(0), cursor(0)
-	{}
-
-	sline(){}
-#endif	
 };
 
 __BEGIN_DECLS
@@ -57,9 +49,12 @@ void sline_reset(struct sline * sl)
 }
 
 static inline 
-int sline_strcmp(struct sline * sl, const char * str) 
+int sline_equal(struct sline * sl, const char * str) 
 {
-	return strncmp(sl->buf, str, sl->len);
+	if (sl->len != (int)strlen(str)) 
+		return 0;
+	
+	return strncmp(sl->buf, str, sl->len) == 0;
 } 
 
 static inline 
