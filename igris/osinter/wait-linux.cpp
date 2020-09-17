@@ -1,7 +1,7 @@
 #include <igris/osinter/wait.h>
 #include <igris/util/macro.h>
 #include <igris/sync/syslock.h>
-#include <igris/sync/event.h>
+#include <igris/syncxx/event.h>
 
 struct linux_waiter
 {
