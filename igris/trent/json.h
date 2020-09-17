@@ -1,12 +1,8 @@
 #ifndef IGRIS_TRENT_JSON_H
 #define IGRIS_TRENT_JSON_H
 
-#include <igris/cread.h>
 #include <igris/util/numconvert.h>
 #include <igris/trent/trent.h>
-
-//#include <nos/print.h>
-//#include <nos/trace.h>
 
 #include <exception>
 
@@ -16,19 +12,6 @@ namespace igris
 {
 	namespace json
 	{
-		//void print_to(const trent& tr, std::ostream& os);
-		//void pretty_print_to(const trent& tr, std::ostream& os, int tab = 0);
-
-		/*result<trent> parse(std::istream& is);
-		trent parse_numer(std::istream& is);
-		result<trent> parse_mnemonic(std::istream& is);
-		result<trent> parse_string(std::istream& is);
-		result<trent> parse_list(std::istream& is);
-		result<trent> parse_dict(std::istream& is);*/
-
-		//template <template <class Allocator> TAlloc>
-		//trent_basic<TAlloc> parse();
-
 		class parser
 		{
 			int symbno = 0;
@@ -49,8 +32,6 @@ namespace igris
 			};
 
 		public:
-			//parser(const std::string& str) :
-
 			virtual ~parser() {}
 			virtual char readnext_impl() = 0;
 

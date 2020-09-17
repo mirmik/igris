@@ -5,7 +5,7 @@ MODULES = [
 	"igris.util",
 	"igris.bug",
 	"igris.dprint",
-	"igris.path",
+#	"igris.path",
 	"igris.time",
 	"igris.trent",
 
@@ -130,9 +130,9 @@ licant.module("igris.trent",
 	sources = ["igris/trent/trent.cpp"]
 )
 
-licant.module("igris.path",
-	sources = ["igris/path/path.cpp"]
-)
+#licant.module("igris.path",
+#	sources = ["igris/path/path.cpp"]
+#)
 
 #################################################################
 licant.module("igris.os_extension", "unix",
