@@ -31,13 +31,14 @@ LT_END_SUITE(dprint_suite)
 #include "dprint.hpp"
 #include "serialize.hpp"
 #include "event.hpp"
-#include "array_view.hpp"
 #include "argvc.hpp"
 #include "signature.hpp"
 #include "numconvert.hpp"
 #include "test_allocator.hpp"
 #include "chunked_vector.hpp"
+
 #include "container/unbounded_array.hpp"
+#include "container/array_view.hpp"
 
 LT_BEGIN_AUTO_TEST_ENV()
     AUTORUN_TESTS()

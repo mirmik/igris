@@ -10,6 +10,7 @@
 */
 
 #include <memory>
+#include <igris/container/array_view.h>
 #include <igris/dprint.h>
 
 namespace igris 
