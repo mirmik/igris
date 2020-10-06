@@ -8,6 +8,7 @@ MODULES = [
 	"igris.path",
 	"igris.time",
 	"igris.trent",
+	"igris.semaphore",
 
 	"igris.syslock",
 	"igris.ctrobj",
@@ -112,6 +113,8 @@ licant.module("igris.syslock", impl="genos.atomic",
 
 licant.module("igris.syslock", impl="mutex", 
 	sources=["igris/sync/syslock_mutex.cpp"], default=True)
+
+licant.module("igris.semaphore", sources=["igris/sync/semaphore.c"])
 
 licant.module("igris.protocols.msgtype", 
 	sources=["igris/protocols/msgtype.cpp"])
