@@ -1,7 +1,7 @@
 #ifndef IGRIS_CREADER_H
 #define IGRIS_CREADER_H
 
-#warning To delete
+//#warning To delete
 
 #include <string>
 #include <igris/buffer.h>
