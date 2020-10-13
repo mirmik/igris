@@ -2,6 +2,8 @@
 #include <igris/util/hexascii.h>
 #include <igris/dprint.h>
 
+#include <stdio.h>
+
 #include <ctype.h>
 #include <string.h>
 #include <math.h>
@@ -299,9 +301,9 @@ char * f32toa(float32_t f, char * buf, int8_t precision)
 	return buf;
 }
 
-static inline float local_pow(int b, int n) 
+static inline double local_pow(int b, int n) 
 {
-	int res = 1;
+	int64_t res = 1;
 	while(n--) 
 	{
 		res *= b;
@@ -328,10 +330,12 @@ float32_t atof32(const char* str, char** pend)
 	{
 		i = minus ? -i : i;
 
-		int d = atou32(++str, 10, &end);
+		int64_t d = atou64(++str, 10, &end);
 		if (pend) *pend = end;
 
-		float ret = (float)i + (float)d / (local_pow(10, end - str));
+		printf("%ld\r\n", d);
+
+		float ret = (float)i + ((double)d) / ((double)local_pow(10, end - str));
 		return minus ? -ret : ret;
 	}
 

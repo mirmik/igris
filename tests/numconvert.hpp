@@ -39,6 +39,15 @@ LT_BEGIN_TEST(igris_test_suite, numconvert)
 	f64toa(d, buf, 10);
 	LT_CHECK(strcmp(buf, "nan") == 0);
 
+	const char * s = "5.63431234";
+	f = atof32(s, nullptr);
+	LT_CHECK(abs(f - 5.634) < 0.01);
+	
+	const char * s2 = "7.12328767123287";
+	f = atof32(s2, nullptr);
+	LT_CHECK(abs(f - 7.123287) < 0.0001);
+
+
 //	f = std::nan("");
 //	f32toa(buf, f, 10);
 //	LT_CHECK(std::isnan());
