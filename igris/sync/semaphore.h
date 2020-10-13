@@ -7,7 +7,7 @@
 
 struct semaphore
 {
-	dlist_head wait_list;
+	struct dlist_head wait_list;
 	int count;
 };
 
