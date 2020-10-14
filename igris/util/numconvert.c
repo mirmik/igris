@@ -2,8 +2,6 @@
 #include <igris/util/hexascii.h>
 #include <igris/dprint.h>
 
-#include <stdio.h>
-
 #include <ctype.h>
 #include <string.h>
 #include <math.h>
@@ -332,8 +330,6 @@ float32_t atof32(const char* str, char** pend)
 
 		int64_t d = atou64(++str, 10, &end);
 		if (pend) *pend = end;
-
-		printf("%ld\r\n", d);
 
 		float ret = (float)i + ((double)d) / ((double)local_pow(10, end - str));
 		return minus ? -ret : ret;
