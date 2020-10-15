@@ -293,6 +293,19 @@ __try__:
 			}
 		};
 
+		class parser_str : public parser
+		{
+			const char * ptr;
+
+		public:
+			parser_str(const std::string & str) : ptr(str.data()) {}
+
+			char readnext_impl()
+			{
+				return *ptr++;
+			}
+		};
+
 		class parser_input_stream : public parser
 		{
 			std::istream& is;
@@ -309,6 +322,12 @@ __try__:
 		static igris::trent parse(const char * str) 
 		{
 			parser_cstr parser(str);
+			return parser.parse();
+		}
+
+		static igris::trent parse(const std::string& str) 
+		{
+			parser_str parser(str);
 			return parser.parse();
 		}
 
