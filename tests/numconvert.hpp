@@ -1,11 +1,29 @@
 #include <igris/util/numconvert.h>
 #include <math.h>
+#include <string.h>
 
 LT_BEGIN_TEST(igris_test_suite, numconvert)
 {
 	char buf[256];
 	float f;
+	int i;
 	double d;
+
+	i = 42;
+	i32toa(i, buf, 10);
+	LT_CHECK(strcmp(buf, "42") == 0);
+
+	i = -42;
+	i32toa(i, buf, 10);
+	LT_CHECK(strcmp(buf, "-42") == 0);
+
+	strcpy(buf, "42");
+	i = atoi32(buf, 10, nullptr);
+	LT_CHECK_EQ(i, 42);
+
+	strcpy(buf, "-42");
+	i = atoi32(buf, 10, nullptr);
+	LT_CHECK_EQ(i, -42);
 
 	strcpy(buf, "0.1000");
 	f = atof32(buf, nullptr);

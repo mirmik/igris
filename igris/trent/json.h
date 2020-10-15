@@ -55,7 +55,7 @@ namespace igris
 __try__:
 				c = readnext();
 
-				if (c == ' ' || c == '\t' || c == '\n')
+				if (c == ' ' || c == '\t' || c == '\r' || c == '\n')
 					goto __try__;
 
 				if (c == '/')
@@ -151,7 +151,6 @@ __try__:
 			template <template <class Allocator> class TAlloc = std::allocator>
 			trent_basic<TAlloc> parse_numer()
 			{
-				//TRACE();
 				char buf[32];
 				char * ptr = &buf[1];
 
@@ -249,8 +248,6 @@ __try__:
 					if (onebuf != ':')
 						throw std::runtime_error("json:parse_dict_0 wait_: expect_"s + onebuf+ " lineno:" + std::to_string(lineno)  + " symbno:" + std::to_string(symbno));
 
-					// skip ':' symbol
-
 					onebuf = 0;
 
 					trent_basic<TAlloc> value = parse();
@@ -288,7 +285,7 @@ __try__:
 			const char * ptr;
 
 		public:
-			parser_cstr(const std::string& str) : ptr(str.data()) {}
+			parser_cstr(const char * str) : ptr(str) {}
 
 			char readnext_impl()
 			{
@@ -315,171 +312,6 @@ __try__:
 			return parser.parse();
 		}
 
-		/*template <template <class Allocator> class TAlloc = std::allocator>
-		void print_to(const trent_basic<TAlloc>& tr, std::ostream& os)
-		{
-			bool sep = false;
-
-			switch (tr.get_type())
-			{
-
-				//case trent::type::integer:
-				//	os << tr.unsafe_integer_const();
-				//	return;
-
-				case trent::type::numer:
-					os << tr.unsafe_numer_const();
-					return;
-
-				case trent::type::boolean:
-					os << (tr.unsafe_bool_const() ? "true" : "false");
-					break;
-
-				case trent::type::string:
-					os << '"';
-					os << tr.unsafe_string_const();
-					os << '"';
-					return;
-
-				case trent::type::list:
-					os << '[';
-
-					for (auto& v : tr.unsafe_list_const())
-					{
-						if (sep) os << ',';
-
-						json::print_to(v, os);
-						sep = true;
-					}
-
-					os << ']';
-					return;
-
-				case trent::type::dict:
-					os << '{';
-
-					for (auto& p : tr.unsafe_dict_const())
-					{
-						if (sep) os << ',';
-
-						os << '"';
-						os << p.first;
-						os << '"';
-						os << ':';
-						json::print_to(p.second, os);
-						sep = true;
-					}
-
-					os << '}';
-					return;
-
-				case trent::type::nil:
-					os << "nil";
-					return;
-			}
-		}
-
-		template <template <class Allocator> class TAlloc = std::allocator>
-		void pretty_print_to(const trent& tr, std::ostream& os, int tab)
-		{
-			bool sep = false;
-			bool havedict;
-
-			switch (tr.get_type())
-			{
-
-				case trent::type::numer:
-					os << std::fixed << tr.unsafe_numer_const();
-					break;
-
-				case trent::type::boolean:
-					os << (tr.unsafe_bool_const() ? "true" : "false");
-					break;
-
-				//case trent::type::integer:
-				//	os << tr.unsafe_integer_const();
-				//	break;
-
-				case trent::type::string:
-					os << '"' << tr.unsafe_string_const() << '"';
-					break;
-
-				case trent::type::list:
-					havedict = false;
-
-					for (const auto& m : tr.unsafe_list_const())
-					{
-						if (m.get_type() == trent_basic<TAlloc>::type::dict)
-						{	havedict = true; break; }
-					}
-
-					os << '[';
-
-					if (havedict) for (auto& v : tr.unsafe_list_const())
-						{
-							if (sep) os << ", ";
-
-							json::pretty_print_to(v, os, tab + 1);
-							sep = true;
-						}
-					else
-					{
-						for (auto& v : tr.unsafe_list_const())
-						{
-							if (sep) os.put(',');
-
-							os << std::endl;
-
-							for (int i = 0; i < tab + 1; i++) os.put('\t');
-
-							json::pretty_print_to(v, os, tab + 1);
-							sep = true;
-						}
-
-						os << std::endl;
-
-						for (int i = 0; i < tab; i++) os.put('\t');
-					}
-
-					os.put(']');
-					break;
-
-				case trent::type::dict:
-					os.put('{');
-
-					for (auto& p : tr.unsafe_dict_const())
-					{
-						if (sep) os << ',';
-
-						os.put('\n');
-
-						for (int i = 0; i < tab + 1; i++) os.put('\t');
-
-						os << '"' << p.first << '"';
-						os.write(": ", 2);
-						json::pretty_print_to(p.second, os, tab + 1);
-						sep = true;
-					}
-
-					os.put('\n');
-
-					for (int i = 0; i < tab; i++) os.put('\t');
-
-					os.put('}');
-					break;
-
-				case trent::type::nil:
-					os.write("nil", 3);
-					break;
-			}
-
-			if (tab == 0) os << std::endl;
-		}*/
-
-
-
-
-
 		template <template <class Allocator> class TAlloc = std::allocator, class Output>
 		void pretty_print_to(const trent_basic<TAlloc>& tr, Output& os, int tab = 0)
 		{
@@ -495,10 +327,6 @@ __try__:
 				case trent_basic<TAlloc>::type::boolean:
 					os.print(tr.unsafe_bool_const() ? "true" : "false");
 					break;
-
-				//case trent_basic<TAlloc>::type::integer:
-				//	ostr.unsafe_integer_const();
-				//	break;
 
 				case trent_basic<TAlloc>::type::string:
 					os.putchar('"');
