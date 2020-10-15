@@ -49,11 +49,11 @@ LT_BEGIN_TEST(igris_test_suite, numconvert)
 	f32toa(f, buf, 10);
 	LT_CHECK(strcmp(buf, "0.1000000000") == 0);
 
-	f = std::nanf("");
+	f = nanf("");
 	f32toa(f, buf, 10);
 	LT_CHECK(strcmp(buf, "nan") == 0);
 
-	d = std::nanf("");
+	d = nanf("");
 	f64toa(d, buf, 10);
 	LT_CHECK(strcmp(buf, "nan") == 0);
 
