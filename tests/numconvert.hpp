@@ -25,6 +25,14 @@ LT_BEGIN_TEST(igris_test_suite, numconvert)
 	i = atoi32(buf, 10, nullptr);
 	LT_CHECK_EQ(i, -42);
 
+	strcpy(buf, "42");
+	f = atof32(buf, nullptr);
+	LT_CHECK_EQ(f, 42);
+
+	strcpy(buf, "-42");
+	d = atof64(buf, nullptr);
+	LT_CHECK_EQ(d, -42);
+
 	strcpy(buf, "0.1000");
 	f = atof32(buf, nullptr);
 	LT_CHECK(fabs(f - 0.1) < 1e-5);

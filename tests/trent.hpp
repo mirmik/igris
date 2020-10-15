@@ -94,8 +94,30 @@ LT_BEGIN_TEST(igris_test_suite, get_test)
 	tr["a"]["b"][28] = 42;
 	LT_CHECK_EQ(tr.get_as_numer_ex("a/b/28"), 42);
 
+	tr["a"]["b"][28] = -123.513;
+	LT_CHECK(fabs(tr.get_as_numer_ex("a/b/28") + 123.513) < 1e-5);
+
 	int except = 0;
 	LT_CHECK_THROW(tr.get_as_numer_ex("a/c/28"));
+
+	tr = igris::json::parse(R"(
+		{
+			"name": "Az",
+			"type": "simple",
+			"motionType": "round",
+			"servo": "srv_axis1",
+			"unitRatio": 2056,
+			"defaultSpeed_rpm": 202,
+			"defaultAccel_ms": 10000,
+			"maxSpeed_rpm": 1500,
+			"minAccel_ms": 2000,
+			"backwardLimit": -100,
+			"forwardLimit": 100,
+			"reverse": 0
+		}
+	)");
+	LT_CHECK(tr["backwardLimit"].is_numer());	
+	LT_CHECK_EQ(tr["backwardLimit"].as_numer(), -100);	
 
 	try 
 	{

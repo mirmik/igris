@@ -336,7 +336,7 @@ float32_t atof32(const char* str, char** pend)
 	else
 	{
 		if (pend) *pend = end;
-		return minus ? -u : u;
+		return minus ? -(float)u : (float)u;
 	}
 }
 
@@ -373,7 +373,7 @@ float64_t atof64(const char* str, char** pend)
 	else
 	{
 		if (pend) *pend = end;
-		return minus ? -u : u;
+		return minus ? -(double)u : (double)u;
 	}
 }
 #endif
