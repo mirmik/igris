@@ -33,6 +33,14 @@ LT_BEGIN_TEST(igris_test_suite, numconvert)
 	f = atof32(buf, nullptr);
 	LT_CHECK(fabs(f - 0.7773213) < 1e-5);
 
+	strcpy(buf, "-0.7773213");
+	f = atof32(buf, nullptr);
+	LT_CHECK(fabs(f + 0.7773213) < 1e-5);
+
+	strcpy(buf, "-0.7773213");
+	d = atof64(buf, nullptr);
+	LT_CHECK(fabs(d + 0.7773213) < 1e-5);
+
 	strcpy(buf, "0.1000");
 	f = atof64(buf, nullptr);
 	LT_CHECK(fabs(f - 0.1) < 1e-5);
