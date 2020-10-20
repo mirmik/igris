@@ -24,9 +24,11 @@ if sys.platform == "linux":
 
 licant.module("igris", 
 sources = [
-	"igris/datastruct/stimer.c"
+	"igris/datastruct/stimer.c",
 ],
 mdepends=MODULES)
+
+licant.module("igris.executor", sources=["igris/shell/executor.cpp",])
 
 licant.module("igris.include", include_paths = ["."])
 
