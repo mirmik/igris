@@ -122,17 +122,18 @@ namespace igris
 
 							case CMDAUTOM:
 								BUG();
+								return 0;
 
 							case CMDCOOP:
 								executor_make_process((syscmd_func_t) it1->func, argc, argv);
-								return 0;
+								return EXECUTOR_PROCESS_STARTED;
 						}
 					}
 				}
 			}
 
 			printf("Not enough command: %s\r\n", argv[0]);
-			return ENOENT;
+			return -ENOENT;
 		}
 	};
 
@@ -205,10 +206,11 @@ namespace igris
 
 						case CMDAUTOM:
 							BUG();
+							return 0;
 
 						case CMDCOOP:
 							executor_make_process((syscmd_func_t) it->func, argc, argv);
-							return 0;
+							return EXECUTOR_PROCESS_STARTED;
 					}
 				}
 			}
