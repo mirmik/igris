@@ -38,10 +38,12 @@ void unwait_one(struct dlist_head * head, void * future)
 {
 	struct dlist_head * it;
 
+	dprln("HERE1");
 	system_lock();
 
 	if (dlist_empty(head))
 	{
+		dprln("HERE2");
 		system_unlock();
 		return;
 	}
@@ -50,7 +52,9 @@ void unwait_one(struct dlist_head * head, void * future)
 	dlist_del_init(it);
 	waiter_unwait(it, future);
 
+	dprln("HERE3");
 	system_unlock();
+	dprln("HERE4");
 }
 
 void unwait_all(struct dlist_head * head, void* future)
