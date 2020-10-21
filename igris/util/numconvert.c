@@ -2,8 +2,6 @@
 #include <igris/util/hexascii.h>
 #include <igris/dprint.h>
 
-#include <stdio.h>
-
 #include <ctype.h>
 #include <string.h>
 #include <math.h>
@@ -313,36 +311,32 @@ static inline double local_pow(int b, int n)
 
 float32_t atof32(const char* str, char** pend)
 {
-	uint8_t minus;
-	char* end;
-
-	minus = '-' == *str ? 1 : 0;
-
 	if (!isdigit(*str) && *str != '-')
 	{
 		return 0;
 	}
 
-	int i = atoi32(str, 10, &end);
+	uint8_t minus = *str == '-' ? 1 : 0;
+	if (minus) 
+		str++;
 
+	char* end;
+	unsigned int u = atou32(str, 10, &end);
+	
 	str = end;
 	if (*str == '.')
 	{
-		i = minus ? -i : i;
-
 		int64_t d = atou64(++str, 10, &end);
 		if (pend) *pend = end;
 
-		printf("%ld\r\n", d);
-
-		float ret = (float)i + ((double)d) / ((double)local_pow(10, end - str));
+		float ret = (float)u + ((double)d) / ((double)local_pow(10, end - str));
 		return minus ? -ret : ret;
 	}
 
 	else
 	{
 		if (pend) *pend = end;
-		return i;
+		return minus ? -(float)u : (float)u;
 	}
 }
 
@@ -359,28 +353,27 @@ float64_t atof64(const char* str, char** pend)
 		return 0;
 	}
 
-	char* end;
-	int i = atoi32(str, 10, &end);
-	uint8_t minus = i < 0 ? 1 : 0;
+	uint8_t minus = *str == '-' ? 1 : 0;
+	if (minus) 
+		str++;
 
+	char* end;
+	unsigned int u = atou32(str, 10, &end);
+	
 	str = end;
 	if (*str == '.')
 	{
-		if (minus)
-		{
-			i = -i;
-		}
-
-		int d = atou32(++str, 10, &end);
+		int64_t d = atou64(++str, 10, &end);
 		if (pend) *pend = end;
-		double ret = (double)i + d / (local_pow(10, end - str));
+		double ret = (double)u + ((double)d) / (local_pow(10, end - str));
+		
 		return minus ? -ret : ret;
 	}
 
 	else
 	{
 		if (pend) *pend = end;
-		return i;
+		return minus ? -(double)u : (double)u;
 	}
 }
 #endif

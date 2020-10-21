@@ -23,6 +23,7 @@ LT_BEGIN_SUITE(dprint_suite)
 	}
 LT_END_SUITE(dprint_suite)
 
+#include "numconvert.hpp"
 #include "trent.hpp"
 #include "osutil.hpp"
 #include "bits.hpp"
@@ -33,7 +34,6 @@ LT_END_SUITE(dprint_suite)
 #include "event.hpp"
 #include "argvc.hpp"
 #include "signature.hpp"
-#include "numconvert.hpp"
 #include "test_allocator.hpp"
 #include "chunked_vector.hpp"
 

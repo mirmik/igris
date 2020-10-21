@@ -1,25 +1,10 @@
-/**
- * @file
- *
- * @brief
- *
- * @date 15.05.2012
- * @author Anton Bondarev
- */
-
 #ifndef SIGNAL_H_
 #define SIGNAL_H_
 
 #include <errno.h>
 #include <sys/types.h>
-#include <util/bitmap.h>
 #include <sys/cdefs.h>
 
-#define SIG_DFL ((sighandler_t) 0x1)
-#define SIG_IGN ((sighandler_t) 0x3)
-#define SIG_ERR ((sighandler_t) 0x5)
-
-/* Signals.  */
 #define SIGHUP      1       /* (POSIX)    Hangup.  */
 #define SIGINT      2       /* (ANSI)     Interrupt.  */
 #define SIGQUIT     3       /* (POSIX)    Quit.  */
@@ -68,102 +53,5 @@
 #define SA_RESTART    (0x1ul << 4)
 #define SA_NODEFER    (0x1ul << 5)
 #define SA_RESETHAND  (0x1ul << 6)
-
-__BEGIN_DECLS
-
-typedef int sig_atomic_t;
-
-#define NSIG _SIG_TOTAL
-typedef struct {
-	BITMAP_DECL(bitmap, _SIG_TOTAL);
-} sigset_t;
-
-union sigval {
-	int   sival_int;
-	void *sival_ptr;
-};
-
-typedef struct {
-	int           si_signo;
-	int           si_code;
-	union sigval  si_value;
-	int           si_errno;
-	pid_t         si_pid;
-	uid_t         si_uid;
-	void         *si_addr;
-	int           si_status;
-	int           si_band;
-} siginfo_t;
-
-struct sigaction {
-	int        sa_flags;
-	sigset_t   sa_mask;
-	/* The storage occupied by sa_handler and sa_sigaction may overlap,
-	 * and a conforming application shall not use both simultaneously.  */
-	union {
-		void (*sa_handler)(int);
-		void (*sa_sigaction)(int, siginfo_t *, void *);
-	} /* unnamed */;
-};
-
-// TODO Consider moving the following two types into ucontext.h -- Eldar
-
-typedef int mcontext_t; // XXX stub
-
-typedef struct {
-	void     *ss_sp;       /* stack base or pointer */
-	size_t    ss_size;     /* stack size */
-	int       ss_flags;    /* flags */
-} stack_t;
-
-struct _ucontext {
-	struct _ucontext *uc_link;     /* resumed when this context returns */
-	sigset_t    uc_sigmask;  /* blocked when this context is active */
-	stack_t     uc_stack;    /* the stack used by this context */
-	mcontext_t  uc_mcontext; /* machine-specific representation */
-};
-typedef struct _ucontext ucontext_t;
-
-/* Non-standard GNU extension. */
-typedef void (*sighandler_t)(int);
-
-extern int sigemptyset(sigset_t *);
-extern int sigfillset(sigset_t *);
-extern int sigismember(const sigset_t *, int signo);
-extern int sigaddset(sigset_t *, int signo);
-extern int sigdelset(sigset_t *, int signo);
-
-#define SIG_BLOCK   0
-#define SIG_SETMASK 1
-#define SIG_UNBLOCK 1
-static inline int sigprocmask(int how, const sigset_t *set, sigset_t *oldset) {
-	(void)how; (void)set; (void)oldset;
-	return -ENOSYS;
-}
-
-static inline
-int pthread_sigmask(int how, const sigset_t *set, sigset_t *oldset) {
-	(void)how; (void)set; (void)oldset;
-	return -ENOSYS;
-}
-
-extern sighandler_t signal(int signo, sighandler_t fn);
-extern int sigaction(int signo, const struct sigaction * /*restrict*/ act,
-		struct sigaction * /*restrict*/ oact);
-
-extern int kill(int tid, int signo);
-extern int sigqueue(int tid, int signo, const union sigval value);
-extern int raise(int signo);
-
-//static inline int sigaction(int sig, const struct sigaction *act,
-		//struct sigaction *oact) { return -1; }
-//static inline int sigfillset(sigset_t *set)
-
-extern const char *const sys_siglist[];
-
-#define MINSIGSTKSZ	2048
-extern int sigaltstack(const stack_t *ss, stack_t *oss);
-
-__END_DECLS
 
 #endif /* SIGNAL_H_ */

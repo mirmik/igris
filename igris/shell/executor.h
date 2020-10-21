@@ -11,9 +11,11 @@
 #define EXECUTOR_PROCESS_STARTED 2
 #define EXECUTOR_TBLFIN nullptr
 
+
+void executor_make_process(int(*func)(int,char**), int argc, char** argv);
+
 // COMMENT: Флаги фактически не используются, а если будут, то возможно, 
 // лучше сделать их полем.
-
 namespace igris
 {
 
@@ -120,18 +122,18 @@ namespace igris
 
 							case CMDAUTOM:
 								BUG();
+								return 0;
 
 							case CMDCOOP:
-								BUG();
-								argc = 0;
-								//return mshell_make_process(it1->func, argc, argv);
+								executor_make_process((syscmd_func_t) it1->func, argc, argv);
+								return EXECUTOR_PROCESS_STARTED;
 						}
 					}
 				}
 			}
 
 			printf("Not enough command: %s\r\n", argv[0]);
-			return ENOENT;
+			return -ENOENT;
 		}
 	};
 
@@ -191,10 +193,11 @@ namespace igris
 			{
 				if (!strncmp(str, it->name, flen))
 				{
+					argc = argvc_internal_split(str, argv, 10);
+
 					switch (it->type)
 					{
 						case CMDFUNC:
-							argc = argvc_internal_split(str, argv, 10);
 							res = ((syscmd_func_t)(it->func))(argc, argv);
 
 							if (retptr) *retptr = res;
@@ -203,11 +206,11 @@ namespace igris
 
 						case CMDAUTOM:
 							BUG();
+							return 0;
 
 						case CMDCOOP:
-							BUG();
-							argc = 0;
-							//return mshell_make_process(it1->func, argc, argv);
+							executor_make_process((syscmd_func_t) it->func, argc, argv);
+							return EXECUTOR_PROCESS_STARTED;
 					}
 				}
 			}

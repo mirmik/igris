@@ -31,7 +31,7 @@ namespace igris
 			if (!file.good()) return;
 			std::stringstream file_contents;
 			file_contents << file.rdbuf();
-			tr = json::parser_cstr(file_contents.str()).parse();
+			tr = json::parser_str(file_contents.str()).parse();
 			file.close();
 			synced = true;
 		}
@@ -77,7 +77,7 @@ namespace igris
 			}
 			std::stringstream file_contents;
 			file_contents << file.rdbuf();
-			tr = json::parser_cstr(file_contents.str()).parse();
+			tr = json::parser_str(file_contents.str()).parse();
 			file.close();
 			synced = true;
 		}
