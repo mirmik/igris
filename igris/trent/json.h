@@ -228,7 +228,7 @@ __try__:
 			trent_basic<TAlloc> parse_dict()
 			{
 				//TRACE();
-				trent_basic<TAlloc> js(trent::type::list);
+				trent_basic<TAlloc> js(trent::type::dict);
 
 				int counter = 0;
 				onebuf = readnext_skipping();
