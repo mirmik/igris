@@ -35,19 +35,19 @@ LT_BEGIN_TEST(igris_test_suite, delegate_test)
 	igris::delegate<int,int,int> func;
 
 	func = sum;
-	LT_CHECK_EQ(func(a,b), a+b);	
+	CHECK_EQ(func(a,b), a+b);	
 
 	func = sub;
-	LT_CHECK_EQ(func(a,b), a-b);	
+	CHECK_EQ(func(a,b), a-b);	
 
 	B a_obj;
 	a_obj.b = 4;
 	func = igris::make_delegate(&B::inc, &a_obj);
-	LT_CHECK_EQ(func(7, 100500), 11);	
+	CHECK_EQ(func(7, 100500), 11);	
 
 	A_cls A = {3};
 	func = igris::make_delegate(extadd, &A);
-	LT_CHECK_EQ(func(1, 2), 6);	
+	CHECK_EQ(func(1, 2), 6);	
 
 }
 LT_END_TEST(delegate_test)

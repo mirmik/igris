@@ -6,6 +6,6 @@ LT_BEGIN_TEST(igris_test_suite, unbounded_array)
 
 	arr[28] = 33;
 
-	LT_CHECK_EQ(arr[28], 33);
+	CHECK_EQ(arr[28], 33);
 }
 LT_END_TEST(unbounded_array)

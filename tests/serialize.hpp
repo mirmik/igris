@@ -27,8 +27,8 @@ LT_BEGIN_TEST(igris_test_suite, serialize_type_int32_t)
 	auto s = igris::serialize(a);
 	auto r = igris::deserialize<decltype(a)>(s);
 
-	LT_CHECK_EQ(r, a);
-	LT_CHECK_EQ(s.size(), sizeof(a));
+	CHECK_EQ(r, a);
+	CHECK_EQ(s.size(), sizeof(a));
 }
 LT_END_TEST(serialize_type_int32_t)
 
@@ -39,8 +39,8 @@ LT_BEGIN_TEST(igris_test_suite, serialize_type_float)
 	auto s = igris::serialize(a);
 	auto r = igris::deserialize<decltype(a)>(s);
 
-	LT_CHECK_EQ(r, a);
-	LT_CHECK_EQ(s.size(), sizeof(a));
+	CHECK_EQ(r, a);
+	CHECK_EQ(s.size(), sizeof(a));
 }
 LT_END_TEST(serialize_type_float)
 
@@ -52,8 +52,8 @@ LT_BEGIN_TEST(igris_test_suite, serialize_object)
 	auto s = igris::serialize(a);
 	auto r = igris::deserialize<A>(s);
 
-	LT_CHECK_EQ(s.size(), sizeof(A::a) + sizeof(A::b) + sizeof(A::c));
-	LT_CHECK(r == b);
+	CHECK_EQ(s.size(), sizeof(A::a) + sizeof(A::b) + sizeof(A::c));
+	CHECK(r == b);
 }
 LT_END_TEST(serialize_object)
 
@@ -64,8 +64,8 @@ LT_BEGIN_TEST(igris_test_suite, serialize_vector)
 	auto s = igris::serialize(a);
 	auto r = igris::deserialize<std::vector<int32_t>>(s);
 
-	LT_CHECK(r == a);
-	LT_CHECK_EQ(s.size(), sizeof(typename decltype(a)::value_type) * a.size() + sizeof(uint16_t));
+	CHECK(r == a);
+	CHECK_EQ(s.size(), sizeof(typename decltype(a)::value_type) * a.size() + sizeof(uint16_t));
 }
 LT_END_TEST(serialize_vector)
 
@@ -76,7 +76,7 @@ LT_BEGIN_TEST(igris_test_suite, serialize_map)
 	auto s = igris::serialize(a);
 	auto r = igris::deserialize<decltype(a)>(s);
 
-	LT_CHECK(r == a);
+	CHECK(r == a);
 }
 LT_END_TEST(serialize_map)
 
@@ -87,6 +87,6 @@ LT_BEGIN_TEST(igris_test_suite, serialize_string)
 	auto s = igris::serialize(a);
 	auto r = igris::deserialize<std::string>(s);
 
-	LT_CHECK(r == a);
+	CHECK(r == a);
 }
 LT_END_TEST(serialize_string)

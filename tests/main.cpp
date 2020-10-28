@@ -1,27 +1,13 @@
-#include "littletest.hpp"
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest/doctest.h"
 #include <string>
 
 std::string output;
 
+#define LT_BEGIN_TEST(a,b) TEST_CASE(#b)
+#define LT_END_TEST(a)
+
 extern "C" void debug_putchar(char c) { output.push_back(c); }
-
-LT_BEGIN_SUITE(igris_test_suite)
-	void set_up()
-	{}
-
-	void tear_down()
-	{}
-LT_END_SUITE(igris_test_suite)
-
-LT_BEGIN_SUITE(dprint_suite)
-	void set_up()
-	{}
-
-	void tear_down()
-	{
-		output.clear();
-	}
-LT_END_SUITE(dprint_suite)
 
 #include "numconvert.hpp"
 #include "trent.hpp"
@@ -39,7 +25,3 @@ LT_END_SUITE(dprint_suite)
 
 #include "container/unbounded_array.hpp"
 #include "container/array_view.hpp"
-
-LT_BEGIN_AUTO_TEST_ENV()
-    AUTORUN_TESTS()
-LT_END_AUTO_TEST_ENV()
