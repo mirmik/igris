@@ -1,8 +1,8 @@
-#ifndef igris_ARRAY_H
-#define igris_ARRAY_H
+#ifndef IGRIS_UNBOUNDED_ARRAY_H
+#define IGRIS_UNBOUNDED_ARRAY_H
 
 #include <memory>
-//#include <igris/objbuf.h>
+#include <igris/container/array_view.h>
 
 namespace igris
 {
