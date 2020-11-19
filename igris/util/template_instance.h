@@ -4,6 +4,6 @@
 #include <igris/util/macro.h>
 
 #define TEMPLATE_INSTANCE(func,...) \
-auto CONCAT2(privptr,__LINE__) = &func<__VA_ARGS__>; 
+constexpr const auto CONCAT2(privptr,__LINE__) = &func<__VA_ARGS__>; 
 
 #endif
