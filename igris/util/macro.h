@@ -1,5 +1,5 @@
-#ifndef NOS_UTIL_MACRO_H
-#define NOS_UTIL_MACRO_H
+#ifndef IGRIS_UTIL_MACRO_H
+#define IGRIS_UTIL_MACRO_H
 
 #define ARGS_INVOKE_FOR_EACH_9(I,a,b,c,d,e,f,g,h)   do{I(a);I(b);I(c);I(d);I(e);I(f);I(g);I(h);while(0)
 #define ARGS_INVOKE_FOR_EACH_8(I,a,b,c,d,e,f,g)     do{I(a);I(b);I(c);I(d);I(e);I(f);I(g);while(0)
