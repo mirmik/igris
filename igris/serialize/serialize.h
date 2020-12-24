@@ -1,9 +1,10 @@
 #ifndef IGRIS_SERIALIZE_SERIALIZE_H
 #define IGRIS_SERIALIZE_SERIALIZE_H
 
-//#include <igris/util/stub.h>
 #include <igris/result.h>
 #include <igris/buffer.h>
+#include <igris/math/defs.h>
+
 #include <tuple>
 #include <map>
 #include <vector>
@@ -108,10 +109,12 @@ namespace igris
 			}
 
 			void dump(char i) { dump_data((char*)&i, sizeof(i)); }
+			void dump(signed char i) { dump_data((char*)&i, sizeof(i)); }
+			void dump(unsigned char i) { dump_data((char*)&i, sizeof(i)); }
+			
 			void dump(short i) { dump_data((char*)&i, sizeof(i)); }
 			void dump(int i) { dump_data((char*)&i, sizeof(i)); }
 			void dump(long i) { dump_data((char*)&i, sizeof(i)); }
-			void dump(unsigned char i) { dump_data((char*)&i, sizeof(i)); }
 			void dump(unsigned short i) { dump_data((char*)&i, sizeof(i)); }
 			void dump(unsigned int i) { dump_data((char*)&i, sizeof(i)); }
 			void dump(unsigned long i) { dump_data((char*)&i, sizeof(i)); }
@@ -119,7 +122,11 @@ namespace igris
 			void dump(float i) { dump_data((char*)&i, sizeof(i)); }
 			void dump(double i) { dump_data((char*)&i, sizeof(i)); }
 			void dump(long double i) { dump_data((char*)&i, sizeof(i)); }
-			void dump(igris::buffer buf) { dump((uint16_t)buf.size()); dump_data(buf.data(), buf.size()); }
+			void dump(igris::buffer buf)
+			{
+				dump((uint16_t)buf.size());
+				dump_data(buf.data(), buf.size());
+			}
 
 			template<typename T>
 			void dump(const T& ref)
@@ -139,6 +146,33 @@ namespace igris
 			}
 
 			binary_string_writer(std::string& str) : sstr(str) {}
+		};
+
+		class binary_buffer_writer : public binary_serializer_basic
+		{
+		public:
+			char * ptr;
+			char * _end; 
+
+			void dump_data(const char* dat, uint16_t size) override
+			{
+				memcpy(ptr, dat, size);
+				ptr += size;
+			}
+
+			binary_buffer_writer(char * str, size_t size) : ptr(str), _end(str+size) {}
+		};
+
+		class writable_buffer : public igris::buffer
+		{};
+
+		class settable_buffer
+		{
+		public:
+			igris::buffer & ref;
+
+		public:
+			settable_buffer(igris::buffer & buf) : ref(buf) {}
 		};
 
 		class binary_deserializer_basic
@@ -161,7 +195,17 @@ namespace igris
 				load_data(dat, sz);
 			}
 
-			void load(char& i) { load_data((char*)&i, sizeof(i)); }
+			void load(int8_t&  i) { load_data((char*)&i, sizeof(i)); }
+			void load(int16_t& i) { load_data((char*)&i, sizeof(i)); }
+			void load(int32_t& i) { load_data((char*)&i, sizeof(i)); }
+			void load(int64_t& i) { load_data((char*)&i, sizeof(i)); }
+
+			void load(uint8_t&  i) { load_data((char*)&i, sizeof(i)); }
+			void load(uint16_t& i) { load_data((char*)&i, sizeof(i)); }
+			void load(uint32_t& i) { load_data((char*)&i, sizeof(i)); }
+			void load(uint64_t& i) { load_data((char*)&i, sizeof(i)); }
+
+			/*void load(char& i) { load_data((char*)&i, sizeof(i)); }
 			void load(short& i) { load_data((char*)&i, sizeof(i)); }
 			void load(int& i) { load_data((char*)&i, sizeof(i)); }
 			void load(long& i) { load_data((char*)&i, sizeof(i)); }
@@ -169,20 +213,53 @@ namespace igris
 			void load(unsigned short& i) { load_data((char*)&i, sizeof(i)); }
 			void load(unsigned int& i) { load_data((char*)&i, sizeof(i)); }
 			void load(unsigned long& i) { load_data((char*)&i, sizeof(i)); }
-			void load(unsigned long long& i) { load_data((char*)&i, sizeof(i)); }
+			void load(unsigned long long& i) { load_data((char*)&i, sizeof(i)); }*/
+
 			void load(float& i) { load_data((char*)&i, sizeof(i)); }
 			void load(double& i) { load_data((char*)&i, sizeof(i)); }
 			void load(long double& i) { load_data((char*)&i, sizeof(i)); }
-			//void load(igris::buffer buf) { lo }
+
+			void load(igris::archive::settable_buffer& buf)
+			{
+				uint16_t len;
+				load(len);
+
+				buf.ref.data((char*)pointer());
+				buf.ref.size(len);
+
+				skip(len);
+			}
+
+			void load(igris::archive::writable_buffer& buf)
+			{
+				uint16_t len;
+				load(len);
+
+				int readsize = __MIN__(buf.size(), len);
+				load_data(buf.data(), readsize);
+
+				buf.size(readsize);
+			}
+
+			void load_set_buffer(igris::buffer & buf) 
+			{
+				igris::archive::settable_buffer arch(buf);
+				load(arch);
+			}	
 
 			template<typename T>
 			void load(T&& ref)
 			{
 				((std::remove_cv_t<std::remove_reference_t<T>>&)(ref)).reflect(*this);
 			}
+
+
+			virtual void skip(int ptr) = 0;
+			virtual void * pointer() = 0;
+			virtual const void * end() = 0;
 		};
 
-		class binary_string_reader : public binary_deserializer_basic
+		/*class binary_string_reader : public binary_deserializer_basic
 		{
 		public:
 			std::istringstream stream;
@@ -193,7 +270,34 @@ namespace igris
 			}
 
 			binary_string_reader(const std::string& str) : stream(str) {}
+		};*/
+
+		class binary_buffer_reader : public binary_deserializer_basic
+		{
+		public:
+			const char * ptr;
+			const char * _end;
+
+			void load_data(char* dat, uint16_t size) override
+			{
+				memcpy(dat, ptr, size);
+				ptr += size;
+			}
+
+			void skip(int size) override 
+			{
+				ptr += size;
+			}
+
+			void * pointer() override { return (void*)ptr; }
+			const void * end() override { return _end; }
+
+			binary_buffer_reader(const char * str, size_t size) : ptr(str), _end(str+size) {}
+			binary_buffer_reader(igris::buffer buf) : ptr(buf.data()), _end(buf.data()+buf.size()) {}
 		};
+
+		using binreader = binary_buffer_reader;
+		using binwriter = binary_buffer_writer;
 	}
 
 	template<typename Archive, typename ... Args>
@@ -240,23 +344,23 @@ namespace igris
 
 		static void deserialize(Archive& keeper, std::string& str)
 		{
-			uint16_t size; 
+			uint16_t size;
 			igris::deserialize(keeper, size);
 			str.resize(size);
-			keeper.load_data((char*)str.data(), str.size());			
+			keeper.load_data((char*)str.data(), str.size());
 		}
 	};
 
 	template<typename Archive, class F, class S>
-	struct serialize_helper<Archive, std::pair<F,S>>
+	struct serialize_helper<Archive, std::pair<F, S>>
 	{
-		static void serialize(Archive& keeper, const std::pair<F,S>& pair)
+		static void serialize(Archive& keeper, const std::pair<F, S>& pair)
 		{
 			igris::serialize(keeper, pair.first);
 			igris::serialize(keeper, pair.second);
 		}
 
-		static void deserialize(Archive& keeper, std::pair<F,S>& pair)
+		static void deserialize(Archive& keeper, std::pair<F, S>& pair)
 		{
 			igris::deserialize(keeper, pair.first);
 			igris::deserialize(keeper, pair.second);
@@ -276,8 +380,8 @@ namespace igris
 		{
 			uint16_t size;
 			igris::deserialize(keeper, size);
-		
-			for (int i = 0; i < size; i++) 
+
+			for (int i = 0; i < size; i++)
 			{
 				T value;
 				igris::deserialize(keeper, value);
@@ -287,24 +391,24 @@ namespace igris
 	};
 
 	template<typename Archive, class K, class T>
-	struct serialize_helper<Archive, std::map<K,T>>
+	struct serialize_helper<Archive, std::map<K, T>>
 	{
-		static void serialize(Archive& keeper, const std::map<K,T>& map)
+		static void serialize(Archive& keeper, const std::map<K, T>& map)
 		{
 			igris::serialize(keeper, (uint16_t)map.size());
 			//igris::serialize(keeper, igris::archive::data<T> {vec.data(), vec.size()});
-			for (auto pair : map) 
+			for (auto pair : map)
 			{
 				igris::serialize(keeper, pair);
 			}
 		}
 
-		static void deserialize(Archive& keeper, std::map<K,T>& map)
+		static void deserialize(Archive& keeper, std::map<K, T>& map)
 		{
 			uint16_t size;
 			igris::deserialize(keeper, size);
-		
-			for (int i = 0; i < size; i++) 
+
+			for (int i = 0; i < size; i++)
 			{
 				//typename std::map<K,T>::value_type pair;
 				K first;
@@ -317,7 +421,7 @@ namespace igris
 	};
 
 	template <class T>
-	std::string serialize(const T& obj) 
+	std::string serialize(const T& obj)
 	{
 		std::string ret;
 		igris::archive::binary_string_writer writer(ret);
@@ -328,17 +432,15 @@ namespace igris
 	}
 
 	template <class T>
-	T deserialize(const std::string& in) 
+	T deserialize(const igris::buffer& in)
 	{
 		T ret;
-		
-		igris::archive::binary_string_reader reader(in);
-//		reader.load(ret);
 
+		igris::archive::binary_buffer_reader reader(in.data(), in.size());
 		igris::deserialize(reader, ret);
 
 		return ret;
-	}	
+	}
 }
 
 #endif

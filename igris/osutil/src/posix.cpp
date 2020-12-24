@@ -1,11 +1,13 @@
 #include <signal.h>
 #include <unistd.h>
 #include <fcntl.h>
-//#include <igris/osutil/fd.h>
 
 #include <string>
 #include <string.h>
+
 #include <igris/osutil/fd.h>
+#include <igris/osutil/path.h>
+#include <igris/string.h>
 
 int igris::osutil::nonblock(int fd, bool en)
 {
@@ -45,4 +47,9 @@ namespace igris
          }
       }
    }
+}
+
+std::string igris::osutil::expanduser(const std::string& input)
+{
+   return igris::replace(input, "~", getenv("HOME"));
 }

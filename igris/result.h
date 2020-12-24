@@ -34,6 +34,29 @@ namespace igris
 				return info.c_str();
 			}
 		};
+
+		struct errcode
+		{
+			char buf[13];
+			int info;
+			explicit errcode(int code) : info(code) {}
+
+			errcode(errcode&& e) : info(e.info) {}
+
+			errcode& operator=(errcode&& other)
+			{
+				info = other.info;
+				return *this;
+			}
+
+			int code() { return info; }
+
+			const char* what() const
+			{
+				sprintf((char*)buf, "errcode:%d", info);
+				return buf;
+			}
+		};
 	}
 	template<typename E>
 	inline const char* what(const E& e) { return e.what(); }
@@ -282,6 +305,9 @@ namespace igris
 			}
 		};
 	}
+
+	template <class T, class E = result_type::error>
+	using result = result_type::result<T,E>;
 }
 
 #define try_restore(val) ({__result.restore(val); goto try_label;})

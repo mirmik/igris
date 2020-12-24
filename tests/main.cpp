@@ -22,6 +22,7 @@ extern "C" void debug_putchar(char c) { output.push_back(c); }
 #include "signature.hpp"
 #include "test_allocator.hpp"
 #include "chunked_vector.hpp"
+#include "string.hpp"
 
 #include "container/unbounded_array.hpp"
 #include "container/array_view.hpp"

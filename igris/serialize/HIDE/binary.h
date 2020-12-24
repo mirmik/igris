@@ -1,7 +1,7 @@
 #ifndef IGRIS_BINARY_SERIALIZER_H
 #define IGRIS_BINARY_SERIALIZER_H
 
-namespace igris
+/*namespace igris
 {
 	template < class Archive >
 	class archive_adaptor_load
@@ -136,6 +136,6 @@ namespace igris
 		uint8_t * data;
 		size_t size;
 	}
-}
+}*/
 
 #endif

@@ -69,6 +69,8 @@ namespace igris
 
 		result<opt*> get_opt(const char* l)
 		{
+			char str[64];
+
 			for (auto& o : opts)
 			{
 				if (!strcmp(o.long_name, l))
@@ -76,11 +78,15 @@ namespace igris
 					return &o;
 				}
 			}
-			return error(nos::format("wrong opt name {}", l).c_str());
+
+			sprintf(str, "wrong opt name %s", l);
+			return error(str);
 		}
 
 		result<opt*> get_opt(char c)
 		{
+			char str[64];
+
 			for (auto& o : opts)
 			{
 				if (c == o.short_name)
@@ -88,11 +94,15 @@ namespace igris
 					return &o;
 				}
 			}
-			return error(nos::format("wrong opt short_name {}", c).c_str());
+
+			sprintf(str, "wrong opt short_name %*s", 1, &c);
+			return error(str);
 		}
 
 		result<opt*> get_opt(const char* l, Type type)
 		{
+			char str[64];
+
 			for (auto& o : opts)
 			{
 				if (!strcmp(o.long_name, l))
@@ -101,8 +111,9 @@ namespace igris
 					return &o;
 				}
 			}
-			return error(nos::format("wrong opt name {}", l).c_str());
-		}
+
+			sprintf(str, "wrong opt type %s", l);
+			return error(str);		}
 
 		result<std::string> get_string(const char* l)
 		{

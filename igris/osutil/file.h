@@ -1,18 +1,16 @@
-#ifndef GXX_OSUTIL_GETCWD_H
-#define GXX_OSUTIL_GETCWD_H
+#ifndef IGRIS_OSUTIL_GETCWD_H
+#define IGRIS_OSUTIL_GETCWD_H
 
 #include <sys/stat.h> // mkdir
 #include <unistd.h>
-#include <gxx/util/string.h>
+#include <igris/string.h>
 #include <string>
 
 #include <stdio.h>
 #include <dirent.h>
 #include <sys/types.h>
 
-#include <gxx/print/stdprint.h>
-
-namespace gxx {
+namespace igris {
 	namespace osutil {
 		static inline bool isexist(const std::string& path) {
 			return access( path.c_str(), F_OK ) != -1;
@@ -31,13 +29,13 @@ namespace gxx {
 			}
 		}
 
-		static gxx::strlst listdir(const std::string& path) {
-			gxx::strlst ret;
+		static std::vector<std::string> listdir(const std::string& path) {
+			std::vector<std::string> ret;
 		    struct dirent *entry;
 		    
 		    DIR *dir = opendir(path.c_str());
 		    if (dir == NULL) {
-		        return gxx::strlst();
+		        return {};
 		    }
 		
 		    while ((entry = readdir(dir)) != NULL) {
