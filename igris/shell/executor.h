@@ -88,14 +88,28 @@ namespace igris
 				{
 					for (it1 = *it0; it1->func != NULL; ++it1)
 					{
+						int sts;
+
 						//Если у функции есть справка, печатаем её. Иначе - просто имя.
 						if (it1->help)
 						{
-							printf("%s - %s\r\n", it1->name, it1->help);
+							sts = printf("%s - %s\r\n", it1->name, it1->help);
 						}
 						else
 						{
-							printf("%s\r\n", it1->name);
+							sts = printf("%s\r\n", it1->name);
+						}
+
+						if (sts < 0) 
+						{ 
+							if (errno == -EBADF) 
+							{
+								dprln("executor:help:badfile");
+							}
+							else 
+							{
+								dprln("executor:help:errno", errno);	
+							}
 						}
 					}
 				}

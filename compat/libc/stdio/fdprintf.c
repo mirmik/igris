@@ -4,31 +4,40 @@
 
 #include <igris/util/printf_impl.h>
 
-struct printchar_handler_data {
+struct printchar_handler_data
+{
+	int errcode;
 	int fd;
 };
 
-static void file_printchar(void *d, int c) {
-	fdputc(c, ((struct printchar_handler_data *)d)->fd);
+static void file_printchar(void *d, int c)
+{
+	struct printchar_handler_data * data = (struct printchar_handler_data *) d;
+	int ret = fdputc(c, data->fd);
+
+	if (ret < 0 && data->errcode == 0 ) 
+	{
+		data->errcode = ret;
+	}
 }
 
-int vfdprintf(int fd, const char *format, va_list args) {
+int vfdprintf(int fd, const char *format, va_list args)
+{
 	struct printchar_handler_data data;
 
-	//assert(file != NULL);
-	//assert(format != NULL);
-
 	data.fd = fd;
+	data.errcode = 0;
 
-	return __printf(file_printchar, &data, format, args);
+	int ret = __printf(file_printchar, &data, format, args);
+	//dprln(format, ret);
+
+	return data.errcode != 0 ? data.errcode : ret;
 }
 
-int fdprintf(int fd, const char *format, ...) {
+int fdprintf(int fd, const char *format, ...)
+{
 	int ret;
 	va_list args;
-
-	//assert(file != NULL);
-	//assert(format != NULL);
 
 	va_start(args, format);
 	ret = vfdprintf(fd, format, args);

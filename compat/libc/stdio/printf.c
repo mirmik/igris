@@ -11,8 +11,6 @@ int printf(const char *format, ...)
 	int ret;
 	va_list args;
 
-	//assert(format);
-
 	va_start(args, format);
 	ret = vfdprintf(1, format, args);
 	va_end(args);

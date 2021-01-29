@@ -14,11 +14,18 @@ namespace igris
 		size_t _size;
 		size_t _elemsz;
 
+		int _count;
+
 	public:
 
 		size_t size() const
 		{
 			return _size / _elemsz;
+		}
+
+		size_t room() const
+		{
+			return _count;
 		}
 
 		bool cell_is_allocated(int i)
@@ -83,11 +90,13 @@ namespace igris
 			_elemsz = elsize;
 			pool_init(&head);
 			pool_engage(&head, zone, size, elsize);
+			_count = this->size();
 		}
 
 		void* get()
 		{
 			void* ret = pool_alloc(&head);
+			_count--;
 			return ret;
 		}
 
@@ -100,6 +109,7 @@ namespace igris
 			assert((uintptr_t)ptr < (uintptr_t)_zone + _size);
 
 			pool_free(&head, ptr);
+			_count++;
 		}
 
 		size_t element_size() const

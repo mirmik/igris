@@ -24,58 +24,50 @@ namespace igris
 		uint8_t type;
 		const char* help;
 
-		constexpr console_command(
+		console_command(
 			const char* name,
 			int (*func)(int, char**),
 			uint8_t type,
 			const char* help) 
 		:
 			name(name),
-			func(nullptr),
+			func((void*)func),
 			type(type),
 			help(help)
-		{
-			this->func = (void*)func;
-		}		
+		{}		
 
-		constexpr console_command(
+		console_command(
 			const char* name,
 			int (*func)(int, char**),
 			const char* help = nullptr) 
 		:
 			name(name),
-			func(nullptr),
+			func((void*)func),
 			type(CMDFUNC),
 			help(help)
-		{
-			this->func = (void*)func;
-		}
+		{}
 
-		constexpr console_command(
+		console_command(
 			const char* name,
 			void (*func)(),
 			const char* help = nullptr) 
 		:
 			name(name),
-			func(nullptr),
+			func((void*)func),
 			type(CMDFUNC),
 			help(help)
-		{
-			this->func = (void*)func;
-		}
+		{}
 
-		constexpr console_command(
+		console_command(
 			const char* name,
 			void *func,
 			const char* help = nullptr) 
 		:
 			name(name),
-			func(nullptr),
+			func(func),
 			type(CMDFUNC),
 			help(help)
-		{
-			this->func = (void*)func;
-		}
+		{}
 	};
 }
 
