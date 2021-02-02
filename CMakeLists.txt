@@ -28,6 +28,9 @@ file(GLOB SOURCES
 	igris/datastruct/*.cpp
 	igris/protocols/gstuff.c
 	igris/sync/syslock_mutex.cpp
+	igris/string/replace_substrings.c
+	igris/string/replace.cpp
+	igris/string/memmem.c
 )
 
 if (UNIX)
@@ -46,6 +49,9 @@ file(GLOB SOURCES_TEST
 	igris/datastruct/*.cpp
 	igris/protocols/gstuff/*.c
 	igris/sync/syslock_mutex.cpp
+	igris/string/replace_substrings.c
+	igris/string/replace.cpp
+	igris/string/memmem.c
 	tests/*.cpp
 )
 
