@@ -17,7 +17,9 @@ void replace_substrings(
 
 	if (sublen == 0)
 	{
-		memcpy(buffer, input, __MIN__(maxsize, inlen));
+		int len = __MIN__(maxsize-1, inlen);
+		memcpy(buffer, input, len);
+		buffer[len] = 0;
 	}
 
 	char * finded;
@@ -34,5 +36,7 @@ void replace_substrings(
 		strit += sublen;	
 	};
 
-	memcpy(bufit, strit, streit - strit);
+	int lastlen = streit - strit;
+	memcpy(bufit, strit, lastlen);
+	*(bufit+lastlen) = 0; 
 }

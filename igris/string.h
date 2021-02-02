@@ -1,7 +1,7 @@
 #ifndef IGRIS_STRING2_H
 #define IGRIS_STRING2_H
 
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 #include <stddef.h>
 
 __BEGIN_DECLS

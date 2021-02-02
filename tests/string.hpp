@@ -25,7 +25,6 @@ TEST_CASE("string.replace0")
 TEST_CASE("string.replace1")
 {
 	const char * input = "Hello abc worabcldabc";
-	const char * output = "Hello  world";
 	char buffer[64];
 
 	replace_substrings(buffer, 64, input, strlen(input), "", 0, "a", 1);
