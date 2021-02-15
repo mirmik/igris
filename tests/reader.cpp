@@ -1,4 +1,4 @@
-#include <doctest/doctest.h>
+#include "doctest/doctest.h"
 #include <igris/binreader.h>
 
 TEST_CASE("reader")
