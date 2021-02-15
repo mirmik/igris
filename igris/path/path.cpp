@@ -1,5 +1,7 @@
 #include <igris/path/path.h>
-#include <igris/creader.h>
+#include <igris/binreader.h>
+
+#include <string.h>
 
 std::string igris::path::dirname(const std::string& path)
 {
@@ -7,11 +9,11 @@ std::string igris::path::dirname(const std::string& path)
 	const char* ptr = strt;
 	const char* last = strt;
 
-	igris::chars_set_checker pattern("/\\");
+	const char * delimeters = "/\\";
 
 	while (*ptr)
 	{
-		if (pattern(*ptr)) last = ptr;
+		if (strchr(delimeters, *ptr)) last = ptr;
 		++ptr;
 	}
 
