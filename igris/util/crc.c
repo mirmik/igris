@@ -77,7 +77,7 @@ uint16_t crc16(const void * data, uint16_t length)
 
 uint8_t mmc_crc7(const uint8_t * message, const uint8_t length)
 {
-	const uint8_t poly = 0b10001001;
+	const uint8_t poly = 0x89;
 	uint8_t crc = 0;
 
 	for (unsigned i = 0; i < length; i++)
