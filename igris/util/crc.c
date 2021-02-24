@@ -73,3 +73,22 @@ uint16_t crc16(const void * data, uint16_t length)
 	}
 	return crc;
 }
+
+
+uint8_t mmc_crc7(const uint8_t * message, const uint8_t length)
+{
+	const uint8_t poly = 0b10001001;
+	uint8_t crc = 0;
+
+	for (unsigned i = 0; i < length; i++)
+	{
+		crc ^= message[i];
+		for (int j = 0; j < 8; j++)
+		{
+			// crc = crc & 0x1 ? (crc >> 1) ^ poly : crc >> 1;
+			crc = (crc & 0x80u) ? ((crc << 1) ^ (poly << 1)) : (crc << 1);
+		}
+	}
+	//return crc;
+	return crc >> 1;
+}
