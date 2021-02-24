@@ -156,8 +156,6 @@ int readline_is_not_same_as_last(struct readline * rl)
 static inline
 int readline_history_down(struct readline * rl)
 {
-	//DTRACE();
-	//DPRINT(rl->curhist);
 	if (rl->history_space == NULL)
 		return 0;
 

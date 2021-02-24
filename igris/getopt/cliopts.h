@@ -9,8 +9,6 @@
 
 namespace igris
 {
-	using namespace igris::result_type;
-
 	class cliopts
 	{
 		enum class Type

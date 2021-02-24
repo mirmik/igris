@@ -107,12 +107,11 @@ licant.module("igris.util", sources=[
 	"igris/string/memmem.c",
 	"igris/string/replace.cpp",
 	"igris/string/replace_substrings.c",
+
+	"igris/binreader.c"
 ])
 
 #################################################################
-
-#licant.module("igris.sshell", 
-#	sources=["igris/shell/sshell.cpp"])
 
 licant.module("igris.syslock", impl="genos.atomic", 
 	sources=["igris/sync/syslock_genos_atomic.cpp"])

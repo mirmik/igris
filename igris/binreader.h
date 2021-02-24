@@ -1,6 +1,23 @@
+/**
+	Однопроходной парсинг последовательных данных.	
+*/
+
 #ifndef IGRIS_BINREADER_H
 #define IGRIS_BINREADER_H
 
+#include <igris/compiler.h>
+#include <stddef.h>
+
+__BEGIN_DECLS
+
+void reader_memcpy(const char ** ptr, void* obj, size_t objsize);
+void reader_skip(const char ** ptr, size_t size) ;
+void reader_skip_while(const char ** ptr, char c, const char* protector);
+
+__END_DECLS
+
+#ifdef __cplusplus
+#include <igris/buffer.h>
 #include <igris/util/numconvert.h>
 
 namespace igris 
@@ -53,5 +70,6 @@ namespace igris
 		}
 	};
 }
+#endif
 
 #endif

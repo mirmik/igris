@@ -32,6 +32,7 @@ file(GLOB SOURCES
 	igris/string/replace_substrings.c
 	igris/string/replace.cpp
 	igris/string/memmem.c
+	igris/binreader.c
 )
 
 if (UNIX)
@@ -53,6 +54,7 @@ file(GLOB SOURCES_TEST
 	igris/string/replace_substrings.c
 	igris/string/replace.cpp
 	igris/string/memmem.c
+	igris/binreader.c
 	tests/*.cpp
 )
 

@@ -18,7 +18,7 @@ modules = [
 		"igris",
 		"igris.dprint",
 		"igris.protocols.gstuff",
-		"igris.protocols.numcmd",
+#		"igris.protocols.numcmd",
 	]
 
 licant.cxx_library("shared",

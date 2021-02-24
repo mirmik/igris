@@ -25,7 +25,7 @@ tests_c = [
 ]
 
 application("runtests",
-	sources = ["main.cpp"],
+	sources = ["main.cpp", "reader.cpp"],
 		#+ [t+".cpp" for t in tests] 
 		#+ [t+".c" for t in tests_c]),
 
