@@ -45,6 +45,11 @@ namespace igris {
 			}
 			return false;
 		}
+
+		void clear() 
+		{
+			vect.clear();
+		}
 	};
 }
 
