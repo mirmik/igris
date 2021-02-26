@@ -144,7 +144,10 @@ licant.module("igris.path",
 
 #################################################################
 licant.module("igris.os_extension", "unix",
-	sources=["igris/osutil/src/posix.cpp"],
+	sources=[
+		"igris/osutil/src/posix.cpp",
+		"igris/osutil/realtime.c"
+	],
 	default = True
 )
 
