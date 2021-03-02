@@ -120,7 +120,7 @@ namespace igris
 			bool m_bool;
 			numer_type m_num;
 			list_type m_arr;
-			dict_type m_dict;
+			dict_type m_dct;
 			string_type m_str;
 		};
 
@@ -141,30 +141,30 @@ namespace igris
 		}
 
 	public:
-		void init_sint(const int64_t& i) { m_type = type::numer; m_num = i; }
-		void init_uint(const uint64_t& i) { m_type = type::numer; m_num = i; }
-		void init_flt(const long double& i) { m_type = type::numer; m_num = i; }
-		void init_str(const char* data, size_t size);
+		void init_sint(const int64_t& i)     { m_type = type::numer; m_num = i; }
+		void init_uint(const uint64_t& i)    { m_type = type::numer; m_num = i; }
+		void init_flt (const long double& i) { m_type = type::numer; m_num = i; }
+		void init_str (const char* data, size_t size);
 
 		void init(type t);
 		void init(const trent_basic& oth);
 
-		void init(const char* ptr) { init_str(ptr, strlen(ptr)); }
-		void init(const std::string& str) { init_str(str.data(), str.size()); }
+		void init(const char* ptr)          { init_str(ptr, strlen(ptr)); }
+		void init(const std::string& str)   { init_str(str.data(), str.size()); }
 		void init(const igris::buffer& str) { init_str(str.data(), str.size()); }
 
-		void init(const int8_t& i) { init_sint(i); }
-		void init(const int16_t& i) { init_sint(i); }
-		void init(const int32_t& i) { init_sint(i); }
-		void init(const int64_t& i) { init_sint(i); }
+		void init(const int8_t& i)   { init_sint(i); }
+		void init(const int16_t& i)  { init_sint(i); }
+		void init(const int32_t& i)  { init_sint(i); }
+		void init(const int64_t& i)  { init_sint(i); }
 
-		void init(const uint8_t& i) { init_uint(i); }
+		void init(const uint8_t& i)  { init_uint(i); }
 		void init(const uint16_t& i) { init_uint(i); }
 		void init(const uint32_t& i) { init_uint(i); }
 		void init(const uint64_t& i) { init_uint(i); }
 
-		void init(const float& i) { init_flt(i); }
-		void init(const double& i) { init_flt(i); }
+		void init(const float& i)       { init_flt(i); }
+		void init(const double& i)      { init_flt(i); }
 		void init(const long double& i) { init_flt(i); }
 
 		void init(const bool& i) { m_type = type::boolean; m_bool = i; }
@@ -176,44 +176,7 @@ namespace igris
 			init(obj);
 		}
 
-		/*	void init_list(size_t reserve);
-		*/
 	public:
-		// Поведение - переписать значение, если тип не совпадает.
-		//const trent_basic& operator[](int i) const;
-		//const trent_basic& operator[](const char* key) const;
-		//const trent_basic& operator[](const std::string& key) const;
-		//const trent_basic& operator[](const igris::buffer& key) const;
-		//const trent_basic& operator[](const trent_path& path) const;
-
-		//trent_basic& operator[](int i);
-		//trent_basic& operator[](const char* key);
-		//trent_basic& operator[](const std::string& key);
-		//trent_basic& operator[](const igris::buffer& key);
-		//trent_basic& operator[](const trent_path& path);
-
-		// Поведение - выдать исключение если тип не совпадает.
-		/*		const trent_basic& at(int i) const;
-				const trent_basic& at(const char* key) const;
-				const trent_basic& at(const std::string& key) const;
-				const trent_basic& at(const igris::buffer& key) const;
-				const trent_basic& at(const trent_path& path) const;
-
-				trent_basic& at(int i);
-				trent_basic& at(const char* key);
-				trent_basic& at(const std::string& key);
-				trent_basic& at(const igris::buffer& key);
-				trent_basic& at(const trent_path& path);*/
-
-
-
-
-
-
-
-
-
-
 		trent_basic& operator[](int i)
 		{
 			if (m_type != type::list) init(type::list);
@@ -230,25 +193,25 @@ namespace igris
 		trent_basic& operator[](const char* key)
 		{
 			if (m_type != type::dict) init(type::dict);
-			return m_dict[key];
+			return m_dct[key];
 		}
 
 		trent_basic& operator[](const std::string& key)
 		{
 			if (m_type != type::dict) init(type::dict);
-			return m_dict[key];
+			return m_dct[key];
 		}
 
 		const trent_basic& operator[](const std::string& key) const
 		{
 			if (m_type != type::dict) BUG_ON("wrong trent type");
-			return m_dict.at(key);
+			return m_dct.at(key);
 		}
 
 		trent_basic& operator[](const igris::buffer& key)
 		{
 			if (m_type != type::dict) init(type::dict);
-			return m_dict[std::string(key.data(), key.size())];
+			return m_dct[std::string(key.data(), key.size())];
 		}
 
 		const trent_basic& operator[] (const trent_path& path) const
@@ -296,33 +259,27 @@ namespace igris
 		const trent_basic& operator[](const char* key) const
 		{
 			if (m_type != type::dict) BUG_ON("wrong trent type");
-			return m_dict.at(key);
+			return m_dct.at(key);
 		}
-
-		/*const trent& trent::at(const char* key) const {
-		gxx::println(2);
-		if (m_type != type::dict) init(type::dict);
-		        return m_dict[key];
-		}*/
 
 		const trent_basic& at(const std::string& key) const
 		{
 			if (m_type != type::dict) BUG_ON("wrong trent type");
-			return m_dict.at(key);
+			return m_dct.at(key);
 		}
 
 		const trent_basic& at(const igris::buffer& key) const
 		{
 			if (m_type != type::dict) BUG_ON("wrong trent type");
-			return m_dict.at(std::string(key.data(), key.size()));
+			return m_dct.at(std::string(key.data(), key.size()));
 		}
 
 		const trent_basic * _get(const std::string& str) const
 		{
 			if (is_dict())
 			{
-				auto it = m_dict.find(str);
-				if (it == m_dict.end())
+				auto it = m_dct.find(str);
+				if (it == m_dct.end())
 					return nullptr;
 				return &it->second;
 			}
@@ -438,37 +395,37 @@ namespace igris
 		bool have(const std::string& key) const
 		{
 			if (m_type != type::dict) BUG_ON("wrong trent type");
-			return m_dict.count(key) != 0;
+			return m_dct.count(key) != 0;
 		}
 
-		string_type& as_string() { if (m_type != type::string) init(type::string); return m_str; }
-		const string_type& as_string() const { if (m_type != type::string) BUG(); return m_str; }
-		result<string_type&> as_string_critical() { if (!is_string()) return error("is't string"); return m_str; }
-		result<const string_type&> as_string_critical() const { if (!is_string()) return error("is't string"); return m_str; }
-		string_type& as_string_except();
-		const string_type& as_string_except() const;
-		const string_type& as_string_default(const string_type& def) const { if (!is_string()) return def; return m_str; }
+		             string_type&  as_string()                { if (!is_string()) init(type::string);             return m_str; }
+		       const string_type&  as_string()          const { if (!is_string()) BUG();                          return m_str; }
+		result<      string_type&> as_string_critical()       { if (!is_string()) return error("is't string");    return m_str; }
+		result<const string_type&> as_string_critical() const { if (!is_string()) return error("is't string");    return m_str; }
+		             string_type&  as_string_except();
+		       const string_type&  as_string_except() const;
+		       const string_type&  as_string_default(const string_type& def) const { if (!is_string()) return def; return m_str; }
 
-		dict_type& as_dict();
-		const dict_type& as_dict() const;
-		result<dict_type&> as_dict_critical();
-		result<const dict_type&> as_dict_critical() const;
-		dict_type& as_dict_except();
-		const dict_type& as_dict_except() const;
+		             dict_type&    as_dict()                { if (!is_dict()) init(type::dict);                      return m_dct; }
+		       const dict_type&    as_dict()          const { if (!is_dict()) BUG();                                 return m_dct; }
+		result<      dict_type&>   as_dict_critical()       { if (!is_dict()) return error("is't list");             return m_dct; }
+		result<const dict_type&>   as_dict_critical() const { if (!is_dict()) return error("is't list");             return m_dct; }
+		             dict_type&    as_dict_except()         { if (!is_dict()) throw std::runtime_error("is't list"); return m_dct; }
+		       const dict_type&    as_dict_except()   const { if (!is_dict()) throw std::runtime_error("is't list"); return m_dct; }
 
-		list_type& as_list() { if (m_type != type::list) init(type::list); return m_arr; }
-		const list_type& as_list() const { if (m_type != type::list) BUG(); return m_arr; }
-		result<list_type&> as_list_critical() { if (!is_list()) return error("is't list"); return m_arr; }
-		result<const list_type&> as_list_critical() const { if (!is_list()) return error("is't list"); return m_arr; }
-		list_type& as_list_except();
-		const list_type& as_list_except() const;
+		             list_type&    as_list()                { if (!is_list()) init(type::list);                      return m_arr; }
+		       const list_type&    as_list()          const { if (!is_list()) BUG();                                 return m_arr; }
+		result<      list_type&>   as_list_critical()       { if (!is_list()) return error("is't list");             return m_arr; }
+		result<const list_type&>   as_list_critical() const { if (!is_list()) return error("is't list");             return m_arr; }
+		             list_type&    as_list_except()         { if (!is_list()) throw std::runtime_error("is't list"); return m_arr; }
+		       const list_type&    as_list_except()   const { if (!is_list()) throw std::runtime_error("is't list"); return m_arr; }
 
-		numer_type as_numer() { if (m_type != type::numer) init(type::numer); return m_num; }
-		numer_type as_numer() const { if (m_type != type::numer) BUG(); return m_num; }
-		numer_type as_numer_default(numer_type def) const { if (!is_numer()) return def; return m_num; }
-		result<numer_type> as_numer_critical() const { if (!is_numer()) return error("is't numer"); return m_num; }
-		numer_type as_numer_except() const;
-
+		             numer_type    as_numer()                             { if (!is_numer()) init(type::numer);                      return m_num; }
+		             numer_type    as_numer()                       const { if (!is_numer()) BUG();                                  return m_num; }
+		      result<numer_type>   as_numer_critical()              const { if (!is_numer()) return error("is't numer");             return m_num; }
+		             numer_type    as_numer_except()                const { if (!is_numer()) throw std::runtime_error("is't numer"); return m_num; }
+                     numer_type    as_numer_default(numer_type def) const { if (!is_numer()) return def;                             return m_num; }
+		      
 		int64_t as_integer() const { return as_numer(); }
 		int64_t as_integer_default(int64_t def) const { return as_numer_default(def); }
 
@@ -490,13 +447,13 @@ namespace igris
 		numer_type& unsafe_numer_const() { return m_num; }
 		string_type& unsafe_string_const() { return m_str; }
 		list_type& unsafe_list_const() { return m_arr; }
-		dict_type& unsafe_dict_const() { return m_dict; }
+		dict_type& unsafe_dict_const() { return m_dct; }
 
 //			const integer_type& unsafe_integer_const() const { return m_int; }
 		const numer_type& unsafe_numer_const() const { return m_num; }
 		const string_type& unsafe_string_const() const { return m_str; }
 		const list_type& unsafe_list_const() const { return m_arr; }
-		const dict_type& unsafe_dict_const() const { return m_dict; }
+		const dict_type& unsafe_dict_const() const { return m_dct; }
 		const bool& unsafe_bool_const() const { return m_bool; }
 
 		trent_basic::type get_type() const { return m_type; }
@@ -504,20 +461,14 @@ namespace igris
 		bool is_nil() const 		{ return m_type == type::nil; }
 		bool is_bool() const 		{ return m_type == type::boolean; }
 		bool is_numer() const 		{ return m_type == type::numer; }
-		//bool is_integer() const     { return m_type == type::integer; }
 		bool is_list() const		{ return m_type == type::list; }
 		bool is_dict() const        { return m_type == type::dict; }
 		bool is_string() const 		{ return m_type == type::string; }
-
-		//strlst check_dict(strlst lst, check_type ct);
-		//std::pair<strlst,strlst> check_dict_symmetric(strlst lst);
 
 		template <class O>
 		ssize_t print_to(O& os) const;
 
 	public:
-		//trent_basic& operator=(const trent_basic& other);
-		//trent_basic& operator=(trent_basic&& other);
 
 		trent_basic& operator= (const trent_basic& other)
 		{
@@ -532,7 +483,7 @@ namespace igris
 					igris::constructor(&m_arr, other.m_arr);
 					return *this;
 				case type::dict:
-					igris::constructor(&m_dict, other.m_dict);
+					igris::constructor(&m_dct, other.m_dct);
 					return *this;
 				case type::numer:
 					m_num = other.m_num;
@@ -561,7 +512,7 @@ namespace igris
 					igris::move_constructor(&m_arr, std::move(other.m_arr));
 					return *this;
 				case type::dict:
-					igris::move_constructor(&m_dict, std::move(other.m_dict));
+					igris::move_constructor(&m_dct, std::move(other.m_dct));
 					return *this;
 				case type::numer:
 					m_num = other.m_num;
@@ -616,7 +567,7 @@ namespace igris
 				return;
 
 			case type::dict:
-				igris::destructor(&m_dict);
+				igris::destructor(&m_dct);
 				return;
 
 			case type::nil:
@@ -641,28 +592,6 @@ namespace igris
 		igris::constructor(&m_str, data, size);
 	}
 
-	/*emplate <template <class Allocator> class TAlloc>
-	void trent_basic<TAlloc>::init(const trent_basic::numer_type& n)
-	{
-		m_type = trent_basic::type::numer;
-		m_num = n;
-	}*/
-
-	/*template <template <class Allocator> class TAlloc>
-	void trent_basic<TAlloc>::init(
-	    const igris::numer_ctrcollect<numer_type>& n)
-	{
-		m_type = trent_basic::type::numer;
-		m_num = n;
-	}
-
-	template <template <class Allocator> class TAlloc>
-	void trent_basic<TAlloc>::init(const bool_ctrcollect<bool>& n)
-	{
-		m_type = trent_basic::type::boolean;
-		m_bool = n;
-	}*/
-
 	template <template <class Allocator> class TAlloc>
 	template <class O>
 	ssize_t trent_basic<TAlloc>::print_to(O& os) const
@@ -678,10 +607,6 @@ namespace igris
 			case type::numer:
 				os.print(unsafe_numer_const());
 				return 0;
-
-			//case type::integer:
-			//	os.print(unsafe_integer_const());
-			//	return 0;
 
 			case type::string:
 				os.putchar('"');
@@ -746,7 +671,7 @@ namespace igris
 				return;
 
 			case trent_basic::type::dict:
-				igris::constructor(&m_dict);
+				igris::constructor(&m_dct);
 				return;
 
 			//case trent_basic::type::integer:
@@ -775,7 +700,7 @@ namespace igris
 				return;
 
 			case trent_basic::type::dict:
-				igris::constructor(&m_dict, other.m_dict);
+				igris::constructor(&m_dct, other.m_dct);
 				return;
 
 			case trent_basic::type::numer:
@@ -810,7 +735,7 @@ namespace igris
 				return;
 
 			case trent_basic::type::dict:
-				igris::move_constructor(&m_dict, std::move(other.m_dict));
+				igris::move_constructor(&m_dct, std::move(other.m_dct));
 				return;
 
 			case trent_basic::type::numer:
@@ -831,65 +756,6 @@ namespace igris
 		other.invalidate();
 	}
 
-
-	template <template <class Allocator> class TAlloc>
-	std::vector<trent_basic<TAlloc>>& trent_basic<TAlloc>::as_list_except()
-	{
-		if (!is_list())
-			throw std::runtime_error("isn't list");
-
-		return m_arr;
-	}
-
-	template <template <class Allocator> class TAlloc>
-	const std::vector<trent_basic<TAlloc>>& trent_basic<TAlloc>::as_list_except() const
-	{
-		if (!is_list())
-			throw std::runtime_error("isn't list");
-
-		return m_arr;
-	}
-
-
-
-
-	template <template <class Allocator> class TAlloc>
-	typename trent_basic<TAlloc>::dict_type& trent_basic<TAlloc>::as_dict()
-	{
-		if (m_type != type::dict)
-			init(type::dict);
-
-		return m_dict;
-	}
-
-	template <template <class Allocator> class TAlloc>
-	typename trent_basic<TAlloc>::dict_type& trent_basic<TAlloc>::as_dict_except()
-	{
-		if (!is_dict())
-			throw std::runtime_error("isn't dict");
-
-		return m_dict;
-	}
-
-	template <template <class Allocator> class TAlloc>
-	const typename trent_basic<TAlloc>::dict_type& trent_basic<TAlloc>::as_dict_except() const
-	{
-		if (!is_dict())
-			throw std::runtime_error("isn't dict");
-
-		return m_dict;
-	}
-
-
-
-	/*template <template <class Allocator> class TAlloc>
-	std::string& trent_basic<TAlloc>::as_string()
-	{
-		if (m_type != type::string)
-			init(type::string);
-
-		return m_str;
-	}*/
 
 	template <template <class Allocator> class TAlloc>
 	std::string& trent_basic<TAlloc>::as_string_except()

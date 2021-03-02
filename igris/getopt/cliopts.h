@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+// Переписать по аналогии с питоном. Пусть трент возвращает.
+
 namespace igris
 {
 	class cliopts

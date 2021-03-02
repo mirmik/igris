@@ -5,6 +5,7 @@
 #include <igris/buffer.h>
 #include <igris/math/defs.h>
 
+#include <string>
 #include <tuple>
 #include <map>
 #include <vector>
