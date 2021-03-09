@@ -51,6 +51,17 @@ namespace std {
 		{
 			resize(sz);
 		}
+
+		vector(iterator a, const iterator b) :
+			m_data(nullptr), 
+			m_capacity(0), 
+			m_size(0) 
+		{
+			while (a != b) 
+			{
+				push_back(*a++);
+			}
+		}
 	
 		~vector() {
 			igris::array_destructor(begin(),end());
