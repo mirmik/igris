@@ -227,6 +227,7 @@ int dlist_in(struct dlist_head *fnd, struct dlist_head *head)
 static inline
 int dlist_check(struct dlist_head *fnd, int count)
 {
+	int steps = 0;
 	struct dlist_head * it = fnd;
 
 	while(count--) 
@@ -234,17 +235,19 @@ int dlist_check(struct dlist_head *fnd, int count)
 		struct dlist_head * next = it->next;
 
 		if (fnd == next) 
-			return 1;
+			return steps;
 
-		it = next;         
+		it = next;
+		steps++;         
 	}
 
-	return 0;
+	return -1;
 }
 
 static inline
 int dlist_check_reversed(struct dlist_head *fnd, int count)
 {
+	int steps = 0;
 	struct dlist_head * it = fnd;
 
 	while(count--) 
@@ -252,12 +255,13 @@ int dlist_check_reversed(struct dlist_head *fnd, int count)
 		struct dlist_head * prev = it->prev;
 
 		if (fnd == prev) 
-			return 1;
+			return steps;
 
 		it = prev;         
+		steps++;  
 	}
 
-	return 0;
+	return -1;
 }
 
 static inline
