@@ -1,15 +1,17 @@
 #include <igris/sync/syslock.h>
 #include <mutex>
 #include <cassert>
+
+#if __has_include(<unistd.h>)
 #include <unistd.h>
+int __is_locked = -1;
+#endif
 
 #include <igris/dprint.h>
 
 static std::recursive_mutex mtx;
 //static std::mutex mtx;
 static thread_local int count = 0;
-
-int __is_locked = -1;
 
 __BEGIN_DECLS
 
@@ -31,7 +33,9 @@ void system_lock()
 #endif
 
 
+#if __has_include(<unistd.h>)
 	__is_locked = getpid();
+#endif
 
 	if (count == 0)
 	{
@@ -58,7 +62,10 @@ void system_unlock()
 	--count;
 	assert(count >= 0);
 
+#if __has_include(<unistd.h>)
 	__is_locked = -1;
+#endif
+
 	mtx.unlock();
 }
 
