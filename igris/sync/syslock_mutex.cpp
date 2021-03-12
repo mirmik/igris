@@ -1,24 +1,39 @@
 #include <igris/sync/syslock.h>
 #include <mutex>
 #include <cassert>
+#include <unistd.h>
 
 #include <igris/dprint.h>
-
-#define NODTRACE 1
-#include <igris/dtrace.h>
 
 static std::recursive_mutex mtx;
 //static std::mutex mtx;
 static thread_local int count = 0;
 
+int __is_locked = -1;
+
 __BEGIN_DECLS
 
-void system_lock() 
+#if IGRIS_SYSLOCK_DEBUG
+void system_lock_impl(struct location loc) 
 {
-	DTRACE_ARGS(count);
+#else
+void system_lock()
+{
+#endif
 	mtx.lock();
-	
-	if (count == 0) 
+
+#if IGRIS_SYSLOCK_DEBUG
+	if (__is_locked == getpid()) 
+	{
+		dprln("recurse system lock is deprecated");
+		debug_print_location(loc);
+	}
+#endif
+
+
+	__is_locked = getpid();
+
+	if (count == 0)
 	{
 		//save = tmpsave;
 	}
@@ -27,12 +42,23 @@ void system_lock()
 	assert(count < 10);
 }
 
-void system_unlock() 
+#if IGRIS_SYSLOCK_DEBUG
+void system_unlock_impl(struct location loc) 
 {
-	DTRACE_ARGS(count);
+	if (__is_locked != getpid()) 
+	{
+		dprln("trying unlock unlocked lock (or use recursive unlock)");
+		debug_print_location(loc);
+		//abort();
+	}
+#else
+void system_unlock()
+{
+#endif
 	--count;
 	assert(count >= 0);
 
+	__is_locked = -1;
 	mtx.unlock();
 }
 

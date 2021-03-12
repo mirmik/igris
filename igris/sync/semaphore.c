@@ -17,14 +17,16 @@ void semaphore_down(struct semaphore * sem)
 		{
 			sem->count--;
 			system_unlock();
-			return;
+			return; // return point is here
 		}
 
+		system_unlock();
 		wait_current_schedee(&sem->wait_list, 0, &_);
+		system_lock();
 	}
 }
 
-int semaphore_down_trylock(struct semaphore * sem)
+/*int semaphore_down_trylock(struct semaphore * sem)
 {
 	system_lock();
 
@@ -37,14 +39,10 @@ int semaphore_down_trylock(struct semaphore * sem)
 
 	system_unlock();
 	return 1;
-}
+}*/
 
 void semaphore_up(struct semaphore * sem)
 {
-	system_lock();
-
 	sem->count++;
 	unwait_one(&sem->wait_list, 0);
-
-	system_unlock();
 }
