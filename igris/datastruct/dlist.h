@@ -37,6 +37,11 @@ struct dlist_head
 
 __BEGIN_DECLS
 
+static inline int dlist_is_linked(struct dlist_head* head) 
+{
+	return head->next != head;
+}
+
 /**
  * Init dlist head.
  *
