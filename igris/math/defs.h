@@ -5,7 +5,7 @@
 
 #define __MAX__(a,b) ((a) > (b) ? (a) : (b))
 #define __MIN__(a,b) ((a) < (b) ? (a) : (b))
-#define __ABS__(a) ((a) < 0 ? (-a) : (a))
+#define __ABS__(a) ((a) < 0 ? (-(a)) : (a))
 
 #ifndef MAX
 #define MAX(a,b) __MAX__(a,b)
