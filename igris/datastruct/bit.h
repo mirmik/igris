@@ -38,9 +38,7 @@ extern int bit_ctz(unsigned long x);
  *   One plus the index of the least significant set bit of @c x,
  *   or zero in case when @c x is zero too.
  */
-static inline int bit_ffs(unsigned long x) {
-	return x ? (bit_ctz(x) + 1) : 0;
-}
+static inline int bit_ffs(unsigned long x) { return x ? (bit_ctz(x) + 1) : 0; }
 
 /**
  * Count leading (most significant) zero bits.
@@ -72,8 +70,9 @@ extern int bit_clz(unsigned long x);
  *   One plus the index of the most significant set bit of @c x,
  *   or zero if @c x is zero.
  */
-static inline int bit_fls(unsigned long x) {
-	return x ? (LONG_BIT - bit_clz(x)) : 0;
+static inline int bit_fls(unsigned long x)
+{
+    return x ? (LONG_BIT - bit_clz(x)) : 0;
 }
 
 /**
@@ -85,24 +84,34 @@ static inline int bit_fls(unsigned long x) {
  *   @c int loop variable.
  * @param x
  */
-#define bit_foreach(bit, x) \
-    __bit_foreach(bit, x, MACRO_GUARD(__bit))
+#define bit_foreach(bit, x) __bit_foreach(bit, x, MACRO_GUARD(__bit))
 
 #ifdef __clang__
 // clang doesn't allow anonymous structs inside initializer in for loop
 // because C standard is not very strict. Known in the Internet sinse 2013
 // So, I decided temporarily to spoil the environment
 // Kakadu
-#define __bit_foreach(bit, _x, it) \
-        struct { unsigned long x; int b; } it = { .x = (_x), .b = 0, }; \
-	for(; \
-		it.x ? (bit = it.b = bit_ctz(it.x)), 1 : 0;                     \
-		it.x &= ~(0x1ul << it.b))
+#define __bit_foreach(bit, _x, it)                                             \
+    struct                                                                     \
+    {                                                                          \
+        unsigned long x;                                                       \
+        int b;                                                                 \
+    } it = {                                                                   \
+        .x = (_x),                                                             \
+        .b = 0,                                                                \
+    };                                                                         \
+    for (; it.x ? (bit = it.b = bit_ctz(it.x)), 1 : 0; it.x &= ~(0x1ul << it.b))
 #else
-#define __bit_foreach(bit, _x, it) \
-	for(struct { unsigned long x; int b; } it = { .x = (_x), .b = 0, }; \
-		it.x ? (bit = it.b = bit_ctz(it.x)), 1 : 0;                     \
-		it.x &= ~(0x1ul << it.b))
+#define __bit_foreach(bit, _x, it)                                             \
+    for (struct {                                                              \
+             unsigned long x;                                                  \
+             int b;                                                            \
+         } it =                                                                \
+             {                                                                 \
+                 .x = (_x),                                                    \
+                .b = 0,                                                        \
+             };                                                                \
+         it.x ? (bit = it.b = bit_ctz(it.x)), 1 : 0; it.x &= ~(0x1ul << it.b))
 #endif
 
 #endif /* UTIL_BIT_H_ */

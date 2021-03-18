@@ -1,40 +1,40 @@
 #include <igris/osinter/wait.h>
-#include <igris/util/macro.h>
 #include <igris/sync/syslock.h>
 #include <igris/syncxx/event.h>
+#include <igris/util/macro.h>
 
 struct linux_waiter
 {
-	struct waiter w;
-	igris::event event;
+    struct waiter w;
+    igris::event event;
 };
 
-int wait_current_schedee(struct dlist_head * head, int priority, void ** future) 
+int wait_current_schedee(struct dlist_head *head, int priority, void **future)
 {
-	struct linux_waiter waiter;
+    struct linux_waiter waiter;
 
-	waiter_schedee_init(&waiter.w);
+    waiter_schedee_init(&waiter.w);
 
-	system_lock();
+    system_lock();
 
-	if (priority) 
-		dlist_move(&waiter.w.ctr.lnk, head);
-	else 
-		dlist_move_tail(&waiter.w.ctr.lnk, head);
-	system_unlock();
+    if (priority)
+        dlist_move(&waiter.w.ctr.lnk, head);
+    else
+        dlist_move_tail(&waiter.w.ctr.lnk, head);
+    system_unlock();
 
-	//auto save = system_lock_save();
-	waiter.event.wait();
-	//system_lock_restore(save);
+    // auto save = system_lock_save();
+    waiter.event.wait();
+    // system_lock_restore(save);
 
-	*future = waiter.w.ctr.future;
-	return 0;
+    *future = waiter.w.ctr.future;
+    return 0;
 }
 
-int unwait_schedee_waiter(struct waiter* w) 
+int unwait_schedee_waiter(struct waiter *w)
 {
-	struct linux_waiter * waiter = mcast_out(w, struct linux_waiter, w);
-	waiter->event.signal();
+    struct linux_waiter *waiter = mcast_out(w, struct linux_waiter, w);
+    waiter->event.signal();
 
-	return 0;
+    return 0;
 }

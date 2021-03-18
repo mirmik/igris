@@ -10,11 +10,11 @@ extern void do_nothing();
 
 __END_DECLS
 
-#ifdef __cplusplus 
+#ifdef __cplusplus
 
-template <class R, class ... Args>
-constexpr R(*do_nothing_signature)(Args ...) = (R(*)(Args ...)) do_nothing;
+template <class R, class... Args>
+constexpr R (*do_nothing_signature)(Args...) = (R(*)(Args...))do_nothing;
 
 #endif
 
-#endif 
+#endif

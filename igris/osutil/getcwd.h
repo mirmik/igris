@@ -5,10 +5,10 @@
 
 namespace igris
 {
-  namespace osutil
-  {
-    std::string getcwd();
-  }
-}
+    namespace osutil
+    {
+        std::string getcwd();
+    }
+} // namespace igris
 
 #endif

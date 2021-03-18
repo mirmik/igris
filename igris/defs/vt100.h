@@ -13,16 +13,16 @@
 
 __BEGIN_DECLS
 
-int vt100_left(char* buf, int arg) 
+int vt100_left(char *buf, int arg)
 {
-	char* eptr;
+    char *eptr;
 
-	buf[0] = '\x1B';
-	buf[1] = '[';
-	eptr = i32toa(arg, buf+2, 10);
-	*eptr = 'D';
-	*(eptr + 1) = 0;
-	return eptr - buf + 1;
+    buf[0] = '\x1B';
+    buf[1] = '[';
+    eptr = i32toa(arg, buf + 2, 10);
+    *eptr = 'D';
+    *(eptr + 1) = 0;
+    return eptr - buf + 1;
 }
 
 __END_DECLS

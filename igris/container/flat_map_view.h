@@ -3,53 +3,55 @@
 
 #include <utility>
 
-namespace igris 
+namespace igris
 {
-	template <class K, class T, class KeyEqual = std::equal_to<K>>
-	class flat_map_view 
-	{
-		std::pair<K,T> * _data;
-		size_t _size;
-		KeyEqual equal;
+    template <class K, class T, class KeyEqual = std::equal_to<K>>
+    class flat_map_view
+    {
+        std::pair<K, T> *_data;
+        size_t _size;
+        KeyEqual equal;
 
-	public:
-		using iterator = std::pair<K,T> *;
-		using const_iterator = const std::pair<K,T> *;
+      public:
+        using iterator = std::pair<K, T> *;
+        using const_iterator = const std::pair<K, T> *;
 
-		iterator begin() { return _data; };
-		iterator const end() { return _data + _size; };
-		const_iterator begin() const { return _data; };
-		const_iterator const end() const { return _data + _size; };
+        iterator begin() { return _data; };
+        iterator const end() { return _data + _size; };
+        const_iterator begin() const { return _data; };
+        const_iterator const end() const { return _data + _size; };
 
-		size_t size() const { return _size; }
+        size_t size() const { return _size; }
 
-		template <unsigned int N>
-		constexpr flat_map_view(std::pair<K,T> (&arr)[N]) : 
-			_data(arr), _size(N)
-		{}
+        template <unsigned int N>
+        constexpr flat_map_view(std::pair<K, T> (&arr)[N])
+            : _data(arr), _size(N)
+        {
+        }
 
-		T& operator[] (const K& key) 
-		{
-			for (auto& p : *this) 
-			{
-				if (equal(p.first, key)) return p.second;
-			}
-			abort();
-			return *(T*)nullptr;
-		}
+        T &operator[](const K &key)
+        {
+            for (auto &p : *this)
+            {
+                if (equal(p.first, key))
+                    return p.second;
+            }
+            abort();
+            return *(T *)nullptr;
+        }
 
-		iterator find(const K& key) 
-		{
-			auto it = begin();
-			auto eit = end();
+        iterator find(const K &key)
+        {
+            auto it = begin();
+            auto eit = end();
 
-			for (;it!=eit;++it) 
-				if (equal(it->first, key))
-					break;		
+            for (; it != eit; ++it)
+                if (equal(it->first, key))
+                    break;
 
-			return it;
-		}
-	};
-}
+            return it;
+        }
+    };
+} // namespace igris
 
 #endif

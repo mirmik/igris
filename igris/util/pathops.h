@@ -1,110 +1,100 @@
 #ifndef IGRIS_PATHOPS_H
 #define IGRIS_PATHOPS_H
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 
 #include <igris/util/bug.h>
 
-static inline
-int path_is_single_dot(const char *path)
+static inline int path_is_single_dot(const char *path)
 {
-	char nc = *(path + 1);
+    char nc = *(path + 1);
 
-	return *path == '.' && (nc == '/' || nc == '\0');
+    return *path == '.' && (nc == '/' || nc == '\0');
 }
 
-static inline
-const char *path_next(const char *path, unsigned int *p_len)
+static inline const char *path_next(const char *path, unsigned int *p_len)
 {
 
-	if (!path)
-	{
-		return NULL;
-	}
+    if (!path)
+    {
+        return NULL;
+    }
 
-	// Skip leading slashes.
-	// XXX Skip single dots too
-	while (*path == '/' || path_is_single_dot(path))
-	{
-		++path;
-	}
+    // Skip leading slashes.
+    // XXX Skip single dots too
+    while (*path == '/' || path_is_single_dot(path))
+    {
+        ++path;
+    }
 
-	if (!*path)
-	{
-		return NULL;
-	}
+    if (!*path)
+    {
+        return NULL;
+    }
 
-	if (p_len)
-	{
-		const char *end = path;
+    if (p_len)
+    {
+        const char *end = path;
 
-		while (*end && *end != '/')
-		{
-			++end;
-		}
+        while (*end && *end != '/')
+        {
+            ++end;
+        }
 
-		*p_len = end - path;
-	}
+        *p_len = end - path;
+    }
 
-	return path;
+    return path;
 }
 
-static inline
-int path_is_double_dot(const char *path)
+static inline int path_is_double_dot(const char *path)
 {
-	return *path == '.' && *(path + 1) == '.'
-	       && (*(path + 2) == '/' || *(path + 2) == '\0');
+    return *path == '.' && *(path + 1) == '.' &&
+           (*(path + 2) == '/' || *(path + 2) == '\0');
 }
 
-static inline
-int path_is_abs(const char *path)
+static inline int path_is_abs(const char *path) { return path[0] == '/'; }
+
+static inline int path_is_simple(const char *path)
 {
-	return path[0] == '/';
+    char c;
+
+    // for(c = *path++; c; c = *path++)
+    while ((c = *path++))
+        if (c == '/')
+            return false;
+
+    return true;
 }
 
-static inline
-int path_is_simple(const char *path)
+static inline const char *path_last_node(const char *path)
 {
-	char c;
+    const char *it = path + strlen(path);
 
-	//for(c = *path++; c; c = *path++)
-	while ((c = *path++))
-		if (c == '/')
-			return false;
+    do
+    {
+        --it;
+    } while (*it != '\\' && it != path);
 
-	return true;
+    if (*it == '\\')
+        it++;
+
+    return it;
 }
 
-static inline
-const char* path_last_node(const char* path)
+static inline int path_simplify(char *dst, const char *src)
 {
-	const char* it = path + strlen(path);
-
-	do
-	{
-		--it;
-	}
-	while (*it != '\\' && it != path);
-
-	if (*it == '\\') it++;
-
-	return it;
+    BUG();
+    return 0;
 }
 
-static inline 
-int path_simplify(char* dst, const char* src) 
+static inline int path_simplify_join(char *dst, const char *src1,
+                                     const char *src2)
 {
-	BUG();
-	return 0;
-}
-
-static inline 
-int path_simplify_join(char* dst, const char* src1, const char* src2) 
-{
-	BUG();
-	return 0;
+    BUG();
+    return 0;
 }
 
 #endif

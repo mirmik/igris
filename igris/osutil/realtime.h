@@ -11,4 +11,3 @@ int this_thread_set_realtime_priority();
 __END_DECLS
 
 #endif
-

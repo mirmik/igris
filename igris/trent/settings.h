@@ -4,109 +4,130 @@
 #include <igris/trent/trent.h>
 #include <igris/trent/trent_path.h>
 
-namespace igris {
+namespace igris
+{
 
-	struct trent_syncer 
-	{
-		virtual int sync() = 0;
-		virtual int save() = 0;
-		virtual igris::trent& node() = 0;
-	};
+    struct trent_syncer
+    {
+        virtual int sync() = 0;
+        virtual int save() = 0;
+        virtual igris::trent &node() = 0;
+    };
 
-	struct trent_syncer_slice : public trent_syncer {
-		igris::trent_syncer* syncer;
-		igris::trent_path path;
+    struct trent_syncer_slice : public trent_syncer
+    {
+        igris::trent_syncer *syncer;
+        igris::trent_path path;
 
-		trent_syncer_slice(igris::trent_syncer& stgs, const igris::trent_path& path) 
-			: syncer(&stgs), path(path) {}
+        trent_syncer_slice(igris::trent_syncer &stgs,
+                           const igris::trent_path &path)
+            : syncer(&stgs), path(path)
+        {
+        }
 
-		trent_syncer_slice(){};		
+        trent_syncer_slice(){};
 
-		void init(igris::trent_syncer& stgs, const igris::trent_path& path) {
-			syncer = &stgs;
-			this->path = path;
-		}
+        void init(igris::trent_syncer &stgs, const igris::trent_path &path)
+        {
+            syncer = &stgs;
+            this->path = path;
+        }
 
-		int sync() override {
-			return syncer->sync();
-		}
+        int sync() override { return syncer->sync(); }
 
-		int save() override {
-			return syncer->save();
-		}
+        int save() override { return syncer->save(); }
 
-		igris::trent& node() override {
-			return syncer->node() [ path ];
-		}
-	};
+        igris::trent &node() override { return syncer->node()[path]; }
+    };
 
-	struct trent_settings {
-		igris::trent tr;
-		bool synced = false;
+    struct trent_settings
+    {
+        igris::trent tr;
+        bool synced = false;
 
-		virtual void sync() = 0;
-		virtual void save() = 0;
-	
-		igris::trent& node() { return tr; }
-		const igris::trent& node() const { return tr; }
-	};
+        virtual void sync() = 0;
+        virtual void save() = 0;
 
-	struct trent_settings_slice : public trent_settings {
-		igris::trent_settings& settings;
-		igris::trent_path path;
+        igris::trent &node() { return tr; }
+        const igris::trent &node() const { return tr; }
+    };
 
-		trent_settings_slice(igris::trent_settings& stgs, const igris::trent_path& path) 
-			: settings(stgs), path(path) {}
-		
-		void sync() override {
-			if (!settings.synced) {
-				settings.sync();
-			}
-			tr = settings.node()[path];
-			synced = true;
-		}
+    struct trent_settings_slice : public trent_settings
+    {
+        igris::trent_settings &settings;
+        igris::trent_path path;
 
-		void save() override {
-			settings.node()[path] = tr;
-			settings.save();
-		}
-	};
+        trent_settings_slice(igris::trent_settings &stgs,
+                             const igris::trent_path &path)
+            : settings(stgs), path(path)
+        {
+        }
 
+        void sync() override
+        {
+            if (!settings.synced)
+            {
+                settings.sync();
+            }
+            tr = settings.node()[path];
+            synced = true;
+        }
 
-	class settings_binder_int64 : public trent_settings_slice {
-	public:
-		settings_binder_int64(trent_settings& base, const trent_path& name) : trent_settings_slice(base, name) {}
+        void save() override
+        {
+            settings.node()[path] = tr;
+            settings.save();
+        }
+    };
 
-		void sync_default(int64_t def) {
-			sync();
-			if (node().is_nil()) node() = def;
-		}
+    class settings_binder_int64 : public trent_settings_slice
+    {
+      public:
+        settings_binder_int64(trent_settings &base, const trent_path &name)
+            : trent_settings_slice(base, name)
+        {
+        }
 
-		settings_binder_int64& operator=(int64_t i) {
-			node() = i;
-			return *this;
-		}
+        void sync_default(int64_t def)
+        {
+            sync();
+            if (node().is_nil())
+                node() = def;
+        }
 
-		operator int64_t() const { return node().as_integer(); }
-	};
+        settings_binder_int64 &operator=(int64_t i)
+        {
+            node() = i;
+            return *this;
+        }
 
-	class settings_binder_int32 : public trent_settings_slice {
-	public:
-		settings_binder_int32(trent_settings& base, const trent_path& name) : trent_settings_slice(base, name) {}
+        operator int64_t() const { return node().as_integer(); }
+    };
 
-		void sync_default(int32_t def) {
-			sync();
-			if (node().is_nil()) node() = def;
-		}
+    class settings_binder_int32 : public trent_settings_slice
+    {
+      public:
+        settings_binder_int32(trent_settings &base, const trent_path &name)
+            : trent_settings_slice(base, name)
+        {
+        }
 
-		settings_binder_int32& operator=(int32_t i) {
-			node() = i;
-			return *this;
-		}
+        void sync_default(int32_t def)
+        {
+            sync();
+            if (node().is_nil())
+                node() = def;
+        }
 
-		operator int32_t() const { return node().as_integer(); }
-	};
+        settings_binder_int32 &operator=(int32_t i)
+        {
+            node() = i;
+            return *this;
+        }
 
-}
+        operator int32_t() const { return node().as_integer(); }
+    };
+
+} // namespace igris
 
 #endif

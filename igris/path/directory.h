@@ -4,19 +4,22 @@
 #include <gxx/path/file.h>
 #include <gxx/path/path.h>
 
-namespace gxx {
-	namespace path {
-		class directory {
+namespace gxx
+{
+    namespace path
+    {
+        class directory
+        {
 
-		public:
-			directory(gxx::path pth);
+          public:
+            directory(gxx::path pth);
 
-			bool exist();
+            bool exist();
 
-			bool make();
-			bool make_recurse();
-		}
-	}
-}
+            bool make();
+            bool make_recurse();
+        }
+    } // namespace path
+} // namespace gxx
 
 #endif

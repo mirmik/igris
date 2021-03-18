@@ -12,24 +12,25 @@
 #endif
 
 #ifndef __BEGIN_DECLS
-#	ifdef __cplusplus
-#		define __BEGIN_DECLS extern "C" {
-#	else
-#		define __BEGIN_DECLS
-#	endif
+#ifdef __cplusplus
+#define __BEGIN_DECLS                                                          \
+    extern "C"                                                                 \
+    {
+#else
+#define __BEGIN_DECLS
+#endif
 #endif
 
 #ifndef __END_DECLS
-#	ifdef __cplusplus
-#		define __END_DECLS }
-#	else
-#		define __END_DECLS
-#	endif
+#ifdef __cplusplus
+#define __END_DECLS }
+#else
+#define __END_DECLS
+#endif
 #endif
 
-#define IS_ALIGNED(POINTER, BYTE_COUNT) \
+#define IS_ALIGNED(POINTER, BYTE_COUNT)                                        \
     (((uintptr_t)(const void *)(POINTER)) % (BYTE_COUNT) == 0)
-
 
 #ifndef _NORETURN
 #define _NORETURN __NORETURN

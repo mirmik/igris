@@ -1,11 +1,11 @@
 #ifndef IGRIS_WAIT_H
 #define IGRIS_WAIT_H
 
-#include <igris/osinter/ctrobj.h>
 #include <igris/compiler.h>
+#include <igris/osinter/ctrobj.h>
 
-#include <sys/types.h>
 #include <igris/util/types_extension.h>
+#include <sys/types.h>
 
 #include <igris/datastruct/dlist.h>
 #include <igris/datastruct/ring.h>
@@ -14,38 +14,37 @@
 
 struct waiter
 {
-	struct ctrobj ctr;
+    struct ctrobj ctr;
 };
 
 struct waiter_delegate
 {
-	struct ctrobj ctr;
-	void (*func)(void*);
-	void * obj;
+    struct ctrobj ctr;
+    void (*func)(void *);
+    void *obj;
 };
 
 __BEGIN_DECLS
 
-static inline
-void waiter_schedee_init(struct waiter * w) 
+static inline void waiter_schedee_init(struct waiter *w)
 {
-	ctrobj_init(&w->ctr, CTROBJ_WAITER_SCHEDEE);
+    ctrobj_init(&w->ctr, CTROBJ_WAITER_SCHEDEE);
 }
 
-static inline
-void waiter_delegate_init(struct waiter_delegate * w, void (*func)(void*), void* obj) 
+static inline void waiter_delegate_init(struct waiter_delegate *w,
+                                        void (*func)(void *), void *obj)
 {
-	ctrobj_init(&w->ctr, CTROBJ_WAITER_DELEGATE);
-	w -> func = func;
-	w -> obj = obj;
+    ctrobj_init(&w->ctr, CTROBJ_WAITER_DELEGATE);
+    w->func = func;
+    w->obj = obj;
 }
 
-int wait_current_schedee(struct dlist_head * head, int priority, void ** future);
-int unwait_schedee_waiter(struct waiter* w); 
+int wait_current_schedee(struct dlist_head *head, int priority, void **future);
+int unwait_schedee_waiter(struct waiter *w);
 
-int waiter_unwait(struct dlist_head * lnk, void* future);
-void unwait_one(struct dlist_head * head, void* future);
-void unwait_all(struct dlist_head * head, void* future);
+int waiter_unwait(struct dlist_head *lnk, void *future);
+void unwait_one(struct dlist_head *head, void *future);
+void unwait_all(struct dlist_head *head, void *future);
 
 __END_DECLS
 

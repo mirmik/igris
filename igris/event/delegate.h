@@ -1,5 +1,5 @@
 
-//by Mirmik 2015
+// by Mirmik 2015
 
 //Непереносимо. Только для G++
 
@@ -20,269 +20,275 @@
 namespace igris
 {
 
-	class AbstractDelegate {};
+    class AbstractDelegate
+    {
+    };
 
-	template<typename T, typename B> struct change_basic {};
-	template<typename T, typename B, typename R, typename ... V>
-	struct change_basic<T, R(B::*)(V...)>
-	{
-	    using type =  R(T::*)(V...);
-	};
+    template <typename T, typename B> struct change_basic
+    {
+    };
+    template <typename T, typename B, typename R, typename... V>
+    struct change_basic<T, R (B::*)(V...)>
+    {
+        using type = R (T::*)(V...);
+    };
 
-	template<typename R , typename ... Args>	class delegate;
-	template<typename R , typename ... Args>	class fastdelegate;
-	template<typename R , typename ... Args>	class callback;
+    template <typename R, typename... Args> class delegate;
+    template <typename R, typename... Args> class fastdelegate;
+    template <typename R, typename... Args> class callback;
 
-	//Делегат. Шаблонный класс.
-	//Параметры шаблона задают сигнатуру делегируемой функции.
-	//@1 тип возвращаемый тип.
-	//@2 - ... Типы параметров. Доступно неограниченное количество параметров.
-	template<typename R , typename ... Args>
-	class delegate
-	{
-	protected:
-		enum { METHOD, FUNCTION };
+    //Делегат. Шаблонный класс.
+    //Параметры шаблона задают сигнатуру делегируемой функции.
+    //@1 тип возвращаемый тип.
+    //@2 - ... Типы параметров. Доступно неограниченное количество параметров.
+    template <typename R, typename... Args> class delegate
+    {
+      protected:
+        enum
+        {
+            METHOD,
+            FUNCTION
+        };
 
-		using obj_t 		= AbstractDelegate*;
-		using mtd_t 		= R (AbstractDelegate::*)(Args ...);
-		using fnc_t 		= R (*)(Args ...);
-		using extfnc_t	 	= R (*)(void* , Args ...);
-		using absmemb_t		= std::pair<mtd_t, obj_t>;
+        using obj_t = AbstractDelegate *;
+        using mtd_t = R (AbstractDelegate::*)(Args...);
+        using fnc_t = R (*)(Args...);
+        using extfnc_t = R (*)(void *, Args...);
+        using absmemb_t = std::pair<mtd_t, obj_t>;
 
+        //Соответствует истине и будет работать только в G++
+        union method_union
+        {
+            mtd_t method;
+            struct
+            {
+                union
+                {
+                    fnc_t function;
+                    extfnc_t external_function;
+                };
+                union
+                {
+                    fnc_t attributes;
+                    uintptr_t external_attributes;
+                };
+            } part;
+        };
 
-		//Соответствует истине и будет работать только в G++
-		union method_union
-		{
-			mtd_t method;
-			struct
-			{
-				union {
-					fnc_t function;
-					extfnc_t external_function;
-				};
-				union {
-					fnc_t attributes;
-					uintptr_t external_attributes;
-				};
-			} part;
-		};
+      protected:
+        union
+        {
+            obj_t object;
+            void *external_object;
+        };
+        method_union method;
 
-	protected:
-		union 
-		{
-			obj_t object;
-			void * external_object;
-		};
-		method_union method;
+      public:
+        void clean()
+        {
+            object = 0;
+            method.part.function = nullptr;
+            method.part.attributes = 0;
+        }
 
-	public:
-		void clean()
-		{
-			object = 0;
-			method.part.function = nullptr;
-			method.part.attributes = 0;
-		}
+        bool armed() { return method.part.function != nullptr; }
 
-		bool armed()
-		{
-			return method.part.function != nullptr;
-		}
+        delegate() { clean(); }
 
-		delegate() { clean(); }
+        delegate(const delegate &d)
+        {
+            object = d.object;
+            method.method = d.method.method;
+        };
 
-		delegate(const delegate& d)
-		{
-			object = d.object;
-			method.method = d.method.method;
-		};
+        delegate(delegate &&d)
+        {
+            object = d.object;
+            method.method = d.method.method;
+        };
 
-		delegate(delegate&& d)
-		{
-			object = d.object;
-			method.method = d.method.method;
-		};
+        delegate(const fnc_t func)
+        {
+            object = 0;
+            method.part.function = func;
+            method.part.attributes = 0;
+        };
 
-		delegate(const fnc_t func)
-		{
-			object = 0;
-			method.part.function = func;
-			method.part.attributes = 0;
-		};
+        delegate(const extfnc_t func, void *obj)
+        {
+            external_object = obj;
+            method.part.external_function = func;
+            method.part.external_attributes = -1;
+        };
 
-		delegate(const extfnc_t func, void * obj)
-		{
-			external_object = obj;
-			method.part.external_function = func;
-			method.part.external_attributes = -1;
-		};
+        template <typename T> delegate(R (T::*mtd)(Args...), T *ptr_obj)
+        {
+            object = reinterpret_cast<obj_t>(ptr_obj);
+            method.method = horrible_cast<mtd_t, R (T::*)(Args...)>(mtd);
+        }
 
-		template <typename T>
-		delegate(R(T::*mtd)(Args ...), T* ptr_obj)
-		{
-			object = reinterpret_cast <obj_t> (ptr_obj);
-			method.method = horrible_cast<mtd_t, R(T::*)(Args ...)>(mtd);
-		}
+        template <typename F> explicit delegate(const F &functor)
+        {
+            object = reinterpret_cast<obj_t>((F *)&functor);
+            method.method =
+                horrible_cast<mtd_t, decltype(&F::operator())>(&F::operator());
+        }
 
-		template <typename F>
-		explicit delegate(const F& functor)
-		{
-			object = reinterpret_cast <obj_t> ((F*) &functor);
-			method.method = horrible_cast<mtd_t, decltype(&F::operator())>(&F::operator());
-		}
+        delegate &operator=(const delegate &d)
+        {
+            object = d.object;
+            method.method = d.method.method;
+            return *this;
+        };
 
-		delegate& operator=(const delegate& d)
-		{
-			object = d.object;
-			method.method = d.method.method;
-			return *this;
-		};
+        delegate &operator=(delegate &&d)
+        {
+            object = d.object;
+            method = d.method;
+            return *this;
+        };
 
-		delegate& operator=(delegate&& d)
-		{
-			object = d.object;
-			method = d.method;
-			return *this;
-		};
+        R operator()(Args... args) { return emit(std::forward<Args>(args)...); }
 
-		R operator()(Args ... args)
-		{
-			return emit(std::forward<Args>(args) ...);
-		}
+        R emit(Args... args)
+        {
+            if (!armed())
+                return R();
 
-		R emit(Args ... args) 
-		{
-			if (!armed())
-				return R();
+            if (method.part.external_attributes == (uintptr_t)-1)
+            {
+                return method.part.external_function(
+                    external_object, std::forward<Args>(args)...);
+            }
 
-			if (method.part.external_attributes == (uintptr_t) -1) 
-			{
-				return method.part.external_function(external_object, std::forward<Args>(args) ...);			
-			}
+            uint8_t type = object ? METHOD : FUNCTION;
+            if (type == METHOD)
+                return (object->*method.method)(std::forward<Args>(args)...);
+            else
+                return method.part.function(std::forward<Args>(args)...);
+        }
 
-			uint8_t type = object ? METHOD : FUNCTION;
-			if (type == METHOD)
-				return (object->*method.method)(std::forward<Args>(args) ...);
-			else
-				return method.part.function(std::forward<Args>(args) ...);	
-		}
+        bool operator==(delegate<R, Args...> b)
+        {
+            return method.method == b.method.method && object == b.object;
+        };
 
-		bool operator==(delegate<R , Args ... > b)
-		{
-			return method.method == b.method.method && object == b.object;
-		};
+        R emit_and_reset(Args... args)
+        {
+            delegate<R, Args...> copydlg = *this;
+            clean();
+            return copydlg(std::forward<Args>(args)...);
+        };
+    };
 
-		R emit_and_reset(Args ... args)
-		{
-			delegate<R, Args ...> copydlg = *this;
-			clean();
-			return copydlg(std::forward<Args>(args) ...);
-		};
+    template <typename R, typename... Args> class fastdelegate
+    {
+        using obj_t = AbstractDelegate *;
+        using mtd_t = R (AbstractDelegate::*)(Args...);
+        using fnc_t = R (*)(Args...);
+        using extfnc_t = R (*)(void *, Args...);
+        using absmemb_t = std::pair<mtd_t, obj_t>;
 
-	};
+        //Соответствует истине и будет работать только в G++
+        union method_union
+        {
+            mtd_t method;
+            struct
+            {
+                fnc_t function;
+                fnc_t attributes;
+            } part;
+        };
 
-	template<typename R , typename ... Args>
-	class fastdelegate
-	{
-		using obj_t 		= AbstractDelegate*;
-		using mtd_t 		= R (AbstractDelegate::*)(Args ...);
-		using fnc_t 		= R (*)(Args ...);
-		using extfnc_t	 	= R (*)(void* , Args ...);
-		using absmemb_t		= std::pair<mtd_t, obj_t>;
+      public:
+        obj_t object;
+        extfnc_t extfunction;
 
-		//Соответствует истине и будет работать только в G++
-		union method_union
-		{
-			mtd_t method;
-			struct
-			{
-				fnc_t function;
-				fnc_t attributes;
-			} part;
-		};
+      public:
+        void clean()
+        {
+            object = 0;
+            extfunction = nullptr;
+        }
 
-	public:
-		obj_t object;
-		extfnc_t extfunction;
+        fastdelegate() { clean(); }
 
-	public:
-		void clean()
-		{
-			object = 0;
-			extfunction = nullptr;
-		}
+        fastdelegate(const fastdelegate &d)
+            : object(d.object), extfunction(d.extfunction){};
 
-		fastdelegate() { clean(); }
+        void operator=(const fastdelegate &d) volatile
+        {
+            object = d.object;
+            extfunction = d.extfunction;
+        }
 
-		fastdelegate(const fastdelegate& d)	: object(d.object), extfunction(d.extfunction) {};
+        fastdelegate(absmemb_t &&pr)
+        {
+            object = pr.second;
+            extfunction = reinterpret_cast<extfnc_t>(
+                horrible_cast<method_union, mtd_t>(pr.first).function);
+        };
 
-		void operator= (const fastdelegate& d) volatile
-		{
-			object = d.object;
-			extfunction = d.extfunction;
-		}
+        fastdelegate(extfnc_t func, void *obj)
+        {
+            object = (obj_t)obj;
+            extfunction = func;
+        };
 
-		fastdelegate(absmemb_t&& pr)
-		{
-			object = pr.second;
-			extfunction = reinterpret_cast<extfnc_t>(horrible_cast<method_union, mtd_t>(pr.first).function);
-		};
+        template <typename T> fastdelegate(R (T::*mtd)(Args...), T *ptr_obj)
+        {
+            object = reinterpret_cast<obj_t>(ptr_obj);
+            extfunction = reinterpret_cast<extfnc_t>(
+                horrible_cast<method_union, R (T::*)(Args...)>(mtd)
+                    .part.function);
+        }
 
-		fastdelegate(extfnc_t func, void* obj)
-		{
-			object = (obj_t) obj;
-			extfunction = func;
-		};
+        R operator()(Args... arg) volatile
+        {
+            return extfunction(object, arg...);
+        };
+    };
 
-		template <typename T>
-		fastdelegate(R(T::*mtd)(Args ...), T* ptr_obj)
-		{
-			object = reinterpret_cast <obj_t> (ptr_obj);
-			extfunction = reinterpret_cast<extfnc_t>(horrible_cast<method_union, R(T::*)(Args ...)>(mtd).part.function);
-		}
+    template <typename T, typename Ret, typename... Args>
+    delegate<Ret, Args...> make_delegate(Ret (T::*mtd)(Args...), T *ptr)
+    {
+        return delegate<Ret, Args...>(mtd, ptr);
+    }
 
-		R operator()(Args ... arg) volatile
-		{
-			return extfunction(object, arg ...);
-		};
-	};
+    template <typename Ret, typename... Args>
+    delegate<Ret, Args...> make_delegate(Ret (*fnc)(Args...))
+    {
+        return delegate<Ret, Args...>(fnc);
+    }
 
-	template<typename T, typename Ret, typename ... Args>
-	delegate<Ret, Args ...> make_delegate(Ret(T::* mtd)(Args...), T* ptr)
-	{
-		return delegate<Ret, Args...>(mtd, ptr);
-	}
+    template <typename Ret, typename... Args>
+    delegate<Ret, Args...> make_delegate(Ret (*fnc)(void *, Args...),
+                                         void *extobj)
+    {
+        return delegate<Ret, Args...>(fnc, extobj);
+    }
 
-	template<typename Ret, typename ... Args>
-	delegate<Ret, Args ...> make_delegate(Ret(* fnc)(Args...))
-	{
-		return delegate<Ret, Args...>(fnc);
-	}
+    template <typename T, typename Ret, typename... Args>
+    fastdelegate<Ret, Args...> make_fastdelegate(Ret (T::*mtd)(Args...), T *ptr)
+    {
+        return fastdelegate<Ret, Args...>(mtd, ptr);
+    }
 
-	template<typename Ret, typename ... Args>
-	delegate<Ret, Args ...> make_delegate(Ret(* fnc)(void *, Args...), void * extobj)
-	{
-		return delegate<Ret, Args...>(fnc, extobj);
-	}
+    template <typename Ret, typename... Args>
+    fastdelegate<Ret, Args...> make_fastdelegate(Ret (*fnc)(void *, Args...),
+                                                 void *obj)
+    {
+        return fastdelegate<Ret, Args...>(fnc, obj);
+    }
 
-	template<typename T, typename Ret, typename ... Args>
-	fastdelegate<Ret, Args ...> make_fastdelegate(Ret(T::* mtd)(Args...), T* ptr)
-	{
-		return fastdelegate<Ret, Args...>(mtd, ptr);
-	}
+    using action = delegate<void>;
+    using fastaction = fastdelegate<void>;
 
-	template<typename Ret, typename ... Args>
-	fastdelegate<Ret, Args ...> make_fastdelegate(Ret(* fnc)(void*, Args...), void* obj)
-	{
-		return fastdelegate<Ret, Args...>(fnc, obj);
-	}
-
-	using action = delegate<void>;
-	using fastaction = fastdelegate<void>;
-
-	static inline fastaction make_fastaction(void(* fnc)())
-	{
-		return make_fastdelegate(reinterpret_cast<void(*)(void*)>(fnc), nullptr);
-	}
-}
+    static inline fastaction make_fastaction(void (*fnc)())
+    {
+        return make_fastdelegate(reinterpret_cast<void (*)(void *)>(fnc),
+                                 nullptr);
+    }
+} // namespace igris
 
 #endif

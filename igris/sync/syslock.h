@@ -8,22 +8,30 @@
 
 struct syslock_save_pair
 {
-	int count;
-	int state;
+    int count;
+    int state;
 };
 
 __BEGIN_DECLS
 
 #if IGRIS_SYSLOCK_DEBUG
 void system_lock_impl(struct location loc);
-#define system_lock() {CURRENT_LOCATION(loc);system_lock_impl(loc);};
+#define system_lock()                                                          \
+    {                                                                          \
+        CURRENT_LOCATION(loc);                                                 \
+        system_lock_impl(loc);                                                 \
+    };
 #else
 void system_lock();
 #endif
 
 #if IGRIS_SYSLOCK_DEBUG
 void system_unlock_impl(struct location loc);
-#define system_unlock() {CURRENT_LOCATION(loc);system_unlock_impl(loc);};
+#define system_unlock()                                                        \
+    {                                                                          \
+        CURRENT_LOCATION(loc);                                                 \
+        system_unlock_impl(loc);                                               \
+    };
 #else
 void system_unlock();
 #endif
@@ -39,14 +47,15 @@ void system_lock_restore(struct syslock_save_pair save);
 __END_DECLS
 
 #ifdef __cplusplus
-namespace igris {
-	class syslock_guard
-	{
-	public:
-		syslock_guard() { system_lock(); }
-		~syslock_guard() { system_unlock(); }
-	};
-}
+namespace igris
+{
+    class syslock_guard
+    {
+      public:
+        syslock_guard() { system_lock(); }
+        ~syslock_guard() { system_unlock(); }
+    };
+} // namespace igris
 #endif
 
 #endif

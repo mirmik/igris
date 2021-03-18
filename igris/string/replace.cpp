@@ -2,34 +2,33 @@
 
 #include <string.h>
 
-std::string igris::replace(
-    const std::string& input,
-    const std::string& sub,
-    const std::string& rep)
+std::string igris::replace(const std::string &input, const std::string &sub,
+                           const std::string &rep)
 {
-	std::string output;
+    std::string output;
 
-	const char * strit = input.data();
-	const char * streit = input.data() + input.size();
-	
-	if (sub.length() == 0)
-	{
-		output.append(input);
-		return output;
-	}
+    const char *strit = input.data();
+    const char *streit = input.data() + input.size();
 
-	char * finded;
-	while ((finded = (char*)igris_memmem(strit, streit - strit, sub.data(), sub.size())) != NULL)
-	{
-		int step = finded - strit;
+    if (sub.length() == 0)
+    {
+        output.append(input);
+        return output;
+    }
 
-		output.append(strit, step);
-		strit += step;
+    char *finded;
+    while ((finded = (char *)igris_memmem(strit, streit - strit, sub.data(),
+                                          sub.size())) != NULL)
+    {
+        int step = finded - strit;
 
-		output.append(rep);
-		strit += sub.size();	
-	};
+        output.append(strit, step);
+        strit += step;
 
-	output.append(strit, streit - strit);
-	return output;
+        output.append(rep);
+        strit += sub.size();
+    };
+
+    output.append(strit, streit - strit);
+    return output;
 }

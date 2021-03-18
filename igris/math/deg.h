@@ -19,7 +19,7 @@ static inline float deg2rad(float x) { return x * M_PI / 180.0; }
 static inline float rad2deg(float x) { return x * 180.0 / M_PI; }
 #endif
 
-#define DEG2RAD (M_PI/180.0)
-#define RAD2DEG (180.0/M_PI)
+#define DEG2RAD (M_PI / 180.0)
+#define RAD2DEG (180.0 / M_PI)
 
 #endif

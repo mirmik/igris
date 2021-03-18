@@ -1,238 +1,248 @@
 #ifndef IGRIS_SHELL_EXECUTOR_H
 #define IGRIS_SHELL_EXECUTOR_H
 
-#include <igris/util/bug.h>
-#include <igris/shell/conscmd.h>
 #include <igris/datastruct/argvc.h>
+#include <igris/shell/conscmd.h>
+#include <igris/util/bug.h>
 
-#include <unistd.h>
 #include <errno.h>
+#include <unistd.h>
 
 #define EXECUTOR_PROCESS_STARTED 2
 #define EXECUTOR_TBLFIN nullptr
 
+void executor_make_process(int (*func)(int, char **), int argc, char **argv);
 
-void executor_make_process(int(*func)(int,char**), int argc, char** argv);
-
-// COMMENT: Флаги фактически не используются, а если будут, то возможно, 
+// COMMENT: Флаги фактически не используются, а если будут, то возможно,
 // лучше сделать их полем.
 namespace igris
 {
 
-	class executor
-	{
-	public:
-		bool debug_mode = false;
-		virtual int execute(
-		    char* str, size_t len, int flags, int* p_ret) = 0;
-	};
+    class executor
+    {
+      public:
+        bool debug_mode = false;
+        virtual int execute(char *str, size_t len, int flags, int *p_ret) = 0;
+    };
 
-	// Этот executor делает обход по двухуровневой таблице,
-	// тем самым, он может обойти несколько единиц трансляции. 
-	class syscmd_executor : public executor
-	{
-		console_command ** tbl;
+    // Этот executor делает обход по двухуровневой таблице,
+    // тем самым, он может обойти несколько единиц трансляции.
+    class syscmd_executor : public executor
+    {
+        console_command **tbl;
 
-	public:
-		syscmd_executor(igris::console_command** syscmdtbl)
-			: tbl(syscmdtbl) {}
+      public:
+        syscmd_executor(igris::console_command **syscmdtbl) : tbl(syscmdtbl) {}
 
-		int execute(char * str, size_t len, int flags, int * retptr) override
-		{
-			size_t flen = 0;
-			int argc;
-			int res;
-			char * argv[10];
-			igris::console_command ** it0;
-			igris::console_command * it1;
+        int execute(char *str, size_t len, int flags, int *retptr) override
+        {
+            size_t flen = 0;
+            int argc;
+            int res;
+            char *argv[10];
+            igris::console_command **it0;
+            igris::console_command *it1;
 
-			if (debug_mode)
-			{
-				dpr("execinput: len: "); dpr(len); dpr(" data: ");
-				debug_write(str, len); dprln();
-				//debug_print_dump(str, len);
-			}
+            if (debug_mode)
+            {
+                dpr("execinput: len: ");
+                dpr(len);
+                dpr(" data: ");
+                debug_write(str, len);
+                dprln();
+                // debug_print_dump(str, len);
+            }
 
-			if (!(flags & SH_INTERNAL_SPLIT))
-			{
-				BUG();
-			}
+            if (!(flags & SH_INTERNAL_SPLIT))
+            {
+                BUG();
+            }
 
-			if (len <= 0)
-			{
-				return 0;
-			}	
+            if (len <= 0)
+            {
+                return 0;
+            }
 
-			str[len] = 0;
-			
-			// Скипаем ведущие пробелы
-			while (*str == ' ' || *str == '\n')
-			{
-				++str;
-				--len;
-			}
+            str[len] = 0;
 
-			// Ищем длину первого слова
-			while (flen != len && str[flen] != '\0' && str[flen] != ' ' && str[flen] != '\n')
-				++flen;
+            // Скипаем ведущие пробелы
+            while (*str == ' ' || *str == '\n')
+            {
+                ++str;
+                --len;
+            }
 
-			if (flen <= 0)
-			{
-				return 0;
-			}
+            // Ищем длину первого слова
+            while (flen != len && str[flen] != '\0' && str[flen] != ' ' &&
+                   str[flen] != '\n')
+                ++flen;
 
-			// Встроенная функция help
-			if ((str[4] == 0 || str[4] == ' ' || str[4] == '\n') && !strncmp(str, "help", 4))
-			{
-				for (it0 = tbl; *it0 != nullptr; ++it0)
-				{
-					for (it1 = *it0; it1->func != NULL; ++it1)
-					{
-						int sts;
+            if (flen <= 0)
+            {
+                return 0;
+            }
 
-						//Если у функции есть справка, печатаем её. Иначе - просто имя.
-						if (it1->help)
-						{
-							sts = printf("%s - %s\r\n", it1->name, it1->help);
-						}
-						else
-						{
-							sts = printf("%s\r\n", it1->name);
-						}
+            // Встроенная функция help
+            if ((str[4] == 0 || str[4] == ' ' || str[4] == '\n') &&
+                !strncmp(str, "help", 4))
+            {
+                for (it0 = tbl; *it0 != nullptr; ++it0)
+                {
+                    for (it1 = *it0; it1->func != NULL; ++it1)
+                    {
+                        int sts;
 
-						if (sts < 0) 
-						{ 
-							if (errno == -EBADF) 
-							{
-								dprln("executor:help:badfile");
-							}
-							else 
-							{
-								dprln("executor:help:errno", errno);	
-							}
-						}
-					}
-				}
-				return 0;
-			}
+                        //Если у функции есть справка, печатаем её. Иначе -
+                        //просто имя.
+                        if (it1->help)
+                        {
+                            sts = printf("%s - %s\r\n", it1->name, it1->help);
+                        }
+                        else
+                        {
+                            sts = printf("%s\r\n", it1->name);
+                        }
 
-			argc = argvc_internal_split(str, argv, 10);
+                        if (sts < 0)
+                        {
+                            if (errno == -EBADF)
+                            {
+                                dprln("executor:help:badfile");
+                            }
+                            else
+                            {
+                                dprln("executor:help:errno", errno);
+                            }
+                        }
+                    }
+                }
+                return 0;
+            }
 
-			// Основной цикл, пробегаем бо двухуровневой таблице в поисках нужной функции.
-			for (it0 = tbl; *it0 != nullptr; ++it0)
-			{
-				for (it1 = *it0; it1->func != NULL; ++it1)
-				{
-					if (strlen(it1->name) == flen && !strncmp(str, it1->name, flen))
-					{
-						switch (it1->type)
-						{
-							case CMDFUNC:
-								res = ((syscmd_func_t)(it1->func))(argc, argv);
+            argc = argvc_internal_split(str, argv, 10);
 
-								if (retptr) *retptr = res;
+            // Основной цикл, пробегаем бо двухуровневой таблице в поисках
+            // нужной функции.
+            for (it0 = tbl; *it0 != nullptr; ++it0)
+            {
+                for (it1 = *it0; it1->func != NULL; ++it1)
+                {
+                    if (strlen(it1->name) == flen &&
+                        !strncmp(str, it1->name, flen))
+                    {
+                        switch (it1->type)
+                        {
+                        case CMDFUNC:
+                            res = ((syscmd_func_t)(it1->func))(argc, argv);
 
-								return 0;
+                            if (retptr)
+                                *retptr = res;
 
-							case CMDAUTOM:
-								BUG();
-								return 0;
+                            return 0;
 
-							case CMDCOOP:
-								executor_make_process((syscmd_func_t) it1->func, argc, argv);
-								return EXECUTOR_PROCESS_STARTED;
-						}
-					}
-				}
-			}
+                        case CMDAUTOM:
+                            BUG();
+                            return 0;
 
-			printf("Not enough command: %s\r\n", argv[0]);
-			return -ENOENT;
-		}
-	};
+                        case CMDCOOP:
+                            executor_make_process((syscmd_func_t)it1->func,
+                                                  argc, argv);
+                            return EXECUTOR_PROCESS_STARTED;
+                        }
+                    }
+                }
+            }
 
-	class syscmd_executor_onelevel : public executor
-	{
-		console_command * tbl;
+            printf("Not enough command: %s\r\n", argv[0]);
+            return -ENOENT;
+        }
+    };
 
-	public:
-		syscmd_executor_onelevel(igris::console_command* syscmdtbl)
-			: tbl(syscmdtbl) {}
+    class syscmd_executor_onelevel : public executor
+    {
+        console_command *tbl;
 
-		int execute(char * str, size_t len, int flags, int * retptr) override
-		{
-			size_t flen = 0;
-			int argc;
-			int res;
-			char * argv[10];
-			igris::console_command * it;
+      public:
+        syscmd_executor_onelevel(igris::console_command *syscmdtbl)
+            : tbl(syscmdtbl)
+        {
+        }
 
-			if (!(flags & SH_INTERNAL_SPLIT))
-			{
-				BUG();
-			}
+        int execute(char *str, size_t len, int flags, int *retptr) override
+        {
+            size_t flen = 0;
+            int argc;
+            int res;
+            char *argv[10];
+            igris::console_command *it;
 
-			if (len <= 0)
-			{
-				return 0;
-			}
+            if (!(flags & SH_INTERNAL_SPLIT))
+            {
+                BUG();
+            }
 
-			// Скипаем ведущие пробелы
-			while (*str == ' ')
-				++str;
+            if (len <= 0)
+            {
+                return 0;
+            }
 
-			// Ищем длину первого слова
-			while (flen != len && str[flen] != '\0' && str[flen] != ' ')
-				++flen;
+            // Скипаем ведущие пробелы
+            while (*str == ' ')
+                ++str;
 
-			// Встроенная функция help
-			if (flen == 4 && !strncmp(str, "help", 4))
-			{
-				for (it = tbl; it->name != NULL; ++it)
-				{
-					if (it->help)
-					{
-						printf("%s - %s\r\n", it->name, it->help);
-					}
-					else
-					{
-						printf("%s\r\n", it->name);
-					}
-				}
-				return 0;
-			}
+            // Ищем длину первого слова
+            while (flen != len && str[flen] != '\0' && str[flen] != ' ')
+                ++flen;
 
-			// Основной цикл
-			for (it = tbl; it->name != nullptr; ++it)
-			{
-				if (!strncmp(str, it->name, flen))
-				{
-					argc = argvc_internal_split(str, argv, 10);
+            // Встроенная функция help
+            if (flen == 4 && !strncmp(str, "help", 4))
+            {
+                for (it = tbl; it->name != NULL; ++it)
+                {
+                    if (it->help)
+                    {
+                        printf("%s - %s\r\n", it->name, it->help);
+                    }
+                    else
+                    {
+                        printf("%s\r\n", it->name);
+                    }
+                }
+                return 0;
+            }
 
-					switch (it->type)
-					{
-						case CMDFUNC:
-							res = ((syscmd_func_t)(it->func))(argc, argv);
+            // Основной цикл
+            for (it = tbl; it->name != nullptr; ++it)
+            {
+                if (!strncmp(str, it->name, flen))
+                {
+                    argc = argvc_internal_split(str, argv, 10);
 
-							if (retptr) *retptr = res;
+                    switch (it->type)
+                    {
+                    case CMDFUNC:
+                        res = ((syscmd_func_t)(it->func))(argc, argv);
 
-							return 0;
+                        if (retptr)
+                            *retptr = res;
 
-						case CMDAUTOM:
-							BUG();
-							return 0;
+                        return 0;
 
-						case CMDCOOP:
-							executor_make_process((syscmd_func_t) it->func, argc, argv);
-							return EXECUTOR_PROCESS_STARTED;
-					}
-				}
-			}
+                    case CMDAUTOM:
+                        BUG();
+                        return 0;
 
+                    case CMDCOOP:
+                        executor_make_process((syscmd_func_t)it->func, argc,
+                                              argv);
+                        return EXECUTOR_PROCESS_STARTED;
+                    }
+                }
+            }
 
-			return ENOENT;
-		}
-	};
-}
+            return ENOENT;
+        }
+    };
+} // namespace igris
 
 #endif

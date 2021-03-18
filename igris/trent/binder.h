@@ -1,100 +1,127 @@
 #ifndef igris_TRENT_BINDER_H
 #define igris_TRENT_BINDER_H
 
-#include <igris/trent/trent.h>
 #include <igris/trent/settings.h>
+#include <igris/trent/trent.h>
 
-namespace igris 
+namespace igris
 {
-	template <typename T> struct trent_binder_ops {};
+    template <typename T> struct trent_binder_ops
+    {
+    };
 
-	template <typename Integer> 
-	struct trent_binder_ops_integer {
-		static Integer from_trent(const igris::trent& tr) { return tr.as_integer(); }
-		static void set_trent(igris::trent& tr, const Integer& val) { tr = val; }
-	};
-	
-	template <typename Float> 
-	struct trent_binder_ops_float {
-		static Float from_trent(const igris::trent& tr) { return tr.as_numer(); }
-		static void set_trent(igris::trent& tr, const Float& val) { tr = val; }
-	};
-	
-	template <> struct trent_binder_ops<int32_t> : public trent_binder_ops_integer<int32_t> {};
-	template <> struct trent_binder_ops<int64_t> : public trent_binder_ops_integer<int64_t> {};
+    template <typename Integer> struct trent_binder_ops_integer
+    {
+        static Integer from_trent(const igris::trent &tr)
+        {
+            return tr.as_integer();
+        }
+        static void set_trent(igris::trent &tr, const Integer &val)
+        {
+            tr = val;
+        }
+    };
 
-	template <> struct trent_binder_ops<float> : public trent_binder_ops_float<float> {};
-	template <> struct trent_binder_ops<double> : public trent_binder_ops_float<double> {};
+    template <typename Float> struct trent_binder_ops_float
+    {
+        static Float from_trent(const igris::trent &tr)
+        {
+            return tr.as_numer();
+        }
+        static void set_trent(igris::trent &tr, const Float &val) { tr = val; }
+    };
 
-	template <> struct trent_binder_ops<std::string> 
-	{
-		static std::string from_trent(const igris::trent& tr) { return tr.as_string(); }
-		static void set_trent(igris::trent& tr, const std::string& val) { tr = val; }	
-	};
+    template <>
+    struct trent_binder_ops<int32_t> : public trent_binder_ops_integer<int32_t>
+    {
+    };
+    template <>
+    struct trent_binder_ops<int64_t> : public trent_binder_ops_integer<int64_t>
+    {
+    };
 
-	template < typename T >
-	class trent_binder
-	{
-		mutable trent_syncer_slice saver;
-		trent_binder_ops<T> ops;	
+    template <>
+    struct trent_binder_ops<float> : public trent_binder_ops_float<float>
+    {
+    };
+    template <>
+    struct trent_binder_ops<double> : public trent_binder_ops_float<double>
+    {
+    };
 
-		mutable bool synced = false;
-		mutable T _local;
+    template <> struct trent_binder_ops<std::string>
+    {
+        static std::string from_trent(const igris::trent &tr)
+        {
+            return tr.as_string();
+        }
+        static void set_trent(igris::trent &tr, const std::string &val)
+        {
+            tr = val;
+        }
+    };
 
-	public:
-		trent_binder(){};
+    template <typename T> class trent_binder
+    {
+        mutable trent_syncer_slice saver;
+        trent_binder_ops<T> ops;
 
-		template <typename ... Args>
-		trent_binder(Args && ... args) : saver(std::forward<Args>(args) ...) 
-		{
-			sync();
-		}
-	
-		template <typename ... Args>
-		void init(Args && ... args) 
-		{
-			saver.init(args ...);
-		}
+        mutable bool synced = false;
+        mutable T _local;
 
-		void sync() const
-		{
-			saver.sync();
-			_local = ops.from_trent(saver.node());
-			synced = true;
-		}
+      public:
+        trent_binder(){};
 
-		void sync_default(T defa)
-		{
-			saver.sync();
+        template <typename... Args>
+        trent_binder(Args &&...args) : saver(std::forward<Args>(args)...)
+        {
+            sync();
+        }
 
-			if (saver.node().is_nil()) 
-			{
-				update(defa);
-				synced = true;
-				return;
-			}
+        template <typename... Args> void init(Args &&...args)
+        {
+            saver.init(args...);
+        }
 
-			_local = ops.from_trent(saver.node());
-			synced = true;
-		}
+        void sync() const
+        {
+            saver.sync();
+            _local = ops.from_trent(saver.node());
+            synced = true;
+        }
 
-		void update(const T& val) 
-		{
-			_local = val;
-			ops.set_trent(saver.node(), _local);
-			saver.save();
-		}		
+        void sync_default(T defa)
+        {
+            saver.sync();
 
-		T get() const
-		{
-			if (!synced) 
-			{
-				sync();
-			} 
+            if (saver.node().is_nil())
+            {
+                update(defa);
+                synced = true;
+                return;
+            }
 
-			return _local;
-		}
-	};	
-}
+            _local = ops.from_trent(saver.node());
+            synced = true;
+        }
+
+        void update(const T &val)
+        {
+            _local = val;
+            ops.set_trent(saver.node(), _local);
+            saver.save();
+        }
+
+        T get() const
+        {
+            if (!synced)
+            {
+                sync();
+            }
+
+            return _local;
+        }
+    };
+} // namespace igris
 
 #endif

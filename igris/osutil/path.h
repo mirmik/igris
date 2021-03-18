@@ -3,12 +3,12 @@
 
 #include <string>
 
-namespace igris 
+namespace igris
 {
-	namespace osutil 
-	{
-		std::string expanduser(const std::string& input);
-	}
-}
+    namespace osutil
+    {
+        std::string expanduser(const std::string &input);
+    }
+} // namespace igris
 
 #endif

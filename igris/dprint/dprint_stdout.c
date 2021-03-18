@@ -3,14 +3,16 @@
 
 #ifdef _MSC_VER
 
-void debug_putchar(char c) {
+void debug_putchar(char c)
+{
     int _ = fwrite(&c, sizeof(char), 1, stdout);
-	(void) _;
+    (void)_;
 }
 
-void debug_write(const char* c, int i) {
+void debug_write(const char *c, int i)
+{
     int _ = fwrite(c, sizeof(char), i, stdout);
-	(void) _;
+    (void)_;
 }
 
 #else
@@ -19,18 +21,16 @@ void debug_write(const char* c, int i) {
 
 #define GXX_DEBUG_STDOUT STDOUT_FILENO
 
-void debug_putchar(char c) {
+void debug_putchar(char c)
+{
     int _ = write(GXX_DEBUG_STDOUT, &c, 1);
-	(void) _;
+    (void)_;
 }
 
-void debug_write(const char* c, int i) {
+void debug_write(const char *c, int i)
+{
     int _ = write(GXX_DEBUG_STDOUT, c, i);
-	(void) _;
+    (void)_;
 }
 
 #endif
-
-	
-	
-	

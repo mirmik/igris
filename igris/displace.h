@@ -6,7 +6,7 @@
 __BEGIN_DECLS
 
 // Вызывается потоком, желающим отдать управление супервизору.
-int  __displace__();
+int __displace__();
 
 __END_DECLS
 

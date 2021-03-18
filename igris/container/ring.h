@@ -1,104 +1,118 @@
 #ifndef GXX_RING_H
 #define GXX_RING_H
 
-#include <memory>
 #include <gxx/panic.h>
+#include <memory>
 
-//Implementation of abstract ring buffer
+// Implementation of abstract ring buffer
 
-namespace gxx {
-	template <typename T, typename Alloc = std::allocator<T>>
-	class ring {
-		int head;
-		int tail;
-		bool isfull;
+namespace gxx
+{
+    template <typename T, typename Alloc = std::allocator<T>> class ring
+    {
+        int head;
+        int tail;
+        bool isfull;
 
-		T* buffer;
-		size_t reserved;
+        T *buffer;
+        size_t reserved;
 
-		Alloc alloc;
+        Alloc alloc;
 
-	public:
-		ring() : head(0), tail(0), isfull(false), buffer(nullptr), reserved(0) {}
-		ring(int size) : ring() { reserve(size); }
+      public:
+        ring() : head(0), tail(0), isfull(false), buffer(nullptr), reserved(0)
+        {
+        }
+        ring(int size) : ring() { reserve(size); }
 
-		void init() {
-			head = 0;
-			tail = 0;
-			isfull = false;
-		}
+        void init()
+        {
+            head = 0;
+            tail = 0;
+            isfull = false;
+        }
 
-		bool empty() {
-			return head == tail && !isfull;
-		}
+        bool empty() { return head == tail && !isfull; }
 
-		void reserve(size_t sz) {
-			T* newbuffer = alloc.allocate(sz);
-			
-			if (buffer == nullptr) {
-				buffer = newbuffer;
-				reserved = sz;
-				head = 0;
-				tail = 0;
-				isfull = false;
-			}
-			else {
-				gxx::panic("NeedToImplement");
-			}
-		}
-		
-		T& front() {
-			return *(buffer + tail);
-		}
+        void reserve(size_t sz)
+        {
+            T *newbuffer = alloc.allocate(sz);
 
-		T& back() {
-			return *(buffer + (head - 1) % reserved);
-		}
+            if (buffer == nullptr)
+            {
+                buffer = newbuffer;
+                reserved = sz;
+                head = 0;
+                tail = 0;
+                isfull = false;
+            }
+            else
+            {
+                gxx::panic("NeedToImplement");
+            }
+        }
 
-		void push(const T& obj) {
-			if (isfull) __pop();
-			alloc.construct(buffer + head++, obj);
-			if (head == reserved) head = 0;
-			if (head == tail) isfull = true; 
-		}
+        T &front() { return *(buffer + tail); }
 
-		template<typename ... Args>
-		void emplace(Args&& ... args) {
-			if (isfull) return;
-			alloc.construct(buffer + head++, std::forward<Args>(args) ... );
-			if (head == reserved) head = 0;
-			if (head == tail) isfull = true; 
-		}
+        T &back() { return *(buffer + (head - 1) % reserved); }
 
-		void __pop() {
-			alloc.destroy(buffer + tail);
-			if (++tail == reserved) tail = 0;	
-		}
+        void push(const T &obj)
+        {
+            if (isfull)
+                __pop();
+            alloc.construct(buffer + head++, obj);
+            if (head == reserved)
+                head = 0;
+            if (head == tail)
+                isfull = true;
+        }
 
-		void pop() {
-			if (!empty()) {
-				__pop();
-				isfull = false;
-			}
-		}
+        template <typename... Args> void emplace(Args &&...args)
+        {
+            if (isfull)
+                return;
+            alloc.construct(buffer + head++, std::forward<Args>(args)...);
+            if (head == reserved)
+                head = 0;
+            if (head == tail)
+                isfull = true;
+        }
 
-		size_t size() {
-			if (isfull) return reserved;
- 			int res = head - tail;
-			return res < 0 ? res + reserved : res;
-		}
+        void __pop()
+        {
+            alloc.destroy(buffer + tail);
+            if (++tail == reserved)
+                tail = 0;
+        }
 
-		size_t capacity() {
-			return reserved;
-		}
+        void pop()
+        {
+            if (!empty())
+            {
+                __pop();
+                isfull = false;
+            }
+        }
 
-		T& operator[](int index) {
-			size_t sz = size();
-			int cell;
-			cell = index >= 0 ? (tail + index) % reserved : (head + index + reserved) % reserved;
-			return *(buffer + cell);
-		}
-	};
-}
+        size_t size()
+        {
+            if (isfull)
+                return reserved;
+            int res = head - tail;
+            return res < 0 ? res + reserved : res;
+        }
+
+        size_t capacity() { return reserved; }
+
+        T &operator[](int index)
+        {
+            size_t sz = size();
+            int cell;
+            cell = index >= 0 ? (tail + index) % reserved
+                              : (head + index + reserved) % reserved;
+            return *(buffer + cell);
+        }
+    };
+} // namespace gxx
 
 #endif

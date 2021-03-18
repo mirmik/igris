@@ -3,8 +3,8 @@
 
 //#include <inttypes.h>
 #include <igris/compiler.h>
-#include <igris/util/member.h>
 #include <igris/dprint.h>
+#include <igris/util/member.h>
 
 #include <igris/util/decltypeof.h>
 
@@ -13,8 +13,8 @@
  * under normal circumstances, used to verify that nobody uses
  * non-initialized list entries.
  */
-#define DLIST_POISON1  ((struct dlist_head *) 0xDEADC0DE)
-#define DLIST_POISON2  ((struct dlist_head *) 0xDEADC9DE)
+#define DLIST_POISON1 ((struct dlist_head *)0xDEADC0DE)
+#define DLIST_POISON2 ((struct dlist_head *)0xDEADC9DE)
 
 /*
  * Simple doubly linked list implementation.
@@ -27,19 +27,21 @@
  */
 struct dlist_head
 {
-	struct dlist_head *next, *prev;
+    struct dlist_head *next, *prev;
 };
 
-#define DLIST_HEAD_INIT(name) { &(name), &(name) }
+#define DLIST_HEAD_INIT(name)                                                  \
+    {                                                                          \
+        &(name), &(name)                                                       \
+    }
 
-#define DLIST_HEAD(name) \
-	struct dlist_head name = DLIST_HEAD_INIT(name)
+#define DLIST_HEAD(name) struct dlist_head name = DLIST_HEAD_INIT(name)
 
 __BEGIN_DECLS
 
-static inline int dlist_is_linked(struct dlist_head* head) 
+static inline int dlist_is_linked(struct dlist_head *head)
 {
-	return head->next != head;
+    return head->next != head;
 }
 
 /**
@@ -48,9 +50,9 @@ static inline int dlist_is_linked(struct dlist_head* head)
  * It should be used before all operations with head
  * except dlist_add*,
  */
-static inline void dlist_init(struct dlist_head* head)
+static inline void dlist_init(struct dlist_head *head)
 {
-	head->next = head->prev = head;
+    head->next = head->prev = head;
 }
 
 /*
@@ -59,12 +61,13 @@ static inline void dlist_init(struct dlist_head* head)
  * This is only for internal list manipulation where we know
  * the prev/next entries already!
  */
-static inline void __dlist_add(struct dlist_head *lnk, struct dlist_head *next, struct dlist_head *prev)
+static inline void __dlist_add(struct dlist_head *lnk, struct dlist_head *next,
+                               struct dlist_head *prev)
 {
-	lnk->prev = prev;
-	lnk->next = next;
-	next->prev = lnk;
-	prev->next = lnk;
+    lnk->prev = prev;
+    lnk->next = next;
+    next->prev = lnk;
+    prev->next = lnk;
 }
 
 /**
@@ -72,22 +75,24 @@ static inline void __dlist_add(struct dlist_head *lnk, struct dlist_head *next, 
  * @lnk: new entry to be added
  * @head: list head to add it after
  */
-static inline void dlist_add_next(struct dlist_head* lnk, struct dlist_head* head)
+static inline void dlist_add_next(struct dlist_head *lnk,
+                                  struct dlist_head *head)
 {
-	__dlist_add(lnk, head->next, head);
+    __dlist_add(lnk, head->next, head);
 }
-#define dlist_add(a,b) dlist_add_next(a,b)
+#define dlist_add(a, b) dlist_add_next(a, b)
 
 /**
  * Insert a new entry before the specified head.
  * @lnk: new entry to be before
  * @head: list head to add it after
  */
-static inline void dlist_add_prev(struct dlist_head* lnk, struct dlist_head* head)
+static inline void dlist_add_prev(struct dlist_head *lnk,
+                                  struct dlist_head *head)
 {
-	__dlist_add(lnk, head, head->prev);
+    __dlist_add(lnk, head, head->prev);
 }
-#define dlist_add_tail(a,b) dlist_add_prev(a,b)
+#define dlist_add_tail(a, b) dlist_add_prev(a, b)
 
 /**
  * Delete a list entry by making the prev/next entries
@@ -96,10 +101,10 @@ static inline void dlist_add_prev(struct dlist_head* lnk, struct dlist_head* hea
  * This is only for internal list manipulation where we know
  * the prev/next entries already!
  */
-static inline void __dlist_del(struct dlist_head * prev, struct dlist_head * next)
+static inline void __dlist_del(struct dlist_head *prev, struct dlist_head *next)
 {
-	next->prev = prev;
-	prev->next = next;
+    next->prev = prev;
+    prev->next = next;
 }
 
 /**
@@ -110,9 +115,9 @@ static inline void __dlist_del(struct dlist_head * prev, struct dlist_head * nex
  */
 static inline void dlist_del(struct dlist_head *entry)
 {
-	__dlist_del(entry->prev, entry->next);
-	entry->next = DLIST_POISON1;
-	entry->prev = DLIST_POISON2;
+    __dlist_del(entry->prev, entry->next);
+    entry->next = DLIST_POISON1;
+    entry->prev = DLIST_POISON2;
 }
 
 /**
@@ -121,8 +126,8 @@ static inline void dlist_del(struct dlist_head *entry)
  */
 static inline void dlist_del_init(struct dlist_head *entry)
 {
-	__dlist_del(entry->prev, entry->next);
-	dlist_init(entry);
+    __dlist_del(entry->prev, entry->next);
+    dlist_init(entry);
 }
 
 /**
@@ -132,8 +137,8 @@ static inline void dlist_del_init(struct dlist_head *entry)
  */
 static inline void dlist_move(struct dlist_head *list, struct dlist_head *head)
 {
-	__dlist_del(list->prev, list->next);
-	dlist_add(list, head);
+    __dlist_del(list->prev, list->next);
+    dlist_add(list, head);
 }
 
 /**
@@ -141,27 +146,28 @@ static inline void dlist_move(struct dlist_head *list, struct dlist_head *head)
  * @list: the entry to move
  * @head: the head that will follow our entry
  */
-static inline void dlist_move_tail(struct dlist_head *list, struct dlist_head *head)
+static inline void dlist_move_tail(struct dlist_head *list,
+                                   struct dlist_head *head)
 {
-	__dlist_del(list->prev, list->next);
-	dlist_add_tail(list, head);
+    __dlist_del(list->prev, list->next);
+    dlist_add_tail(list, head);
 }
-#define dlist_move_prev(a,b) dlist_move_tail(a,b)
+#define dlist_move_prev(a, b) dlist_move_tail(a, b)
 
 /**
- 	Добавляет элемент added перед элементом, который первым вернёт true на вызов
- 	comparator(added, pos).
+    Добавляет элемент added перед элементом, который первым вернёт true на вызов
+    comparator(added, pos).
  */
-#define dlist_move_sorted(added, head, member, comparator) 			\
-{                                                               	\
-	decltypeof(added) pos;                                     		\
-	dlist_for_each_entry(pos, (head), member)                     	\
-	{                                                           	\
-		if (comparator((added), pos))                             	\
-			break;                                              	\
-	}                                                           	\
-	dlist_add_prev(&(added)->member, &pos->member);                 \
-}
+#define dlist_move_sorted(added, head, member, comparator)                     \
+    {                                                                          \
+        decltypeof(added) pos;                                                 \
+        dlist_for_each_entry(pos, (head), member)                              \
+        {                                                                      \
+            if (comparator((added), pos))                                      \
+                break;                                                         \
+        }                                                                      \
+        dlist_add_prev(&(added)->member, &pos->member);                        \
+    }
 
 /**
  * Tests whether a list is empty
@@ -169,153 +175,137 @@ static inline void dlist_move_tail(struct dlist_head *list, struct dlist_head *h
  */
 static inline int dlist_empty(const struct dlist_head *head)
 {
-	return head->next == head;
+    return head->next == head;
 }
 
 __END_DECLS
 
-#define dlist_entry(ptr, type, member) \
-	mcast_out(ptr, type, member)
+#define dlist_entry(ptr, type, member) mcast_out(ptr, type, member)
 
-#define dlist_next_entry(pos, member) \
-	dlist_entry((pos)->member.next, __typeof__(*(pos)), member)
+#define dlist_next_entry(pos, member)                                          \
+    dlist_entry((pos)->member.next, __typeof__(*(pos)), member)
 
-#define dlist_prev_entry(pos, member) \
-	dlist_entry((pos)->member.prev, __typeof__(*(pos)), member)
+#define dlist_prev_entry(pos, member)                                          \
+    dlist_entry((pos)->member.prev, __typeof__(*(pos)), member)
 
-#define dlist_first_entry(ptr, type, member) \
-	dlist_entry((ptr)->next, type, member)
+#define dlist_first_entry(ptr, type, member)                                   \
+    dlist_entry((ptr)->next, type, member)
 
-#define dlist_last_entry(ptr, type, member) \
-	dlist_entry((ptr)->prev, type, member)
+#define dlist_last_entry(ptr, type, member)                                    \
+    dlist_entry((ptr)->prev, type, member)
 
-#define dlist_for_each(pos, head) \
-for (pos = (head)->next; pos != (head); pos = pos->next)
+#define dlist_for_each(pos, head)                                              \
+    for (pos = (head)->next; pos != (head); pos = pos->next)
 
-#define dlist_for_each_reverse(pos, head) \
-for (pos = (head)->prev; pos != (head); pos = pos->prev)
+#define dlist_for_each_reverse(pos, head)                                      \
+    for (pos = (head)->prev; pos != (head); pos = pos->prev)
 
-#define dlist_for_each_safe(pos, n, head) \
-	for (pos = (head)->next, n = pos->next; pos != (head); \
-	pos = n, n = pos->next)
+#define dlist_for_each_safe(pos, n, head)                                      \
+    for (pos = (head)->next, n = pos->next; pos != (head);                     \
+         pos = n, n = pos->next)
 
-#define dlist_for_each_entry(pos, head, member)                     \
-	for (pos = dlist_first_entry(head, __typeof__(*pos), member);   \
-	&pos->member != (head);                                         \
-	pos = dlist_next_entry(pos, member))
+#define dlist_for_each_entry(pos, head, member)                                \
+    for (pos = dlist_first_entry(head, __typeof__(*pos), member);              \
+         &pos->member != (head); pos = dlist_next_entry(pos, member))
 
-#define dlist_for_each_entry_reverse(pos, head, member)             \
-	for (pos = dlist_last_entry(head, __typeof__(*pos), member);    \
-	&pos->member != (head);                                         \
-	pos = dlist_prev_entry(pos, member))
+#define dlist_for_each_entry_reverse(pos, head, member)                        \
+    for (pos = dlist_last_entry(head, __typeof__(*pos), member);               \
+         &pos->member != (head); pos = dlist_prev_entry(pos, member))
 
-#define dlist_for_each_entry_safe(pos, n, head, member)             \
-	for (pos = dlist_first_entry(head, __typeof__(*pos), member),   \
-	n = dlist_next_entry(pos, member);                              \
-	&pos->member != (head);                                         \
-	pos = n, n = dlist_next_entry(n, member))
+#define dlist_for_each_entry_safe(pos, n, head, member)                        \
+    for (pos = dlist_first_entry(head, __typeof__(*pos), member),              \
+        n = dlist_next_entry(pos, member);                                     \
+         &pos->member != (head); pos = n, n = dlist_next_entry(n, member))
 
 __BEGIN_DECLS
 
-static inline
-int dlist_in(struct dlist_head *fnd, struct dlist_head *head)
+static inline int dlist_in(struct dlist_head *fnd, struct dlist_head *head)
 {
-	struct dlist_head * it;
-	dlist_for_each(it, head)
-	{
-		if (it == fnd)
-			return 1;
-	}
-	return 0;
+    struct dlist_head *it;
+    dlist_for_each(it, head)
+    {
+        if (it == fnd)
+            return 1;
+    }
+    return 0;
 }
 
-static inline
-int dlist_check(struct dlist_head *fnd, int count)
+static inline int dlist_check(struct dlist_head *fnd, int count)
 {
-	int steps = 0;
-	struct dlist_head * it = fnd;
+    int steps = 0;
+    struct dlist_head *it = fnd;
 
-	while(count--) 
-	{
-		struct dlist_head * next = it->next;
+    while (count--)
+    {
+        struct dlist_head *next = it->next;
 
-		if (fnd == next) 
-			return steps;
+        if (fnd == next)
+            return steps;
 
-		it = next;
-		steps++;         
-	}
+        it = next;
+        steps++;
+    }
 
-	return -1;
+    return -1;
 }
 
-static inline
-int dlist_check_reversed(struct dlist_head *fnd, int count)
+static inline int dlist_check_reversed(struct dlist_head *fnd, int count)
 {
-	int steps = 0;
-	struct dlist_head * it = fnd;
+    int steps = 0;
+    struct dlist_head *it = fnd;
 
-	while(count--) 
-	{
-		struct dlist_head * prev = it->prev;
+    while (count--)
+    {
+        struct dlist_head *prev = it->prev;
 
-		if (fnd == prev) 
-			return steps;
+        if (fnd == prev)
+            return steps;
 
-		it = prev;         
-		steps++;  
-	}
+        it = prev;
+        steps++;
+    }
 
-	return -1;
+    return -1;
 }
 
-static inline
-void dlist_debug_print_node(const char* prefix, struct dlist_head *node) 
+static inline void dlist_debug_print_node(const char *prefix,
+                                          struct dlist_head *node)
 {
-	debug_print(prefix); debug_printhex_ptr(node); 
-	debug_print(" (next: "); debug_printhex_ptr(node->next);
-	debug_print(", prev: "); debug_printhex_ptr(node->prev);
-	debug_print_line(")");
-} 
-
-static inline
-void dlist_debug_print(struct dlist_head *head) 
-{
-	struct dlist_head * it;
-
-	dlist_debug_print_node("head: ", head); 
-	dlist_for_each(it, head) 
-	{
-		dlist_debug_print_node("node: ", it);
-	}
+    debug_print(prefix);
+    debug_printhex_ptr(node);
+    debug_print(" (next: ");
+    debug_printhex_ptr(node->next);
+    debug_print(", prev: ");
+    debug_printhex_ptr(node->prev);
+    debug_print_line(")");
 }
 
-static inline 
-int dlist_size(struct dlist_head *head) 
+static inline void dlist_debug_print(struct dlist_head *head)
 {
-	struct dlist_head * it;
-	int sz = 0;
+    struct dlist_head *it;
 
-	dlist_for_each(it, head) 
-	{
-		++sz;
-	}
-
-	return sz;   
+    dlist_debug_print_node("head: ", head);
+    dlist_for_each(it, head) { dlist_debug_print_node("node: ", it); }
 }
 
-static inline 
-int dlist_size_reversed(struct dlist_head *head) 
+static inline int dlist_size(struct dlist_head *head)
 {
-	struct dlist_head * it;
-	int sz = 0;
+    struct dlist_head *it;
+    int sz = 0;
 
-	dlist_for_each_reverse(it, head) 
-	{
-		++sz;
-	}
+    dlist_for_each(it, head) { ++sz; }
 
-	return sz;   
+    return sz;
+}
+
+static inline int dlist_size_reversed(struct dlist_head *head)
+{
+    struct dlist_head *it;
+    int sz = 0;
+
+    dlist_for_each_reverse(it, head) { ++sz; }
+
+    return sz;
 }
 
 __END_DECLS

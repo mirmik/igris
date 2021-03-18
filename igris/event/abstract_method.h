@@ -8,26 +8,25 @@
 
 namespace igris
 {
-	template<typename R , typename ... Args>
-	class abstract_method
-	{
-		using obj_t 		= AbstractDelegate*;
-		using mtd_t 		= R (AbstractDelegate::*)(Args ...);
+    template <typename R, typename... Args> class abstract_method
+    {
+        using obj_t = AbstractDelegate *;
+        using mtd_t = R (AbstractDelegate::*)(Args...);
 
-		mtd_t method;
+        mtd_t method;
 
-	public:
-		template <typename T>
-		abstract_method(R(T::*mtd)(Args ...))
-		{
-			method = horrible_cast<mtd_t, R(T::*)(Args ...)>(mtd);
-		}
+      public:
+        template <typename T> abstract_method(R (T::*mtd)(Args...))
+        {
+            method = horrible_cast<mtd_t, R (T::*)(Args...)>(mtd);
+        }
 
-		R operator()(void* obj, Args ... args) volatile
-		{
-			return (reinterpret_cast<obj_t>(obj)->*method)(std::forward<Args>(args) ...);
-		}
-	};
-}
+        R operator()(void *obj, Args... args) volatile
+        {
+            return (reinterpret_cast<obj_t>(obj)->*method)(
+                std::forward<Args>(args)...);
+        }
+    };
+} // namespace igris
 
 #endif

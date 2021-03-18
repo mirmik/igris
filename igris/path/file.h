@@ -3,12 +3,15 @@
 
 #include <gxx/path/path.h>
 
-namespace gxx {
-	namespace path {
-    	class file {
-       		file(gxx::path pth);
-    	}
-	}
-}
+namespace gxx
+{
+    namespace path
+    {
+        class file
+        {
+            file(gxx::path pth);
+        }
+    } // namespace path
+} // namespace gxx
 
 #endif

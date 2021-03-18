@@ -3,11 +3,10 @@
 
 namespace igris
 {
-	template <class T>
-	static inline T graycode(const T& code)
-	{
-		return code ^ (code >> 1);
-	}
-}
+    template <class T> static inline T graycode(const T &code)
+    {
+        return code ^ (code >> 1);
+    }
+} // namespace igris
 
 #endif
