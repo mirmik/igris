@@ -11,9 +11,9 @@ static const uint8_t dscrc2x16_table[] = {
 
 // Compute a Dallas Semiconductor 8 bit CRC. These show up in the ROM
 // and the registers.  (Use tiny 2x16 entry CRC table)
-uint8_t crc8_table(const uint8_t *addr, uint8_t len)
+uint8_t crc8_table(const uint8_t *addr, uint8_t len, uint8_t crc_init)
 {
-    uint8_t crc = 0;
+    uint8_t crc = crc_init;
 
     while (len--)
     {
@@ -29,9 +29,10 @@ uint8_t crc8_table(const uint8_t *addr, uint8_t len)
 // Compute a Dallas Semiconductor 8 bit CRC directly.
 // this is much slower, but a little smaller, than the lookup table.
 //
-uint8_t crc8(const uint8_t *addr, uint8_t len)
+uint8_t crc8(const void *data, uint8_t len, uint8_t crc_init)
 {
-    uint8_t crc = 0;
+    uint8_t *addr = (uint8_t *)data;
+    uint8_t crc = crc_init;
 
     while (len--)
     {
@@ -47,27 +48,19 @@ uint8_t crc8(const uint8_t *addr, uint8_t len)
     }
     return crc;
 }
-/*
-bool check_crc16(const uint8_t* input, uint16_t len, const uint8_t*
-inverted_crc, uint16_t crc)
-{
-    crc = ~crc16(input, len, crc);
-    return (crc & 0xFF) == inverted_crc[0] && (crc >> 8) == inverted_crc[1];
-}]
-*/
 
-uint16_t crc16(const void *data, uint16_t length)
+uint16_t crc16(const void *data, uint16_t length, uint16_t crc_init)
 {
     const uint8_t *data_p = (const uint8_t *)data;
-    unsigned char x;
-    unsigned short crc = 0xFFFF;
+    uint8_t x;
+    uint16_t crc = crc_init;
 
     while (length--)
     {
         x = crc >> 8 ^ *data_p++;
         x ^= x >> 4;
-        crc = (crc << 8) ^ ((unsigned short)(x << 12)) ^
-              ((unsigned short)(x << 5)) ^ ((unsigned short)x);
+        crc = (crc << 8) ^ ((uint16_t)(x << 12)) ^ ((uint16_t)(x << 5)) ^
+              ((uint16_t)x);
     }
     return crc;
 }
@@ -88,4 +81,50 @@ uint8_t mmc_crc7(const uint8_t *message, const uint8_t length)
     }
     // return crc;
     return crc >> 1;
+}
+
+uint32_t crc32(const void *data, uint32_t length, uint32_t crc_init)
+{
+
+    // Nibble lookup table for 0x04C11DB7 polynomial
+
+    static const uint32_t crcTable[16] = {
+        0x00000000, 0x04C11DB7, 0x09823B6E, 0x0D4326D9, 0x130476DC, 0x17C56B6B,
+        0x1A864DB2, 0x1E475005, 0x2608EDB8, 0x22C9F00F, 0x2F8AD6D6, 0x2B4BCB61,
+        0x350C9B64, 0x31CD86D3, 0x3C8EA00A, 0x384FBDBD};
+
+    uint32_t crc = crc_init;
+
+    const uint32_t *pData = data;
+    uint32_t bodySize = length / 4;
+    uint32_t tailSize = length % 4;
+
+    for (uint32_t i = 0; i < bodySize; i++)
+    {
+
+        crc = crc ^ pData[i];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+    }
+
+    if (tailSize)
+    {
+        crc = crc ^ (pData[bodySize] & ((1 << tailSize * 8) - 1));
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+        crc = (crc << 4) ^ crcTable[crc >> 28];
+    }
+
+    return crc;
 }

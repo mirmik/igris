@@ -1,6 +1,8 @@
 #ifndef _INITIALIZER_LIST
 #define _INITIALIZER_LIST
 
+#include <cstddef>
+
 namespace std
 {
 	/// initializer_list
