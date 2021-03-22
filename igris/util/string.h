@@ -16,13 +16,11 @@
 
 namespace igris
 {
-    using strvec = std::vector<std::string>;
-    using strlst = std::list<std::string>;
+    std::vector<std::string> split(const igris::buffer &str, char delim = ' ');
+    std::vector<std::string> split(const igris::buffer &str,
+                                   const char *delims);
 
-    strvec split(const igris::buffer &str, char delim = ' ');
-    strvec split(const igris::buffer &str, const char *delims);
-
-    std::string join(const strvec &, char delim);
+    std::string join(const std::vector<std::string> &, char delim);
 
     template <class Iter>
     std::string join(Iter start, Iter end, const char *delim,
@@ -84,44 +82,6 @@ namespace igris
         return view.substr(strt, view.size() - strt);
     }
 #endif
-
-    /*static inline std::string serialstr8(const std::string& str)
-    {
-        std::string ret;
-        ret.push_back((uint8_t)str.size());
-        ret.append(str);
-        return ret;
-    }
-
-    static inline std::string serialstr8(const char* data, size_t size)
-    {
-        std::string ret;
-        ret.push_back((uint8_t) size);
-        ret.append(data, size);
-        return ret;
-    }*/
-
-    /*static inline std::string hexstring(const void* data, size_t size)
-    {
-        std::string ret;
-        ret.resize(size * 2);
-
-        char* dst = (char*)ret.data();
-        char* it = (char*) data;
-        char* eit = it + size;
-
-        for (; it != eit; ++it, ++++dst)
-        {
-            uint8_to_hex(dst, *it);
-        }
-
-        return ret;
-    }
-
-    static inline std::string hexstring(igris::buffer buf)
-    {
-        return hexstring(buf.data(), buf.size());
-    }*/
-} // namespace igris
+}
 
 #endif

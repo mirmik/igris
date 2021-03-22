@@ -214,7 +214,7 @@ void debug_printdec_float_prec(float a, int prec)
     debug_printdec_double_prec((double)a, prec);
 }
 
-static inline __inline unsigned __FLOAT_BITS(float __f)
+static inline unsigned __FLOAT_BITS(float __f)
 {
     union
     {
@@ -224,7 +224,7 @@ static inline __inline unsigned __FLOAT_BITS(float __f)
     __u.__f = __f;
     return __u.__i;
 }
-static inline __inline unsigned long long __DOUBLE_BITS(double __f)
+static inline unsigned long long __DOUBLE_BITS(double __f)
 {
     union
     {

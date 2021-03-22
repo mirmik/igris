@@ -3,9 +3,9 @@
 
 namespace igris
 {
-    strvec split(const igris::buffer &str, char delim)
+    std::vector<std::string> split(const igris::buffer &str, char delim)
     {
-        strvec outvec;
+        std::vector<std::string> outvec;
 
         char *strt;
         char *ptr = (char *)str.data();
@@ -30,9 +30,9 @@ namespace igris
         return outvec;
     }
 
-    strvec split(const igris::buffer &str, const char *delims)
+    std::vector<std::string> split(const igris::buffer &str, const char *delims)
     {
-        strvec outvec;
+        std::vector<std::string> outvec;
 
         if (str.size() == 0)
             return outvec;
@@ -63,7 +63,7 @@ namespace igris
         return outvec;
     }
 
-    std::string join(const strvec &vec, char delim)
+    std::string join(const std::vector<std::string> &vec, char delim)
     {
         if (vec.size() == 0)
         {

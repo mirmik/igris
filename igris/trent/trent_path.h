@@ -71,7 +71,7 @@ namespace igris
 
         trent_path(const char *path)
         {
-            igris::strvec svec = igris::split(path, '/');
+            auto svec = igris::split(path, '/');
 
             for (const auto &s : svec)
             {
