@@ -113,6 +113,6 @@ namespace igris
 
         int size() { return origin.size(); }
     };
-} // namespace igris
+}
 
 #endif

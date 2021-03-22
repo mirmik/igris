@@ -51,7 +51,7 @@ namespace igris
         {
         }
     };
-} // namespace igris
+}
 
 #define SYSCMD(name, ...)                                                      \
     igris::console_command name[] { __VA_ARGS__, SYSCMD_TBLFIN }

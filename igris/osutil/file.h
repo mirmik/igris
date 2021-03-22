@@ -58,7 +58,7 @@ namespace igris
 
             return ret;
         }
-    } // namespace osutil
-} // namespace igris
+    }
+}
 
 #endif

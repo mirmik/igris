@@ -113,6 +113,6 @@ namespace gxx
             return *(buffer + cell);
         }
     };
-} // namespace gxx
+}
 
 #endif

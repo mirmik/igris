@@ -11,7 +11,7 @@ namespace gxx
         {
             file(gxx::path pth);
         }
-    } // namespace path
-} // namespace gxx
+    }
+}
 
 #endif

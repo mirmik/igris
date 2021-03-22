@@ -23,7 +23,7 @@ namespace igris
         };*/
 
         std::string dirname(const std::string &path);
-    } // namespace path
-} // namespace igris
+    }
+}
 
 #endif

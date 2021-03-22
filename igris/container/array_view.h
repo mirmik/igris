@@ -65,6 +65,6 @@ namespace igris
             return reinterpret_cast<array_view<U>>(this);
         }*/
     };
-} // namespace igris
+}
 
 #endif

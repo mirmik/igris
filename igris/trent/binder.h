@@ -122,6 +122,6 @@ namespace igris
             return _local;
         }
     };
-} // namespace igris
+}
 
 #endif

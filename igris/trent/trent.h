@@ -926,6 +926,6 @@ namespace igris
 
         return m_str;
     }
-} // namespace igris
+}
 
 #endif

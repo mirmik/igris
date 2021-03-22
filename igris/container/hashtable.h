@@ -15,6 +15,6 @@ namespace gxx
     class hashtable
     {
     };
-} // namespace gxx
+}
 
 #endif

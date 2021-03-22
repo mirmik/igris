@@ -7,6 +7,6 @@ namespace igris
     {
         return code ^ (code >> 1);
     }
-} // namespace igris
+}
 
 #endif

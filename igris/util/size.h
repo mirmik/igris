@@ -29,6 +29,6 @@ namespace igris
     {
         return N;
     }
-} // namespace igris
+}
 
 #endif

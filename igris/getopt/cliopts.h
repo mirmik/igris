@@ -336,6 +336,6 @@ namespace igris
             return parse(argc - strt, argv + strt);
         }
     };
-} // namespace igris
+}
 
 #endif

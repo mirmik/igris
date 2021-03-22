@@ -126,6 +126,6 @@ namespace igris
             debug_print_pool_head(&head);
         }
     };
-} // namespace igris
+}
 
 #endif

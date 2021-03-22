@@ -289,6 +289,6 @@ namespace igris
         return make_fastdelegate(reinterpret_cast<void (*)(void *)>(fnc),
                                  nullptr);
     }
-} // namespace igris
+}
 
 #endif

@@ -25,4 +25,4 @@ namespace igris
     {
         return hexascii_encode((const uint8_t *)buf.data(), buf.size());
     }
-} // namespace igris
+}

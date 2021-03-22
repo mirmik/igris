@@ -9,6 +9,6 @@ namespace igris
     {
         std::string getcwd();
     }
-} // namespace igris
+}
 
 #endif

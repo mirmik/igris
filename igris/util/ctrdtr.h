@@ -93,6 +93,6 @@ namespace igris
             constexpr operator S() const { return s; }
         };
     */
-} // namespace igris
+}
 
 #endif

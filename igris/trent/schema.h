@@ -360,6 +360,6 @@ namespace igris
 
         void merge(const schema &oth) { root.merge(oth.root); }
     };
-} // namespace igris
+}
 
 #endif

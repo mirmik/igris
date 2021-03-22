@@ -80,6 +80,6 @@ namespace igris
             return nos::fprint_to(o, "({}, {})", headers, arguments);
         }
     };
-} // namespace igris
+}
 
 #endif

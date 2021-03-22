@@ -451,7 +451,7 @@ namespace igris
             if (tab == 0)
                 os.print("\r\n");
         }
-    } // namespace json
-} // namespace igris
+    }
+}
 
 #endif

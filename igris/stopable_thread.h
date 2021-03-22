@@ -33,6 +33,6 @@ namespace igris
             unblock_cv.wait_for(lk, rel_time, []() { return _cancel_token; });
         }
     };
-} // namespace igris
+}
 
 #endif

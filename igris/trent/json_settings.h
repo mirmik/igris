@@ -105,6 +105,6 @@ namespace igris
 
         igris::trent &node() { return tr; }
     };
-} // namespace igris
+}
 
 #endif

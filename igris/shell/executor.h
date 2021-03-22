@@ -243,6 +243,6 @@ namespace igris
             return ENOENT;
         }
     };
-} // namespace igris
+}
 
 #endif

@@ -94,7 +94,7 @@ namespace igris
 
         return argc;
     }
-} // namespace igris
+}
 
 #endif
 

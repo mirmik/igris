@@ -37,6 +37,6 @@ namespace igris
     {
         return early(a, b, 1e-6);
     }
-} // namespace igris
+}
 
 #endif

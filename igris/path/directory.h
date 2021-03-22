@@ -19,7 +19,7 @@ namespace gxx
             bool make();
             bool make_recurse();
         }
-    } // namespace path
-} // namespace gxx
+    }
+}
 
 #endif

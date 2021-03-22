@@ -130,4 +130,4 @@ namespace igris
     {
         return dstring(buf.data(), buf.size());
     }
-} // namespace igris
+}

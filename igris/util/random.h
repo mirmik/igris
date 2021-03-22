@@ -24,6 +24,6 @@ namespace igris
     {
         return a + (rand() * (b - a) / RAND_MAX);
     }
-} // namespace igris
+}
 
 #endif

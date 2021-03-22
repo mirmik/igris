@@ -31,6 +31,6 @@ namespace gxx
             return maxSize;
         }
     };
-} // namespace gxx
+}
 
 #endif

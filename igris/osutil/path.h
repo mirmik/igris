@@ -9,6 +9,6 @@ namespace igris
     {
         std::string expanduser(const std::string &input);
     }
-} // namespace igris
+}
 
 #endif

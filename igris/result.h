@@ -54,7 +54,7 @@ namespace igris
                 return buf;
             }
         };
-    } // namespace result_type
+    }
     template <typename E> inline const char *what(const E &e)
     {
         return e.what();
@@ -289,11 +289,11 @@ namespace igris
                 _error.~error();
             }
         };
-    } // namespace result_type
+    }
 
     template <class T, class E = result_type::error>
     using result = result_type::result<T, E>;
-} // namespace igris
+}
 
 #define try_restore(val)                                                       \
     ({                                                                         \

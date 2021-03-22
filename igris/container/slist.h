@@ -128,6 +128,6 @@ namespace igris
             o.putchar(']');
         }
     };*/
-} // namespace igris
+}
 
 #endif

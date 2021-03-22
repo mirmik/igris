@@ -128,6 +128,6 @@ namespace igris
         operator int32_t() const { return node().as_integer(); }
     };
 
-} // namespace igris
+}
 
 #endif

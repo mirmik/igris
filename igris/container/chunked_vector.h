@@ -105,6 +105,6 @@ namespace igris
             }
         }
     };
-} // namespace igris
+}
 
 #endif

@@ -58,6 +58,6 @@ namespace igris
 
         inline bool isset() const { return m_bFlag; }
     };
-} // namespace igris
+}
 
 #endif

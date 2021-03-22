@@ -225,7 +225,7 @@ namespace igris
             };
         */
     };
-} // namespace igris
+}
 
 /*namespace std {
     template<typename T, dlist_head T::* L>

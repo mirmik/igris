@@ -7,7 +7,7 @@ namespace igris
     {
         void setsig(int fd, int sig);
         void signal(int sig, void (*handler)(int));
-    } // namespace osutil
-} // namespace igris
+    }
+}
 
 #endif

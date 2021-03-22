@@ -54,6 +54,6 @@ namespace igris
 
         void clear() { vect.clear(); }
     };
-} // namespace igris
+}
 
 #endif

@@ -69,6 +69,6 @@ namespace igris
             return igris::buffer(strt, fini - strt);
         }
     };
-} // namespace igris
+}
 
 #endif

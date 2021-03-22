@@ -93,7 +93,7 @@ namespace igris
         {
             return buffer(str, sz);
         }
-    } // namespace buffer_literal
-} // namespace igris
+    }
+}
 
 #endif

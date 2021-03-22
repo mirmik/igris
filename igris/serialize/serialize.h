@@ -298,7 +298,7 @@ namespace igris
 
         using binreader = binary_buffer_reader;
         using binwriter = binary_buffer_writer;
-    } // namespace archive
+    }
 
     template <typename Archive, typename... Args>
     struct serialize_helper<Archive, std::tuple<Args...>>
@@ -438,6 +438,6 @@ namespace igris
 
         return ret;
     }
-} // namespace igris
+}
 
 #endif

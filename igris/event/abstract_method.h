@@ -27,6 +27,6 @@ namespace igris
                 std::forward<Args>(args)...);
         }
     };
-} // namespace igris
+}
 
 #endif

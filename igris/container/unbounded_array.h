@@ -72,6 +72,6 @@ namespace igris
             return (const_iterator)m_data + m_size;
         }
     };
-} // namespace igris
+}
 
 #endif

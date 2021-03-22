@@ -7,7 +7,7 @@ namespace igris
     {
         int nonblock(int fd, bool en);
         int nodelay(int fd, bool en);
-    } // namespace osutil
-} // namespace igris
+    }
+}
 
 #endif

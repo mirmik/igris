@@ -100,6 +100,6 @@ namespace igris
             return igris::join(svec, '/');
         }
     };
-} // namespace igris
+}
 
 #endif

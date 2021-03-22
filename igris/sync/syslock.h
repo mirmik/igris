@@ -55,7 +55,7 @@ namespace igris
         syslock_guard() { system_lock(); }
         ~syslock_guard() { system_unlock(); }
     };
-} // namespace igris
+}
 #endif
 
 #endif

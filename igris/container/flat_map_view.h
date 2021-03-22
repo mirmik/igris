@@ -52,6 +52,6 @@ namespace igris
             return it;
         }
     };
-} // namespace igris
+}
 
 #endif
