@@ -8,7 +8,7 @@ namespace igris
     template <typename T> void destructor(T *ptr) { ptr->~T(); }
 
     template <typename T, typename... Args>
-    void constructor(T *ptr, Args &&...args)
+    void constructor(T *ptr, Args &&... args)
     {
         new (ptr) T(std::forward<Args>(args)...);
     }

@@ -1,5 +1,5 @@
-#ifndef GXX_UTIL_ACCESS_H
-#define GXX_UTIL_ACCESS_H
+#ifndef IGRIS_UTIL_ACCESS_H
+#define IGRIS_UTIL_ACCESS_H
 
 #include <stdint.h>
 

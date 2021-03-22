@@ -384,13 +384,13 @@ static inline void dprbin(int64_t obj) { debug_printbin_int64(obj); }
 // static inline void dprbin(float obj)        { debug_printbin_float(obj); }
 
 template <typename T, typename... Tail>
-void dpr(const T &obj, const Tail &...tail)
+void dpr(const T &obj, const Tail &... tail)
 {
     dpr(obj);
     debug_putchar(' ');
     dpr(tail...);
 }
-template <typename... T> void dprln(const T &...obj)
+template <typename... T> void dprln(const T &... obj)
 {
     dpr(obj...);
     dln();

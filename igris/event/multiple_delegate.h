@@ -34,7 +34,7 @@ namespace igris
             erase(std::forward<TArgs>(args)...);
         }
 
-        template <typename... TArgs> void add(const TArgs &...args)
+        template <typename... TArgs> void add(const TArgs &... args)
         {
             vect.emplace_back(args...);
         }

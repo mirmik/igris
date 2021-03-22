@@ -67,7 +67,7 @@ namespace gxx
                 isfull = true;
         }
 
-        template <typename... Args> void emplace(Args &&...args)
+        template <typename... Args> void emplace(Args &&... args)
         {
             if (isfull)
                 return;

@@ -14,7 +14,7 @@ namespace igris
 
     std::string hexascii_decode(std::string const &str);
     std::string hexascii_decode(igris::buffer const &buf);
-} // namespace igris
+}
 
 #endif
 

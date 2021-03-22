@@ -604,7 +604,7 @@ namespace igris
         dict_type &unsafe_dict_const() { return m_dct; }
 
         //			const integer_type& unsafe_integer_const() const { return
-        //m_int;
+        // m_int;
         //}
         const numer_type &unsafe_numer_const() const { return m_num; }
         const string_type &unsafe_string_const() const { return m_str; }

@@ -1,5 +1,5 @@
-#ifndef igris_CLIOPTS_H
-#define igris_CLIOPTS_H
+#ifndef IGRIS_CLIOPTS_H
+#define IGRIS_CLIOPTS_H
 
 #include <igris/result.h>
 #include <igris/util/ctrdtr.h>
