@@ -182,6 +182,7 @@ namespace igris
         }
 
         std::vector<std::string> get_args() { return args; }
+        const std::vector<std::string> &arguments() { return args; }
 
         enum class AutomState
         {
