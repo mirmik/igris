@@ -3,6 +3,7 @@
 
 //#include <inttypes.h>
 #include <igris/compiler.h>
+#include <igris/dprint.h>
 #include <igris/util/member.h>
 
 struct slist_head

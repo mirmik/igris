@@ -46,27 +46,26 @@ licant.module("igris.stdlibs",
 ################################################################
 ######################DPRINT####################################
 
-licant.module("igris.dprint.common", "impl", srcdir="igris/dprint",
+licant.module("igris.dprint.common", srcdir="igris/dprint",
 	sources=["dprint_func_impl.c", "dprintxx.cpp"],
-)
-
-licant.module("igris.dprint.common", "stub", srcdir="igris/dprint",
-	sources = "dprint_func_stub.c dprint_stub.c dprintxx.cpp".split(" ")
 )
 
 licant.module("igris.dprint", "user", srcdir="igris/dprint",
 	sources = ["dprint_manually.c"],
-	mdepends = [("igris.dprint.common","impl")],
+	mdepends = ["igris.dprint.common"],
 )
 
 licant.module("igris.dprint", "stdout", srcdir="igris/dprint",
 	sources = ["dprint_stdout.c"],
-	mdepends = [("igris.dprint.common","impl")],
+	mdepends = ["igris.dprint.common"],
 	default = True
 )
 
 licant.module("igris.dprint", "stub", srcdir="igris/dprint",
-	mdepends = [("igris.dprint.common","stub")]
+	mdepends = [
+		"igris.dprint.common"
+	],
+	sources = ["dprint_stub.c"]
 )
 
 #################################################################
