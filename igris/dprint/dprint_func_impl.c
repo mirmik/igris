@@ -557,20 +557,3 @@ static void __debug_putchar(void *_, int c)
     (void)_;
     debug_putchar(c);
 }
-
-int dprf_v(const char *format, va_list args)
-{
-    return __printf(__debug_putchar, 0, format, args);
-}
-
-int dprf(const char *format, ...)
-{
-    int ret;
-    va_list args;
-
-    va_start(args, format);
-    ret = dprf_v(format, args);
-    va_end(args);
-
-    return ret;
-}

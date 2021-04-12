@@ -6,6 +6,8 @@
 #include <igris/util/bug.h>
 
 #include <errno.h>
+#include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 
 #define EXECUTOR_PROCESS_STARTED 2

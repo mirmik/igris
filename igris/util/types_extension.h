@@ -17,7 +17,7 @@ typedef __float64_t float64_t;
 #endif
 #endif
 
-#ifdef __cplusplus
+/*#ifdef __cplusplus
 static_assert(sizeof(float32_t) == 4, "float32_t size error");
 #ifndef WITHOUT_FLOAT64
 static_assert(sizeof(float64_t) == 8, "float64_t size error");
@@ -29,7 +29,7 @@ _Static_assert(sizeof(float32_t) == 4, "float32_t size error");
 _Static_assert(sizeof(float64_t) == 8, "float64_t size error");
 #endif
 #endif
-#endif
+#endif*/
 
 #if defined(_MSC_VER)
 #include <BaseTsd.h>

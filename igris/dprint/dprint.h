@@ -176,8 +176,6 @@ void debug_writebin_reversed(const void *address, uint16_t size);
 void debug_print_dump(const void *address, uint16_t size);
 #define dprdump(a, s) debug_print_dump(a, s)
 
-int dprf(const char *, ...);
-
 #define dprdec(arg) debug_printdec_int64(arg)
 
 void dprptr(const void *ptr);

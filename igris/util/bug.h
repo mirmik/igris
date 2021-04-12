@@ -4,11 +4,6 @@
 #include <igris/compiler.h>
 #include <igris/util/location.h>
 
-#ifdef __cplusplus
-#include <cstdio>
-#include <cstring>
-#endif
-
 __BEGIN_DECLS
 
 __NORETURN void bug_impl();

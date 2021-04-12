@@ -4,9 +4,6 @@
 #include <igris/compiler.h>
 #include <igris/osinter/ctrobj.h>
 
-#include <igris/util/types_extension.h>
-#include <sys/types.h>
-
 #include <igris/datastruct/dlist.h>
 #include <igris/datastruct/ring.h>
 

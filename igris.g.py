@@ -101,7 +101,6 @@ licant.module("igris.util", sources=[
 	"igris/util/stub.c",
 	"igris/util/crc.c",
 	"igris/util/emergency_stop.c",
-	"igris/util/printf_impl.c",
 
 	"igris/string/memmem.c",
 	"igris/string/replace.cpp",
@@ -111,6 +110,10 @@ licant.module("igris.util", sources=[
 ])
 
 #################################################################
+
+licant.module("igris.printf_impl",
+	sources=["igris/util/printf_impl.c"]
+)
 
 licant.module("igris.syslock", impl="genos.atomic", 
 	sources=["igris/sync/syslock_genos_atomic.cpp"])
@@ -158,3 +161,10 @@ licant.module("igris.time", "posix",
 
 licant.module("igris.crypt.aes", 
 	sources = ["igris/crypt/aes.c"])
+
+
+licant.module("igris.flags.clean",
+	cxx_flags="-Wl,--gc-sections -fdata-sections -fpermissive -DNDEBUG -fno-threadsafe-statics -ffunction-sections -fno-rtti -flto",
+	cc_flags="-Wl,--gc-sections -fdata-sections -DNDEBUG -ffunction-sections -flto",
+	ld_flags="-Wl,--gc-sections -fdata-sections -fpermissive -DNDEBUG -fno-threadsafe-statics -ffunction-sections -fno-rtti -flto",
+)
