@@ -16,13 +16,6 @@ TEST_CASE("float_print")
 	output.clear();
 }
 
-TEST_CASE("dprf_float")
-{
-	dprf("%f", 0.1);
-	CHECK_EQ(output, "0.100000");
-	output.clear();
-}
-
 TEST_CASE("dpr_float_nanf")
 {
 	float f = std::nanf("");
