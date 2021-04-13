@@ -39,7 +39,11 @@ licant.execute("compat/std/std.g.py")
 licant.execute("compat/posix/posix.g.py")
 licant.execute("compat/newlib-stub/newlib-stub.g.py")
 
-licant.module("igris.cxx_support", sources=["compat/cxx/__cxa_pure_virtual.c", "compat/cxx/__dso_handle.c"])
+licant.module("igris.cxx_support", sources=[
+	"compat/cxx/__cxa_pure_virtual.c", 
+	"compat/cxx/__dso_handle.c"
+])
+
 licant.module("igris.stdlibs", 
 	mdepends = ["igris.libc", "igris.std", "igris.posix"])
 
@@ -94,20 +98,22 @@ licant.module("igris.protocols.numcmd",
 #########################UTILS###################################
 
 licant.module("igris.util", sources=[
-	"igris/util/numconvert.c",
-	"igris/util/hexascii.cpp",
-	"igris/util/string.cpp",
-	"igris/util/dstring.c",
-	"igris/util/stub.c",
-	"igris/util/crc.c",
-	"igris/util/emergency_stop.c",
-
-	"igris/string/memmem.c",
-	"igris/string/replace.cpp",
-	"igris/string/replace_substrings.c",
-
-	"igris/binreader.c"
-])
+		"igris/util/numconvert.c",
+		"igris/util/hexascii.cpp",
+		"igris/util/string.cpp",
+		"igris/util/dstring.c",
+		"igris/util/stub.c",
+		"igris/util/crc.c",
+		"igris/util/emergency_stop.c",
+		"igris/string/memmem.c",
+		"igris/string/replace.cpp",
+		"igris/string/replace_substrings.c",
+		"igris/binreader.c"
+	],
+	mdepends = [
+		"igris.bug"
+	]
+)
 
 #################################################################
 
