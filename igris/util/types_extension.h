@@ -1,6 +1,8 @@
 #ifndef IGRIS_TYPES_EXTENSION_H
 #define IGRIS_TYPES_EXTENSION_H
 
+// Плохо работает на разных архитектурах.
+
 #include <stdint.h>
 
 #ifndef __FLOAT32_T_TYPE
