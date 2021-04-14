@@ -18,8 +18,8 @@ namespace igris
         size_t m_size;
         A alloc;
 
-        CONSTREF_GETTER(data, m_data);
-        CONSTREF_GETTER(size, m_size);
+        const T *data() const { return m_data; }
+        size_t size() const { return m_size; }
 
         unbounded_array() : m_data(nullptr), m_size(0) {}
 
