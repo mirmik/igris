@@ -21,34 +21,14 @@ tests = [
 	"util"
 ]
 
-tests_c = [
-]
-
 application("runtests",
-	sources = ["main.cpp", "reader.cpp"],
-		#+ [t+".cpp" for t in tests] 
-		#+ [t+".c" for t in tests_c]),
+	sources = ["main.cpp", "reader.cpp", "macro.cpp"],
 
-	#ld_flags = "-L/usr/local/lib/",
 	cxx_flags = "-g",
 	cc_flags = "-g",
 
 	include_paths = ["."],
 	mdepends = [ "igris", ("igris.dprint", "user") ],
 )
-
-#application("runtests_installed",
-#	sources = (
-#		["main.cpp"] 
-#		+ [t+".cpp" for t in tests] 
-#		+ [t+".c" for t in tests_c]),
-#
-#	ld_flags = "-L/usr/local/lib/",
-#
-#	include_paths = ["."],
-#	mdepends = [],
-#
-#	libs = ["gtest", "pthread", "nos", "igris"]
-#)
 
 licant.ex("runtests")

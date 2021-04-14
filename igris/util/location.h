@@ -1,5 +1,5 @@
-#ifndef NOS_UTIL_LOCATION_H
-#define NOS_UTIL_LOCATION_H
+#ifndef IGRIS_UTIL_LOCATION_H
+#define IGRIS_UTIL_LOCATION_H
 
 //Определение позиции в коде. Для трассировки.
 #include <igris/compiler.h>
