@@ -1,6 +1,9 @@
 #ifndef IGRIS_UTIL_SIZE_H
 #define IGRIS_UTIL_SIZE_H
 
+// Расширенная версия std::size для старых стандартом.
+// В будущем удалить.
+
 #include <utility>
 
 namespace igris
