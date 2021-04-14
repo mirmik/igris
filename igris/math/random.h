@@ -1,5 +1,5 @@
-#ifndef GXX_UTIL_RANDOM_H
-#define GXX_UTIL_RANDOM_H
+#ifndef IGRIS_MATH_RANDOM_H
+#define IGRIS_MATH_RANDOM_H
 
 //Утилиты для использования рандомайзера.
 
