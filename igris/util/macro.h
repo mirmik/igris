@@ -95,7 +95,11 @@
 #define TWELVE_ARGUMENT(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12,     \
                         ...)                                                   \
     a12
+
 #define COUNT_ARGS(...)                                                        \
     TWELVE_ARGUMENT(dummy, ##__VA_ARGS__, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+
+#define TEMPLATE_INSTANCE(func, ...)                                           \
+    constexpr const auto CONCAT2(privptr, __LINE__) = &func<__VA_ARGS__>;
 
 #endif
