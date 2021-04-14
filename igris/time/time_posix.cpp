@@ -3,7 +3,7 @@
 #include <chrono>
 #include <thread>
 
-unsigned long millis()
+int64_t millis()
 {
     auto duration = std::chrono::system_clock::now().time_since_epoch();
     auto millis =
@@ -11,7 +11,7 @@ unsigned long millis()
     return millis;
 }
 
-unsigned long micros()
+int64_t micros()
 {
     auto duration = std::chrono::system_clock::now().time_since_epoch();
     auto mcross =
@@ -19,14 +19,9 @@ unsigned long micros()
     return mcross;
 }
 
-int msleep(long m)
+int msleep(int64_t m)
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(m));
     return 0;
 }
 
-int64_t igris::millis() { return ::millis(); }
-
-int64_t igris::micros() { return ::micros(); }
-
-int igris::msleep(int64_t m) { return ::msleep(m); }
