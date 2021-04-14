@@ -1,7 +1,7 @@
 #ifndef IGRIS_DECLTYPEOF_H
 #define IGRIS_DECLTYPEOF_H
 
-//Макрос decltypeof имитирует поведение typeof в С/С++ коде.
+// Imitate typeof behavior in c++ code.
 #if __cplusplus
 namespace
 {
