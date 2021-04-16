@@ -20,7 +20,7 @@ modules = [
 #		"igris.protocols.numcmd",
 	]
 
-CCFLAGS = '-fPIC -Wall -Wreturn-type'
+CCFLAGS = '-fPIC -Wall -pedantic-errors -Wreturn-type'
 CXXFLAGS = CCFLAGS
 
 licant.cxx_library("shared",
@@ -31,7 +31,7 @@ licant.cxx_library("shared",
 	cc_flags = CCFLAGS,
 	shared = True,
 	cxxstd = "gnu++17",
-	ccstd = "c11",
+	ccstd = "gnu11",
 	optimize = "-O3"
 )
 
@@ -42,8 +42,8 @@ licant.cxx_library("static",
 	cxx_flags = CXXFLAGS,
 	cc_flags = CCFLAGS,
 	cxxstd = "gnu++17",
-	ccstd = "c11",
-	optimize = "-O3",
+	ccstd = "gnu11",
+	optimize = "-O3"
 	shared = False
 )
 
