@@ -20,7 +20,7 @@ modules = [
 #		"igris.protocols.numcmd",
 	]
 
-CCFLAGS = '-fPIC -Wall -pedantic-errors -Wreturn-type'
+CCFLAGS = '-fPIC -Wall -pedantic-errors -Wreturn-type -Wno-gnu-zero-variadic-macro-arguments'
 CXXFLAGS = CCFLAGS
 
 licant.cxx_library("shared",
