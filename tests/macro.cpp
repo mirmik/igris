@@ -38,9 +38,5 @@ TEST_CASE("macro")
 	accum = 0;
 	ARGS_INVOKE_FOR_EACH(foo, 1,2,3,4,5,6,7,8);
 	CHECK_EQ(accum, 36);
-
-	accum = 0;
-	ARGS_INVOKE_FOR_EACH(foo, 1,2,3,4,5,6,7,8,9);
-	CHECK_EQ(accum, 45);
 }
 #endif
