@@ -43,7 +43,7 @@ licant.cxx_library("static",
 	cc_flags = CCFLAGS,
 	cxxstd = "gnu++17",
 	ccstd = "gnu11",
-	optimize = "-O3"
+	optimize = "-O3",
 	shared = False
 )
 
