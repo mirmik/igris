@@ -4,7 +4,7 @@
 int accum = 0;
 void foo(int a) { accum += a; }
 
-
+#ifndef _MSC_VER
 TEST_CASE("macro")
 {
 	accum = 0;
@@ -43,3 +43,4 @@ TEST_CASE("macro")
 	ARGS_INVOKE_FOR_EACH(foo, 1,2,3,4,5,6,7,8,9);
 	CHECK_EQ(accum, 45);
 }
+#endif
