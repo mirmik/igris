@@ -9,7 +9,6 @@ licant.execute("igris.g.py")
 
 licant.cli.add_argument("--toolchain")
 opts, args = licant.cli.parse()
-
 toolchain = licant.cxx_make.toolchain_gcc(opts.toolchain)
 
 target = lambda suffix: "libigris.{}".format(suffix)
@@ -21,13 +20,18 @@ modules = [
 #		"igris.protocols.numcmd",
 	]
 
+CCFLAGS = '-fPIC -Wall -pedantic-errors -Wreturn-type'
+CXXFLAGS = CCFLAGS
+
 licant.cxx_library("shared",
 	target="libigris.so",
 	toolchain=toolchain,
 	mdepends = modules + ["igris.syslock", ("igris.ctrobj", "linux")],
-	cxx_flags = '-fPIC -Wall -pedantic-errors -Wreturn-type',
-	cc_flags = '-fPIC -Wall -pedantic-errors -Wreturn-type',
+	cxx_flags = CXXFLAGS,
+	cc_flags = CCFLAGS,
 	shared = True,
+	cxxstd = "gnu++17",
+	ccstd = "c11",
 	optimize = "-O3"
 )
 
@@ -35,9 +39,11 @@ licant.cxx_library("static",
 	target="libigris.a",
 	toolchain=toolchain,
 	mdepends = modules,
-	cxx_flags = '-fPIC -pedantic-errors',
-	cc_flags = '-fPIC -pedantic-errors',
+	cxx_flags = CXXFLAGS,
+	cc_flags = CCFLAGS,
+	cxxstd = "gnu++17",
 	ccstd = "c11",
+	optimize = "-O3",
 	shared = False
 )
 
