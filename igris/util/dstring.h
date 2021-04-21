@@ -1,6 +1,7 @@
 #ifndef GXX_UTIL_DSTRING_H
 #define GXX_UTIL_DSTRING_H
 
+#include <ctype.h>
 #include <igris/compiler.h>
 #include <stdlib.h>
 

@@ -1,9 +1,9 @@
 #ifndef IGRIS_BUFFER_H
 #define IGRIS_BUFFER_H
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <string>
 
 #include <igris/util/__include_string_view.h>
 
@@ -32,9 +32,9 @@ namespace igris
         buffer(const char *_buf) : buf((char *)_buf), sz(strlen(_buf)) {}
 
         buffer(const void *_buf, size_t _sz) : buf((char *)_buf), sz(_sz) {}
-        buffer(const std::string &str) : buffer(str.data(), str.size()) {}
 
 #if IGRIS_HAS_STRING_VIEW
+        buffer(const std::string &str) : buffer(str.data(), str.size()) {}
         buffer(const std::string_view &str) : buffer(str.data(), str.size()) {}
 #endif
 
@@ -43,7 +43,9 @@ namespace igris
         {
         }
 
+#if IGRIS_HAS_STRING
         explicit operator std::string() { return std::string(buf, sz); }
+#endif
 
         // methods:
         bool operator==(const buffer &other) const

@@ -6,6 +6,8 @@
 #include <limits.h>
 #include <cfloat>
 
+#include <igris/limits.h>
+
 namespace std
 {
 	template <class T> struct numeric_limits;

@@ -6,7 +6,6 @@
 #include <utility>
 
 #include <igris/util/ctrdtr.h>
-#include <igris/util/setget.h>
 
 namespace std {
 	template<typename T, class Allocator = std::allocator<T>>
@@ -25,9 +24,11 @@ namespace std {
 		Allocator m_alloc;
 
 	public:
-		CONSTREF_GETTER(data, m_data);
-		CONSTREF_GETTER(size, m_size);
-		CONSTREF_GETTER(capacity, m_capacity);
+		T* data() { return m_data; }
+		const T* data() const { return m_data; }
+		size_t size() const { return m_size; }
+		size_t capacity() const { return m_capacity; }
+
 
 		vector(const Allocator& alloc = Allocator()) : m_alloc(alloc) {}
 

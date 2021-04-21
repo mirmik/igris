@@ -1,10 +1,20 @@
-#ifndef GXX_STD_CMATH_H
-#define GXX_STD_CMATH_H
+#ifndef IGRIS_STD_CMATH_H
+#define IGRIS_STD_CMATH_H
 
 #include <math.h>
 
+#ifndef WITHOUT_LOG2
+#define WITHOUT_LOG2 0
+#endif
+
+#ifdef abs
+#undef abs
+#endif
+
 namespace std 
 {
+	template<class T> T abs(const T& a) { return a >= 0 ? a : -a; }
+
 	using ::sin;
 	using ::cos;
 	using ::tan;
@@ -23,7 +33,11 @@ namespace std
 	using ::pow;
 	using ::sqrt;
 	using ::log;
+
+#if !(WITHOUT_LOG2)
 	using ::log2;
+#endif
+
 	using ::log10;
 
 	using ::copysign;

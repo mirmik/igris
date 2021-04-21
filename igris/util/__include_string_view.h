@@ -8,6 +8,12 @@
 #else
 #define IGRIS_HAS_STRING_VIEW 0
 #endif
+#if __has_include(<string>) && (__cplusplus >= 201703L)
+#include <string>
+#define IGRIS_HAS_STRING 1
+#else
+#define IGRIS_HAS_STRING 0
+#endif
 #else
 #include <string_view>
 #define IGRIS_HAS_STRING_VIEW 1

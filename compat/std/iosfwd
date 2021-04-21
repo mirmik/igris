@@ -6,7 +6,7 @@
 
 namespace std 
 {
-	using streamsize = ::ssize_t;
+	//using streamsize = ::ssize_t;
 	
 	template <class C>
 	class basic_streambuf {
@@ -14,7 +14,7 @@ namespace std
 		using traits_type = nullptr_t;
 
 		virtual int_type overflow(int_type) = 0;
-		virtual streamsize xsputn(const C*, streamsize) = 0;
+		virtual int xsputn(const C*, int) = 0;
 	};
 	
 	template<
