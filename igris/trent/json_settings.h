@@ -29,7 +29,10 @@ namespace igris
         {
             std::fstream file(pathstr);
             if (!file.good())
+            {
+                perror("json_settings::load:");
                 return;
+            }
             std::stringstream file_contents;
             file_contents << file.rdbuf();
             tr = json::parser_str(file_contents.str()).parse();
@@ -72,6 +75,7 @@ namespace igris
             std::fstream file(pathstr);
             if (!file.good())
             {
+                perror("json_syncer::load:");
                 throw std::logic_error("file isn't exist");
             }
             std::stringstream file_contents;
