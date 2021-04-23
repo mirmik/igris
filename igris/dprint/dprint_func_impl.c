@@ -551,9 +551,3 @@ void dprptrln(const void *ptr)
     debug_putchar('\r');
     debug_putchar('\n');
 }
-
-static void __debug_putchar(void *_, int c)
-{
-    (void)_;
-    debug_putchar(c);
-}
