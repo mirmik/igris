@@ -19,9 +19,6 @@
 #include <string_view>
 #define IGRIS_HAS_STRING_VIEW 1
 #define IGRIS_HAS_STRING 1
-#else
-#include <string>
-#include <string_view>
 #endif
 
 #endif
