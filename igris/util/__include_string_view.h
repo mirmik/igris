@@ -8,7 +8,7 @@
 #else
 #define IGRIS_HAS_STRING_VIEW 0
 #endif
-#if __has_include(<string>) && (__cplusplus >= 201703L)
+#if __has_include(<string>)
 #include <string>
 #define IGRIS_HAS_STRING 1
 #else
