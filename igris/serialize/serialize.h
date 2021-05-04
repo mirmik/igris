@@ -438,6 +438,11 @@ namespace igris
 
         return ret;
     }
+
+    template <class T> T deserialize(const std::string &in)
+    {
+        return deserialize<T>(igris::buffer(in));
+    }
 }
 
 #endif
