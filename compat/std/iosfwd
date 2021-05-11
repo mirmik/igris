@@ -6,7 +6,7 @@
 
 namespace std 
 {
-	//using streamsize = ::ssize_t;
+	using streamsize = int;
 	
 	template <class C>
 	class basic_streambuf {
