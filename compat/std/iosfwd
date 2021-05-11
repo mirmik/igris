@@ -1,5 +1,5 @@
-#ifndef GXX_STD_IOSFWD_H
-#define GXX_STD_IOSFWD_H
+#ifndef IGRIS_COMPAT_STD_IOSFWD_H
+#define IGRIS_COMPAT_STD_IOSFWD_H
 
 #include <utility>
 #include <string>
@@ -12,6 +12,7 @@ namespace std
 	class basic_streambuf {
 		using int_type = int;
 		using traits_type = nullptr_t;
+		using char_type = C;
 
 		virtual int_type overflow(int_type) = 0;
 		virtual int xsputn(const C*, int) = 0;

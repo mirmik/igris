@@ -1,5 +1,5 @@
-#ifndef GXX_STD_IOSTREAM_H
-#define GXX_STD_IOSTREAM_H
+#ifndef IGRIS_COMPAT_STD_IOSTREAM_H
+#define IGRIS_COMPAT_STD_IOSTREAM_H
 
 #include <utility>
 #include <string>
