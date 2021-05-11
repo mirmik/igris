@@ -2,7 +2,6 @@
 #define GENOS_DATASTRUCT_RING_HEAD_H
 
 #include <igris/compiler.h>
-//#include <stdlib.h> // for unsigned int
 
 struct ring_head
 {
@@ -45,12 +44,9 @@ static inline void ring_fixup_tail(struct ring_head *r)
         r->tail -= r->size;
 }
 
-static inline int8_t ring_empty(struct ring_head *r)
-{
-    return r->head == r->tail;
-}
+static inline int ring_empty(struct ring_head *r) { return r->head == r->tail; }
 
-static inline int8_t ring_full(struct ring_head *r)
+static inline int ring_full(struct ring_head *r)
 {
     return r->head == (r->tail ? r->tail : r->size) - 1;
 }
