@@ -4,6 +4,7 @@
 #ifdef __cplusplus
 
 #include <igris/buffer.h>
+#include <igris/compiler.h>
 #include <string>
 
 namespace igris
