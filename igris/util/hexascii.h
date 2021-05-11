@@ -21,6 +21,12 @@ namespace igris
 #include <igris/util/access.h>
 #include <stdint.h>
 
+__BEGIN_DECLS
+
+void hexascii_encode(const void *indata, int size, void *out);
+
+__END_DECLS
+
 static inline uint8_t hex2half(char c)
 {
     return (uint8_t)(c <= '9' ? c - '0' : c - 'A' + 10);
