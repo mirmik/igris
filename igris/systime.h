@@ -1,8 +1,8 @@
 #ifndef IGRIS_SYSTIME_H
 #define IGRIS_SYSTIME_H
 
+#include <igris/compiler.h>
 #include <stdint.h>
-#include <sys/cdefs.h>
 
 __BEGIN_DECLS
 

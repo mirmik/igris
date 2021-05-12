@@ -1,4 +1,4 @@
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 __BEGIN_DECLS
 
