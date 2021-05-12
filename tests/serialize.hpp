@@ -1,4 +1,5 @@
 #include <igris/serialize/serialize.h>
+#include <igris/serialize/stdtypes.h>
 
 struct A 
 {
