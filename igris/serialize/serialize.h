@@ -40,8 +40,6 @@ namespace igris
         static void serialize(M &keeper, const T &obj) { keeper.dump(obj); }
 
         static void deserialize(M &keeper, T &obj) { keeper.load(obj); }
-
-        static void deserialize(M &keeper, T &&obj) { keeper.load(obj); }
     };
 
     template <typename M, typename T>
@@ -245,11 +243,7 @@ namespace igris
                 load(arch);
             }
 
-            template <typename T> void load(T &&ref)
-            {
-                ((std::remove_cv_t<std::remove_reference_t<T>> &)(ref))
-                    .reflect(*this);
-            }
+            template <typename T> void load(T &ref) { ref.reflect(*this); }
 
             virtual void skip(int ptr) = 0;
             virtual void *pointer() = 0;
