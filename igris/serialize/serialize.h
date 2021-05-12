@@ -11,6 +11,18 @@
 #include <tuple>
 #include <vector>
 
+/*
+    NOTE: Архивы содержат шаблонную реализацию методов load или dump,
+    работающую через метод reflect, реализованный в классе
+    сериализуемого объекта. В свою очередь по оператору & в
+    методе reflect вызывается serialize/deserialize.
+
+    serialize/deserialize имплементированны через load/dump методы архивов
+    для базовых типов, типов, содержащих reflect, для стандартных небазовых
+    имплементированы seialize_helper-ы. Также, при необходимости можно
+    отдельно прописать в классе методы serialize/deserialize.
+*/
+
 namespace igris
 {
     template <typename M, typename T, typename U = int>
