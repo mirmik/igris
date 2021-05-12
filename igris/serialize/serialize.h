@@ -2,14 +2,14 @@
 #define IGRIS_SERIALIZE_SERIALIZE_H
 
 #include <igris/buffer.h>
-#include <igris/math/defs.h>
-#include <igris/result.h>
 
 #include <map>
 #include <sstream>
 #include <string>
 #include <tuple>
 #include <vector>
+
+#include <igris/serialize/helper.h>
 
 /*
     NOTE: Архивы содержат шаблонную реализацию методов load или dump,
@@ -25,59 +25,6 @@
 
 namespace igris
 {
-    template <typename M, typename T, typename U = int>
-    struct is_have_serialize : std::false_type
-    {
-    };
-
-    template <typename M, typename T>
-    struct is_have_serialize<M, T, decltype((void)&T::template serialize<M>, 0)>
-        : std::true_type
-    {
-    };
-
-    template <typename M, typename T, bool HaveSerialize = true>
-    struct serialize_helper_basic
-    {
-        static void serialize(M &keeper, const T &obj)
-        {
-            obj.serialize(keeper);
-        }
-
-        static void deserialize(M &keeper, T &obj) { obj.deserialize(keeper); }
-    };
-
-    template <typename M, typename T> struct serialize_helper_basic<M, T, false>
-    {
-        static void serialize(M &keeper, const T &obj) { keeper.dump(obj); }
-
-        static void deserialize(M &keeper, T &obj) { keeper.load(obj); }
-    };
-
-    template <typename M, typename T>
-    struct serialize_helper
-        : public serialize_helper_basic<M, T, is_have_serialize<M, T>::value>
-    {
-    };
-
-    template <typename M, typename T>
-    inline void serialize(M &keeper, const T &obj)
-    {
-        serialize_helper<M, T>::serialize(keeper, obj);
-    }
-
-    template <typename M, typename T> inline void deserialize(M &keeper, T &obj)
-    {
-        serialize_helper<M, std::remove_cv_t<T>>::deserialize(keeper, obj);
-    }
-
-    template <typename M, typename T>
-    inline void deserialize(M &keeper, T &&obj)
-    {
-        serialize_helper<M, std::remove_cv_t<T>>::deserialize(keeper,
-                                                              std::move(obj));
-    }
-
     namespace archive
     {
         template <typename T> struct data
@@ -243,7 +190,7 @@ namespace igris
                 uint16_t len;
                 load(len);
 
-                int readsize = __MIN__(buf.size(), len);
+                int readsize = buf.size() < len ? buf.size() : len;
                 load_data(buf.data(), readsize);
 
                 buf.size(readsize);
