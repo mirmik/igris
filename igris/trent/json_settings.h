@@ -19,7 +19,8 @@ namespace igris
         std::string pathstr;
 
       public:
-        ACCESSOR(path, pathstr);
+        const std::string & path() {return pathstr;}
+        void path(const std::string & str) { pathstr = str;}
 
         json_settings() = default;
         json_settings(const std::string &str) : pathstr(str){};
@@ -63,8 +64,10 @@ namespace igris
 
         std::string pathstr;
 
-      public:
-        ACCESSOR(path, pathstr);
+      public:        
+        const std::string & path() {return pathstr;}
+        void path(const std::string & str) { pathstr = str;}
+
 
         json_syncer() = default;
         json_syncer(const std::string &str) : pathstr(str) {}

@@ -67,7 +67,7 @@ namespace igris
                 oth._content = nullptr;
             }
 
-            result<void> check(const trent &tr, igris::strvec &strvec) const
+            result<void> check(const trent &tr, std::vector<std::string> &strvec) const
             {
                 switch (type)
                 {
@@ -273,7 +273,7 @@ namespace igris
             bool _optional = false;
             schema_node &operator[](std::string str) { return nodes.at(str); }
 
-            FLOW_ACCESSOR(optional, _optional);
+            schema_node& optional(bool par) { _optional = par; return *this; }
         };
 
         struct schema_dict_pair
