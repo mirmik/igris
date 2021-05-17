@@ -671,9 +671,9 @@ namespace igris
             case type::numer:
                 m_num = other.m_num;
                 return *this;
-            // case type::integer:
-            //    m_int = other.m_int;
-            //	return *this;
+            case type::boolean:
+                m_num = other.m_num;
+                return *this;
             case type::nil:
                 return *this;
             default:

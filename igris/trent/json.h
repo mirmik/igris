@@ -140,7 +140,7 @@ namespace igris
 
                 buf[0] = onebuf;
 
-                while (isalpha(onebuf = readnext()))
+                while (isalpha(onebuf = readnext_skipping()))
                 {
                     *ptr++ = onebuf;
                 }

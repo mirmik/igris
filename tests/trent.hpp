@@ -19,6 +19,8 @@ LT_BEGIN_TEST(igris_test_suite, json_test)
 	tr = igris::json::parse("{'a':42, /*aaa*/ 'b' : 13}");
 	CHECK(tr.is_dict());
 
+	tr = igris::json::parse("{'a':42, /*aaa*/ 'b' : 13 }");
+	CHECK(tr.is_dict());
 
 	tr = igris::json::parse(R"(
 		[42, //aaa 
@@ -67,6 +69,34 @@ LT_BEGIN_TEST(igris_test_suite, trent_path)
 	CHECK_EQ(a, 42);
 }
 LT_END_TEST(trent_path)
+
+LT_BEGIN_TEST(igris_test_suite, trent_bool)
+{
+	igris::trent tr;
+
+	tr["a"][28] = true;
+	bool a = tr[igris::trent_path("a/28")].as_bool();
+	CHECK_EQ(a, true);
+
+	tr["a"][29] = false;
+	a = tr[igris::trent_path("a/29")].as_bool();
+	CHECK_EQ(a, false);
+
+	igris::trent tr2;
+	tr2 = igris::json::parse(" false ");
+	CHECK(tr2.is_bool());
+	CHECK_EQ(tr2.as_bool(), false);
+
+	tr2 = igris::json::parse(" {'a': false} ");
+	CHECK(tr2["a"].is_bool());
+	CHECK_EQ(tr2["a"].as_bool(), false);
+
+	tr2 = igris::json::parse(" {'a': false } ");
+	CHECK(tr2["a"].is_bool());
+	CHECK_EQ(tr2["a"].as_bool(), false);
+}
+LT_END_TEST(trent_path)
+
 
 LT_BEGIN_TEST(igris_test_suite, get_test)
 {
