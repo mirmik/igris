@@ -360,9 +360,9 @@ namespace igris
                 break;
 
             case trent_basic<TAlloc>::type::string:
-                os.putchar('"');
+                os.putbyte('"');
                 os.print(tr.unsafe_string_const());
-                os.putchar('"');
+                os.putbyte('"');
                 break;
 
             case trent_basic<TAlloc>::type::list:
@@ -377,7 +377,7 @@ namespace igris
                     }
                 }
 
-                os.putchar('[');
+                os.putbyte('[');
 
                 if (havedict)
                     for (auto &v : tr.unsafe_list_const())
@@ -393,12 +393,12 @@ namespace igris
                     for (auto &v : tr.unsafe_list_const())
                     {
                         if (sep)
-                            os.putchar(',');
+                            os.putbyte(',');
 
                         os.print("\r\n");
 
                         for (int i = 0; i < tab + 1; i++)
-                            os.putchar('\t');
+                            os.putbyte('\t');
 
                         json::pretty_print_to(v, os, tab + 1);
                         sep = true;
@@ -407,40 +407,40 @@ namespace igris
                     os.print("\r\n");
 
                     for (int i = 0; i < tab; i++)
-                        os.putchar('\t');
+                        os.putbyte('\t');
                 }
 
-                os.putchar(']');
+                os.putbyte(']');
                 break;
 
             case trent::type::dict:
-                os.putchar('{');
+                os.putbyte('{');
 
                 for (auto &p : tr.unsafe_dict_const())
                 {
                     if (sep)
-                        os.putchar(',');
+                        os.putbyte(',');
 
-                    os.putchar('\n');
+                    os.putbyte('\n');
 
                     for (int i = 0; i < tab + 1; i++)
-                        os.putchar('\t');
+                        os.putbyte('\t');
 
-                    os.putchar('"');
+                    os.putbyte('"');
                     os.print(p.first);
-                    os.putchar('"');
+                    os.putbyte('"');
                     os.write(": ", 2);
 
                     json::pretty_print_to(p.second, os, tab + 1);
                     sep = true;
                 }
 
-                os.putchar('\n');
+                os.putbyte('\n');
 
                 for (int i = 0; i < tab; i++)
-                    os.putchar('\t');
+                    os.putbyte('\t');
 
-                os.putchar('}');
+                os.putbyte('}');
                 break;
 
             case trent::type::nil:

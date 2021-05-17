@@ -760,43 +760,43 @@ namespace igris
             return 0;
 
         case type::string:
-            os.putchar('"');
+            os.putbyte('"');
             os.print(unsafe_string_const());
-            os.putchar('"');
+            os.putbyte('"');
             return 0;
 
         case type::list:
-            os.putchar('[');
+            os.putbyte('[');
 
             for (auto &v : unsafe_list_const())
             {
                 if (sep)
-                    os.putchar(',');
+                    os.putbyte(',');
 
                 v.print_to(os);
                 sep = true;
             }
 
-            os.putchar(']');
+            os.putbyte(']');
             return 0;
 
         case type::dict:
-            os.putchar('{');
+            os.putbyte('{');
 
             for (auto &p : unsafe_dict_const())
             {
                 if (sep)
-                    os.putchar(',');
+                    os.putbyte(',');
 
-                os.putchar('"');
+                os.putbyte('"');
                 os.print(p.first);
-                os.putchar('"');
-                os.putchar(':');
+                os.putbyte('"');
+                os.putbyte(':');
                 p.second.print_to(os);
                 sep = true;
             }
 
-            os.putchar('}');
+            os.putbyte('}');
             return 0;
 
         case type::nil:
