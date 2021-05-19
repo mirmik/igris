@@ -51,6 +51,19 @@ LT_BEGIN_TEST(igris_test_suite, trent_basic_test)
 }
 LT_END_TEST(trent_basic_test)
 
+
+
+LT_BEGIN_TEST(igris_test_suite, trent_basic_test)
+{
+	igris::trent tr;
+	
+	tr = igris::json::parse(" 20e-1 ");
+	CHECK_EQ(tr.as_numer(), 2.0);
+}
+LT_END_TEST(trent_basic_test)
+
+
+
 LT_BEGIN_TEST(igris_test_suite, trent_path)
 {
 	igris::trent tr;

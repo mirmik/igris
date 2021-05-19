@@ -167,7 +167,8 @@ namespace igris
 
                 buf[0] = onebuf;
 
-                while (isdigit(onebuf = readnext()) || onebuf == '.')
+                while (isdigit(onebuf = readnext()) || onebuf == '-' ||
+                       onebuf == 'e' || onebuf == '.')
                 {
                     *ptr++ = onebuf;
                 }
@@ -177,7 +178,7 @@ namespace igris
                 if (isspace(onebuf))
                     onebuf = 0;
 
-                return atof64(buf, nullptr);
+                return strtod(buf, nullptr);
             }
 
             template <template <class Allocator> class TAlloc = std::allocator>
