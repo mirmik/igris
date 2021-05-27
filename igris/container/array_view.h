@@ -21,6 +21,12 @@ namespace igris
         array_view(T *data, size_t size) : _data(data), _size(size) {}
         array_view() : _data(nullptr), _size(0) {}
 
+        array_view(const std::initializer_list<T> &lst)
+        {
+            _data = (T *)std::begin(lst);
+            _size = lst.size();
+        }
+
         template <size_t N> array_view(T (&arr)[N]) : _data(arr), _size(N) {}
 
         // Warning: UB
