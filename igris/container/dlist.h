@@ -63,6 +63,8 @@ namespace igris
         };
 
         class reverse_iterator
+            : public std::iterator<std::bidirectional_iterator_tag, type,
+                                   ptrdiff_t, type *, type &>
         {
           private:
             dlist_head *current;
@@ -148,9 +150,9 @@ namespace igris
             dlist_move_prev(&(obj.*member), head.current);
         };
 
-        //		iterator insert(iterator it, type & obj) {
-        //			dlist_move_prev(&(obj.*member), it.current);
-        //		}
+        //      iterator insert(iterator it, type & obj) {
+        //          dlist_move_prev(&(obj.*member), it.current);
+        //      }
 
         void pop(type &obj)
         {
@@ -198,7 +200,7 @@ namespace igris
         //    return insert(std::upper_bound(begin(), end(), item ), item);
         //}
 
-        /*	gxx::string to_info() const
+        /*  gxx::string to_info() const
             {
                 gxx::string str;
                 str.reserve(128);
@@ -212,7 +214,7 @@ namespace igris
                 return str;
             };
         */
-        /*	gxx::string to_str() const
+        /*  gxx::string to_str() const
             {
                 gxx::string str;
                 str.reserve(128);
