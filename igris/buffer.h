@@ -1,6 +1,10 @@
 #ifndef IGRIS_BUFFER_H
 #define IGRIS_BUFFER_H
 
+/**
+    @file
+*/
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>

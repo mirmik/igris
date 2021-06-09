@@ -1,6 +1,10 @@
 #ifndef igris_JSON_SETTINGS_H
 #define igris_JSON_SETTINGS_H
 
+/**
+    @file
+*/
+
 #include <fstream>
 #include <sstream>
 #include <string>

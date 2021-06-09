@@ -1,6 +1,10 @@
 #ifndef igris_TRENT_BINDER_H
 #define igris_TRENT_BINDER_H
 
+/**
+    @file
+*/
+
 #include <igris/trent/settings.h>
 #include <igris/trent/trent.h>
 

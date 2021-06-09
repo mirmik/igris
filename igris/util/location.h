@@ -3,7 +3,6 @@
 
 //Определение позиции в коде. Для трассировки.
 #include <igris/compiler.h>
-#include <igris/dprint.h>
 
 struct location
 {
@@ -19,18 +18,7 @@ struct location
 
 __BEGIN_DECLS
 
-static inline void debug_print_location(struct location location)
-{
-    debug_print("file: ");
-    debug_print(location.file);
-    dln();
-    debug_print("func: ");
-    debug_print(location.func);
-    dln();
-    debug_print("line: ");
-    debug_printdec_unsigned_int(location.line);
-    dln();
-}
+void debug_print_location(struct location location);
 
 __END_DECLS
 

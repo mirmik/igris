@@ -1,6 +1,10 @@
 #ifndef IGRIS_TRENT_SETTINGS_H
 #define IGRIS_TRENT_SETTINGS_H
 
+/**
+    @file
+*/
+
 #include <igris/trent/trent.h>
 #include <igris/trent/trent_path.h>
 

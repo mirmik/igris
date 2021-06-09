@@ -1,5 +1,9 @@
-#ifndef GXX_DATATREE_H
-#define GXX_DATATREE_H
+#ifndef IGRIS_TRENT_TRENT_H
+#define IGRIS_TRENT_TRENT_H
+
+/**
+    @file
+*/
 
 #include <cassert>
 #include <cstdint>

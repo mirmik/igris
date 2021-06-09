@@ -2,6 +2,7 @@
 #define IGRIS_SERIALIZE_ARCHIVE_H
 
 #include <igris/serialize/helper.h>
+#include <igris/buffer.h>
 
 namespace igris
 {
