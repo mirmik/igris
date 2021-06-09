@@ -3,6 +3,7 @@
 
 #include <igris/compiler.h>
 #include <igris/util/location.h>
+#include <igris/dprint.h>
 
 __BEGIN_DECLS
 

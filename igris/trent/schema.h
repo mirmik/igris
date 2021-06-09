@@ -1,6 +1,10 @@
 #ifndef igris_TRENT_CHECKER_H
 #define igris_TRENT_CHECKER_H
 
+/**
+    @file
+*/
+
 #include <igris/trent/trent.h>
 #include <igris/util/string.h>
 #include <set>
