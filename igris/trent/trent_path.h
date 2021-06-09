@@ -88,7 +88,7 @@ namespace igris
             std::vector<std::string> svec;
             svec.resize(size());
 
-            for (int i = 0; i < size(); ++i)
+            for (unsigned int i = 0; i < size(); ++i)
             {
                 auto &cur = operator[](i);
                 if (cur.is_string)
