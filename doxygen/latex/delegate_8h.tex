@@ -1,0 +1,83 @@
+\hypertarget{delegate_8h}{}\doxysection{/home/mirmik/project/igris/igris/event/delegate.h File Reference}
+\label{delegate_8h}\index{/home/mirmik/project/igris/igris/event/delegate.h@{/home/mirmik/project/igris/igris/event/delegate.h}}
+
+
+Реализация делегатов. Работа с указателями на метод реализуется с помощью horrible\+\_\+cast.  
+
+
+{\ttfamily \#include \char`\"{}igris/util/horrible\+\_\+cast.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include \char`\"{}inttypes.\+h\char`\"{}}\newline
+Include dependency graph for delegate.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=323pt]{delegate_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{delegate_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classigris_1_1AbstractDelegate}{igris\+::\+Abstract\+Delegate}}
+\item 
+struct \mbox{\hyperlink{structigris_1_1change__basic}{igris\+::change\+\_\+basic$<$ T, B $>$}}
+\item 
+struct \mbox{\hyperlink{structigris_1_1change__basic_3_01T_00_01R_07B_1_1_5_08_07V_8_8_8_08_4}{igris\+::change\+\_\+basic$<$ T, R(\+B\+::$\ast$)(\+V...)$>$}}
+\item 
+class \mbox{\hyperlink{classigris_1_1delegate}{igris\+::delegate$<$ R, Args $>$}}
+\item 
+class \mbox{\hyperlink{classigris_1_1fastdelegate}{igris\+::fastdelegate$<$ R, Args $>$}}
+\item 
+class \mbox{\hyperlink{classigris_1_1callback}{igris\+::callback$<$ R, Args $>$}}
+\item 
+class \mbox{\hyperlink{classigris_1_1delegate}{igris\+::delegate$<$ R, Args $>$}}
+\item 
+union \mbox{\hyperlink{unionigris_1_1delegate_1_1method__union}{igris\+::delegate$<$ R, Args $>$\+::method\+\_\+union}}
+\item 
+class \mbox{\hyperlink{classigris_1_1fastdelegate}{igris\+::fastdelegate$<$ R, Args $>$}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{delegate_8h_a433aa57e0b44f040f8698cde65267ec3}\label{delegate_8h_a433aa57e0b44f040f8698cde65267ec3}} 
+using {\bfseries igris\+::action} = delegate$<$ void $>$
+\item 
+\mbox{\Hypertarget{delegate_8h_a6175b994116836fdb839c0030da2fbd9}\label{delegate_8h_a6175b994116836fdb839c0030da2fbd9}} 
+using {\bfseries igris\+::fastaction} = fastdelegate$<$ void $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{delegate_8h_a5b989af705030da9f0d9259c749c9861}\label{delegate_8h_a5b989af705030da9f0d9259c749c9861}} 
+{\footnotesize template$<$typename T , typename Ret , typename... Args$>$ }\\delegate$<$ Ret, Args... $>$ {\bfseries igris\+::make\+\_\+delegate} (Ret(T\+::$\ast$mtd)(Args...), T $\ast$ptr)
+\item 
+\mbox{\Hypertarget{delegate_8h_a714637ac7caa86fcf05357bbfb18a681}\label{delegate_8h_a714637ac7caa86fcf05357bbfb18a681}} 
+{\footnotesize template$<$typename Ret , typename... Args$>$ }\\delegate$<$ Ret, Args... $>$ {\bfseries igris\+::make\+\_\+delegate} (Ret($\ast$fnc)(Args...))
+\item 
+\mbox{\Hypertarget{delegate_8h_a56655cd3e6e090757bb7210c0fe12f8f}\label{delegate_8h_a56655cd3e6e090757bb7210c0fe12f8f}} 
+{\footnotesize template$<$typename Ret , typename... Args$>$ }\\delegate$<$ Ret, Args... $>$ {\bfseries igris\+::make\+\_\+delegate} (Ret($\ast$fnc)(void $\ast$, Args...), void $\ast$extobj)
+\item 
+\mbox{\Hypertarget{delegate_8h_a32d238a4b7200132187c986e4a1554f6}\label{delegate_8h_a32d238a4b7200132187c986e4a1554f6}} 
+{\footnotesize template$<$typename T , typename Ret , typename... Args$>$ }\\fastdelegate$<$ Ret, Args... $>$ {\bfseries igris\+::make\+\_\+fastdelegate} (Ret(T\+::$\ast$mtd)(Args...), T $\ast$ptr)
+\item 
+\mbox{\Hypertarget{delegate_8h_a16756b5ea081987f1570c7a147c5d766}\label{delegate_8h_a16756b5ea081987f1570c7a147c5d766}} 
+{\footnotesize template$<$typename Ret , typename... Args$>$ }\\fastdelegate$<$ Ret, Args... $>$ {\bfseries igris\+::make\+\_\+fastdelegate} (Ret($\ast$fnc)(void $\ast$, Args...), void $\ast$obj)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Реализация делегатов. Работа с указателями на метод реализуется с помощью horrible\+\_\+cast. 
+
+В данной реализации делегат является шаблонным классом, что ограничивает его возможности одной сигнатурой. Однако, позволяет возвращать результат.
+
+\begin{DoxyNote}{Note}
+Реализация использует UB, предполагая определённый формат указатель на метод виртуального класса, который, строго говоря, не гарантирован стандартом. Использовать с осторожностью. 
+\end{DoxyNote}

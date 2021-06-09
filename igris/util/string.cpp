@@ -1,9 +1,11 @@
 #include <igris/util/hexascii.h>
 #include <igris/util/string.h>
 
+#include <cstring>
+
 namespace igris
 {
-    std::vector<std::string> split(const igris::buffer &str, char delim)
+    std::vector<std::string> split(const std::string_view &str, char delim)
     {
         std::vector<std::string> outvec;
 
@@ -30,7 +32,7 @@ namespace igris
         return outvec;
     }
 
-    std::vector<std::string> split(const igris::buffer &str, const char *delims)
+    std::vector<std::string> split(const std::string_view &str, const char *delims)
     {
         std::vector<std::string> outvec;
 

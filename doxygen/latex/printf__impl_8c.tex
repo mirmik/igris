@@ -1,0 +1,165 @@
+\hypertarget{printf__impl_8c}{}\doxysection{/home/mirmik/project/igris/igris/util/printf\+\_\+impl.c File Reference}
+\label{printf__impl_8c}\index{/home/mirmik/project/igris/igris/util/printf\_impl.c@{/home/mirmik/project/igris/igris/util/printf\_impl.c}}
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}printf\+\_\+impl.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$igris/dprint.\+h$>$}\newline
+{\ttfamily \#include $<$igris/math/defs.\+h$>$}\newline
+{\ttfamily \#include $<$igris/util/types\+\_\+extension.\+h$>$}\newline
+Include dependency graph for printf\+\_\+impl.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{printf__impl_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{printf__impl_8c_a55549139922ad49e21963827a981b899}{O\+P\+S\+\_\+\+F\+L\+A\+G\+\_\+\+L\+E\+F\+T\+\_\+\+A\+L\+I\+GN}}~0x00000001  /$\ast$ left alignment $\ast$/
+\item 
+\mbox{\Hypertarget{printf__impl_8c_a2a7bf491c597756b8b009a74416f0684}\label{printf__impl_8c_a2a7bf491c597756b8b009a74416f0684}} 
+\#define {\bfseries O\+P\+S\+\_\+\+F\+L\+A\+G\+\_\+\+W\+I\+T\+H\+\_\+\+S\+I\+GN}~0x00000002   /$\ast$ print sign $\ast$/
+\item 
+\mbox{\Hypertarget{printf__impl_8c_aaa14e2762e47e301364f7405a7675bcc}\label{printf__impl_8c_aaa14e2762e47e301364f7405a7675bcc}} 
+\#define {\bfseries O\+P\+S\+\_\+\+F\+L\+A\+G\+\_\+\+E\+X\+T\+R\+A\+\_\+\+S\+P\+A\+CE}~0x00000004 /$\ast$ add extra space before digit $\ast$/
+\item 
+\mbox{\Hypertarget{printf__impl_8c_aac891bd7507e4ee4c7d8292b87a0d728}\label{printf__impl_8c_aac891bd7507e4ee4c7d8292b87a0d728}} 
+\#define {\bfseries O\+P\+S\+\_\+\+F\+L\+A\+G\+\_\+\+W\+I\+T\+H\+\_\+\+S\+P\+EC}~0x00000008 /$\ast$ print a prefix for non-\/decimal systems $\ast$/
+\item 
+\mbox{\Hypertarget{printf__impl_8c_a0fe8aa314b8bd66e010592d945103bf0}\label{printf__impl_8c_a0fe8aa314b8bd66e010592d945103bf0}} 
+\#define {\bfseries O\+P\+S\+\_\+\+F\+L\+A\+G\+\_\+\+Z\+E\+R\+O\+\_\+\+P\+AD}~0x00000010 /$\ast$ padding with zeroes $\ast$/
+\item 
+\mbox{\Hypertarget{printf__impl_8c_ae78d99f94cd93ec5f884ee3d23862892}\label{printf__impl_8c_ae78d99f94cd93ec5f884ee3d23862892}} 
+\#define {\bfseries O\+P\+S\+\_\+\+P\+R\+E\+C\+\_\+\+I\+S\+\_\+\+G\+I\+V\+EN}~0x00000020 /$\ast$ precision is specified $\ast$/
+\item 
+\mbox{\Hypertarget{printf__impl_8c_a20c434f7222f444ff30f7a8e1ad02e45}\label{printf__impl_8c_a20c434f7222f444ff30f7a8e1ad02e45}} 
+\#define {\bfseries O\+P\+S\+\_\+\+L\+E\+N\+\_\+\+M\+IN}~0x00000040 /$\ast$ s\+\_\+char (d, i); u\+\_\+char (u, o, x, X); s\+\_\+char$\ast$ (n) $\ast$/
+\item 
+\mbox{\Hypertarget{printf__impl_8c_a4617c32c8f9daea0379d42f4081893e1}\label{printf__impl_8c_a4617c32c8f9daea0379d42f4081893e1}} 
+\#define {\bfseries O\+P\+S\+\_\+\+L\+E\+N\+\_\+\+S\+H\+O\+RT}~0x00000080 /$\ast$ short (d, i); u\+\_\+short (u, o, x, X); short$\ast$ (n) $\ast$/
+\item 
+\#define {\bfseries O\+P\+S\+\_\+\+L\+E\+N\+\_\+\+L\+O\+NG}
+\item 
+\mbox{\Hypertarget{printf__impl_8c_a636b1fe5e087ff15308744df14d8f0ad}\label{printf__impl_8c_a636b1fe5e087ff15308744df14d8f0ad}} 
+\#define {\bfseries O\+P\+S\+\_\+\+L\+E\+N\+\_\+\+L\+O\+N\+G\+L\+O\+NG}~0x00000200 /$\ast$ llong (d, i); u\+\_\+llong (u, o, x, X); llong$\ast$ (n) $\ast$/
+\item 
+\mbox{\Hypertarget{printf__impl_8c_aacb1e90318772cbd90611c6b6eeb2393}\label{printf__impl_8c_aacb1e90318772cbd90611c6b6eeb2393}} 
+\#define {\bfseries O\+P\+S\+\_\+\+L\+E\+N\+\_\+\+M\+AX}~0x00000400 /$\ast$ intmax\+\_\+t (d, i); uintmax\+\_\+t (u, o, x, X); intmax\+\_\+t$\ast$ (n) $\ast$/
+\item 
+\mbox{\Hypertarget{printf__impl_8c_add3f1720ff2f8bedf46db1d6edbd9826}\label{printf__impl_8c_add3f1720ff2f8bedf46db1d6edbd9826}} 
+\#define {\bfseries O\+P\+S\+\_\+\+L\+E\+N\+\_\+\+S\+I\+ZE}~0x00000800 /$\ast$ size\+\_\+t (d, i, u, o, x, X); size\+\_\+t$\ast$ (n) $\ast$/
+\item 
+\mbox{\Hypertarget{printf__impl_8c_afb3621143df10c33f44d35f3e3651dd6}\label{printf__impl_8c_afb3621143df10c33f44d35f3e3651dd6}} 
+\#define {\bfseries O\+P\+S\+\_\+\+L\+E\+N\+\_\+\+P\+T\+R\+D\+I\+FF}~0x00001000 /$\ast$ ptrdiff\+\_\+t (d, i, u, o, x, X); ptrdiff\+\_\+t$\ast$ (n) $\ast$/
+\item 
+\mbox{\Hypertarget{printf__impl_8c_a70d05ac07f0184df5946a8e09aa4642b}\label{printf__impl_8c_a70d05ac07f0184df5946a8e09aa4642b}} 
+\#define {\bfseries O\+P\+S\+\_\+\+L\+E\+N\+\_\+\+L\+O\+N\+G\+FP}~0x00002000 /$\ast$ long double (f, F, e, E, g, G, a, A) $\ast$/
+\item 
+\mbox{\Hypertarget{printf__impl_8c_a27a67e6cd910097f0f9c9e943e7b1089}\label{printf__impl_8c_a27a67e6cd910097f0f9c9e943e7b1089}} 
+\#define {\bfseries O\+P\+S\+\_\+\+S\+P\+E\+C\+\_\+\+U\+P\+P\+E\+R\+\_\+\+C\+A\+SE}~0x00004000 /$\ast$ specifier is tall $\ast$/
+\item 
+\#define \mbox{\hyperlink{printf__impl_8c_abe4150b292cd391d4f1752a51dd889dd}{P\+R\+I\+N\+T\+\_\+\+S\+\_\+\+N\+U\+L\+L\+\_\+\+S\+TR}}~\char`\"{}(null)\char`\"{} /$\ast$ default value of N\+U\+LL $\ast$/
+\item 
+\#define \mbox{\hyperlink{printf__impl_8c_a574a2c6813e82bc257a0b1c834e507c1}{P\+R\+I\+N\+T\+\_\+\+I\+\_\+\+B\+U\+F\+F\+\_\+\+SZ}}
+\item 
+\#define \mbox{\hyperlink{printf__impl_8c_ada4a38dbad321747b276d0805addcf96}{P\+R\+I\+N\+T\+\_\+\+F\+\_\+\+B\+U\+F\+F\+\_\+\+SZ}}~65 /$\ast$ size of buffer for long double -\/-\/ F\+I\+X\+ME this may not be enough $\ast$/
+\item 
+\mbox{\Hypertarget{printf__impl_8c_ade11b8d033fd2c260800d1b5209d210e}\label{printf__impl_8c_ade11b8d033fd2c260800d1b5209d210e}} 
+\#define {\bfseries P\+R\+I\+N\+T\+\_\+\+F\+\_\+\+P\+R\+E\+C\+\_\+\+D\+E\+F\+A\+U\+LT}~6 /$\ast$ default precision for real numbers $\ast$/
+\item 
+\mbox{\Hypertarget{printf__impl_8c_a8747af38b86aa2bbcda2f1b1aa0888c2}\label{printf__impl_8c_a8747af38b86aa2bbcda2f1b1aa0888c2}} 
+\#define {\bfseries D\+O\+U\+B\+LE}~double
+\item 
+\mbox{\Hypertarget{printf__impl_8c_a022fefdb92bb304842c479d15cfa0847}\label{printf__impl_8c_a022fefdb92bb304842c479d15cfa0847}} 
+\#define {\bfseries M\+O\+DF}~modf
+\item 
+\mbox{\Hypertarget{printf__impl_8c_a386bc1bec332d5809e3c5e5be1f47a5d}\label{printf__impl_8c_a386bc1bec332d5809e3c5e5be1f47a5d}} 
+\#define {\bfseries L\+O\+G10}~log10
+\item 
+\mbox{\Hypertarget{printf__impl_8c_afc2a1dc13524da20924b30190dce9499}\label{printf__impl_8c_afc2a1dc13524da20924b30190dce9499}} 
+\#define {\bfseries F\+M\+OD}~fmod
+\item 
+\mbox{\Hypertarget{printf__impl_8c_a7d36eb793ee8943f856044317659fbf1}\label{printf__impl_8c_a7d36eb793ee8943f856044317659fbf1}} 
+\#define {\bfseries P\+OW}~pow
+\item 
+\mbox{\Hypertarget{printf__impl_8c_af0175ba905b01f1a4ba753b6961473c5}\label{printf__impl_8c_af0175ba905b01f1a4ba753b6961473c5}} 
+\#define {\bfseries F\+A\+BS}~fabs
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{printf__impl_8c_a3c159652194b9ddb817272955f199f74}{\+\_\+\+\_\+printf}} (void($\ast$printchar\+\_\+handler)(void $\ast$d, int c), void $\ast$printchar\+\_\+data, const char $\ast$format, va\+\_\+list args)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyDate}{Date}
+19.\+11.\+10 
+\end{DoxyDate}
+\begin{DoxyAuthor}{Author}
+Anton Bondarev 
+
+Ilia Vaprol 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{printf__impl_8c_a55549139922ad49e21963827a981b899}\label{printf__impl_8c_a55549139922ad49e21963827a981b899}} 
+\index{printf\_impl.c@{printf\_impl.c}!OPS\_FLAG\_LEFT\_ALIGN@{OPS\_FLAG\_LEFT\_ALIGN}}
+\index{OPS\_FLAG\_LEFT\_ALIGN@{OPS\_FLAG\_LEFT\_ALIGN}!printf\_impl.c@{printf\_impl.c}}
+\doxysubsubsection{\texorpdfstring{OPS\_FLAG\_LEFT\_ALIGN}{OPS\_FLAG\_LEFT\_ALIGN}}
+{\footnotesize\ttfamily \#define O\+P\+S\+\_\+\+F\+L\+A\+G\+\_\+\+L\+E\+F\+T\+\_\+\+A\+L\+I\+GN~0x00000001  /$\ast$ left alignment $\ast$/}
+
+Format specifiers \mbox{\Hypertarget{printf__impl_8c_ac12abcf0f3555bdf0cf70a4dd239ab39}\label{printf__impl_8c_ac12abcf0f3555bdf0cf70a4dd239ab39}} 
+\index{printf\_impl.c@{printf\_impl.c}!OPS\_LEN\_LONG@{OPS\_LEN\_LONG}}
+\index{OPS\_LEN\_LONG@{OPS\_LEN\_LONG}!printf\_impl.c@{printf\_impl.c}}
+\doxysubsubsection{\texorpdfstring{OPS\_LEN\_LONG}{OPS\_LEN\_LONG}}
+{\footnotesize\ttfamily \#define O\+P\+S\+\_\+\+L\+E\+N\+\_\+\+L\+O\+NG}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    0x00000100 \textcolor{comment}{/* long (d, i); u\_long (u, o, x, X); wint\_t (c); wchar\_t(s);    \(\backslash\)}}
+\DoxyCodeLine{\textcolor{comment}{                  long* (n) */}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{printf__impl_8c_ada4a38dbad321747b276d0805addcf96}\label{printf__impl_8c_ada4a38dbad321747b276d0805addcf96}} 
+\index{printf\_impl.c@{printf\_impl.c}!PRINT\_F\_BUFF\_SZ@{PRINT\_F\_BUFF\_SZ}}
+\index{PRINT\_F\_BUFF\_SZ@{PRINT\_F\_BUFF\_SZ}!printf\_impl.c@{printf\_impl.c}}
+\doxysubsubsection{\texorpdfstring{PRINT\_F\_BUFF\_SZ}{PRINT\_F\_BUFF\_SZ}}
+{\footnotesize\ttfamily \#define P\+R\+I\+N\+T\+\_\+\+F\+\_\+\+B\+U\+F\+F\+\_\+\+SZ~65 /$\ast$ size of buffer for long double -\/-\/ F\+I\+X\+ME this may not be enough $\ast$/}
+
+Options for print\+\_\+f \mbox{\Hypertarget{printf__impl_8c_a574a2c6813e82bc257a0b1c834e507c1}\label{printf__impl_8c_a574a2c6813e82bc257a0b1c834e507c1}} 
+\index{printf\_impl.c@{printf\_impl.c}!PRINT\_I\_BUFF\_SZ@{PRINT\_I\_BUFF\_SZ}}
+\index{PRINT\_I\_BUFF\_SZ@{PRINT\_I\_BUFF\_SZ}!printf\_impl.c@{printf\_impl.c}}
+\doxysubsubsection{\texorpdfstring{PRINT\_I\_BUFF\_SZ}{PRINT\_I\_BUFF\_SZ}}
+{\footnotesize\ttfamily \#define P\+R\+I\+N\+T\+\_\+\+I\+\_\+\+B\+U\+F\+F\+\_\+\+SZ}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    23 \textcolor{comment}{/* size of buffer for long long int (64bit) -\/-\/ that's enough for oct,   \(\backslash\)}}
+\DoxyCodeLine{\textcolor{comment}{          dec and hex base systems */}}
+
+\end{DoxyCode}
+Options for print\+\_\+i \mbox{\Hypertarget{printf__impl_8c_abe4150b292cd391d4f1752a51dd889dd}\label{printf__impl_8c_abe4150b292cd391d4f1752a51dd889dd}} 
+\index{printf\_impl.c@{printf\_impl.c}!PRINT\_S\_NULL\_STR@{PRINT\_S\_NULL\_STR}}
+\index{PRINT\_S\_NULL\_STR@{PRINT\_S\_NULL\_STR}!printf\_impl.c@{printf\_impl.c}}
+\doxysubsubsection{\texorpdfstring{PRINT\_S\_NULL\_STR}{PRINT\_S\_NULL\_STR}}
+{\footnotesize\ttfamily \#define P\+R\+I\+N\+T\+\_\+\+S\+\_\+\+N\+U\+L\+L\+\_\+\+S\+TR~\char`\"{}(null)\char`\"{} /$\ast$ default value of N\+U\+LL $\ast$/}
+
+Options for print\+\_\+s 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{printf__impl_8c_a3c159652194b9ddb817272955f199f74}\label{printf__impl_8c_a3c159652194b9ddb817272955f199f74}} 
+\index{printf\_impl.c@{printf\_impl.c}!\_\_printf@{\_\_printf}}
+\index{\_\_printf@{\_\_printf}!printf\_impl.c@{printf\_impl.c}}
+\doxysubsubsection{\texorpdfstring{\_\_printf()}{\_\_printf()}}
+{\footnotesize\ttfamily int \+\_\+\+\_\+printf (\begin{DoxyParamCaption}\item[{void($\ast$)(void $\ast$d, int c)}]{printchar\+\_\+handler,  }\item[{void $\ast$}]{printchar\+\_\+data,  }\item[{const char $\ast$}]{format,  }\item[{va\+\_\+list}]{args }\end{DoxyParamCaption})}
+
+\%\mbox{[}flags\mbox{]}\mbox{[}width\mbox{]}\mbox{[}.precision\mbox{]}\mbox{[}length\mbox{]}specifier

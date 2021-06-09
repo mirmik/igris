@@ -1,0 +1,76 @@
+\hypertarget{classigris_1_1array__view}{}\doxysection{igris\+::array\+\_\+view$<$ T $>$ Class Template Reference}
+\label{classigris_1_1array__view}\index{igris::array\_view$<$ T $>$@{igris::array\_view$<$ T $>$}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_acea83cd88bb8aad3189b56649b097b48}\label{classigris_1_1array__view_acea83cd88bb8aad3189b56649b097b48}} 
+using {\bfseries iterator} = T $\ast$
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_ac3d7121a6135e202b620aa3a80089790}\label{classigris_1_1array__view_ac3d7121a6135e202b620aa3a80089790}} 
+using {\bfseries const\+\_\+iterator} = const T $\ast$
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_a25bfbbdefa6cd0a3e3979c22bdf1c45a}\label{classigris_1_1array__view_a25bfbbdefa6cd0a3e3979c22bdf1c45a}} 
+using {\bfseries value\+\_\+type} = T
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_a634bdabfd0999ff76795c0953b80e63e}\label{classigris_1_1array__view_a634bdabfd0999ff76795c0953b80e63e}} 
+{\bfseries array\+\_\+view} (T $\ast$data, size\+\_\+t size)
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_a94986906341657a0b750c30446f58455}\label{classigris_1_1array__view_a94986906341657a0b750c30446f58455}} 
+{\bfseries array\+\_\+view} (const std\+::initializer\+\_\+list$<$ T $>$ \&lst)
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_a525f78a993f2de8b4c097bea091e1783}\label{classigris_1_1array__view_a525f78a993f2de8b4c097bea091e1783}} 
+{\footnotesize template$<$size\+\_\+t N$>$ }\\{\bfseries array\+\_\+view} (T(\&arr)\mbox{[}N\mbox{]})
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_a770e66aa6d6d16a204f5601722166b0e}\label{classigris_1_1array__view_a770e66aa6d6d16a204f5601722166b0e}} 
+\mbox{\hyperlink{classigris_1_1array__view}{array\+\_\+view}} \& {\bfseries operator=} (std\+::nullptr\+\_\+t null)
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_a8f87d0b7acb775fbfd881f426a626eb4}\label{classigris_1_1array__view_a8f87d0b7acb775fbfd881f426a626eb4}} 
+T $\ast$const {\bfseries data} () const
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_ad3980eb25b8afb78651375d074fee891}\label{classigris_1_1array__view_ad3980eb25b8afb78651375d074fee891}} 
+T $\ast$ {\bfseries data} ()
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_a40f26a865a415b2ca784479d49e2eec2}\label{classigris_1_1array__view_a40f26a865a415b2ca784479d49e2eec2}} 
+size\+\_\+t {\bfseries size} () const
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_aea919c8d05e3e82d27da03c846bece4e}\label{classigris_1_1array__view_aea919c8d05e3e82d27da03c846bece4e}} 
+T $\ast$ {\bfseries begin} ()
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_ad22fc8c971af19750a21af5854961c33}\label{classigris_1_1array__view_ad22fc8c971af19750a21af5854961c33}} 
+T $\ast$const {\bfseries end} ()
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_ac60767bfdf27568939acb5715cc11995}\label{classigris_1_1array__view_ac60767bfdf27568939acb5715cc11995}} 
+const T $\ast$ {\bfseries begin} () const
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_a136a5310d3651ad9f5242746c252af10}\label{classigris_1_1array__view_a136a5310d3651ad9f5242746c252af10}} 
+const T $\ast$const {\bfseries end} () const
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_ac8983a7c91ccf2f2db64161ddf0294e2}\label{classigris_1_1array__view_ac8983a7c91ccf2f2db64161ddf0294e2}} 
+T $\ast$ {\bfseries rbegin} ()
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_afd52a37da58adafad4bd78a24efcbbc4}\label{classigris_1_1array__view_afd52a37da58adafad4bd78a24efcbbc4}} 
+T $\ast$const {\bfseries rend} ()
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_a61b0aa0cd8c481e3057aae14f01ca89e}\label{classigris_1_1array__view_a61b0aa0cd8c481e3057aae14f01ca89e}} 
+const T $\ast$ {\bfseries rbegin} () const
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_ad656d41c5df1088f237fe283aaf9b1ef}\label{classigris_1_1array__view_ad656d41c5df1088f237fe283aaf9b1ef}} 
+const T $\ast$const {\bfseries rend} () const
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_ab070b0891d8ab154e2d8a00df7c65978}\label{classigris_1_1array__view_ab070b0891d8ab154e2d8a00df7c65978}} 
+T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int i)
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_a326df4958929ec2c6b860b20711991ed}\label{classigris_1_1array__view_a326df4958929ec2c6b860b20711991ed}} 
+const T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int i) const
+\item 
+\mbox{\Hypertarget{classigris_1_1array__view_aef9e3c88f5105d9ee7b4322f9bc75a17}\label{classigris_1_1array__view_aef9e3c88f5105d9ee7b4322f9bc75a17}} 
+\mbox{\hyperlink{classigris_1_1array__view}{array\+\_\+view}} {\bfseries slice} (int start, int size)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/mirmik/project/igris/igris/container/array\+\_\+view.\+h\end{DoxyCompactItemize}

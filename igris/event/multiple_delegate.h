@@ -1,7 +1,8 @@
 #ifndef IGRIS_MULTIPLE_DELEGATE_H
 #define IGRIS_MULTIPLE_DELEGATE_H
 
-/*
+/**
+    @file multiple_delegate.h
     Делегат для последовательного вызова
     множественных обработчиков.
 */
@@ -34,7 +35,7 @@ namespace igris
             erase(std::forward<TArgs>(args)...);
         }
 
-        template <typename... TArgs> void add(const TArgs &... args)
+        template <typename... TArgs> void add(const TArgs &...args)
         {
             vect.emplace_back(args...);
         }

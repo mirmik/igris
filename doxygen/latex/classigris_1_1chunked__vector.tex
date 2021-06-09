@@ -1,0 +1,55 @@
+\hypertarget{classigris_1_1chunked__vector}{}\doxysection{igris\+::chunked\+\_\+vector$<$ T, Alloc1, Alloc2 $>$ Class Template Reference}
+\label{classigris_1_1chunked__vector}\index{igris::chunked\_vector$<$ T, Alloc1, Alloc2 $>$@{igris::chunked\_vector$<$ T, Alloc1, Alloc2 $>$}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classigris_1_1chunked__vector_af56aed1385f2075ea78331e2b6f17e42}\label{classigris_1_1chunked__vector_af56aed1385f2075ea78331e2b6f17e42}} 
+{\bfseries chunked\+\_\+vector} (size\+\_\+t chunk\+\_\+size)
+\item 
+\mbox{\Hypertarget{classigris_1_1chunked__vector_ab06741175ec06307cd2cfc7eaff0b129}\label{classigris_1_1chunked__vector_ab06741175ec06307cd2cfc7eaff0b129}} 
+size\+\_\+t {\bfseries size} () const
+\item 
+\mbox{\Hypertarget{classigris_1_1chunked__vector_a5f25425d07b0ce131819673dd8ddc46c}\label{classigris_1_1chunked__vector_a5f25425d07b0ce131819673dd8ddc46c}} 
+void {\bfseries push\+\_\+back} (const T \&obj)
+\item 
+\mbox{\Hypertarget{classigris_1_1chunked__vector_aecbc0eaecfcfba0df984bd4bf3a7a025}\label{classigris_1_1chunked__vector_aecbc0eaecfcfba0df984bd4bf3a7a025}} 
+T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t n)
+\item 
+\mbox{\Hypertarget{classigris_1_1chunked__vector_a8141ecb075a6332576f0599906907457}\label{classigris_1_1chunked__vector_a8141ecb075a6332576f0599906907457}} 
+const T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t n) const
+\item 
+\mbox{\Hypertarget{classigris_1_1chunked__vector_a31e6f4e40cf539e16cddcb806cd1e981}\label{classigris_1_1chunked__vector_a31e6f4e40cf539e16cddcb806cd1e981}} 
+void {\bfseries allocate\+\_\+next\+\_\+chunk} ()
+\item 
+\mbox{\Hypertarget{classigris_1_1chunked__vector_af5733f6aac3ef351cce9e86aee4815f8}\label{classigris_1_1chunked__vector_af5733f6aac3ef351cce9e86aee4815f8}} 
+\mbox{\hyperlink{classigris_1_1array__view}{igris\+::array\+\_\+view}}$<$ T $>$ {\bfseries chunk} (size\+\_\+t n)
+\item 
+\mbox{\Hypertarget{classigris_1_1chunked__vector_a40ba584e4906458106256b730b0ae486}\label{classigris_1_1chunked__vector_a40ba584e4906458106256b730b0ae486}} 
+size\+\_\+t {\bfseries chunks\+\_\+count} ()
+\item 
+\mbox{\Hypertarget{classigris_1_1chunked__vector_a6ddb9ea1fbb779f39831547f7df8db84}\label{classigris_1_1chunked__vector_a6ddb9ea1fbb779f39831547f7df8db84}} 
+std\+::vector$<$ T $>$ {\bfseries to\+\_\+vector} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classigris_1_1chunked__vector_aadb52ca2f9fa2741f254dfacfd16583d}\label{classigris_1_1chunked__vector_aadb52ca2f9fa2741f254dfacfd16583d}} 
+std\+::vector$<$ T $\ast$, Alloc1 $>$ {\bfseries \+\_\+chunks}
+\item 
+\mbox{\Hypertarget{classigris_1_1chunked__vector_addd39963043a762177af0b994f0be557}\label{classigris_1_1chunked__vector_addd39963043a762177af0b994f0be557}} 
+const size\+\_\+t {\bfseries \+\_\+chunk\+\_\+size}
+\item 
+\mbox{\Hypertarget{classigris_1_1chunked__vector_addc58445ba4fa6d79c21203ff29a438c}\label{classigris_1_1chunked__vector_addc58445ba4fa6d79c21203ff29a438c}} 
+size\+\_\+t {\bfseries \+\_\+size\+\_\+of\+\_\+last} = 0
+\item 
+\mbox{\Hypertarget{classigris_1_1chunked__vector_afe34cc574579c562be8728c81bff5ace}\label{classigris_1_1chunked__vector_afe34cc574579c562be8728c81bff5ace}} 
+Alloc2 {\bfseries alloc2}
+\item 
+\mbox{\Hypertarget{classigris_1_1chunked__vector_a23d5dbcb5f009448c8d0cee552c98432}\label{classigris_1_1chunked__vector_a23d5dbcb5f009448c8d0cee552c98432}} 
+T $\ast$ {\bfseries last\+\_\+chunk} = nullptr
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/mirmik/project/igris/igris/container/chunked\+\_\+vector.\+h\end{DoxyCompactItemize}

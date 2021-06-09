@@ -1,6 +1,10 @@
 #ifndef igris_SERIALIZE_SCPI_H
 #define igris_SERIALIZE_SCPI_H
 
+/**
+@file
+*/
+
 #include <cctype>
 #include <string>
 #include <vector>

@@ -1,6 +1,10 @@
 #ifndef IGRIS_BUFFER_H
 #define IGRIS_BUFFER_H
 
+/**
+@file
+*/
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -82,7 +86,7 @@ namespace igris
 
         buffer slice(size_t idx, size_t _sz) { return buffer(buf + idx, _sz); }
 
-        template <typename T> static igris::buffer on_object(T &obj)
+        template <typename T> static std::string_view on_object(T &obj)
         {
             return buffer((char *)&obj, sizeof(obj));
         }

@@ -1,6 +1,10 @@
 #ifndef IGRIS_SERIALIZE_SERIALIZE_H
 #define IGRIS_SERIALIZE_SERIALIZE_H
 
+/**
+@file
+*/
+
 #include <igris/serialize/archive.h>
 
 /*

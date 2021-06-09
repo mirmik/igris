@@ -2,6 +2,7 @@
 #define IGRIS_STRING_H
 
 #include <cstdint>
+#include <cstring>
 #include <ctype.h>
 #include <list>
 #include <string>
@@ -11,13 +12,14 @@
 #include <string_view>
 #endif
 
-#include <igris/buffer.h>
 #include <igris/util/hexascii.h>
+#include <string_view>
 
 namespace igris
 {
-    std::vector<std::string> split(const igris::buffer &str, char delim = ' ');
-    std::vector<std::string> split(const igris::buffer &str,
+    std::vector<std::string> split(const std::string_view &str,
+                                   char delim = ' ');
+    std::vector<std::string> split(const std::string_view &str,
                                    const char *delims);
 
     std::string join(const std::vector<std::string> &, char delim);

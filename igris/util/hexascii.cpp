@@ -21,7 +21,7 @@ namespace igris
         return hexascii_encode((const uint8_t *)str.data(), str.size());
     }
 
-    std::string hexascii_encode(const igris::buffer &buf)
+    std::string hexascii_encode(const std::string_view &buf)
     {
         return hexascii_encode((const uint8_t *)buf.data(), buf.size());
     }

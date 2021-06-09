@@ -7,6 +7,7 @@
 
 #include <igris/compiler.h>
 #include <stddef.h>
+#include <string.h>
 
 __BEGIN_DECLS
 
@@ -17,8 +18,8 @@ void reader_skip_while(const char **ptr, char c, const char *protector);
 __END_DECLS
 
 #ifdef __cplusplus
-#include <igris/buffer.h>
 #include <igris/util/numconvert.h>
+#include <string_view>
 
 namespace igris
 {
@@ -44,7 +45,7 @@ namespace igris
             ptr += sz;
         }
 
-        void bind_buffer(igris::buffer &data, size_t sz)
+        void bind_buffer(std::string_view &data, size_t sz)
         {
             data = {ptr, sz};
             ptr += sz;

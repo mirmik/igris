@@ -1,0 +1,132 @@
+\hypertarget{bit_8h}{}\doxysection{/home/mirmik/project/igris/igris/datastruct/bit.h File Reference}
+\label{bit_8h}\index{/home/mirmik/project/igris/igris/datastruct/bit.h@{/home/mirmik/project/igris/igris/datastruct/bit.h}}
+
+
+T\+O\+DO.  
+
+
+{\ttfamily \#include $<$limits.\+h$>$}\newline
+{\ttfamily \#include $<$module/embox/util/\+Bit.\+h$>$}\newline
+Include dependency graph for bit.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{bit_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{bit_8h_a9a2a122daa7e99a1961ff7c7ff8174a1}{bit\+\_\+foreach}}(bit,  x)~\+\_\+\+\_\+bit\+\_\+foreach(bit, x, M\+A\+C\+R\+O\+\_\+\+G\+U\+A\+RD(\+\_\+\+\_\+bit))
+\item 
+\#define {\bfseries \+\_\+\+\_\+bit\+\_\+foreach}(bit,  \+\_\+x,  it)
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{bit_8h_a67217a0e722e347b2de9c8d38d71978d}{bit\+\_\+ctz}} (unsigned long x)
+\item 
+int \mbox{\hyperlink{bit_8h_a2c5349d78555a5059eec6713f46fca39}{bit\+\_\+clz}} (unsigned long x)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+T\+O\+DO. 
+
+\begin{DoxyDate}{Date}
+20.\+09.\+12 
+\end{DoxyDate}
+\begin{DoxyAuthor}{Author}
+Eldar Abusalimov 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{bit_8h_a8cd1f647f69e3369a5e42f6df4f65b12}\label{bit_8h_a8cd1f647f69e3369a5e42f6df4f65b12}} 
+\index{bit.h@{bit.h}!\_\_bit\_foreach@{\_\_bit\_foreach}}
+\index{\_\_bit\_foreach@{\_\_bit\_foreach}!bit.h@{bit.h}}
+\doxysubsubsection{\texorpdfstring{\_\_bit\_foreach}{\_\_bit\_foreach}}
+{\footnotesize\ttfamily \#define \+\_\+\+\_\+bit\+\_\+foreach(\begin{DoxyParamCaption}\item[{}]{bit,  }\item[{}]{\+\_\+x,  }\item[{}]{it }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    \textcolor{keywordflow}{for} (\textcolor{keyword}{struct} \{                                                              \(\backslash\)}
+\DoxyCodeLine{             unsigned \textcolor{keywordtype}{long} x;                                                  \(\backslash\)}
+\DoxyCodeLine{             int b;                                                            \(\backslash\)}
+\DoxyCodeLine{         \} it =                                                                \(\backslash\)}
+\DoxyCodeLine{             \{                                                                 \(\backslash\)}
+\DoxyCodeLine{                 .x = (\_x),                                                    \(\backslash\)}
+\DoxyCodeLine{                .b = 0,                                                        \(\backslash\)}
+\DoxyCodeLine{             \};                                                                \(\backslash\)}
+\DoxyCodeLine{         it.x ? (bit = it.b = \mbox{\hyperlink{bit_8h_a67217a0e722e347b2de9c8d38d71978d}{bit\_ctz}}(it.x)), 1 : 0; it.x \&= \string~(0x1ul << it.b))}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{bit_8h_a9a2a122daa7e99a1961ff7c7ff8174a1}\label{bit_8h_a9a2a122daa7e99a1961ff7c7ff8174a1}} 
+\index{bit.h@{bit.h}!bit\_foreach@{bit\_foreach}}
+\index{bit\_foreach@{bit\_foreach}!bit.h@{bit.h}}
+\doxysubsubsection{\texorpdfstring{bit\_foreach}{bit\_foreach}}
+{\footnotesize\ttfamily \#define bit\+\_\+foreach(\begin{DoxyParamCaption}\item[{}]{bit,  }\item[{}]{x }\end{DoxyParamCaption})~\+\_\+\+\_\+bit\+\_\+foreach(bit, x, M\+A\+C\+R\+O\+\_\+\+G\+U\+A\+RD(\+\_\+\+\_\+bit))}
+
+For-\/like macro which iterates over set bits of the given
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} x }
+\end{DoxyCode}
+ starting from the least significant bit and using zero-\/based counting.
+
+
+\begin{DoxyParams}{Parameters}
+{\em bit} & {\ttfamily int} loop variable. \\
+\hline
+{\em x} & \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{bit_8h_a2c5349d78555a5059eec6713f46fca39}\label{bit_8h_a2c5349d78555a5059eec6713f46fca39}} 
+\index{bit.h@{bit.h}!bit\_clz@{bit\_clz}}
+\index{bit\_clz@{bit\_clz}!bit.h@{bit.h}}
+\doxysubsubsection{\texorpdfstring{bit\_clz()}{bit\_clz()}}
+{\footnotesize\ttfamily int bit\+\_\+clz (\begin{DoxyParamCaption}\item[{unsigned long}]{x }\end{DoxyParamCaption})}
+
+Count leading (most significant) zero bits.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Must not be 0. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of leading zero bits in {\ttfamily x}.
+\end{DoxyReturn}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{bit_8h_a2c5349d78555a5059eec6713f46fca39}{bit\_clz}}(0x00000001ul) = 31 \textcolor{comment}{// assuming the word is 32-\/bit width}}
+\DoxyCodeLine{\mbox{\hyperlink{bit_8h_a2c5349d78555a5059eec6713f46fca39}{bit\_clz}}(0xfffffffful) =  0}
+\DoxyCodeLine{\mbox{\hyperlink{bit_8h_a2c5349d78555a5059eec6713f46fca39}{bit\_clz}}(0x80000000ul) =  0}
+\DoxyCodeLine{\mbox{\hyperlink{bit_8h_a2c5349d78555a5059eec6713f46fca39}{bit\_clz}}(0) \textcolor{comment}{// error, undefined}}
+\end{DoxyCode}
+ \mbox{\Hypertarget{bit_8h_a67217a0e722e347b2de9c8d38d71978d}\label{bit_8h_a67217a0e722e347b2de9c8d38d71978d}} 
+\index{bit.h@{bit.h}!bit\_ctz@{bit\_ctz}}
+\index{bit\_ctz@{bit\_ctz}!bit.h@{bit.h}}
+\doxysubsubsection{\texorpdfstring{bit\_ctz()}{bit\_ctz()}}
+{\footnotesize\ttfamily int bit\+\_\+ctz (\begin{DoxyParamCaption}\item[{unsigned long}]{x }\end{DoxyParamCaption})}
+
+Count trailing (least significant) zero bits.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Must not be 0. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of trailing zero bits in {\ttfamily x}.
+\end{DoxyReturn}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{bit_8h_a67217a0e722e347b2de9c8d38d71978d}{bit\_ctz}}(0x00000001ul) =  0}
+\DoxyCodeLine{\mbox{\hyperlink{bit_8h_a67217a0e722e347b2de9c8d38d71978d}{bit\_ctz}}(0xfffffffful) =  0}
+\DoxyCodeLine{\mbox{\hyperlink{bit_8h_a67217a0e722e347b2de9c8d38d71978d}{bit\_ctz}}(0x80000000ul) = 31}
+\DoxyCodeLine{\mbox{\hyperlink{bit_8h_a67217a0e722e347b2de9c8d38d71978d}{bit\_ctz}}(0) \textcolor{comment}{// error, undefined}}
+\end{DoxyCode}
+ 

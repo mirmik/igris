@@ -9,11 +9,11 @@
 #include <string>
 #include <vector>
 
-#include <igris/buffer.h>
 #include <igris/result.h>
 #include <igris/util/bug.h>
 #include <igris/util/ctrdtr.h>
 #include <igris/util/types_extension.h>
+#include <string_view>
 
 #include <igris/trent/trent_path.h>
 
@@ -148,7 +148,7 @@ namespace igris
 
         void init(const char *ptr) { init_str(ptr, strlen(ptr)); }
         void init(const std::string &str) { init_str(str.data(), str.size()); }
-        void init(const igris::buffer &str)
+        void init(const std::string_view &str)
         {
             init_str(str.data(), str.size());
         }
@@ -217,7 +217,7 @@ namespace igris
             return m_dct.at(key);
         }
 
-        trent_basic &operator[](const igris::buffer &key)
+        trent_basic &operator[](const std::string_view &key)
         {
             if (m_type != type::dict)
                 init(type::dict);
@@ -281,7 +281,7 @@ namespace igris
             return m_dct.at(key);
         }
 
-        const trent_basic &at(const igris::buffer &key) const
+        const trent_basic &at(const std::string_view &key) const
         {
             if (m_type != type::dict)
                 BUG_ON("wrong trent type");
@@ -595,7 +595,7 @@ namespace igris
             return m_bool;
         }
 
-        const igris::buffer as_buffer() const;
+        const std::string_view as_buffer() const;
 
         // integer_type& unsafe_integer_const() { return m_int; }
         numer_type &unsafe_numer_const() { return m_num; }
@@ -692,7 +692,7 @@ namespace igris
 
         /*			ssize_t size();
 
-                    bool contains(igris::buffer buf);
+                    bool contains(std::string_view buf);
         */
     };
 

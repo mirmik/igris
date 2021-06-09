@@ -1,0 +1,82 @@
+\hypertarget{classigris_1_1unbounded__array}{}\doxysection{igris\+::unbounded\+\_\+array$<$ T, A $>$ Class Template Reference}
+\label{classigris_1_1unbounded__array}\index{igris::unbounded\_array$<$ T, A $>$@{igris::unbounded\_array$<$ T, A $>$}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_abb224ea4b9dbe22070d9ae803de92d46}\label{classigris_1_1unbounded__array_abb224ea4b9dbe22070d9ae803de92d46}} 
+using {\bfseries allocator\+\_\+type} = A
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_ab4ea263994e7c617d49b8fc5af409842}\label{classigris_1_1unbounded__array_ab4ea263994e7c617d49b8fc5af409842}} 
+using {\bfseries value\+\_\+type} = T
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_a41107952055d1da04b98d5efcd58af40}\label{classigris_1_1unbounded__array_a41107952055d1da04b98d5efcd58af40}} 
+using {\bfseries reference} = T \&
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_a0cc87165aca6129c7cd4cc132b31ea4f}\label{classigris_1_1unbounded__array_a0cc87165aca6129c7cd4cc132b31ea4f}} 
+using {\bfseries const\+\_\+reference} = const T \&
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_aaf60f8fa5786c6f21e81706b8bd68c74}\label{classigris_1_1unbounded__array_aaf60f8fa5786c6f21e81706b8bd68c74}} 
+using {\bfseries iterator} = T $\ast$
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_aac6e82346be17d0a916489796b7ce2f2}\label{classigris_1_1unbounded__array_aac6e82346be17d0a916489796b7ce2f2}} 
+using {\bfseries const\+\_\+iterator} = const T $\ast$
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_a64d0c51c6579a9c50c805cdd69ad1f52}\label{classigris_1_1unbounded__array_a64d0c51c6579a9c50c805cdd69ad1f52}} 
+const T $\ast$ {\bfseries data} () const
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_a555ec1c2185ff14913ae7550c94235c2}\label{classigris_1_1unbounded__array_a555ec1c2185ff14913ae7550c94235c2}} 
+size\+\_\+t {\bfseries size} () const
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_aabda90b0c345868aab41df9035fa782a}\label{classigris_1_1unbounded__array_aabda90b0c345868aab41df9035fa782a}} 
+{\bfseries unbounded\+\_\+array} (size\+\_\+t sz)
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_a135969555a2f1a995b5ecd29910b9e81}\label{classigris_1_1unbounded__array_a135969555a2f1a995b5ecd29910b9e81}} 
+{\bfseries unbounded\+\_\+array} (const \mbox{\hyperlink{classigris_1_1array__view}{igris\+::array\+\_\+view}}$<$ T $>$ \&buf)
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_a510fd84d1376e3db6096aa109e88f4f9}\label{classigris_1_1unbounded__array_a510fd84d1376e3db6096aa109e88f4f9}} 
+{\bfseries unbounded\+\_\+array} (const std\+::initializer\+\_\+list$<$ T $>$ \&buf)
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_a8bbe7b7fb64a5641040df5d5333fb738}\label{classigris_1_1unbounded__array_a8bbe7b7fb64a5641040df5d5333fb738}} 
+{\bfseries unbounded\+\_\+array} (const \mbox{\hyperlink{classigris_1_1unbounded__array}{unbounded\+\_\+array}} \&oth)
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_a8b86fad7c9ddc614a7a9fbd51c42bf93}\label{classigris_1_1unbounded__array_a8b86fad7c9ddc614a7a9fbd51c42bf93}} 
+{\bfseries unbounded\+\_\+array} (\mbox{\hyperlink{classigris_1_1unbounded__array}{unbounded\+\_\+array}} \&\&arr)
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_a6114aa970ceaa814135613afcbb8ef11}\label{classigris_1_1unbounded__array_a6114aa970ceaa814135613afcbb8ef11}} 
+T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t i)
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_abecacc615209b7433f59cc634da7aecd}\label{classigris_1_1unbounded__array_abecacc615209b7433f59cc634da7aecd}} 
+const T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t i) const
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_a4d4ab5ac224f6808d75a63315715f2e9}\label{classigris_1_1unbounded__array_a4d4ab5ac224f6808d75a63315715f2e9}} 
+iterator {\bfseries begin} ()
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_ac1f1db288de5aecf6259fa72f5002557}\label{classigris_1_1unbounded__array_ac1f1db288de5aecf6259fa72f5002557}} 
+const iterator {\bfseries end} ()
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_a43c1c6184c496cacb71bafe29d3e2946}\label{classigris_1_1unbounded__array_a43c1c6184c496cacb71bafe29d3e2946}} 
+const\+\_\+iterator {\bfseries begin} () const
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_a7874e9dffc74e55ccb036b35245c4e82}\label{classigris_1_1unbounded__array_a7874e9dffc74e55ccb036b35245c4e82}} 
+const const\+\_\+iterator {\bfseries end} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_a81ed563afc694599c7f8e596a1b56703}\label{classigris_1_1unbounded__array_a81ed563afc694599c7f8e596a1b56703}} 
+T $\ast$ {\bfseries m\+\_\+data}
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_ac9ce836fcb588dcfea40d881785b8429}\label{classigris_1_1unbounded__array_ac9ce836fcb588dcfea40d881785b8429}} 
+size\+\_\+t {\bfseries m\+\_\+size}
+\item 
+\mbox{\Hypertarget{classigris_1_1unbounded__array_a88143340a3caa1a1add2a2a32e9aae08}\label{classigris_1_1unbounded__array_a88143340a3caa1a1add2a2a32e9aae08}} 
+A {\bfseries alloc}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/mirmik/project/igris/igris/container/unbounded\+\_\+array.\+h\end{DoxyCompactItemize}

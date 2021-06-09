@@ -1,0 +1,29 @@
+\hypertarget{horrible__cast_8h}{}\doxysection{/home/mirmik/project/igris/igris/util/horrible\+\_\+cast.h File Reference}
+\label{horrible__cast_8h}\index{/home/mirmik/project/igris/igris/util/horrible\_cast.h@{/home/mirmik/project/igris/igris/util/horrible\_cast.h}}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{horrible__cast_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+union \mbox{\hyperlink{unionhorrible__union}{horrible\+\_\+union$<$ Output\+Class, Input\+Class $>$}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{horrible__cast_8h_af28a5d1d492b0b4c0f980df3a44f86d5}\label{horrible__cast_8h_af28a5d1d492b0b4c0f980df3a44f86d5}} 
+{\footnotesize template$<$class Output\+Class , class Input\+Class $>$ }\\Output\+Class {\bfseries horrible\+\_\+cast} (const Input\+Class input)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Черная магия 4-\/ой ступени. Кастует что угодно во что угодно.
+
+horrible\+\_\+cast$<$ $>$ This is truly evil. It completely subverts C++\textquotesingle{}s type system, allowing you to cast from any class to any other class. Technically, using a union to perform the cast is undefined behaviour (even in C). But we can see if it is OK by checking that the union is the same size as each of its members. horrible\+\_\+cast$<$$>$ should only be used for compiler-\/specific workarounds. Usage is identical to reinterpret\+\_\+cast$<$$>$.
+
+This union is declared outside the horrible\+\_\+cast because B\+CC 5.\+5.\+1 can\textquotesingle{}t inline a function with a nested class, and gives a warning. 

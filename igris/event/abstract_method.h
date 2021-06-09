@@ -1,6 +1,10 @@
 #ifndef IGRIS_ABSTRACT_METHOD_H
 #define IGRIS_ABSTRACT_METHOD_H
 
+/**
+@file
+*/
+
 // Упрощенный делегат, не сохраняющий указатель на объект,
 // а только указатель на метод класса
 

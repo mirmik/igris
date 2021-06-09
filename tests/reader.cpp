@@ -1,5 +1,6 @@
 #include "doctest/doctest.h"
 #include <igris/binreader.h>
+#include <string>
 
 TEST_CASE("reader")
 {

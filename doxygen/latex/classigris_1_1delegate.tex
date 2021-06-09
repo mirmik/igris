@@ -1,0 +1,121 @@
+\hypertarget{classigris_1_1delegate}{}\doxysection{igris\+::delegate$<$ R, Args $>$ Class Template Reference}
+\label{classigris_1_1delegate}\index{igris::delegate$<$ R, Args $>$@{igris::delegate$<$ R, Args $>$}}
+
+
+{\ttfamily \#include $<$delegate.\+h$>$}
+
+
+
+Collaboration diagram for igris\+::delegate$<$ R, Args $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classigris_1_1delegate__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+union \mbox{\hyperlink{unionigris_1_1delegate_1_1method__union}{method\+\_\+union}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_a20037ab2df6df38c44f6c6b0748ae040}\label{classigris_1_1delegate_a20037ab2df6df38c44f6c6b0748ae040}} 
+void {\bfseries clean} ()
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_a0fde440ad6e1dfecd637bf5c1d5eaf20}\label{classigris_1_1delegate_a0fde440ad6e1dfecd637bf5c1d5eaf20}} 
+bool \mbox{\hyperlink{classigris_1_1delegate_a0fde440ad6e1dfecd637bf5c1d5eaf20}{armed}} ()
+\begin{DoxyCompactList}\small\item\em Проверяет, установлен ли какой-\/либо обработчик. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classigris_1_1delegate_a28b0ecbb699fc9e044c0afe34bf7bc3b}\label{classigris_1_1delegate_a28b0ecbb699fc9e044c0afe34bf7bc3b}} 
+{\bfseries delegate} (const \mbox{\hyperlink{classigris_1_1delegate}{delegate}} \&d)
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_af89ac3c7052d4aee1b49a3db784d8629}\label{classigris_1_1delegate_af89ac3c7052d4aee1b49a3db784d8629}} 
+{\bfseries delegate} (\mbox{\hyperlink{classigris_1_1delegate}{delegate}} \&\&d)
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_afac5b5e6a14dbbbb0428e68b195d86c9}\label{classigris_1_1delegate_afac5b5e6a14dbbbb0428e68b195d86c9}} 
+{\bfseries delegate} (const fnc\+\_\+t func)
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_ae57a815beb4d5e1fc8176c69b8dd6606}\label{classigris_1_1delegate_ae57a815beb4d5e1fc8176c69b8dd6606}} 
+{\bfseries delegate} (const extfnc\+\_\+t func, void $\ast$obj)
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_aa045ec5d32b2f5443c96e7d3194ec013}\label{classigris_1_1delegate_aa045ec5d32b2f5443c96e7d3194ec013}} 
+{\footnotesize template$<$typename T $>$ }\\{\bfseries delegate} (R(T\+::$\ast$mtd)(Args...), T $\ast$ptr\+\_\+obj)
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_a88bfb011e22d725c39ceb3abe2ca78d6}\label{classigris_1_1delegate_a88bfb011e22d725c39ceb3abe2ca78d6}} 
+{\footnotesize template$<$typename F $>$ }\\{\bfseries delegate} (const F \&functor)
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_a8499f0c4e1d9e22b5b14065d2b54689a}\label{classigris_1_1delegate_a8499f0c4e1d9e22b5b14065d2b54689a}} 
+\mbox{\hyperlink{classigris_1_1delegate}{delegate}} \& {\bfseries operator=} (const \mbox{\hyperlink{classigris_1_1delegate}{delegate}} \&d)
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_ae71fdcbde925b6be56c4ed24f6f76a39}\label{classigris_1_1delegate_ae71fdcbde925b6be56c4ed24f6f76a39}} 
+\mbox{\hyperlink{classigris_1_1delegate}{delegate}} \& {\bfseries operator=} (\mbox{\hyperlink{classigris_1_1delegate}{delegate}} \&\&d)
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_a8c7de3c45b953728ef7a94925c8dc16f}\label{classigris_1_1delegate_a8c7de3c45b953728ef7a94925c8dc16f}} 
+R {\bfseries operator()} (Args... args)
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_a2312f06fc80d7127d35dfc78809f3db0}\label{classigris_1_1delegate_a2312f06fc80d7127d35dfc78809f3db0}} 
+R {\bfseries emit} (Args... args)
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_ac815573cbec1cdfd37a6b0168855de5b}\label{classigris_1_1delegate_ac815573cbec1cdfd37a6b0168855de5b}} 
+bool {\bfseries operator==} (\mbox{\hyperlink{classigris_1_1delegate}{delegate}}$<$ R, Args... $>$ b)
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_a4e76a30ccb4a246499c4ec225a95456a}\label{classigris_1_1delegate_a4e76a30ccb4a246499c4ec225a95456a}} 
+R \mbox{\hyperlink{classigris_1_1delegate_a4e76a30ccb4a246499c4ec225a95456a}{emit\+\_\+and\+\_\+reset}} (Args... args)
+\begin{DoxyCompactList}\small\item\em Вызвать единожды и сбросить обработчик. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_ab7020b0916873a71bb57cfff27bb6c18}\label{classigris_1_1delegate_ab7020b0916873a71bb57cfff27bb6c18}} 
+enum \{ {\bfseries M\+E\+T\+H\+OD}, 
+{\bfseries F\+U\+N\+C\+T\+I\+ON}
+ \}
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_ae4b123c02d5b51a02a7a295b0f373b76}\label{classigris_1_1delegate_ae4b123c02d5b51a02a7a295b0f373b76}} 
+using {\bfseries obj\+\_\+t} = \mbox{\hyperlink{classigris_1_1AbstractDelegate}{Abstract\+Delegate}} $\ast$
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_afecd2a3c2df8cebfff91704f1cb46ff3}\label{classigris_1_1delegate_afecd2a3c2df8cebfff91704f1cb46ff3}} 
+using {\bfseries mtd\+\_\+t} = R(Abstract\+Delegate\+::$\ast$)(Args...)
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_a1ed989b22c571a660198a76eac1ac87a}\label{classigris_1_1delegate_a1ed989b22c571a660198a76eac1ac87a}} 
+using {\bfseries fnc\+\_\+t} = R($\ast$)(Args...)
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_a4e1b5a6435e15f21a35b451f36c852d4}\label{classigris_1_1delegate_a4e1b5a6435e15f21a35b451f36c852d4}} 
+using {\bfseries extfnc\+\_\+t} = R($\ast$)(void $\ast$, Args...)
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_afabadd0e16b00ad92d5f1d9f1cbf2d6b}\label{classigris_1_1delegate_afabadd0e16b00ad92d5f1d9f1cbf2d6b}} 
+using {\bfseries absmemb\+\_\+t} = std\+::pair$<$ mtd\+\_\+t, \mbox{\hyperlink{classigris_1_1AbstractDelegate}{obj\+\_\+t}} $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classigris_1_1delegate_af55e2c4ab247a7f5821fa383adaeb8ff}\label{classigris_1_1delegate_af55e2c4ab247a7f5821fa383adaeb8ff}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\>\mbox{\hyperlink{classigris_1_1AbstractDelegate}{obj\_t}} {\bfseries object}\\
+\>void $\ast$ {\bfseries external\_object}\\
+\}; \\
+
+\end{tabbing}\item 
+\mbox{\Hypertarget{classigris_1_1delegate_a075a97c803980794d520bb1fb3990cc8}\label{classigris_1_1delegate_a075a97c803980794d520bb1fb3990cc8}} 
+\mbox{\hyperlink{unionigris_1_1delegate_1_1method__union}{method\+\_\+union}} {\bfseries method}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename R, typename... Args$>$\newline
+class igris\+::delegate$<$ R, Args $>$}
+
+Делегат. Шаблонный класс. Параметры шаблона задают сигнатуру делегируемой функции. 
+\begin{DoxyParams}{Parameters}
+{\em R} & тип возвращаемый тип. \\
+\hline
+{\em Args} & -\/ ... Типы параметров. Доступно неограниченное количество параметров. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/mirmik/project/igris/igris/event/\mbox{\hyperlink{delegate_8h}{delegate.\+h}}\end{DoxyCompactItemize}

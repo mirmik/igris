@@ -1,6 +1,10 @@
 #ifndef IGRIS_SERIALIZE_HELPER_H
 #define IGRIS_SERIALIZE_HELPER_H
 
+/**
+@file
+*/
+
 #include <igris/util/signature.h>
 
 IGRIS_SIGNATURE_ATTRIBUTE_CHECKER(igris_has_serialize, serialize)

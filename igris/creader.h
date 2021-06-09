@@ -3,17 +3,17 @@
 
 #warning Deprecated need reimplement with binreader
 
-#include <igris/buffer.h>
 #include <string>
+#include <string_view>
 
 namespace igris
 {
     struct chars_set_checker
     {
-        igris::buffer pattern;
+        std::string_view pattern;
         bool tgt;
 
-        chars_set_checker(igris::buffer _pattern, bool _tgt = true)
+        chars_set_checker(std::string_view _pattern, bool _tgt = true)
             : pattern(_pattern), tgt(_tgt)
         {
         }
@@ -51,7 +51,7 @@ namespace igris
 
         bool next_is(char c) { return *ptr == c; }
 
-        bool next_is(igris::buffer smbs)
+        bool next_is(std::string_view smbs)
         {
             size_t len = smbs.size();
             const char *smb = smbs.data();

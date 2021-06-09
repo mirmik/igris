@@ -1,6 +1,10 @@
 #ifndef IGRIS_SERIALIZE_ARCHIVE_H
 #define IGRIS_SERIALIZE_ARCHIVE_H
 
+/**
+@file
+*/
+
 #include <igris/serialize/helper.h>
 
 namespace igris
@@ -53,7 +57,7 @@ namespace igris
             void dump(float i) { dump_data((char *)&i, sizeof(i)); }
             void dump(double i) { dump_data((char *)&i, sizeof(i)); }
             void dump(long double i) { dump_data((char *)&i, sizeof(i)); }
-            void dump(igris::buffer buf)
+            void dump(std::string_view buf)
             {
                 dump((uint16_t)buf.size());
                 dump_data(buf.data(), buf.size());
@@ -97,17 +101,23 @@ namespace igris
             }
         };
 
-        class writable_buffer : public igris::buffer
+        class writable_buffer : public std::string_view
         {
+          public:
+            writable_buffer &operator=(const std::string_view &oth)
+            {
+                std::string_view::operator=(oth);
+                return *this;
+            }
         };
 
         class settable_buffer
         {
           public:
-            igris::buffer &ref;
+            std::string_view &ref;
 
           public:
-            settable_buffer(igris::buffer &buf) : ref(buf) {}
+            settable_buffer(std::string_view &buf) : ref(buf) {}
         };
 
         class binary_deserializer_basic
@@ -159,8 +169,7 @@ namespace igris
                 uint16_t len;
                 load(len);
 
-                buf.ref.data((char *)pointer());
-                buf.ref.size(len);
+                buf.ref = std::string_view((char *)pointer(), len);
 
                 skip(len);
             }
@@ -171,12 +180,12 @@ namespace igris
                 load(len);
 
                 int readsize = buf.size() < len ? buf.size() : len;
-                load_data(buf.data(), readsize);
+                load_data((char *)buf.data(), readsize);
 
-                buf.size(readsize);
+                buf = std::string_view(buf.data(), readsize);
             }
 
-            void load_set_buffer(igris::buffer &buf)
+            void load_set_buffer(std::string_view &buf)
             {
                 igris::archive::settable_buffer arch(buf);
                 load(arch);
@@ -223,7 +232,7 @@ namespace igris
                 : ptr(str), _end(str + size)
             {
             }
-            binary_buffer_reader(igris::buffer buf)
+            binary_buffer_reader(std::string_view buf)
                 : ptr(buf.data()), _end(buf.data() + buf.size())
             {
             }
