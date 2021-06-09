@@ -120,7 +120,7 @@ namespace igris
         void move_back(type &obj) { dlist_move_prev(&(obj.*member), &list); }
         void move_next(type &obj, type &head)
         {
-            dlist_move_next(&(obj.*member), &(head.*member))
+            dlist_move_next(&(obj.*member), &(head.*member));
         }
         void move_next(type &obj, iterator head)
         {
