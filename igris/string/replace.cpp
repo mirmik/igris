@@ -1,4 +1,4 @@
-#include <igris/string.h>
+#include <igris/util/string.h>
 
 #include <string.h>
 

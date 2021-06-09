@@ -7,7 +7,7 @@
 
 #include <igris/osutil/fd.h>
 #include <igris/osutil/path.h>
-#include <igris/string.h>
+#include <igris/util/string.h>
 
 int igris::osutil::nonblock(int fd, bool en)
 {

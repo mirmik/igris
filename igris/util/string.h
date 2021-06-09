@@ -1,22 +1,35 @@
 #ifndef IGRIS_STRING_H
 #define IGRIS_STRING_H
 
+#include <igris/compiler.h>
+#include <stdlib.h>
+
+__BEGIN_DECLS
+
+void *igris_memmem(const void *l, size_t l_len, const void *s, size_t s_len);
+
+void replace_substrings(char *buffer, size_t maxsize, const char *input,
+                        size_t inlen, const char *sub, size_t sublen,
+                        const char *rep, size_t replen);
+
+__END_DECLS
+
+#ifdef __cplusplus
+
 #include <cstdint>
 #include <cstring>
 #include <ctype.h>
+#include <igris/util/hexascii.h>
 #include <list>
 #include <string>
+#include <string_view>
 #include <vector>
-
-#if __cplusplus > 201500L
-#include <string_view>
-#endif
-
-#include <igris/util/hexascii.h>
-#include <string_view>
 
 namespace igris
 {
+    std::string replace(const std::string &src, const std::string &oldsub,
+                        const std::string &newsub);
+
     std::vector<std::string> split(const std::string_view &str,
                                    char delim = ' ');
     std::vector<std::string> split(const std::string_view &str,
@@ -55,7 +68,6 @@ namespace igris
         return ret;
     }
 
-#if __cplusplus > 201500L
     static inline std::string_view trim(const std::string_view &view)
     {
         if (view.size() == 0)
@@ -83,7 +95,8 @@ namespace igris
         size_t strt = view.find_first_not_of(" \n\t");
         return view.substr(strt, view.size() - strt);
     }
-#endif
 }
+
+#endif
 
 #endif

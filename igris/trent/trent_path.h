@@ -1,6 +1,10 @@
 #ifndef TRENT_PATH_H
 #define TRENT_PATH_H
 
+/**
+    @file
+*/
+
 #include <igris/util/string.h>
 #include <iostream>
 #include <vector>

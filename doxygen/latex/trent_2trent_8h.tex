@@ -1,0 +1,67 @@
+\hypertarget{trent_2trent_8h}{}\doxysection{/home/mirmik/project/igris/igris/trent/trent.h File Reference}
+\label{trent_2trent_8h}\index{/home/mirmik/project/igris/igris/trent/trent.h@{/home/mirmik/project/igris/igris/trent/trent.h}}
+{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$igris/result.\+h$>$}\newline
+{\ttfamily \#include $<$igris/util/bug.\+h$>$}\newline
+{\ttfamily \#include $<$igris/util/ctrdtr.\+h$>$}\newline
+{\ttfamily \#include $<$igris/util/types\+\_\+extension.\+h$>$}\newline
+{\ttfamily \#include $<$string\+\_\+view$>$}\newline
+{\ttfamily \#include $<$igris/trent/trent\+\_\+path.\+h$>$}\newline
+Include dependency graph for trent.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{trent_2trent_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{trent_2trent_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classigris_1_1trent__basic}{igris\+::trent\+\_\+basic$<$ T\+Alloc $>$}}
+\item 
+class \mbox{\hyperlink{classigris_1_1trent__basic_1_1wrong__path}{igris\+::trent\+\_\+basic$<$ T\+Alloc $>$\+::wrong\+\_\+path}}
+\item 
+class \mbox{\hyperlink{classigris_1_1trent__basic_1_1wrong__type}{igris\+::trent\+\_\+basic$<$ T\+Alloc $>$\+::wrong\+\_\+type}}
+\item 
+class \mbox{\hyperlink{classigris_1_1trent__basic_1_1wrong__index}{igris\+::trent\+\_\+basic$<$ T\+Alloc $>$\+::wrong\+\_\+index}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{trent_2trent_8h_ace79865635fd43e7124f36c179e509ed}\label{trent_2trent_8h_ace79865635fd43e7124f36c179e509ed}} 
+using {\bfseries igris\+::trent} = trent\+\_\+basic$<$ std\+::allocator $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{trent_2trent_8h_a0326943d33332611a1fe6d22ae2b93a6}\label{trent_2trent_8h_a0326943d33332611a1fe6d22ae2b93a6}} 
+enum {\bfseries trent\+\_\+type} \+: uint8\+\_\+t \{ \newline
+{\bfseries string}, 
+{\bfseries list}, 
+{\bfseries dict}, 
+{\bfseries numer}, 
+\newline
+{\bfseries boolean}, 
+{\bfseries nil}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{trent_2trent_8h_a50f27a5ee228fcd7baa37a11629c826b}\label{trent_2trent_8h_a50f27a5ee228fcd7baa37a11629c826b}} 
+const char $\ast$ {\bfseries igris\+::typestr} (trent\+\_\+type type)
+\end{DoxyCompactItemize}

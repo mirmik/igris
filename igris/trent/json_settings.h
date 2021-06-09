@@ -1,6 +1,10 @@
 #ifndef igris_JSON_SETTINGS_H
 #define igris_JSON_SETTINGS_H
 
+/**
+    @file
+*/
+
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -19,8 +23,8 @@ namespace igris
         std::string pathstr;
 
       public:
-        const std::string & path() {return pathstr;}
-        void path(const std::string & str) { pathstr = str;}
+        const std::string &path() { return pathstr; }
+        void path(const std::string &str) { pathstr = str; }
 
         json_settings() = default;
         json_settings(const std::string &str) : pathstr(str){};
@@ -64,10 +68,9 @@ namespace igris
 
         std::string pathstr;
 
-      public:        
-        const std::string & path() {return pathstr;}
-        void path(const std::string & str) { pathstr = str;}
-
+      public:
+        const std::string &path() { return pathstr; }
+        void path(const std::string &str) { pathstr = str; }
 
         json_syncer() = default;
         json_syncer(const std::string &str) : pathstr(str) {}

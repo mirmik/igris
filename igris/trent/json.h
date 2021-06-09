@@ -1,6 +1,10 @@
 #ifndef IGRIS_TRENT_JSON_H
 #define IGRIS_TRENT_JSON_H
 
+/**
+    @file
+*/
+
 #include <igris/trent/trent.h>
 #include <igris/util/numconvert.h>
 

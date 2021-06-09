@@ -1,5 +1,5 @@
 #include <igris/math/defs.h>
-#include <igris/string.h>
+#include <igris/util/string.h>
 #include <string.h>
 
 #include <stdio.h>

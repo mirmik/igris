@@ -1,6 +1,10 @@
 #ifndef igris_TRENT_BINDER_H
 #define igris_TRENT_BINDER_H
 
+/**
+    @file
+*/
+
 #include <igris/trent/settings.h>
 #include <igris/trent/trent.h>
 
@@ -73,12 +77,12 @@ namespace igris
         trent_binder(){};
 
         template <typename... Args>
-        trent_binder(Args &&... args) : saver(std::forward<Args>(args)...)
+        trent_binder(Args &&...args) : saver(std::forward<Args>(args)...)
         {
             sync();
         }
 
-        template <typename... Args> void init(Args &&... args)
+        template <typename... Args> void init(Args &&...args)
         {
             saver.init(args...);
         }

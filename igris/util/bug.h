@@ -2,6 +2,7 @@
 #define NOS_BUGON_H
 
 #include <igris/compiler.h>
+#include <igris/dprint.h>
 #include <igris/util/location.h>
 
 __BEGIN_DECLS

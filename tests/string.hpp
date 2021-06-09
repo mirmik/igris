@@ -1,14 +1,4 @@
-#include <igris/string.h>
-
-TEST_CASE("string.replace0")
-{
-	/*const char * input = "Hello abc worabcldabc";
-	const char * output = "Hello  world";
-	char buffer[64];
-
-	igris::replace(buffer, input, strlen(input), "abc", 3, "", 0);*/
-}
-
+#include <igris/util/string.h>
 
 TEST_CASE("string.replace0")
 {

@@ -1,5 +1,4 @@
-#include <igris/string.h>
-
+#include <igris/util/string.h>
 #include <string.h>
 
 void *igris_memmem(const void *l, size_t l_len, const void *s, size_t s_len)

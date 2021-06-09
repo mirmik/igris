@@ -1,6 +1,10 @@
 #ifndef igris_TRENT_CHECKER_H
 #define igris_TRENT_CHECKER_H
 
+/**
+    @file
+*/
+
 #include <igris/trent/trent.h>
 #include <igris/util/string.h>
 #include <set>
@@ -67,7 +71,8 @@ namespace igris
                 oth._content = nullptr;
             }
 
-            result<void> check(const trent &tr, std::vector<std::string> &strvec) const
+            result<void> check(const trent &tr,
+                               std::vector<std::string> &strvec) const
             {
                 switch (type)
                 {
@@ -273,7 +278,11 @@ namespace igris
             bool _optional = false;
             schema_node &operator[](std::string str) { return nodes.at(str); }
 
-            schema_node& optional(bool par) { _optional = par; return *this; }
+            schema_node &optional(bool par)
+            {
+                _optional = par;
+                return *this;
+            }
         };
 
         struct schema_dict_pair
