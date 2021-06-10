@@ -38,6 +38,7 @@ namespace igris
 
         template <typename Functor> std::string string_while(Functor &&func)
         {
+            dprln(ptr);
             const char *strt = ptr;
             while (func(*ptr))
                 ++ptr;

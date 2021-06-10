@@ -54,13 +54,13 @@ namespace igris
             }
 
             reader.skip_while(" ,\n");
-            while (!reader.next_is(std::string_view("\0?")))
+            while (!reader.next_is(std::string_view("\0?", 2)))
             {
                 if (reader.next_is('\"'))
                 {
                     reader.skip();
                     arguments.emplace_back(reader.string_while(
-                        igris::chars_set_checker(std::string_view("\"\0"), false)));
+                        igris::chars_set_checker(std::string_view("\"\0", 2), false)));
                     if (reader.next_is('\0'))
                         return;
                     else
@@ -69,7 +69,7 @@ namespace igris
                 else
                 {
                     arguments.emplace_back(reader.string_while(
-                        igris::chars_set_checker(std::string_view(" ,\0\n?"), false)));
+                        igris::chars_set_checker(std::string_view(" ,\0\n?", 4), false)));
                 }
                 reader.skip_while(" ,\n");
             }
