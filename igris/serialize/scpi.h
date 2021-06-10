@@ -14,8 +14,6 @@
 
 namespace igris
 {
-    using buffer_literal::operator"" _b;
-
     class scpi_string_parser
     {
       public:
@@ -56,13 +54,13 @@ namespace igris
             }
 
             reader.skip_while(" ,\n");
-            while (!reader.next_is("\0?"_b))
+            while (!reader.next_is(std::string_view("\0?")))
             {
                 if (reader.next_is('\"'))
                 {
                     reader.skip();
                     arguments.emplace_back(reader.string_while(
-                        igris::chars_set_checker("\"\0"_b, false)));
+                        igris::chars_set_checker(std::string_view("\"\0"), false)));
                     if (reader.next_is('\0'))
                         return;
                     else
@@ -71,7 +69,7 @@ namespace igris
                 else
                 {
                     arguments.emplace_back(reader.string_while(
-                        igris::chars_set_checker(" ,\0\n?"_b, false)));
+                        igris::chars_set_checker(std::string_view(" ,\0\n?"), false)));
                 }
                 reader.skip_while(" ,\n");
             }
