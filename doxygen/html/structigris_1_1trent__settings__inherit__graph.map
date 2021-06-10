@@ -1,7 +1,0 @@
-<map id="igris::trent_settings" name="igris::trent_settings">
-<area shape="rect" id="node1" title=" " alt="" coords="89,5,237,32"/>
-<area shape="rect" id="node2" href="$classigris_1_1json__settings.html" title=" " alt="" coords="5,87,149,114"/>
-<area shape="rect" id="node3" href="$structigris_1_1trent__settings__slice.html" title=" " alt="" coords="174,80,322,121"/>
-<area shape="rect" id="node4" href="$classigris_1_1settings__binder__int32.html" title=" " alt="" coords="77,169,235,211"/>
-<area shape="rect" id="node5" href="$classigris_1_1settings__binder__int64.html" title=" " alt="" coords="259,169,418,211"/>
-</map>
