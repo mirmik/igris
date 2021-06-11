@@ -1,5 +1,5 @@
 #include <string_view>
-#warning "igris::buffer is deprecated use string_view instead"
+#warning "std::string_view is deprecated use string_view instead"
 
 namespace igris
 {

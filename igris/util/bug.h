@@ -1,3 +1,7 @@
+/**
+    @file
+*/
+
 #ifndef NOS_BUGON_H
 #define NOS_BUGON_H
 

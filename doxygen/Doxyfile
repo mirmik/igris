@@ -824,28 +824,7 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  =          \
-     ../igris                     \
-     ../igris/util                \
-     ../igris/trent               \
-     ../igris/dprint              \
-     ../igris/shell               \
-     ../igris/datastruct          \
-     ../igris/container           \
-     ../igris/crypt               \
-     ../igris/osinter             \
-     ../igris/osutil              \
-     ../igris/protocols           \
-     ../igris/string              \
-     ../igris/time                \
-     ../igris/tests               \
-     ../igris/sync                \
-     ../igris/syncxx              \
-     ../igris/path                \
-     ../igris/getopt              \
-     ../igris/event               \
-     ../igris/defs                \
-     ../igris/math                \
-     ../igris/serialize           
+     ../igris                     
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -924,7 +903,7 @@ FILE_PATTERNS          = *.c \
 # be searched for input files as well.
 # The default value is: NO.
 
-RECURSIVE              = NO
+RECURSIVE              = YES
 
 # The EXCLUDE tag can be used to specify files and/or directories that should be
 # excluded from the INPUT source files. This way you can easily exclude a

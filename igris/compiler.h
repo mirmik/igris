@@ -1,3 +1,7 @@
+/**
+    @file
+*/
+
 #ifndef IGRIS_UTIL_COMPILER_H
 #define IGRIS_UTIL_COMPILER_H
 
