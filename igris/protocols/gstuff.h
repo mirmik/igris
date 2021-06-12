@@ -41,15 +41,20 @@ __BEGIN_DECLS
  */
 int gstuffing(const char *data, int size, char *outdata);
 
-void gstuff_autorecv_reset(struct gstuff_autorecv *autom);
+/**
+    Инициализация автомата.
+ */
+void gstuff_autorecv_init(struct gstuff_autorecv *autom, void *buf, int len);
 
+/**
+    Горячая замена приёмного буфера.
+ */
 void gstuff_autorecv_setbuf(struct gstuff_autorecv *autom, void *buf, int len);
 
-/*void gstuff_autorecv_init(
-    struct gstuff_autorecv * autom,
-    void(*callback)(void*, int sts, char* dat, int len),
-    void * arg
-);*/
+/**
+    Сброс состояния автомата.
+ */
+void gstuff_autorecv_reset(struct gstuff_autorecv *autom);
 
 int gstuff_autorecv_newchar(struct gstuff_autorecv *autom, char c);
 

@@ -62,6 +62,11 @@ int gstuffing(const char *data, int size, char *outdata)
     return outdata - outstrt;
 }
 
+void gstuff_autorecv_init(struct gstuff_autorecv *autom, void *buf, int len)
+{
+    gstuff_autorecv_setbuf(autom, buf, len);
+}
+
 void gstuff_autorecv_reset(struct gstuff_autorecv *autom)
 {
     autom->crc = 0xff;
@@ -70,6 +75,7 @@ void gstuff_autorecv_reset(struct gstuff_autorecv *autom)
 
 void gstuff_autorecv_setbuf(struct gstuff_autorecv *autom, void *buf, int len)
 {
+    autom->state = 0;
     sline_init(&autom->line, buf, len);
     gstuff_autorecv_reset(autom);
 }

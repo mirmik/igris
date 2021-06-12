@@ -25,3 +25,11 @@ int msleep(int64_t m)
     return 0;
 }
 
+
+double igris::time()
+{
+    auto duration = std::chrono::system_clock::now().time_since_epoch();
+    auto ns =
+        std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count();
+    return (double)ns / 1e9;
+}
