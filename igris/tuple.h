@@ -10,17 +10,20 @@ namespace igris
     template <class A> struct tuple<A>
     {
         A a;
+        tuple(A a) : a(a) {}
     };
     template <class A, class B> struct tuple<A, B>
     {
         A a;
         B b;
+        tuple(A a, B b) : a(a), b(b) {}
     };
     template <class A, class B, class C> struct tuple<A, B, C>
     {
         A a;
         B b;
         C c;
+        tuple(A a, B b, C c) : a(a), b(b), c(c) {}
     };
     template <class A, class B, class C, class D> struct tuple<A, B, C, D>
     {
@@ -28,6 +31,7 @@ namespace igris
         B b;
         C c;
         D d;
+        tuple(A a, B b, C c, D d) : a(a), b(b), c(c), d(d) {}
     };
     template <class A, class B, class C, class D, class E>
     struct tuple<A, B, C, D, E>
@@ -37,6 +41,7 @@ namespace igris
         C c;
         D d;
         E e;
+        tuple(A a, B b, C c, D d, E e) : a(a), b(b), c(c), d(d), e(e) {}
     };
 
     template <int N, class... Args> struct get_impl

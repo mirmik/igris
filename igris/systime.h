@@ -14,7 +14,10 @@ __END_DECLS
 
 namespace igris
 {
-    double time();
+    // double time();
+    void start_local_time();
+    double local_time();
+    int64_t nanos();
 }
 
 #endif
