@@ -104,7 +104,7 @@ licant.module("igris.util", sources=[
 		"igris/util/string.cpp",
 		"igris/util/dstring.c",
 		"igris/util/stub.c",
-		"igris/util/crc.c",
+		"igris/util/crc.cpp",
 		"igris/string/memmem.c",
 		"igris/string/replace.cpp",
 		"igris/string/replace_substrings.c",

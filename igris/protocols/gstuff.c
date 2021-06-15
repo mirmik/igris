@@ -14,7 +14,7 @@ int gstuffing(const char *data, int size, char *outdata)
     while (size--)
     {
         char c = *data++;
-        strmcrc8(&crc, c);
+        igris_strmcrc8(&crc, c);
 
         switch (c)
         {
@@ -183,7 +183,7 @@ __putchar__:
         goto __finish__;
     }
 
-    strmcrc8(&autom->crc, c);
+    igris_strmcrc8(&autom->crc, c);
     autom->state = 1;
 
     // fallthrow
