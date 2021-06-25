@@ -27,11 +27,18 @@ file(GLOB SOURCES
 	igris/event/*.cpp
 	igris/trent/*.cpp
 	igris/datastruct/*.cpp
+	igris/sync/semaphore.c
 	igris/protocols/gstuff.c
+	igris/protocols/gstuff_v1/gstuff.c
+	igris/protocols/gstuff_v1/autorecv.c
 	igris/sync/syslock_mutex.cpp
 	igris/string/replace_substrings.c
 	igris/string/replace.cpp
 	igris/string/memmem.c
+	igris/time/time_posix.cpp
+	igris/osinter/wait.c
+	igris/osinter/wait-linux.cpp
+	igris/osutil/realtime.c
 	igris/binreader.c
 )
 
@@ -48,11 +55,17 @@ file(GLOB SOURCES_TEST
 	igris/dprint/dprint_func_impl.c
 	igris/event/*.cpp
 	igris/trent/*.cpp
+	igris/time/time_posix.cpp
 	igris/datastruct/*.cpp
 	igris/protocols/gstuff/*.c
+	igris/protocols/gstuff_v1/*.c
 	igris/sync/syslock_mutex.cpp
+	igris/sync/semaphore.c
+	igris/osinter/wait.c
+	igris/osinter/wait-linux.cpp
 	igris/string/replace_substrings.c
 	igris/string/replace.cpp
+	igris/osutil/realtime.c
 	igris/string/memmem.c
 	igris/binreader.c
 	tests/*.cpp

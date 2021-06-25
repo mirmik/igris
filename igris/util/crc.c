@@ -11,7 +11,7 @@ static const uint8_t dscrc2x16_table[] = {
 
 // Compute a Dallas Semiconductor 8 bit CRC. These show up in the ROM
 // and the registers.  (Use tiny 2x16 entry CRC table)
-uint8_t crc8_table(const uint8_t *addr, uint8_t len, uint8_t crc_init)
+uint8_t igris_crc8_table(const uint8_t *addr, uint8_t len, uint8_t crc_init)
 {
     uint8_t crc = crc_init;
 
@@ -29,7 +29,7 @@ uint8_t crc8_table(const uint8_t *addr, uint8_t len, uint8_t crc_init)
 // Compute a Dallas Semiconductor 8 bit CRC directly.
 // this is much slower, but a little smaller, than the lookup table.
 //
-uint8_t crc8(const void *data, uint8_t len, uint8_t crc_init)
+uint8_t igris_crc8(const void *data, uint8_t len, uint8_t crc_init)
 {
     uint8_t *addr = (uint8_t *)data;
     uint8_t crc = crc_init;
@@ -49,7 +49,7 @@ uint8_t crc8(const void *data, uint8_t len, uint8_t crc_init)
     return crc;
 }
 
-uint16_t crc16(const void *data, uint16_t length, uint16_t crc_init)
+uint16_t igris_crc16(const void *data, uint16_t length, uint16_t crc_init)
 {
     const uint8_t *data_p = (const uint8_t *)data;
     uint8_t x;
@@ -65,7 +65,7 @@ uint16_t crc16(const void *data, uint16_t length, uint16_t crc_init)
     return crc;
 }
 
-uint8_t mmc_crc7(const uint8_t *message, const uint8_t length)
+uint8_t igris_mmc_crc7(const uint8_t *message, const uint8_t length)
 {
     const uint8_t poly = 0x89;
     uint8_t crc = 0;
@@ -83,7 +83,7 @@ uint8_t mmc_crc7(const uint8_t *message, const uint8_t length)
     return crc >> 1;
 }
 
-uint32_t crc32(const void *data, uint32_t length, uint32_t crc_init)
+uint32_t igris_crc32(const void *data, uint32_t length, uint32_t crc_init)
 {
 
     // Nibble lookup table for 0x04C11DB7 polynomial
@@ -95,7 +95,7 @@ uint32_t crc32(const void *data, uint32_t length, uint32_t crc_init)
 
     uint32_t crc = crc_init;
 
-    const uint32_t *pData = data;
+    const uint32_t *pData = (const uint32_t *)data;
     uint32_t bodySize = length / 4;
     uint32_t tailSize = length % 4;
 
@@ -127,4 +127,30 @@ uint32_t crc32(const void *data, uint32_t length, uint32_t crc_init)
     }
 
     return crc;
+}
+
+
+uint8_t crc8(const void *data, uint8_t length, uint8_t crc_init) 
+{
+    return igris_crc8(data, length, crc_init);
+}
+
+uint16_t crc16(const void *data, uint16_t length, uint16_t crc_init) 
+{
+    return igris_crc16(data, length, crc_init);
+}
+
+uint32_t crc32(const void *data, uint32_t length, uint32_t crc_init) 
+{
+    return igris_crc32(data, length, crc_init);
+}
+
+uint8_t mmc_crc7(const uint8_t *message, const uint8_t length) 
+{
+    return igris_mmc_crc7(message, length);
+}
+
+uint8_t crc8_table(const uint8_t *addr, uint8_t len, uint8_t crc_init) 
+{
+    return igris_crc8_table(addr, len, crc_init);
 }
