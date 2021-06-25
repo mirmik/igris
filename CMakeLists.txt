@@ -56,7 +56,7 @@ add_library(igris SHARED ${SOURCES} ${PLATFORM_SOURCES} igris/dprint/dprint_stdo
 target_include_directories(igris PRIVATE .)
 
 add_executable(igris_test ${SOURCES_TEST})
-target_include_directories(igris_test PRIVATE .)
+target_include_directories(igris_test PRIVATE . tests)
 target_link_libraries(igris_test)
 
 if (UNIX AND NOT APPLE)
