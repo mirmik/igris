@@ -129,7 +129,7 @@ uint32_t igris_crc32(const void *data, uint32_t length, uint32_t crc_init)
     return crc;
 }
 
-
+#if 0
 uint8_t crc8(const void *data, uint8_t length, uint8_t crc_init) 
 {
     return igris_crc8(data, length, crc_init);
@@ -154,3 +154,4 @@ uint8_t crc8_table(const uint8_t *addr, uint8_t len, uint8_t crc_init)
 {
     return igris_crc8_table(addr, len, crc_init);
 }
+#endif

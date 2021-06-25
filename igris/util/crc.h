@@ -21,20 +21,22 @@ uint32_t igris_crc32(const void *data, uint32_t length, uint32_t crc_init);
 uint8_t igris_mmc_crc7(const uint8_t *message, const uint8_t length);
 uint8_t igris_crc8_table(const uint8_t *addr, uint8_t len, uint8_t crc_init);
 
-__attribute__((deprecated)) uint8_t crc8(const void *data, uint8_t length,
+#if 0
+__attribute__((deprecated,weak)) uint8_t crc8(const void *data, uint8_t length,
                                          uint8_t crc_init);
 
-__attribute__((deprecated)) uint16_t crc16(const void *data, uint16_t length,
+__attribute__((deprecated,weak)) uint16_t crc16(const void *data, uint16_t length,
                                            uint16_t crc_init);
 
-__attribute__((deprecated)) uint32_t crc32(const void *data, uint32_t length,
+__attribute__((deprecated,weak)) uint32_t crc32(const void *data, uint32_t length,
                                            uint32_t crc_init);
 
-__attribute__((deprecated)) uint8_t mmc_crc7(const uint8_t *message,
+__attribute__((deprecated,weak)) uint8_t mmc_crc7(const uint8_t *message,
                                              const uint8_t length);
 
-__attribute__((deprecated)) uint8_t crc8_table(const uint8_t *addr, uint8_t len,
+__attribute__((deprecated,weak)) uint8_t crc8_table(const uint8_t *addr, uint8_t len,
                                                uint8_t crc_init);
+#endif
 __END_DECLS
 
 #endif

@@ -3,7 +3,7 @@
 
 #include <igris/dprint.h>
 
-void debug_write(const char *c, int i)
+__attribute__((weak)) void debug_write(const char *c, int i)
 {
     while (i--)
         debug_putchar(*c++);
