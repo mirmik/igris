@@ -51,7 +51,7 @@ licant.module("igris.stdlibs",
 ######################DPRINT####################################
 
 licant.module("igris.dprint.common", srcdir="igris/dprint",
-	sources=["dprint_func_impl.c", "dprintxx.cpp"],
+	sources=["dprint_func_impl.c"],
 )
 
 licant.module("igris.dprint", "user", srcdir="igris/dprint",
