@@ -22,7 +22,7 @@ tests = [
 ]
 
 application("runtests",
-	sources = ["main.cpp", "reader.cpp", "macro.cpp", "tuple.cpp"],
+	sources = ["*.cpp"],
 
 	cxx_flags = "-g",
 	cc_flags = "-g",
