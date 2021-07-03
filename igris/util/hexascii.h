@@ -29,6 +29,7 @@ namespace igris
 __BEGIN_DECLS
 
 void hexascii_encode(const void *indata, int size, void *out);
+void hexascii_decode(const void *indata, int size, void *out);
 
 __END_DECLS
 
