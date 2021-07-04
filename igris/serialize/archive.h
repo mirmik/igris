@@ -63,6 +63,12 @@ namespace igris
                 dump_data(buf.data(), buf.size());
             }
 
+            void dump(std::string_view buf)
+            {
+                dump((uint16_t)buf.size());
+                dump_data(buf.data(), buf.size());
+            }
+
             template <typename T> void dump(const T &ref)
             {
                 ((std::remove_cv_t<std::remove_reference_t<T>> &)(ref))
