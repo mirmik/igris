@@ -22,7 +22,6 @@ __END_DECLS
 #include <igris/util/hexascii.h>
 #include <list>
 #include <string>
-#include <string_view>
 #include <vector>
 
 namespace igris
@@ -30,9 +29,8 @@ namespace igris
     std::string replace(const std::string &src, const std::string &oldsub,
                         const std::string &newsub);
 
-    std::vector<std::string> split(const std::string_view &str,
-                                   char delim = ' ');
-    std::vector<std::string> split(const std::string_view &str,
+    std::vector<std::string> split(const igris::buffer &str, char delim = ' ');
+    std::vector<std::string> split(const igris::buffer &str,
                                    const char *delims);
 
     std::string join(const std::vector<std::string> &, char delim);
@@ -68,7 +66,7 @@ namespace igris
         return ret;
     }
 
-    static inline std::string_view trim(const std::string_view &view)
+    /*static inline igris::buffer trim(const igris::buffer &view)
     {
         if (view.size() == 0)
             return view;
@@ -78,7 +76,7 @@ namespace igris
         return view.substr(strt, fini - strt);
     }
 
-    static inline std::string_view trim_left(const std::string_view &view)
+    static inline igris::buffer trim_left(const igris::buffer &view)
     {
         if (view.size() == 0)
             return view;
@@ -87,14 +85,14 @@ namespace igris
         return view.substr(0, fini);
     }
 
-    static inline std::string_view trim_right(const std::string_view &view)
+    static inline igris::buffer trim_right(const igris::buffer &view)
     {
         if (view.size() == 0)
             return view;
 
         size_t strt = view.find_first_not_of(" \n\t");
         return view.substr(strt, view.size() - strt);
-    }
+    }*/
 }
 
 #endif

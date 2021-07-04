@@ -14,16 +14,19 @@ namespace igris
         using reference = T &;
         using const_reference = const T &;
 
+        A alloc;
         T *m_data;
         size_t m_size;
-        A alloc;
 
         const T *data() const { return m_data; }
         size_t size() const { return m_size; }
 
         unbounded_array() : m_data(nullptr), m_size(0) {}
 
-        unbounded_array(size_t sz) : m_data(alloc.allocate(sz)), m_size(sz) {}
+        unbounded_array(size_t sz)
+            : alloc{}, m_data(alloc.allocate(sz)), m_size(sz)
+        {
+        }
 
         unbounded_array(const igris::array_view<T> &buf)
             : m_data(alloc.allocate(buf.size())), m_size(buf.size())

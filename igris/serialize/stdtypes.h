@@ -51,7 +51,7 @@ namespace igris
     {
         static void serialize(Archive &keeper, const std::string &str)
         {
-            igris::serialize(keeper, std::string_view(str.data(), str.size()));
+            igris::serialize(keeper, igris::buffer(str.data(), str.size()));
         }
 
         static void deserialize(Archive &keeper, std::string &str)
@@ -144,7 +144,7 @@ namespace igris
         return ret;
     }
 
-    template <class T> T deserialize(const std::string_view &in)
+    template <class T> T deserialize(const igris::buffer &in)
     {
         T ret;
 
@@ -156,7 +156,7 @@ namespace igris
 
     template <class T> T deserialize(const std::string &in)
     {
-        return deserialize<T>(std::string_view(in.data(), in.size()));
+        return deserialize<T>(igris::buffer(in.data(), in.size()));
     }
 }
 

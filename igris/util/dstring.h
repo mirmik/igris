@@ -13,9 +13,9 @@ __END_DECLS
 
 #ifdef __cplusplus
 
+#include <igris/buffer.h>
 #include <igris/util/hexascii.h>
 #include <string>
-#include <string_view>
 
 namespace igris
 {
@@ -48,7 +48,7 @@ namespace igris
         return ret;
     }
 
-    static inline std::string dstring(std::string_view buf)
+    static inline std::string dstring(igris::buffer buf)
     {
         return dstring(buf.data(), buf.size());
     }

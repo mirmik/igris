@@ -13,11 +13,11 @@
 #include <string>
 #include <vector>
 
+#include <igris/buffer.h>
 #include <igris/result.h>
 #include <igris/util/bug.h>
 #include <igris/util/ctrdtr.h>
 #include <igris/util/types_extension.h>
-#include <string_view>
 
 #include <igris/trent/trent_path.h>
 
@@ -84,19 +84,19 @@ namespace igris
 
         class wrong_index : public std::exception
         {
+            std::string str;
             trent_path path;
             type t;
 
           public:
-            wrong_index(const trent_path &path, type t) : path(path), t(t) {}
-
-            const char *what() const noexcept override
+            wrong_index(const trent_path &path, type t) : path(path), t(t)
             {
-                std::string str = std::string("trent:wrong_index: path: ") +
-                                  path.to_string() + std::string(" index: ") +
-                                  igris::typestr(t);
-                return str.c_str();
+                str = std::string("trent:wrong_index: path: ") +
+                      path.to_string() + std::string(" index: ") +
+                      igris::typestr(t);
             }
+
+            const char *what() const noexcept override { return str.c_str(); }
         };
 
         using numer_type = long double;
@@ -152,7 +152,7 @@ namespace igris
 
         void init(const char *ptr) { init_str(ptr, strlen(ptr)); }
         void init(const std::string &str) { init_str(str.data(), str.size()); }
-        void init(const std::string_view &str)
+        void init(const igris::buffer &str)
         {
             init_str(str.data(), str.size());
         }
@@ -221,7 +221,7 @@ namespace igris
             return m_dct.at(key);
         }
 
-        trent_basic &operator[](const std::string_view &key)
+        trent_basic &operator[](const igris::buffer &key)
         {
             if (m_type != type::dict)
                 init(type::dict);
@@ -285,7 +285,7 @@ namespace igris
             return m_dct.at(key);
         }
 
-        const trent_basic &at(const std::string_view &key) const
+        const trent_basic &at(const igris::buffer &key) const
         {
             if (m_type != type::dict)
                 BUG_ON("wrong trent type");
@@ -599,7 +599,7 @@ namespace igris
             return m_bool;
         }
 
-        const std::string_view as_buffer() const;
+        const igris::buffer as_buffer() const;
 
         // integer_type& unsafe_integer_const() { return m_int; }
         numer_type &unsafe_numer_const() { return m_num; }
@@ -696,7 +696,7 @@ namespace igris
 
         /*			ssize_t size();
 
-                    bool contains(std::string_view buf);
+                    bool contains(igris::buffer buf);
         */
     };
 
