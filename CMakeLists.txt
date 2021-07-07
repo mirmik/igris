@@ -37,6 +37,7 @@ file(GLOB SOURCES
 	igris/time/time_posix.cpp
 	igris/osinter/wait.c
 	igris/osinter/wait-linux.cpp
+	igris/osinter/ktimer.c
 	igris/osutil/realtime.c
 	igris/binreader.c
 )
