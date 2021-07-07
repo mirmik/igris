@@ -24,6 +24,8 @@ __END_DECLS
 #include <string>
 #include <vector>
 
+#include <igris/buffer.h>
+
 namespace igris
 {
     std::string replace(const std::string &src, const std::string &oldsub,

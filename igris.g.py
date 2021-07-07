@@ -12,6 +12,7 @@ MODULES = [
 
 	"igris.syslock",
 	"igris.ctrobj",
+	"igris.ctrobj.ktimer",
 
 	"igris.protocols.gstuff",
 	"igris.crypt.aes",
@@ -141,6 +142,11 @@ licant.module("igris.ctrobj", "linux",
 	mdepends= ["igris.ctrobj.common"],
 	default=True
 )
+
+licant.module("igris.ctrobj.ktimer",
+	sources = ["igris/osinter/ktimer.c"]
+)
+
 
 licant.module("igris.trent",
 	sources = ["igris/trent/trent.cpp"]

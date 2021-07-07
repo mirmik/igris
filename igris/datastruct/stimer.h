@@ -1,11 +1,12 @@
-#ifndef IGRIS_SCHEDULER_STIMER_H
-#define IGRIS_SCHEDULER_STIMER_H
-
-/*
+/**
+@file
     Таймер для работы в рамках флагового автомата.
     Не имеет управляющих структур, не зависит от какого-либо
     диспетчера
 */
+
+#ifndef IGRIS_DATASTRUCT_STIMER_H
+#define IGRIS_DATASTRUCT_STIMER_H
 
 #include <igris/compiler.h>
 
