@@ -25,6 +25,8 @@ if sys.platform == "linux":
 licant.module("igris", 
 sources = [
 	"igris/datastruct/stimer.c",
+	"igris/util/string.cpp",
+	"igris/string/replace.cpp",
 ],
 mdepends=MODULES)
 
@@ -101,12 +103,10 @@ licant.module("igris.util", sources=[
 		"igris/util/numconvert.c",
 		"igris/util/location.c",
 		"igris/util/hexascii.cpp",
-		"igris/util/string.cpp",
 		"igris/util/dstring.c",
 		"igris/util/stub.c",
 		"igris/util/crc.c",
 		"igris/string/memmem.c",
-		"igris/string/replace.cpp",
 		"igris/string/replace_substrings.c",
 		"igris/binreader.c"
 	],
