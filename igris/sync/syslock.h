@@ -1,8 +1,19 @@
+/**
+@file
+*/
+
 #ifndef IGRIS_SYNC_SYSLOCK_H
 #define IGRIS_SYNC_SYSLOCK_H
 
 #include <igris/compiler.h>
 #include <igris/util/location.h>
+
+// TODO: system_lock стал нерекурсивным, теперь весь этот зоопарк методов
+//       ненужен
+
+#if __has_include(<asm/syslock.h>)
+#include <asm/syslock.h>
+#else
 
 #define IGRIS_SYSLOCK_DEBUG 0
 
@@ -58,4 +69,5 @@ namespace igris
 }
 #endif
 
+#endif
 #endif

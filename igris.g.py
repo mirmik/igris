@@ -12,10 +12,11 @@ MODULES = [
 
 	"igris.syslock",
 	"igris.ctrobj",
-	"igris.ctrobj.ktimer",
 
 	"igris.protocols.gstuff",
 	"igris.crypt.aes",
+
+	"igris.systime",
 
 #	"igris.os_extension"
 ]
@@ -143,11 +144,6 @@ licant.module("igris.ctrobj", "linux",
 	default=True
 )
 
-licant.module("igris.ctrobj.ktimer",
-	sources = ["igris/osinter/ktimer.c"]
-)
-
-
 licant.module("igris.trent",
 	sources = ["igris/trent/trent.cpp"]
 )
@@ -174,6 +170,12 @@ licant.module("igris.time", "posix",
 licant.module("igris.crypt.aes", 
 	sources = ["igris/crypt/aes.c"])
 
+licant.module("igris.systime", 
+	src = [
+		"igris/time/systime.c",
+		"igris/time/jiffies.c",
+	]
+)
 
 licant.module("igris.flags.clean",
 	cxx_flags="-Wl,--gc-sections -fdata-sections -fpermissive -DNDEBUG -fno-threadsafe-statics -ffunction-sections -fno-rtti -flto",
