@@ -29,6 +29,7 @@ sources = [
 	"igris/datastruct/stimer.c",
 	"igris/util/string.cpp",
 	"igris/string/replace.cpp",
+	"igris/string/hexascii_string.cpp",
 ],
 mdepends=MODULES)
 

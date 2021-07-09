@@ -6,7 +6,6 @@
 #include <igris/datastruct/dlist.h>
 #include <igris/datastruct/ring.h>
 #include <igris/defs/io.h>
-#include <igris/defs/schedee.h>
 
 int waiter_unwait(struct dlist_head *lnk, void *future)
 {

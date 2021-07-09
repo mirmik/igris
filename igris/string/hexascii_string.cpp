@@ -1,4 +1,5 @@
 #include <igris/string/hexascii_string.h>
+#include <igris/util/hexascii.h>
 
 namespace igris
 {
