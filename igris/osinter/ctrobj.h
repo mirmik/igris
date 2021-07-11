@@ -35,6 +35,11 @@ static inline void ctrobj_init(struct ctrobj *obj, uint8_t type)
     dlist_init(&obj->lnk);
 }
 
+static inline void ctrobj_deinit(struct ctrobj *obj)
+{
+    dlist_del_init(&obj->lnk);
+}
+
 __END_DECLS
 
 #endif
