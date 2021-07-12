@@ -63,6 +63,8 @@ static inline const char *path_skip_slashes_and_single_dots(const char *path)
     return path;
 }
 
+/// Перемотать нод до следующего.
+/// Слеш щитается нодом, на пустую строку отдаётся NULL.
 static inline const char *path_iterate(const char *path)
 {
     if (!path || *path == '\0')
