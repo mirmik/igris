@@ -4,6 +4,7 @@
 #define IGRIS_PATHOPS_H
 
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -137,7 +138,7 @@ static inline int path_simplify_join(char *dst, const char *src1,
 /// Сравнивает ноды, на которые сейчас указывают указатели, лексикографически
 static inline int path_compare_node(const char *a, const char *b)
 {
-    while (*a != '\0' || *a != '/' || *b != '\0' || *b != '/')
+    while (*a != '\0' && *a != '/' && *b != '\0' && *b != '/')
     {
         if (*a == *b)
         {
@@ -149,9 +150,9 @@ static inline int path_compare_node(const char *a, const char *b)
         return *a < *b ? -1 : 1;
     }
 
-    if (*a != '\0' || *a != '/')
+    if (*a == '\0' || *a == '/')
     {
-        if (*b != '\0' || *b != '/')
+        if (*b == '\0' || *b == '/')
         {
             return 0;
         }
@@ -172,8 +173,8 @@ static inline const char *path_remove_prefix(const char *path,
         if (cmp == 0)
         {
             unsigned int len;
-            path = path_next(path, &len);
-            prefix = path_next(prefix, &len);
+            path = path_iterate(path);
+            prefix = path_iterate(prefix);
         }
 
         else
