@@ -1,3 +1,5 @@
+/**@file*/
+
 #ifndef IGRIS_PATHOPS_H
 #define IGRIS_PATHOPS_H
 
@@ -14,6 +16,8 @@ static inline int path_is_single_dot(const char *path)
     return *path == '.' && (nc == '/' || nc == '\0');
 }
 
+// Промотать указатель до следующего элемента пути.
+// @param p_len - длина промотанного контента.
 static inline const char *path_next(const char *path, unsigned int *p_len)
 {
 
@@ -45,6 +49,37 @@ static inline const char *path_next(const char *path, unsigned int *p_len)
 
         *p_len = end - path;
     }
+
+    return path;
+}
+
+static inline const char *path_skip_slashes_and_single_dots(const char *path)
+{
+    while (*path == '/' || path_is_single_dot(path))
+    {
+        ++path;
+    }
+
+    return path;
+}
+
+static inline const char *path_iterate(const char *path)
+{
+    if (!path || *path == '\0')
+    {
+        return NULL;
+    }
+
+    if (*path == '/')
+    {
+        path = path_skip_slashes_and_single_dots(path);
+        return path;
+    }
+
+    while (*path && *path != '/')
+        ++path;
+    while (*path == '/' || path_is_single_dot(path))
+        ++path;
 
     return path;
 }
@@ -95,6 +130,57 @@ static inline int path_simplify_join(char *dst, const char *src1,
 {
     BUG();
     return 0;
+}
+
+/// Сравнивает ноды, на которые сейчас указывают указатели, лексикографически
+static inline int path_compare_node(const char *a, const char *b)
+{
+    while (*a != '\0' || *a != '/' || *b != '\0' || *b != '/')
+    {
+        if (*a == *b)
+        {
+            ++a;
+            ++b;
+            continue;
+        }
+
+        return *a < *b ? -1 : 1;
+    }
+
+    if (*a != '\0' || *a != '/')
+    {
+        if (*b != '\0' || *b != '/')
+        {
+            return 0;
+        }
+
+        return -1;
+    }
+
+    return 1;
+}
+
+static inline const char *path_remove_prefix(const char *path,
+                                             const char *prefix)
+{
+    while (*prefix != 0 || *path != 0)
+    {
+        int cmp = path_compare_node(path, prefix);
+
+        if (cmp == 0)
+        {
+            unsigned int len;
+            path = path_next(path, &len);
+            prefix = path_next(prefix, &len);
+        }
+
+        else
+        {
+            break;
+        }
+    }
+
+    return path;
 }
 
 #endif
