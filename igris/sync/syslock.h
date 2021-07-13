@@ -12,6 +12,8 @@
 //       ненужен
 
 #if __has_include(<asm/syslock.h>)
+extern volatile unsigned char __system_lock_state;
+unsigned char system_lock_state();
 #include <asm/syslock.h>
 #else
 

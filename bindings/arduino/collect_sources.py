@@ -10,7 +10,11 @@ PREFIX = "../../igris"
 
 SOURCES = [
 	"dprint/dprint_func_impl.c",
-	"dprint/dprint_manually.c"
+	"dprint/dprint_manually.c",
+	"sync/syslock.c",
+
+	"util/bug_abort.c",
+	"util/location.c",
 ]
 
 for path, subdirs, files in os.walk(PREFIX):
@@ -24,6 +28,8 @@ for s in SOURCES:
 	name = os.path.basename(s)
 
 	shutil.copyfile(src, os.path.join("src", name))
+
+shutil.copytree(src="addon", dst="src", dirs_exist_ok=True)
 
 with open("src/igris.h", "w") as f:
 	f.write("//PLACEHOLDER\r\n")
