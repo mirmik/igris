@@ -33,6 +33,7 @@ file(GLOB SOURCES
 	igris/sync/syslock_mutex.cpp
 	igris/string/replace_substrings.c
 	igris/string/replace.cpp
+	igris/string/hexascii_string.cpp
 	igris/string/memmem.c
 	igris/time/time_posix.cpp
 	igris/osinter/wait.c
