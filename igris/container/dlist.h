@@ -4,6 +4,7 @@
 #include <igris/datastruct/dlist.h>
 #include <igris/util/member.h>
 #include <igris/util/memberxx.h>
+#include <iterator>
 
 namespace igris
 {
