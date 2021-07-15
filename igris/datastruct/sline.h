@@ -1,3 +1,9 @@
+/**
+@file
+Драйвер строки ввода. Реализует обработку поведения курсора, операций вставок
+и удалений, специфических для работы с редактируемым пользовательским вводом.
+*/
+
 #ifndef IGRIS_DATASTRUCT_SLINE_H
 #define IGRIS_DATASTRUCT_SLINE_H
 
@@ -88,7 +94,6 @@ static inline int sline_backspace(struct sline *sl, int count)
 
     if (sl->cursor != sl->len)
     {
-        // dprln("move", sl->len - sl->cursor);
         memmove(sl->buf + sl->cursor, sl->buf + sl->cursor + count,
                 sl->len - sl->cursor);
     }
@@ -133,33 +138,6 @@ static inline int sline_putchar(struct sline *sl, char c)
     sl->len++;
 
     return 1;
-}
-
-/*static inline
-int sline_write(struct sline * sl, const char* dat, int sz)
-{
-    int av = sline_avail(sl);
-    int cap = sz < av ? sz : av;
-
-    memcpy(sl->buf + sl->len, dat, cap);
-    sl->len += cap;
-    return cap;
-}*/
-
-static inline void sline_debug_info(struct sline *sl)
-{
-    debug_print("buffer:");
-    debug_printhex_ptr(sl->buf);
-    dln();
-    debug_print("capacity:");
-    debug_printdec_signed_int(sl->cap);
-    dln();
-    debug_print("length:");
-    debug_printdec_signed_int(sl->len);
-    dln();
-    debug_print("cursor:");
-    debug_printdec_signed_int(sl->cursor);
-    dln();
 }
 
 __END_DECLS

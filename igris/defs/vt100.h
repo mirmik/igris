@@ -13,7 +13,7 @@
 
 __BEGIN_DECLS
 
-int vt100_left(char *buf, int arg)
+static inline int vt100_left(char *buf, int arg)
 {
     char *eptr;
 
