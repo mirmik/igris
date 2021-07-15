@@ -35,6 +35,7 @@ file(GLOB SOURCES
 	igris/string/replace.cpp
 	igris/string/hexascii_string.cpp
 	igris/string/memmem.c
+	igris/shell/mshell.c
 	igris/time/time_posix.cpp
 	igris/osinter/wait.c
 	igris/osinter/wait-linux.cpp
