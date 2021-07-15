@@ -1,12 +1,40 @@
 #include <errno.h>
-#include <igris/shell/sshell.h>
+#include <igris/shell/mshell.h>
 #include <string.h>
 
 #define SSHELL_ARGCMAX 10
 
-// TODO: заменить SSHELL_ARGCMAX на подсчет аргументов. Использовать
-// динамический масив.
-int mshell_execute_unsafe(const struct mshell_command *cmd, char *str, int len,
+int mshell_execute(char *str, const struct mshell_command *cmdtable,
+                   int *retptr)
+{
+    char *argv[SSHELL_ARGCMAX];
+    int argc;
+    int res;
+
+    if (*str == '\0')
+    {
+        return ENOENT;
+    }
+
+    argc = argvc_internal_split(str, argv, SSHELL_ARGCMAX);
+
+    const struct mshell_command *it = cmdtable;
+    while (it->func != NULL)
+    {
+        if (!strcmp(argv[0], it->name))
+        {
+            res = it->func(argc, argv);
+            if (retptr)
+                *retptr = res;
+            return SSHELL_OK;
+        }
+        ++it;
+    }
+
+    return ENOENT;
+}
+
+int mshell_tables_execute(char *str, const struct mshell_command *const *tables,
                           int *retptr)
 {
     char *argv[SSHELL_ARGCMAX];
@@ -20,27 +48,51 @@ int mshell_execute_unsafe(const struct mshell_command *cmd, char *str, int len,
 
     argc = argvc_internal_split(str, argv, SSHELL_ARGCMAX);
 
-    for (int i = 0; i < cmdlen; ++i)
+    const struct mshell_command *const *tit = tables;
+    while (*tit != NULL)
     {
-        if (!strcmp(argv[0], cmd[i].name))
+        const struct mshell_command *it = *tit;
+        while (it->func != NULL)
         {
-            res = cmd[i].func(argc, argv);
-            if (retptr)
-                *retptr = res;
-            return SSHELL_OK;
+            if (!strcmp(argv[0], it->name))
+            {
+                res = it->func(argc, argv);
+                if (retptr)
+                    *retptr = res;
+                return SSHELL_OK;
+            }
+            ++it;
         }
+        ++tit;
     }
-
-    return ENOENT;
 }
 
-/*int mshell_execute(
-    const struct mshell_command* cmd,
-    const char* str,
-    int len,
-    int* retptr
-) {
-    char locstr[strlen(str) + 1];
-    strcpy(locstr, str);
-    return mshell_execute_unsafe(locstr, cmd, cmdlen, retptr);
-}*/
+void mshell_help(const struct mshell_command *cmdtable,
+                 void (*write)(void *, const char *, unsigned int),
+                 void *privdata)
+{
+    const struct mshell_command *it = cmdtable;
+    while (it->func != NULL)
+    {
+        write(privdata, it->name, strlen(it->name));
+        if (it->help)
+        {
+            write(privdata, " - ", 3);
+            write(privdata, it->help, strlen(it->help));
+        }
+        write(privdata, "\r\n", 2);
+        ++it;
+    }
+}
+
+void mshell_tables_help(const struct mshell_command *const *cmdtables,
+                        void (*write)(void *, const char *, unsigned int),
+                        void *privdata)
+{
+    const struct mshell_command *const *tit = cmdtables;
+    while (*tit != NULL)
+    {
+        mshell_help(*tit, write, privdata);
+        ++tit;
+    }
+}

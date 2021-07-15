@@ -111,7 +111,8 @@ licant.module("igris.util", sources=[
 		"igris/util/crc.c",
 		"igris/string/memmem.c",
 		"igris/string/replace_substrings.c",
-		"igris/binreader.c"
+		"igris/binreader.c",
+		"igris/shell/mshell.c",
 	],
 	mdepends = [
 		"igris.bug"
