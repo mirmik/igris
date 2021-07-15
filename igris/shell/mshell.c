@@ -65,6 +65,8 @@ int mshell_tables_execute(char *str, const struct mshell_command *const *tables,
         }
         ++tit;
     }
+
+    return ENOENT;
 }
 
 void mshell_help(const struct mshell_command *cmdtable,
