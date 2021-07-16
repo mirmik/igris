@@ -232,7 +232,7 @@ static inline int readline_putchar(struct readline *rl, char c)
             break;
 
         default:
-            dprln("?warning in readline?");
+            // dprln("?warning in readline?");
             rl->state = READLINE_STATE_NORMAL;
             break;
         }
@@ -269,23 +269,27 @@ static inline int readline_putchar(struct readline *rl, char c)
             rl->last = c;
             return retcode;
         default:
-            dpr("unr esc: hex:");
-            dprhex(c);
-            dpr(" dec:");
-            dprln((int)c);
+            // dpr("unr esc: hex:");
+            // dprhex(c);
+            // dpr(" dec:");
+            // dprln((int)c);
+            ;
         }
         rl->state = READLINE_STATE_NORMAL;
         break;
 
     case READLINE_STATE_ESCSEQ_MOVE_WAIT_7E:
-        if (c != '\x7E')
-            dprln("?esc?");
+        // if (c != '\x7E')
+        //    dprln("?esc?");
         rl->state = READLINE_STATE_NORMAL;
         retcode = READLINE_NOTHING;
         break;
 
     default:
-        BUG();
+        // автомат находится в непредусмотренном состоянии
+        // сбрасываем состояние и завершаем автомат.
+        rl->state = READLINE_STATE_NORMAL;
+        retcode = READLINE_NOTHING;
     }
 
     rl->last = c;

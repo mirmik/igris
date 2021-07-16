@@ -4,17 +4,22 @@ import os
 import shutil
 import glob
 
+shutil.rmtree("src")
 os.makedirs("src/igris", exist_ok=True)
 
 PREFIX = "../../igris"
 
 SOURCES = [
-	"dprint/dprint_func_impl.c",
-	"dprint/dprint_manually.c",
+#	"dprint/dprint_func_impl.c",
+#	"dprint/dprint_manually.c",
 	"sync/syslock.c",
 
-	"util/bug_abort.c",
-	"util/location.c",
+	"shell/mshell.c",
+
+	#"util/bug_abort.c",
+	#"util/location.c",
+	"util/numconvert.c",
+	"util/hexascii.c",
 ]
 
 for path, subdirs, files in os.walk(PREFIX):

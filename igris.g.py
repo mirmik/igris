@@ -105,7 +105,7 @@ licant.module("igris.protocols.numcmd",
 licant.module("igris.util", sources=[
 		"igris/util/numconvert.c",
 		"igris/util/location.c",
-		"igris/util/hexascii.cpp",
+		"igris/util/hexascii.c",
 		"igris/util/dstring.c",
 		"igris/util/stub.c",
 		"igris/util/crc.c",
