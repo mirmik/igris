@@ -28,7 +28,7 @@ void sem_down(struct semaphore *sem)
 
 int sem_try_down(struct semaphore *sem)
 {
-    int status;
+    int status = -1;
 
     system_lock();
 
@@ -36,10 +36,6 @@ int sem_try_down(struct semaphore *sem)
     {
         --sem->count;
         status = 0;
-    }
-    else
-    {
-        status = -1;
     }
 
     system_unlock();

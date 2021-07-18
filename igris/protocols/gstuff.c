@@ -80,6 +80,9 @@ void gstuff_autorecv_setbuf(struct gstuff_autorecv *autom, void *buf, int len)
     gstuff_autorecv_reset(autom);
 }
 
+// TODO: Функция просится под рефакторинг.
+//       goto вполне можно заменить на статусы,
+//       а __stop_handler__ вынести в функцию.
 int gstuff_autorecv_newchar(struct gstuff_autorecv *autom, char c)
 {
     int sts;
