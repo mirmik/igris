@@ -4,6 +4,8 @@
 #include <igris/math/defs.h>
 #include <igris/math/deg.h>
 
+#ifdef __cplusplus
+
 namespace igris
 {
     template <class T, class A, class B>
@@ -38,5 +40,7 @@ namespace igris
         return early(a, b, 1e-6);
     }
 }
+
+#endif
 
 #endif

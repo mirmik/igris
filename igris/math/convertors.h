@@ -18,11 +18,11 @@ template <class T> constexpr T deg(const T &x) { return x * (T)(M_PI / 180.0); }
 
 static inline double deg2rad(double x) { return x * M_PI / 180.0; }
 static inline double rad2deg(double x) { return x * 180.0 / M_PI; }
-static inline float deg2rad(float x) { return x * M_PI / 180.0; }
-static inline float rad2deg(float x) { return x * 180.0 / M_PI; }
+static inline float deg2radf(float x) { return x * M_PI / 180.0; }
+static inline float rad2degf(float x) { return x * 180.0 / M_PI; }
 
 static inline double deg(double x) { return x * M_PI / 180.0; }
-static inline float deg(float x) { return x * M_PI / 180.0; }
+static inline float degf(float x) { return x * M_PI / 180.0; }
 #endif
 
 #define DEG2RAD (M_PI / 180.0)

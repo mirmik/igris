@@ -1,23 +1,23 @@
 #include <igris/sync/semaphore.h>
 
-void semaphore_init(struct semaphore *sem, int val)
+void sem_init(struct semaphore *sem, int val)
 {
     sem->count = val;
     dlist_init(&sem->wait_list);
 }
 
-void semaphore_down(struct semaphore *sem)
+void sem_down(struct semaphore *sem)
 {
     void *_;
     system_lock();
 
     while (1)
     {
-        if (sem->count >= 1)
+        if (sem->count > 0)
         {
-            sem->count--;
+            --sem->count;
             system_unlock();
-            return; // return point is here
+            break;
         }
 
         system_unlock();
@@ -26,23 +26,44 @@ void semaphore_down(struct semaphore *sem)
     }
 }
 
-/*int semaphore_down_trylock(struct semaphore * sem)
+int sem_try_down(struct semaphore *sem)
 {
+    int status;
+
     system_lock();
 
-    if (sem->count >= 1)
+    if (sem->count > 0)
     {
-        sem->count--;
-        system_unlock();
-        return 0;
+        --sem->count;
+        status = 0;
+    }
+    else
+    {
+        status = -1;
     }
 
     system_unlock();
-    return 1;
-}*/
+    return status;
+}
 
-void semaphore_up(struct semaphore *sem)
+void sem_up(struct semaphore *sem)
 {
-    sem->count++;
-    unwait_one(&sem->wait_list, 0);
+    system_lock();
+
+    ++sem->count;
+    if (!dlist_empty(&sem->wait_list))
+        unwait_one(&sem->wait_list, 0);
+
+    system_unlock();
+}
+
+int sem_value(struct semaphore *sem)
+{
+    int count;
+
+    system_lock();
+    count = sem->count;
+    system_unlock();
+
+    return count;
 }
