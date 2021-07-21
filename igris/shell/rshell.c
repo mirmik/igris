@@ -6,7 +6,7 @@
 
 int rshell_execute_v(int argc, char **argv,
                      const struct rshell_command *cmdtable, int *retptr,
-                     int dropargs, char *output)
+                     int dropargs, char *output, int maxsize)
 {
     int res;
     const struct rshell_command *it = cmdtable;
@@ -14,7 +14,7 @@ int rshell_execute_v(int argc, char **argv,
     {
         if (!strcmp(argv[0], it->name))
         {
-            res = it->func(argc - dropargs, argv + dropargs, output);
+            res = it->func(argc - dropargs, argv + dropargs, output, maxsize);
             if (retptr)
                 *retptr = res;
             return SSHELL_OK;
@@ -26,7 +26,7 @@ int rshell_execute_v(int argc, char **argv,
 }
 
 int rshell_execute(char *str, const struct rshell_command *cmdtable,
-                   int *retptr, int dropargs, char *output)
+                   int *retptr, int dropargs, char *output, int maxsize)
 {
     char *argv[SSHELL_ARGCMAX];
     int argc;
@@ -38,11 +38,12 @@ int rshell_execute(char *str, const struct rshell_command *cmdtable,
 
     argc = argvc_internal_split(str, argv, SSHELL_ARGCMAX);
 
-    return rshell_execute_v(argc, argv, cmdtable, retptr, dropargs, output);
+    return rshell_execute_v(argc, argv, cmdtable, retptr, dropargs, output,
+                            maxsize);
 }
 
 int rshell_tables_execute(char *str, const struct rshell_command *const *tables,
-                          int *retptr, int dropargs, char *output)
+                          int *retptr, int dropargs, char *output, int maxsize)
 {
     char *argv[SSHELL_ARGCMAX];
     int argc;
@@ -63,7 +64,8 @@ int rshell_tables_execute(char *str, const struct rshell_command *const *tables,
         {
             if (!strcmp(argv[0], it->name))
             {
-                res = it->func(argc - dropargs, argv + dropargs, output);
+                res =
+                    it->func(argc - dropargs, argv + dropargs, output, maxsize);
                 if (retptr)
                     *retptr = res;
                 return SSHELL_OK;
