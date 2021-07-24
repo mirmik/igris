@@ -26,7 +26,7 @@ TEST_CASE("sparse_array")
 
 	
 	int * it = &a.i;
-	CHECK_EQ(sparse_array_next(it, &array0), &b.i);
+	CHECK_EQ(sparse_array_next(it, array0.stride), &b.i);
 
 	int acc = 0;
 	sparse_array_for_each(it, &array0, 2) 
