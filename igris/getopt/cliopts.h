@@ -13,6 +13,9 @@ namespace igris
 {
     class cliopts
     {
+        using error = igris::result_type::error;
+        template <class T> using result = igris::result_type::result<T, error>;
+
         enum class Type
         {
             Bool,
