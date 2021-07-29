@@ -68,17 +68,27 @@ namespace igris
         return ret;
     }
 
-    /*static inline igris::buffer trim(const igris::buffer &view)
+    static inline std::string trim(const igris::buffer &view)
     {
         if (view.size() == 0)
-            return view;
+            return "";
 
-        size_t strt = view.find_first_not_of(" \n\t");
-        size_t fini = view.find_last_not_of(" \n\t") + 1;
-        return view.substr(strt, fini - strt);
+        // size_t strt = view.find_first_not_of(" \n\t");
+        // size_t fini = view.find_last_not_of(" \n\t") + 1;
+
+        const char *left = view.data();
+        const char *right = view.data() + view.size() - 1;
+
+        while (*left == ' ' || *left == '\n' || *left == '\t')
+            ++left;
+
+        while (*right == ' ' || *right == '\n' || *right == '\t')
+            --right;
+
+        return std::string(left, (right - left) + 1);
     }
 
-    static inline igris::buffer trim_left(const igris::buffer &view)
+    /*static inline igris::buffer trim_left(const igris::buffer &view)
     {
         if (view.size() == 0)
             return view;
