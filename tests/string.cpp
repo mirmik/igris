@@ -1,3 +1,4 @@
+#include <doctest/doctest.h>
 #include <igris/util/string.h>
 
 TEST_CASE("string.replace0")
@@ -38,4 +39,26 @@ TEST_CASE("string.replace2")
 	auto output = igris::replace(input, "abc", "");
 
 	CHECK_EQ(output, "Hello  world");
+}
+
+
+TEST_CASE("string.trim")
+{
+	std::string input = "      Hello abc worabcldabc    \r\n\t";
+	auto output = igris::trim(input);
+	CHECK_EQ(output, "Hello abc worabcldabc");
+}
+
+TEST_CASE("string.trim")
+{
+	std::string input = "";
+	auto output = igris::trim(input);
+	CHECK_EQ(output, "");
+}
+
+TEST_CASE("string.trim")
+{
+	std::string input = "                      ";
+	auto output = igris::trim(input);
+	CHECK_EQ(output, "");
 }

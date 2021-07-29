@@ -35,7 +35,6 @@ void debug_write(const char *c, int i)
 #include "signature.hpp"
 #include "test_allocator.hpp"
 #include "chunked_vector.hpp"
-#include "string.hpp"
 
 #include "container/unbounded_array.hpp"
 #include "container/array_view.hpp"
