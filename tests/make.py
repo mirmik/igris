@@ -8,21 +8,11 @@ from licant.libs import include
 
 licant.execute("../igris.g.py")
 
-tests = [
-	"argvc",
-	"event",
-	"serialize",
-	"dprint",
-	"sync",
-	"bits",
-	"array_view",
-	"test_allocator",
-	"chunked_vector",
-	"util"
-]
-
 application("runtests",
-	sources = ["*.cpp"],
+	sources = [
+		"*.cpp",
+		"container/*.cpp"
+	],
 
 	cxx_flags = "-g",
 	cc_flags = "-g",
