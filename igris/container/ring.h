@@ -6,7 +6,7 @@
 
 // Implementation of abstract ring buffer
 
-namespace gxx
+namespace igris
 {
     template <typename T, typename Alloc = std::allocator<T>> class ring
     {
