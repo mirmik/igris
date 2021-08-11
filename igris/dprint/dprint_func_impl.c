@@ -7,7 +7,6 @@
 #include <stdint.h>
 
 #include <igris/dprint/dprint.h>
-#include <igris/util/printf_impl.h>
 
 void debug_printbin_uint4(uint8_t b)
 {
