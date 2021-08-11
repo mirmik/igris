@@ -1,7 +1,11 @@
-#ifndef UTIL_SLIST_H_
-#define UTIL_SLIST_H_
+/**
+    @file slist.h
+    Заголовок односвязного списка.
+*/
 
-//#include <inttypes.h>
+#ifndef IGRIS_DATASTRUCT_SLIST_H
+#define IGRIS_DATASTRUCT_SLIST_H
+
 #include <igris/compiler.h>
 #include <igris/dprint.h>
 #include <igris/util/member.h>
@@ -20,8 +24,10 @@ struct slist_head
 
 __BEGIN_DECLS
 
+/// Инициализация заголовка односвязного списка.
 static inline void slist_init(struct slist_head *head) { head->next = head; }
 
+/// Возвращает истину, если за текущим элементом списка ничего нет.
 static inline int slist_empty(struct slist_head *head)
 {
     return head->next == head;
@@ -30,8 +36,8 @@ static inline int slist_empty(struct slist_head *head)
 /**
  * Insert a new entry after the specified head.
  *
- * @new: new entry to be added
- * @head: list head to add it after
+ * @param new: new entry to be added
+ * @param head: list head to add it after
  */
 static inline void slist_add(struct slist_head *link, struct slist_head *head)
 {
@@ -72,6 +78,7 @@ __END_DECLS
 
 __BEGIN_DECLS
 
+/// Вернуть количество элементов после текущего заголовка.
 static inline int slist_size(const struct slist_head *head)
 {
     int i = 0;
@@ -80,6 +87,7 @@ static inline int slist_size(const struct slist_head *head)
     return i;
 }
 
+/// Выяснить, находится ли заголовок finded за head.
 static inline int slist_in(const struct slist_head *head,
                            const struct slist_head *finded)
 {
@@ -92,6 +100,7 @@ static inline int slist_in(const struct slist_head *head,
     return false;
 }
 
+/// Вывести информацию об элементах списка через систему dprint.
 static inline void debug_print_slist_head(const struct slist_head *head)
 {
     DPRINTPTR(head->next);

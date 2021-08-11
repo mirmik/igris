@@ -1,3 +1,7 @@
+/**
+    @file igris/protocols/gstuff.h
+*/
+
 #ifndef GSTUFF2_H
 #define GSTUFF2_H
 

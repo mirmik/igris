@@ -1,7 +1,10 @@
-#ifndef UTIL_MEMBER_H_
-#define UTIL_MEMBER_H_
+/**
+    @file igris/util/member.h
+    Макросы для работы со структурами. (упёрто у embox)
+*/
 
-//Макросы для работы со структурами. (упёрто у embox)
+#ifndef IGRIS_UTIL_MEMBER_H
+#define IGRIS_UTIL_MEMBER_H
 
 #include <stddef.h>
 
@@ -13,8 +16,6 @@
 
 /** sizeof(foo.bar);  @a type is (an expr of) a struct or a union */
 #define member_sizeof(type, member_nm) sizeof(((typeof(type) *)0x0)->member_nm)
-
-// member cast
 
 /** &foo --> &foo.bar;  @a struct_ptr must not be null */
 #define mcast_in(struct_ptr, member) (&(struct_ptr)->member)
@@ -40,4 +41,4 @@
                      : NULL);                                                  \
     })
 
-#endif /* UTIL_MEMBER_H_ */
+#endif

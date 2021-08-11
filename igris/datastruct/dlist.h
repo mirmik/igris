@@ -11,7 +11,7 @@
 
 #include <igris/util/decltypeof.h>
 
-/*
+/**
  * These are non-NULL pointers that will result in page faults
  * under normal circumstances, used to verify that nobody uses
  * non-initialized list entries.
@@ -19,8 +19,7 @@
 #define DLIST_POISON1 ((struct dlist_head *)0xDEADC0DE)
 #define DLIST_POISON2 ((struct dlist_head *)0xDEADC9DE)
 
-/*
- * Simple doubly linked list implementation.
+/** Simple doubly linked list implementation.
  *
  * Some of the internal functions ("__xxx") are useful when
  * manipulating whole lists rather than single entries, as
@@ -58,7 +57,7 @@ static inline void dlist_init(struct dlist_head *head)
     head->next = head->prev = head;
 }
 
-/*
+/**
  * Insert a new entry between two known consecutive entries.
  *
  * This is only for internal list manipulation where we know
@@ -75,8 +74,8 @@ static inline void __dlist_add(struct dlist_head *lnk, struct dlist_head *next,
 
 /**
  * Insert a new entry after the specified head.
- * @lnk: new entry to be added
- * @head: list head to add it after
+ * @param lnk: new entry to be added
+ * @param head: list head to add it after
  */
 static inline void dlist_add_next(struct dlist_head *lnk,
                                   struct dlist_head *head)
@@ -87,8 +86,8 @@ static inline void dlist_add_next(struct dlist_head *lnk,
 
 /**
  * Insert a new entry before the specified head.
- * @lnk: new entry to be before
- * @head: list head to add it after
+ * @param lnk: new entry to be before
+ * @param head: list head to add it after
  */
 static inline void dlist_add_prev(struct dlist_head *lnk,
                                   struct dlist_head *head)
@@ -112,7 +111,7 @@ static inline void __dlist_del(struct dlist_head *prev, struct dlist_head *next)
 
 /**
  * Deletes entry from list.
- * @entry: the element to delete from the list.
+ * @param entry: the element to delete from the list.
  * Note: list_empty on entry does not return true after this, the entry is
  * in an undefined state.
  */
@@ -125,7 +124,7 @@ static inline void dlist_del(struct dlist_head *entry)
 
 /**
  * Deletes entry from list and reinitialize it.
- * @entry: the element to delete from the list.
+ * @param entry: the element to delete from the list.
  */
 static inline void dlist_del_init(struct dlist_head *entry)
 {
@@ -135,8 +134,8 @@ static inline void dlist_del_init(struct dlist_head *entry)
 
 /**
  * Delete from one list and add as another's head
- * @list: the entry to move
- * @head: the head that will precede our entry
+ * @param list: the entry to move
+ * @param head: the head that will precede our entry
  */
 static inline void dlist_move(struct dlist_head *list, struct dlist_head *head)
 {
@@ -146,8 +145,8 @@ static inline void dlist_move(struct dlist_head *list, struct dlist_head *head)
 
 /**
  * Delete from one list and add as another's tail
- * @list: the entry to move
- * @head: the head that will follow our entry
+ * @param list: the entry to move
+ * @param head: the head that will follow our entry
  */
 static inline void dlist_move_tail(struct dlist_head *list,
                                    struct dlist_head *head)
@@ -174,7 +173,7 @@ static inline void dlist_move_tail(struct dlist_head *list,
 
 /**
  * Tests whether a list is empty
- * @head: the list to test.
+ * @param head: the list to test.
  */
 static inline int dlist_empty(const struct dlist_head *head)
 {
@@ -291,6 +290,7 @@ static inline void dlist_debug_print(struct dlist_head *head)
     dlist_for_each(it, head) { dlist_debug_print_node("node: ", it); }
 }
 
+/// Выясняет количество нодов в кольце за исключением этого.
 static inline int dlist_size(struct dlist_head *head)
 {
     struct dlist_head *it;
@@ -301,6 +301,8 @@ static inline int dlist_size(struct dlist_head *head)
     return sz;
 }
 
+/// Выясняет количество нодов в кольце за исключением этого,
+/// осуществляя проход в обратном направлении.
 static inline int dlist_size_reversed(struct dlist_head *head)
 {
     struct dlist_head *it;
