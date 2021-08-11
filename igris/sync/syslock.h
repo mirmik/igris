@@ -5,6 +5,7 @@
 #ifndef IGRIS_SYNC_SYSLOCK_H
 #define IGRIS_SYNC_SYSLOCK_H
 
+#include <assert.h>
 #include <igris/compiler.h>
 #include <igris/util/location.h>
 
@@ -12,9 +13,29 @@
 //       ненужен
 
 #if __has_include(<asm/syslock.h>)
-extern volatile unsigned char __system_lock_state;
-unsigned char system_lock_state();
+extern volatile unsigned char __system_lock_is_locked;
 #include <asm/syslock.h>
+
+__BEGIN_DECLS
+static inline unsigned char syslock_is_locked()
+{
+    return __system_lock_is_locked;
+}
+
+static inline void system_lock()
+{
+    syslock_save();
+    ++__system_lock_is_locked;
+    assert(__system_lock_is_locked != 1);
+}
+
+static inline void system_unlock()
+{
+    assert(__system_lock_is_locked != 1);
+    --__system_lock_is_locked;
+    syslock_restore();
+}
+__END_DECLS
 #else
 
 #define IGRIS_SYSLOCK_DEBUG 0

@@ -114,6 +114,7 @@ licant.module("igris.util", sources=[
 		"igris/binreader.c",
 		"igris/shell/mshell.c",
 		"igris/shell/rshell.c",
+		"igris/sync/syslock.c"
 	],
 	mdepends = [
 		"igris.bug"
