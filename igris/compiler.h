@@ -1,5 +1,6 @@
 /**
-    @file
+    @file compiler.h
+    Макросы обеспечения совместимости с различными версиями компиляторов.
 */
 
 #ifndef IGRIS_UTIL_COMPILER_H

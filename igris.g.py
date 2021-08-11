@@ -5,7 +5,6 @@ MODULES = [
 	"igris.util",
 	"igris.bug",
 	"igris.dprint",
-	"igris.path",
 	"igris.time",
 	"igris.trent",
 	"igris.semaphore",
@@ -150,10 +149,6 @@ licant.module("igris.ctrobj", "linux",
 
 licant.module("igris.trent",
 	sources = ["igris/trent/trent.cpp"]
-)
-
-licant.module("igris.path",
-	sources = ["igris/path/path.cpp"]
 )
 
 #################################################################
