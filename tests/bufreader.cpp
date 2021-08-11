@@ -8,15 +8,16 @@ TEST_CASE("bufreader.readline")
 	const char * str = " lalalal \n casdc  \r\n ";
 
 	struct bufreader reader;
-	struct bufreader_token token;
+	const char * token;
+	int len;
 
 	bufreader_init(&reader, str, strlen(str));
 
-	token = bufreader_readline(&reader);
-	CHECK_EQ(token.size, 9);
-	CHECK_EQ(std::string(token.data, token.size), std::string(" lalalal "));
+	len = bufreader_readline(&reader, &token);
+	CHECK_EQ(len, 9);
+	CHECK_EQ(std::string(token, len), std::string(" lalalal "));
 
-	token = bufreader_readline(&reader);
-	CHECK_EQ(token.size, 8);
-	CHECK_EQ(std::string(token.data, token.size), std::string(" casdc  "));
+	len = bufreader_readline(&reader, &token);
+	CHECK_EQ(len, 8);
+	CHECK_EQ(std::string(token, len), std::string(" casdc  "));
 }

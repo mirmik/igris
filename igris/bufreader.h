@@ -5,11 +5,11 @@
 #include <stdint.h>
 #include <string.h>
 
-struct bufreader_token
+/*struct bufreader_token
 {
     const char *data;
     int size;
-};
+};*/
 
 struct bufreader
 {
@@ -33,16 +33,19 @@ static inline uint8_t bufreader_end(struct bufreader *reader)
     return reader->cursor == reader->fini;
 }
 
-static inline struct bufreader_token
-bufreader_readline(struct bufreader *reader)
+static inline int bufreader_readline(struct bufreader *reader,
+                                     const char **token)
 {
-    struct bufreader_token token;
+    int len;
     const char *it = reader->cursor;
+
+    if (bufreader_end(reader))
+        return -1;
 
     while (*it != '\n' && *it != '\0' && it != reader->fini)
         it++;
 
-    token.data = reader->cursor;
+    *token = reader->cursor;
 
     if (it != reader->fini)
     {
@@ -56,8 +59,8 @@ bufreader_readline(struct bufreader *reader)
     while (*it == '\n' || *it == '\r')
         --it;
 
-    token.size = it - token.data + 1;
-    return token;
+    len = it - *token + 1;
+    return len;
 }
 
 __END_DECLS
