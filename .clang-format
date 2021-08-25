@@ -6,3 +6,5 @@ ContinuationIndentWidth: '4'
 ObjCBlockIndentWidth: '4'
 NamespaceIndentation: All
 BreakBeforeBraces: Allman
+AlwaysBreakTemplateDeclarations: Yes
+AllowShortFunctionsOnASingleLine: None
