@@ -2,6 +2,7 @@
 #define IGRIS_RING_H
 
 #include <igris/datastruct/ring.h>
+#include <new>
 #include <utility>
 
 namespace igris
@@ -19,15 +20,13 @@ namespace igris
 
         void push(const T &obj)
         {
-            int idx = r.head;
-            new (&buffer[idx]) T(obj);
+            new (buffer + r.head) T(obj);
             ring_move_head_one(&r);
         }
 
         template <typename... Args> void emplace(Args &&... args)
         {
-            int idx = r.head;
-            new (&buffer[idx]) T(std::forward<Args>(args)...);
+            new (buffer + r.head) T(std::forward<Args>(args)...);
             ring_move_head_one(&r);
         }
 
