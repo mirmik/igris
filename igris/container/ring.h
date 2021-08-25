@@ -1,117 +1,54 @@
-#ifndef GXX_RING_H
-#define GXX_RING_H
+#ifndef IGRIS_RING_H
+#define IGRIS_RING_H
 
-#include <gxx/panic.h>
-#include <memory>
-
-// Implementation of abstract ring buffer
+#include <igris/datastruct/ring.h>
+#include <utility>
 
 namespace igris
 {
-    template <typename T, typename Alloc = std::allocator<T>> class ring
+    template <typename T> class ring
     {
-        int head;
-        int tail;
-        bool isfull;
-
+      public:
+        ring_head r;
         T *buffer;
-        size_t reserved;
-
-        Alloc alloc;
 
       public:
-        ring() : head(0), tail(0), isfull(false), buffer(nullptr), reserved(0)
-        {
-        }
-        ring(int size) : ring() { reserve(size); }
+        ring(T *buffer, int size) : buffer(buffer) { ring_init(&r, size); }
 
-        void init()
-        {
-            head = 0;
-            tail = 0;
-            isfull = false;
-        }
-
-        bool empty() { return head == tail && !isfull; }
-
-        void reserve(size_t sz)
-        {
-            T *newbuffer = alloc.allocate(sz);
-
-            if (buffer == nullptr)
-            {
-                buffer = newbuffer;
-                reserved = sz;
-                head = 0;
-                tail = 0;
-                isfull = false;
-            }
-            else
-            {
-                gxx::panic("NeedToImplement");
-            }
-        }
-
-        T &front() { return *(buffer + tail); }
-
-        T &back() { return *(buffer + (head - 1) % reserved); }
+        bool empty() { return ring_empty(&r); }
 
         void push(const T &obj)
         {
-            if (isfull)
-                __pop();
-            alloc.construct(buffer + head++, obj);
-            if (head == reserved)
-                head = 0;
-            if (head == tail)
-                isfull = true;
+            int idx = r.head;
+            new (&buffer[idx]) T(obj);
+            ring_move_head_one(&r);
         }
 
         template <typename... Args> void emplace(Args &&... args)
         {
-            if (isfull)
-                return;
-            alloc.construct(buffer + head++, std::forward<Args>(args)...);
-            if (head == reserved)
-                head = 0;
-            if (head == tail)
-                isfull = true;
-        }
-
-        void __pop()
-        {
-            alloc.destroy(buffer + tail);
-            if (++tail == reserved)
-                tail = 0;
+            int idx = r.head;
+            new (&buffer[idx]) T(std::forward<Args>(args)...);
+            ring_move_head_one(&r);
         }
 
         void pop()
         {
-            if (!empty())
-            {
-                __pop();
-                isfull = false;
-            }
+            int idx = r.tail;
+            buffer[idx]->~T();
+            ring_move_tail_one(&r);
         }
 
-        size_t size()
-        {
-            if (isfull)
-                return reserved;
-            int res = head - tail;
-            return res < 0 ? res + reserved : res;
-        }
+        void move_tail_one() { ring_move_tail_one(&r); }
 
-        size_t capacity() { return reserved; }
+        void move_head_one() { ring_move_tail_one(&r); }
 
-        T &operator[](int index)
-        {
-            size_t sz = size();
-            int cell;
-            cell = index >= 0 ? (tail + index) % reserved
-                              : (head + index + reserved) % reserved;
-            return *(buffer + cell);
-        }
+        unsigned int avail() { return ring_avail(&r); }
+
+        unsigned int room() { return ring_room(&r); }
+
+        T &get(int index) { return buffer[index]; }
+
+        T &last() { return buffer[r.tail]; }
     };
 }
 
