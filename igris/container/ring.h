@@ -1,3 +1,5 @@
+/// @file
+
 #ifndef IGRIS_RING_H
 #define IGRIS_RING_H
 
@@ -7,6 +9,13 @@
 
 namespace igris
 {
+
+    /**
+     * Обёртка над api ring_head, предназначенная для управления буфером
+     * указанного типа.
+     * С целью оптимизации разрешает доступ к внутренним переменным и прямое
+     * управление буффером.
+     * */
     template <typename T> class ring
     {
       public:
