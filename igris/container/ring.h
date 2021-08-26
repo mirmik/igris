@@ -9,15 +9,25 @@
 
 namespace igris
 {
-
     /**
      * Обёртка над api ring_head, предназначенная для управления буфером
      * указанного типа.
      * С целью оптимизации разрешает доступ к внутренним переменным и прямое
      * управление буффером.
      * */
+    template <typename T, int N = 0>
+    class ring : public ring<T, 0>
+    {
+        T data[N];
+
+      public:
+        ring() : ring<T, 0>(data, N)
+        {
+        }
+    };
+
     template <typename T>
-    class ring
+    class ring<T, 0>
     {
       public:
         ring_head r;

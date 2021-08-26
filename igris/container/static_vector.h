@@ -7,20 +7,22 @@
 
 namespace igris
 {
-    template <class T, std::size_t N> class static_vector
+    template <class T, std::size_t N>
+    class static_vector
     {
         using pointer = T *;
         using reference = T &;
         using iterator = T *;
         using const_iterator = const T *;
 
-        // properly aligned uninitialized storage for N T's
+        // Переместить во внешний буффер.
         typename std::aligned_storage<sizeof(T), alignof(T)>::type data[N];
         std::size_t m_size = 0;
 
       public:
         // Create an object in aligned storage
-        template <typename... Args> void emplace_back(Args &&... args)
+        template <typename... Args>
+        void emplace_back(Args &&... args)
         {
             if (m_size >= N)
                 return;
@@ -41,8 +43,14 @@ namespace igris
             return *reinterpret_cast<const T *>(&data[pos]);
         }
 
-        std::size_t room() { return N - m_size; }
-        std::size_t size() { return m_size; }
+        std::size_t room()
+        {
+            return N - m_size;
+        }
+        std::size_t size()
+        {
+            return m_size;
+        }
 
         // Delete objects from aligned storage
         ~static_vector()
@@ -54,8 +62,14 @@ namespace igris
             }
         }
 
-        iterator begin() { return reinterpret_cast<T *>(&data[0]); }
-        const_iterator end() { return reinterpret_cast<T *>(&data[m_size]); }
+        iterator begin()
+        {
+            return reinterpret_cast<T *>(&data[0]);
+        }
+        const_iterator end()
+        {
+            return reinterpret_cast<T *>(&data[m_size]);
+        }
     };
 }
 
