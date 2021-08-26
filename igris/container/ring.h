@@ -119,6 +119,11 @@ namespace igris
         {
             return buffer[r.head];
         }
+
+        int distance(int a, int b)
+        {
+            return (a - b + r.size) % r.size;
+        }
     };
 }
 
