@@ -51,7 +51,7 @@ namespace igris
         void pop()
         {
             int idx = r.tail;
-            buffer[idx]->~T();
+            buffer[idx].~T();
             ring_move_tail_one(&r);
         }
 

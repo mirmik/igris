@@ -30,4 +30,7 @@ TEST_CASE("ring")
 	CHECK_EQ(bring.room(), 2);
 
 	aring.push(A());
+	CHECK_EQ(aring.room(), 10);
+	aring.pop();
+	CHECK_EQ(aring.room(), 11);
 }
