@@ -72,7 +72,7 @@ namespace igris
 
         void move_head_one()
         {
-            ring_move_tail_one(&r);
+            ring_move_head_one(&r);
         }
 
         unsigned int avail()
