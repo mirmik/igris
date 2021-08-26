@@ -80,7 +80,7 @@ namespace igris
             return buffer[index];
         }
 
-        T &last()
+        T &tail()
         {
             return buffer[r.tail];
         }
@@ -98,6 +98,16 @@ namespace igris
         int head_index()
         {
             return r.head;
+        }
+
+        int fixup_index(int index)
+        {
+            return ring_fixup_index(&r, index);
+        }
+
+        T &head_place()
+        {
+            return buffer[r.head];
         }
     };
 }
