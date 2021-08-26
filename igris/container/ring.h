@@ -89,6 +89,16 @@ namespace igris
         {
             return element - buffer;
         }
+
+        int tail_index()
+        {
+            return r.tail;
+        }
+
+        int head_index()
+        {
+            return r.head;
+        }
     };
 }
 
