@@ -84,6 +84,11 @@ namespace igris
         {
             return buffer[r.tail];
         }
+
+        int index_of(T *element)
+        {
+            return element - buffer;
+        }
     };
 }
 
