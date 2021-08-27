@@ -40,11 +40,6 @@ namespace igris
         {
         }
 
-        // Warning: UB
-        /*		array_view(const std::initializer_list<T>& lst) :
-                    _data((T*)lst.begin()), _size(lst.size())
-                {}*/
-
         array_view &operator=(std::nullptr_t null)
         {
             _data = nullptr;
