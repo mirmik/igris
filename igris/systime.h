@@ -16,7 +16,10 @@ typedef int64_t systime_difference_t;
 __BEGIN_DECLS
 
 systime_t system_time();
-static inline systime_t systime() { return system_time(); }
+static inline systime_t systime()
+{
+    return system_time();
+}
 float systime_frequency();
 
 uint64_t systime_millis();
@@ -36,6 +39,10 @@ static inline systime_difference_t ns2systime(double ns)
     return ns * (systime_frequency() * 0.000000001);
 }
 
+systime_t millis();
+systime_t micros();
+systime_t nanos();
+
 __END_DECLS
 
 #ifdef __cplusplus
@@ -44,7 +51,7 @@ namespace igris
     // double time();
     void start_local_time();
     double local_time();
-    int64_t nanos();
+    systime_t nanos();
 }
 #endif
 

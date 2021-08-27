@@ -3,7 +3,7 @@
 #include <chrono>
 #include <thread>
 
-int64_t millis()
+systime_t millis()
 {
     auto duration = std::chrono::system_clock::now().time_since_epoch();
     auto millis =
@@ -11,7 +11,7 @@ int64_t millis()
     return millis;
 }
 
-int64_t micros()
+systime_t micros()
 {
     auto duration = std::chrono::system_clock::now().time_since_epoch();
     auto mcross =
@@ -34,7 +34,7 @@ int msleep(int64_t m)
     return (double)ns / 1.e9;
 }*/
 
-int64_t igris::nanos()
+systime_t igris::nanos()
 {
     auto duration = std::chrono::system_clock::now().time_since_epoch();
     auto ns =

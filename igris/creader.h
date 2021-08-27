@@ -1,106 +1,98 @@
 #ifndef IGRIS_CREADER_H
 #define IGRIS_CREADER_H
 
-#include <igris/buffer.h>
-#include <string>
+#include <igris/compiler.h>
+#include <stdint.h>
+#include <string.h>
 
-namespace igris
+struct creader
 {
-    struct chars_set_checker
-    {
-        igris::buffer pattern;
-        bool tgt;
+    const char *strt;
+    const char *fini;
 
-        chars_set_checker(igris::buffer _pattern, bool _tgt = true)
-            : pattern(_pattern), tgt(_tgt)
-        {
-        }
+    const char *cursor;
+};
 
-        bool operator()(char c)
-        {
-            for (char p : pattern)
-            {
-                if (p == c)
-                    return tgt;
-            }
-            return !tgt;
-        }
-    };
+__BEGIN_DECLS
 
-    class creader
-    {
-        const char *ptr;
-
-      public:
-        creader(const char *_ptr) : ptr(_ptr) {}
-
-        template <typename Functor> std::string string_while(Functor &&func)
-        {
-            const char *strt = ptr;
-            while (func(*ptr))
-                ++ptr;
-            return std::string(strt, ptr - strt);
-        }
-
-        template <typename Functor> bool next_is(Functor &&func)
-        {
-            return func(*ptr);
-        }
-
-        bool next_is(char c) { return *ptr == c; }
-
-        bool next_is(igris::buffer smbs)
-        {
-            size_t len = smbs.size();
-            const char *smb = smbs.data();
-            const char *end = smbs.data() + len;
-            for (; smb != end; ++smb)
-            {
-                if (*ptr == *smb)
-                    return true;
-            }
-            return false;
-        }
-
-        void skip() { ptr++; }
-
-        template <typename Functor> void skip_while(Functor &&func)
-        {
-            while (func(*ptr))
-                ++ptr;
-        }
-
-        void skip_while(const char *smbs)
-        {
-            while (true)
-            {
-                const char *strt = ptr;
-                const char *smb = smbs;
-                while (*smb != 0)
-                {
-                    while (*ptr == *smb)
-                        ptr++;
-                    smb++;
-                }
-                if (strt == ptr)
-                    return;
-            }
-        }
-
-        void skip_while(char smb)
-        {
-            while (smb == *ptr)
-                ptr++;
-        }
-
-        int integer()
-        {
-            int ret = atoi(ptr);
-            while (isdigit(*ptr))
-                ++ptr;
-            return ret;
-        }
-    };
+static inline void creader_init(struct creader *reader, const char *strt,
+                                int size)
+{
+    reader->strt = reader->cursor = strt;
+    reader->fini = strt + size;
 }
+
+static inline uint8_t creader_end(struct creader *reader)
+{
+    return reader->cursor == reader->fini;
+}
+
+static inline int creader_readline(struct creader *reader, const char **token)
+{
+    int len;
+    const char *it = reader->cursor;
+
+    if (creader_end(reader))
+        return -1;
+
+    while (*it != '\n' && *it != '\0' && it != reader->fini)
+        it++;
+
+    *token = reader->cursor;
+
+    if (it != reader->fini)
+    {
+        reader->cursor = it + 1;
+    }
+    else
+    {
+        reader->cursor = reader->fini;
+    }
+
+    while (*it == '\n' || *it == '\r')
+        --it;
+
+    len = it - *token + 1;
+    return len;
+}
+
+static inline int creader_skip(struct creader *reader, const char *symbols)
+{
+    int count = 0;
+
+    while (reader->cursor != reader->fini)
+    {
+        int found = 0;
+
+        for (const char *s = symbols; *s != 0; ++s)
+        {
+            if (*reader->cursor == *s)
+            {
+                found = 1;
+                break;
+            }
+        }
+
+        if (found)
+        {
+            count++;
+            reader->cursor++;
+        }
+
+        else
+        {
+            break;
+        }
+    }
+
+    return count;
+}
+
+static inline int creader_skipws(struct creader *reader)
+{
+    return creader_skip(reader, "\t\n\r ");
+}
+
+__END_DECLS
 
 #endif
