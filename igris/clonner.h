@@ -40,7 +40,11 @@ namespace igris
         void wait()
         {
             int status;
-            waitpid(pid, &status, 0);
+            int ret = waitpid(pid, &status, WCONTINUED);
+
+            PRINT(pid);
+            PRINT(status);
+            PRINT(ret);
         }
 
         void set_pipe_fds(int ipipe, int opipe)
