@@ -9,9 +9,7 @@ TEST_CASE("clonner")
 {
 	igris::clonner clonner;
 
-	clonner.init();
-	clonner.start_subprocess("touch xxx");
-
+	clonner.start_subprocess("/usr/bin/touch xxx");
 	clonner.terminate_starter();
 
 	output.clear();

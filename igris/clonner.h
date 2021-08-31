@@ -8,7 +8,11 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <igris/datastruct/argvc.h>
 #include <igris/dprint.h>
+
+#include <memory>
+#include <sys/wait.h>
 
 namespace igris
 {
@@ -28,39 +32,56 @@ namespace igris
         {
             kill(pid, SIGTERM);
         }
+
+        void wait()
+        {
+            int status;
+            waitpid(pid, &status, 0);
+        }
     };
 
     class clonner
     {
         int clonner_pid;
-        std::set<subprocess> childs;
+        std::set<std::shared_ptr<subprocess>> _childs;
 
         int pipefd[2];
         int oposite_pipefd[2];
 
       public:
+        clonner(bool begin = true)
+        {
+            if (begin)
+                init();
+        }
+
         void starter()
         {
-            write(STDERR_FILENO, "STARTER", 7);
-
             while (1)
             {
-                char buf[128];
-                char buf2[128];
-                int len = read(pipefd[0], buf, 128);
+                char cmd[128];
+                char pidstr[16];
+                int cmdlen = read(pipefd[0], cmd, 128);
 
-                sprintf(buf2, "%d", len);
-
-                write(STDERR_FILENO, buf2, 3);
-                write(STDERR_FILENO, buf, len);
-
-                if (len == 0)
-                {
-                    write(STDERR_FILENO, "FINISH1\r\n", 9);
+                if (cmdlen == 0)
                     return;
+
+                cmd[cmdlen] = 0;
+                int pid = fork();
+
+                if (pid == 0)
+                {
+                    char *argv[10];
+                    int argc = argvc_internal_split(cmd, argv, 10);
+                    argv[argc] = 0;
+
+                    int sts = execve(argv[0], argv, NULL);
                 }
 
-                write(oposite_pipefd[1], buf, len);
+                sprintf(pidstr, "%d", pid);
+                strcpy(cmd, "pid:");
+                strcat(cmd, pidstr);
+                write(oposite_pipefd[1], cmd, strlen(cmd));
             }
         }
 
@@ -83,17 +104,23 @@ namespace igris
             close(oposite_pipefd[1]);
         }
 
-        subprocess start_subprocess(const char *cmd)
+        std::shared_ptr<subprocess> start_subprocess(const char *cmd)
         {
             char buf[128];
 
             write(pipefd[1], cmd, strlen(cmd));
-            auto proc = subprocess();
+            auto proc = std::make_shared<subprocess>();
 
-            read(oposite_pipefd[0], buf, 128);
+            int len = read(oposite_pipefd[0], buf, 128);
+            buf[len] = 0;
 
-            printf("%s", buf);
+            if (memcmp(buf, "pid:", 4) == 0)
+            {
+                int pid = atoi(&buf[4]);
+                proc->set_pid(pid);
+            }
 
+            _childs.insert(proc);
             return proc;
         }
 
@@ -105,6 +132,19 @@ namespace igris
             }
 
             clonner_pid = 0;
+        }
+
+        void terminate_childs()
+        {
+            for (auto child : _childs)
+                child->terminate();
+
+            _childs.clear();
+        }
+
+        const std::set<std::shared_ptr<subprocess>> &childs()
+        {
+            return _childs;
         }
 
         ~clonner()

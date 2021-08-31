@@ -18,7 +18,10 @@ application("runtests",
 	cc_flags = "-g",
 
 	include_paths = ["."],
-	mdepends = [ "igris", ("igris.dprint", "user") ],
+	mdepends = [ 
+		"igris", 
+		("igris.dprint", "user"),
+	],
 )
 
 licant.ex("runtests")
