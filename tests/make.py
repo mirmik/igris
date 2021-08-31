@@ -7,6 +7,7 @@ from licant.modules import submodule, module
 from licant.libs import include
 
 licant.execute("../igris.g.py")
+licant.include("nos")
 
 application("runtests",
 	sources = [
@@ -21,6 +22,7 @@ application("runtests",
 	mdepends = [ 
 		"igris", 
 		("igris.dprint", "user"),
+		"nos"
 	],
 )
 
