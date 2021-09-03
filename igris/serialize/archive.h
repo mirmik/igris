@@ -6,6 +6,7 @@
 */
 
 #include <igris/serialize/helper.h>
+#include <igris/buffer.h>
 
 namespace igris
 {
