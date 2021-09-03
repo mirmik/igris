@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include <igris/creader.h>
+#include <igris/deprecated/creader.h>
 
 namespace igris
 {

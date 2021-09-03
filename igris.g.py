@@ -29,7 +29,8 @@ sources = [
 	"igris/util/string.cpp",
 	"igris/string/replace.cpp",
 	"igris/string/hexascii_string.cpp",
-	"igris/sclonner.cpp"
+	"igris/sclonner.cpp",
+	"igris/deprecated/path.cpp",
 ],
 mdepends=MODULES)
 
