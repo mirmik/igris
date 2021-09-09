@@ -10,14 +10,14 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#include <nos/io/stdfile.h>
+//#include <nos/io/stdfile.h>
 
 #include <algorithm>
 #include <memory>
 #include <set>
 
 #include <igris/datastruct/argvc.h>
-#include <nos/print.h>
+//#include <nos/print.h>
 
 #include <igris/event/delegate.h>
 
