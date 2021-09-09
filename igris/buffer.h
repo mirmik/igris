@@ -39,8 +39,8 @@ namespace igris
 
         buffer(const igris::buffer &str) : buffer(str.data(), str.size()) {}
 
-#if IGRIS_HAS_STRING_VIEW
         buffer(const std::string &str) : buffer(str.data(), str.size()) {}
+#if IGRIS_HAS_STRING_VIEW
         buffer(const std::string_view &str) : buffer(str.data(), str.size()) {}
 #endif
 

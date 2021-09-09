@@ -8,6 +8,10 @@
 #include <igris/serialize/helper.h>
 #include <igris/buffer.h>
 
+#if __has_include(<string_view>)
+#include <string_view>
+#endif
+
 namespace igris
 {
     namespace archive
@@ -64,11 +68,13 @@ namespace igris
                 dump_data(buf.data(), buf.size());
             }
 
+#if __has_include(<string_view>)
             void dump(std::string_view buf)
             {
                 dump((uint16_t)buf.size());
                 dump_data(buf.data(), buf.size());
             }
+#endif
 
             template <typename T> void dump(const T &ref)
             {
