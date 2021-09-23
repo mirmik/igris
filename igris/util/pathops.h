@@ -93,7 +93,10 @@ static inline int path_is_double_dot(const char *path)
            (*(path + 2) == '/' || *(path + 2) == '\0');
 }
 
-static inline int path_is_abs(const char *path) { return path[0] == '/'; }
+static inline int path_is_abs(const char *path)
+{
+    return path[0] == '/';
+}
 
 static inline int path_is_simple(const char *path)
 {
@@ -172,7 +175,6 @@ static inline const char *path_remove_prefix(const char *path,
 
         if (cmp == 0)
         {
-            unsigned int len;
             path = path_iterate(path);
             prefix = path_iterate(prefix);
         }

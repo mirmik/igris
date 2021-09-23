@@ -7,12 +7,12 @@ from licant.modules import submodule, module
 from licant.libs import include
 
 licant.execute("../igris.g.py")
-licant.include("nos")
 
 application("runtests",
 	sources = [
 		"*.cpp",
-		"container/*.cpp"
+		"container/*.cpp",
+		"shell/*.cpp"
 	],
 
 	cxx_flags = "-g",
@@ -21,8 +21,7 @@ application("runtests",
 	include_paths = ["."],
 	mdepends = [ 
 		"igris", 
-		("igris.dprint", "user"),
-		"nos"
+		("igris.dprint", "user")
 	],
 )
 

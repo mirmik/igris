@@ -20,6 +20,12 @@ struct rshell_command
     const char *help;
 };
 
+struct rshell_command_table
+{
+    const struct rshell_command *table;
+    int dropargs;
+};
+
 __BEGIN_DECLS
 
 int rshell_execute_v(int argc, char **argv, const struct rshell_command *cmd,
@@ -27,16 +33,14 @@ int rshell_execute_v(int argc, char **argv, const struct rshell_command *cmd,
 int rshell_execute(char *str, const struct rshell_command *cmd, int *retptr,
                    int dropargs, char *output, int maxsize);
 
-int rshell_tables_execute(char *str, const struct rshell_command *const *cmd,
-                          int *retptr, int dropargs, char *output, int maxsize);
+int rshell_tables_execute(char *str,
+                          const struct rshell_command_table *cmdtable,
+                          int *retptr, char *output, int maxsize);
 
-void rshell_help(const struct rshell_command *cmd,
-                 void (*write)(void *, const char *, unsigned int),
-                 void *privdata);
+int rshell_help(const struct rshell_command *cmd, char *ans, int ansmax);
 
-void rshell_tables_help(const struct rshell_command *const *cmd,
-                        void (*write)(void *, const char *, unsigned int),
-                        void *privdata);
+int rshell_tables_help(const struct rshell_command_table *cmd, char *ans,
+                       int ansmax);
 
 __END_DECLS
 

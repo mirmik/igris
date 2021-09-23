@@ -29,7 +29,7 @@ sources = [
 	"igris/util/string.cpp",
 	"igris/string/replace.cpp",
 	"igris/string/hexascii_string.cpp",
-	"igris/sclonner.cpp",
+	#"igris/sclonner.cpp",
 	"igris/deprecated/path.cpp",
 ],
 mdepends=MODULES)
@@ -114,6 +114,7 @@ licant.module("igris.util", sources=[
 		"igris/string/replace_substrings.c",
 		"igris/shell/mshell.c",
 		"igris/shell/rshell.c",
+		"igris/shell/vterm.c",
 		"igris/sync/syslock.c"
 	],
 	mdepends = [

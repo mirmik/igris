@@ -7,10 +7,10 @@ extern std::string output;
 
 TEST_CASE("clonner") 
 {
-	igris::clonner clonner;
+/*	igris::clonner clonner;
 
 	clonner.start_subprocess("/usr/bin/touch xxx");
 	clonner.terminate_starter();
 
-	output.clear();
+	output.clear();*/
 }

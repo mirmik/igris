@@ -4,10 +4,39 @@
 #include <utility>
 #include <string>
 #include <iosfwd>
+#include <ios>
 
 namespace std 
 {
-	class ostream {};
+	class endl_class{};
+	extern endl_class endl;
+
+	template<
+    	class CharT,
+    	class Traits
+	> class basic_ostream : virtual public std::basic_ios<CharT, Traits>
+	{
+	};
+
+	template <class CharT, class Traits>
+	basic_ostream<CharT,Traits>& operator<< (basic_ostream<CharT,Traits> &os, char * data) 
+	{
+		return os;
+	}
+
+	template <class CharT, class Traits>
+	basic_ostream<CharT,Traits>& operator<< (basic_ostream<CharT,Traits> &os, char data) 
+	{
+		return os;
+	}
+
+	template <class CharT, class Traits>
+	basic_ostream<CharT,Traits>& operator<< (basic_ostream<CharT,Traits> &os, endl_class) 
+	{
+		return os;
+	}
 }
+
+
 
 #endif

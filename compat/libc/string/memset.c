@@ -1,13 +1,26 @@
-#include <string.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "inhibit_libcall.h"
 
+void *memset(void *dest, int c, size_t n)
+{
+    char *ptr = (char *)dest;
+
+    while (n--)
+    {
+        *ptr++ = c;
+    }
+
+    return dest;
+}
+
+#if 0
 #define BLOCK_SZ (sizeof(unsigned long))
 
 /* Nonzero if X is not aligned on a "long" boundary.  */
-#define unaligned(x)   ((unsigned long) x & (sizeof(unsigned long) - 1))
+#define unaligned(x) ((unsigned long)x & (sizeof(unsigned long) - 1))
 
 __attribute__((weak))
 inhibit_loop_to_libcall
@@ -57,3 +70,4 @@ void *memset(void *addr_, int c, size_t n) {
 
 	return addr_;
 }
+#endif

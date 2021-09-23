@@ -80,17 +80,37 @@ void system_lock_restore(struct syslock_save_pair save);
 
 __END_DECLS
 
+#endif
+
 #ifdef __cplusplus
 namespace igris
 {
+    class syslock
+    {
+      public:
+        void lock()
+        {
+            system_lock();
+        }
+        void unlock()
+        {
+            system_unlock();
+        }
+    };
+
     class syslock_guard
     {
       public:
-        syslock_guard() { system_lock(); }
-        ~syslock_guard() { system_unlock(); }
+        syslock_guard()
+        {
+            system_lock();
+        }
+        ~syslock_guard()
+        {
+            system_unlock();
+        }
     };
 }
 #endif
 
-#endif
 #endif
