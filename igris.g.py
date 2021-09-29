@@ -50,6 +50,14 @@ licant.module("igris.cxx_support", sources=[
 	"compat/cxx/__dso_handle.c"
 ])
 
+licant.module("igris.series",
+	sources = [
+		"igris/series/series.cpp",
+		"igris/series/iterator.cpp",
+		"igris/series/block.cpp",
+	]
+)
+
 licant.module("igris.stdlibs", 
 	mdepends = ["igris.libc", "igris.std", "igris.posix"])
 

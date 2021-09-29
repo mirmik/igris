@@ -12,7 +12,8 @@ application("runtests",
 	sources = [
 		"*.cpp",
 		"container/*.cpp",
-		"shell/*.cpp"
+		"shell/*.cpp",
+		"series/*.cpp"
 	],
 
 	cxx_flags = "-g",
@@ -21,6 +22,7 @@ application("runtests",
 	include_paths = ["."],
 	mdepends = [ 
 		"igris", 
+		"igris.series", 
 		("igris.dprint", "user")
 	],
 )
