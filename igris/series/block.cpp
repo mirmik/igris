@@ -5,14 +5,11 @@
 
 void * igris::series_block::get(int num)
 {
-	DPRINT(strt);
-	DPRINT(num);
-	DPRINT(elemsize());
 	return (void*)((char*)ptr + (elemsize() * (strt + num)));
 }
 
 igris::series_block::series_block(igris::series * parent, void* ptr, int size)
-	: parent(parent), ptr(ptr), size(size)
+	: parent(parent), ptr(ptr), size(size), strt(0), fini(0)
 {
 	assert(parent);
 }
@@ -24,7 +21,8 @@ bool igris::series_block::has_place()
 
 void * igris::series_block::emplace()
 {
-	return (void*)((char*)ptr + (elemsize() * fini));
+	int pos = fini++;
+	return (void*)((char*)ptr + (elemsize() * pos));
 }
 
 int igris::series_block::elemsize() 

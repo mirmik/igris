@@ -27,7 +27,7 @@ igris::series_iterator igris::series_iterator::operator++(int)
 
 igris::series_block * igris::series_iterator::block()
 {
-	return dlist_entry(&block_lnk, series_block, lnk);
+	return dlist_entry(block_lnk, series_block, lnk);
 }
 
 igris::series_iterator::series_iterator(dlist_head * block_lnk, int num) 

@@ -17,6 +17,7 @@ namespace igris
 
     class series
     {
+      public:
         dlist_head blocks = DLIST_HEAD_INIT(blocks);
         int _elemsize;
         int block_size_hint = 100;
@@ -52,31 +53,20 @@ namespace igris
         void pop_front();
 
         igris::series_field_annotator &annotator();
-        auto &annotations()
-        {
-            return _annotator.annotations();
-        }
+        auto &annotations() { return _annotator.annotations(); }
 
-        void set_block_size_hint(int sz)
-        {
-            block_size_hint = sz;
-        }
+        void set_block_size_hint(int sz) { block_size_hint = sz; }
 
         series_iterator begin();
         series_iterator end();
 
         series_iterator get_iterator(int num);
 
-        template <class T>
-        T *emplace()
-        {
-            return (T *)emplace();
-        }
+        template <class T> T *emplace() { return (T *)emplace(); }
 
         void *emplace();
 
-        template <class T>
-        T &get(int i);
+        template <class T> T &get(int i);
 
         void push_csv_string_parse(const std::string &str);
 
@@ -84,17 +74,17 @@ namespace igris
         {
             return series_object_view(ptr, _annotator.annotations());
         }
+
+        int count_of_blocks() { return dlist_size(&blocks); }
     };
 
-    template <class T, class... Args>
-    series make_series(Args &&... args)
+    template <class T, class... Args> series make_series(Args &&...args)
     {
         return igris::series(sizeof(T), args...);
     }
 }
 
-template <class T>
-T &igris::series::get(int i)
+template <class T> T &igris::series::get(int i)
 {
     return *(T *)(get_iterator(i).pointer());
 }

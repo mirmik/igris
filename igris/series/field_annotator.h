@@ -3,6 +3,7 @@
 
 #include <igris/series/field_annotation.h>
 #include <igris/util/size_incrementor.h>
+#include <vector>
 
 namespace igris
 {
@@ -12,18 +13,11 @@ namespace igris
         std::vector<series_field_annotation> _annotations;
 
       public:
-        series_field_annotator() : inc(0)
-        {
-        }
-        series_field_annotator(int offset) : inc(offset)
-        {
-        }
-        series_field_annotator(const igris::size_incrementor &oth) : inc(oth)
-        {
-        }
+        series_field_annotator() : inc(0) {}
+        series_field_annotator(int offset) : inc(offset) {}
+        series_field_annotator(const igris::size_incrementor &oth) : inc(oth) {}
 
-        template <class T>
-        series_field_annotation &add(const std::string &name)
+        template <class T> series_field_annotation &add(const std::string &name)
         {
             auto annot = igris::make_series_field_annotation<T>(
                 name, inc.increment<T>());
@@ -32,10 +26,7 @@ namespace igris
             return _annotations[_annotations.size() - 1];
         }
 
-        const auto &annotations()
-        {
-            return _annotations;
-        }
+        const auto &annotations() { return _annotations; }
     };
 }
 

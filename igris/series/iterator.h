@@ -9,6 +9,7 @@ namespace igris
 
     class series_iterator
     {
+      public:
         dlist_head *block_lnk;
         int num;
 
@@ -18,9 +19,14 @@ namespace igris
         series_iterator operator++();
         series_iterator operator++(int);
 
-        bool operator!=(const series_iterator &oth)
+        bool operator!=(const series_iterator &oth) const
         {
             return block_lnk != oth.block_lnk || num != oth.num;
+        }
+
+        bool operator==(const series_iterator &oth) const
+        {
+            return block_lnk == oth.block_lnk && num == oth.num;
         }
 
         void *pointer();
