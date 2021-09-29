@@ -121,3 +121,9 @@ igris::series_block * igris::series::last_block()
 {
 	return dlist_entry(blocks.prev, series_block, lnk);
 }
+
+
+igris::series_field_annotation * igris::series::find_annotation(const std::string & name)
+{
+	return _annotator.find_annotation(name);
+}

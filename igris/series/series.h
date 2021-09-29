@@ -50,6 +50,8 @@ namespace igris
         void pop_front();
 
         igris::series_field_annotator &annotator();
+        igris::series_field_annotation *
+        find_annotation(const std::string &name);
         auto &annotations() { return _annotator.annotations(); }
 
         void set_block_size_hint(int sz) { block_size_hint = sz; }

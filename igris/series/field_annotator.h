@@ -27,6 +27,17 @@ namespace igris
         }
 
         const auto &annotations() { return _annotations; }
+
+        series_field_annotation *find_annotation(const std::string &name)
+        {
+            for (auto &obj : _annotations)
+            {
+                if (name == obj.machname)
+                    return &obj;
+            }
+
+            return nullptr;
+        }
     };
 }
 

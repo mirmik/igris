@@ -9,6 +9,9 @@ void * igris::series_iterator::pointer()
 
 igris::series_iterator igris::series_iterator::operator++()
 {
+	if (num == -1)
+		return *this;
+
 	num++;
 	if (num == block()->fini)
 	{
@@ -22,6 +25,34 @@ igris::series_iterator igris::series_iterator::operator++(int)
 {
 	igris::series_iterator iter = *this;
 	++*this;
+	return iter;
+}
+
+
+igris::series_iterator igris::series_iterator::operator--()
+{
+	if (num == -1)
+		return *this;
+
+	auto * parent = block()->parent;
+
+	num--;
+	if (num == block()->strt-1)
+	{
+		dprln("FFFFF");
+		block_lnk = block_lnk->prev;
+		if (&parent->blocks != block_lnk) 
+			num = 0;
+		else
+			num = -1;
+	}
+	return *this;
+}
+
+igris::series_iterator igris::series_iterator::operator--(int)
+{
+	igris::series_iterator iter = *this;
+	--*this;
 	return iter;
 }
 

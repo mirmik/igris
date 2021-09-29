@@ -19,7 +19,6 @@ igris::series_block::series_block(igris::series * parent, void* ptr, int size)
 	: parent(parent), ptr(ptr), size(size), strt(0), fini(0)
 {
 	assert(parent);
-	DPRINTPTR(ptr);
 }
 
 bool igris::series_block::has_place()
