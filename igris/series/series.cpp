@@ -6,6 +6,8 @@
 #include <igris/math.h>
 #include <igris/util/numconvert.h>
 
+#include <igris/util/bug.h>
+
 igris::series::series(int elemsize)
 	: _elemsize(elemsize)
 {}
@@ -20,6 +22,7 @@ void igris::series::add_block(int size)
 	void * ptr = allocator.allocate(size * _elemsize);
 	auto * block = new series_block(this, ptr, size);
 
+	DPRINTPTR(block);
 	dlist_add(&block->lnk, &blocks);
 }
 
@@ -59,7 +62,9 @@ void * igris::series::emplace()
 			return block->emplace();
 		}
 	}
-	return nullptr;
+
+	add_block(block_size_hint);
+	return last_block()->emplace();
 }
 
 igris::series_field_annotator & igris::series::annotator()
@@ -69,7 +74,7 @@ igris::series_field_annotator & igris::series::annotator()
 
 void igris::series::push_csv_string_parse(const std::string & str)
 {
-	auto lst = igris::split(str);
+	auto lst = igris::split(str, ',');
 	void * ptr = emplace();
 	auto view = object_view(ptr);
 
@@ -97,15 +102,22 @@ igris::series_iterator igris::series::get_iterator(int num)
 		}
 	}
 
+	BUG();
 	return end();
 }
 
-igris::series_iterator igris::series::begin() 
+igris::series_iterator igris::series::begin()
 {
 	return { blocks.next, dlist_first_entry(&blocks, series_block, lnk)->strt };
 }
 
-igris::series_iterator igris::series::end() 
+igris::series_iterator igris::series::end()
 {
-	return { &blocks, 0 };
+	return { &blocks, -1 };
+}
+
+
+igris::series_block * igris::series::last_block()
+{
+	return dlist_entry(blocks.prev, series_block, lnk);
 }

@@ -22,6 +22,7 @@ namespace igris
       public:
         int elemsize();
         void *get(int num);
+        void *last();
 
         series_block(igris::series *parent, void *ptr, int size);
 

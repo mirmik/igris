@@ -74,3 +74,20 @@ TEST_CASE("table")
 	CHECK_EQ(ptr, obj);
 	CHECK_EQ(((A*)ptr)->a, 33);
 }
+
+TEST_CASE("table.2") 
+{
+	igris::series data = igris::make_series<A>(); 
+	CHECK_EQ(data.count_of_blocks(), 0);
+
+	data.reserve(15);
+	A* obj = data.emplace<A>();
+
+	obj->a = 33;
+	obj->b = 33.05;
+	obj->c = 33.04;
+
+	A& a = data.get<A>(0); 
+	CHECK_EQ(a.a, 33); 
+	CHECK_EQ(a.c, 33.04f);
+}

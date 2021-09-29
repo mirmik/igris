@@ -47,8 +47,14 @@ namespace igris
         series_field_annotation(std::string name, int offset, int size,
                                 FieldDataType datatype)
             : machname(name), username(name), offset(offset), size(size),
-              datatype(datatype)
+              datatype(datatype), flags(0)
         {
+        }
+
+        series_field_annotation &scatter(bool en)
+        {
+            f.scatter = en;
+            return *this;
         }
 
         double expand_numeric(void *record_pointer)

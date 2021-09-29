@@ -27,6 +27,7 @@ igris::series_iterator igris::series_iterator::operator++(int)
 
 igris::series_block * igris::series_iterator::block()
 {
+	assert(num != -1);
 	return dlist_entry(block_lnk, series_block, lnk);
 }
 

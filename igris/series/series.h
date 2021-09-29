@@ -1,6 +1,7 @@
 #ifndef IGRIS_SERIES_H
 #define IGRIS_SERIES_H
 
+#include <cassert>
 #include <memory>
 #include <vector>
 
@@ -37,11 +38,7 @@ namespace igris
             allocator = std::move(allocator);
         }
 
-        int elemsize()
-        {
-            dprln("ELEMSIZE");
-            return _elemsize;
-        }
+        int elemsize() { return _elemsize; }
         void reserve(int size);
         void add_block(int size);
         void pop_block();
@@ -65,8 +62,10 @@ namespace igris
         template <class T> T *emplace() { return (T *)emplace(); }
 
         void *emplace();
+        series_block *last_block();
 
         template <class T> T &get(int i);
+        template <class T> T &last();
 
         void push_csv_string_parse(const std::string &str);
 
@@ -84,9 +83,18 @@ namespace igris
     }
 }
 
+#include <igris/series/block.h>
+
 template <class T> T &igris::series::get(int i)
 {
+    assert(last_block()->fini - last_block()->strt > 0);
     return *(T *)(get_iterator(i).pointer());
+}
+
+template <class T> T &igris::series::last()
+{
+    assert(last_block()->fini - last_block()->strt > 0);
+    return *(T *)(last_block()->last());
 }
 
 #endif
