@@ -53,6 +53,9 @@ namespace igris
             case FieldDataType::Bool:
                 *(bool *)ptr = data;
                 break;
+
+            case FieldDataType::Undefined:
+                break;
             }
         }
     };

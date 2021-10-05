@@ -20,28 +20,64 @@ namespace igris
         size_t sz;
 
       public:
-        const char *data() const { return buf; }
-        char *data() { return buf; }
+        const char *data() const
+        {
+            return buf;
+        }
+        char *data()
+        {
+            return buf;
+        }
 
-        const uint8_t *bytes() const { return (const uint8_t *)buf; }
-        uint8_t *bytes() { return (uint8_t *)buf; }
+        const uint8_t *bytes() const
+        {
+            return (const uint8_t *)buf;
+        }
+        uint8_t *bytes()
+        {
+            return (uint8_t *)buf;
+        }
 
-        size_t size() const { return sz; }
+        size_t size() const
+        {
+            return sz;
+        }
 
-        void data(char *buf) { this->buf = buf; }
-        void size(size_t sz) { this->sz = sz; }
+        void data(char *buf)
+        {
+            this->buf = buf;
+        }
+        void size(size_t sz)
+        {
+            this->sz = sz;
+        }
 
         // ctors:
-        buffer() : buf(nullptr), sz(0) {}
-        buffer(const char *_buf) : buf((char *)_buf), sz(strlen(_buf)) {}
+        buffer() : buf(nullptr), sz(0)
+        {
+        }
+        buffer(const char *_buf) : buf((char *)_buf), sz(strlen(_buf))
+        {
+        }
 
-        buffer(const void *_buf, size_t _sz) : buf((char *)_buf), sz(_sz) {}
+        buffer(const void *_buf, int _sz) : buf((char *)_buf), sz((size_t)_sz)
+        {
+        }
+        buffer(const void *_buf, size_t _sz) : buf((char *)_buf), sz(_sz)
+        {
+        }
 
-        buffer(const igris::buffer &str) : buffer(str.data(), str.size()) {}
+        buffer(const igris::buffer &str) : buffer(str.data(), str.size())
+        {
+        }
 
-        buffer(const std::string &str) : buffer(str.data(), str.size()) {}
+        buffer(const std::string &str) : buffer(str.data(), str.size())
+        {
+        }
 #if IGRIS_HAS_STRING_VIEW
-        buffer(const std::string_view &str) : buffer(str.data(), str.size()) {}
+        buffer(const std::string_view &str) : buffer(str.data(), str.size())
+        {
+        }
 #endif
 
         template <size_t N>
@@ -50,7 +86,10 @@ namespace igris
         }
 
 #if IGRIS_HAS_STRING
-        explicit operator std::string() { return std::string(buf, sz); }
+        explicit operator std::string()
+        {
+            return std::string(buf, sz);
+        }
 #endif
 
         // methods:
@@ -68,27 +107,58 @@ namespace igris
                     0);
         }
 
-        bool operator==(const char *str) { return strncmp(buf, str, sz) == 0; }
+        bool operator==(const char *str)
+        {
+            return strncmp(buf, str, sz) == 0;
+        }
 
-        bool operator!=(const char *str) { return strncmp(buf, str, sz) != 0; }
+        bool operator!=(const char *str)
+        {
+            return strncmp(buf, str, sz) != 0;
+        }
 
-        char &operator[](size_t num) { return *(buf + num); }
+        char &operator[](size_t num)
+        {
+            return *(buf + num);
+        }
 
-        char operator[](size_t num) const { return *(buf + num); }
+        char operator[](size_t num) const
+        {
+            return *(buf + num);
+        }
 
-        char *operator*() { return buf; }
+        char *operator*()
+        {
+            return buf;
+        }
 
-        size_t operator+() { return sz; }
+        size_t operator+()
+        {
+            return sz;
+        }
 
-        char *begin() { return buf; }
+        char *begin()
+        {
+            return buf;
+        }
 
-        char *end() { return buf + sz; }
+        char *end()
+        {
+            return buf + sz;
+        }
 
-        bool empty() { return buf == nullptr; }
+        bool empty()
+        {
+            return buf == nullptr;
+        }
 
-        buffer slice(size_t idx, size_t _sz) { return buffer(buf + idx, _sz); }
+        buffer slice(size_t idx, size_t _sz)
+        {
+            return buffer(buf + idx, _sz);
+        }
 
-        template <typename T> static igris::buffer on_object(T &obj)
+        template <typename T>
+        static igris::buffer on_object(T &obj)
         {
             return buffer((char *)&obj, sizeof(obj));
         }

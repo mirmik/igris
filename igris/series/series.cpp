@@ -78,7 +78,7 @@ void igris::series::push_csv_string_parse(const std::string & str)
 	void * ptr = emplace();
 	auto view = object_view(ptr);
 
-	for (int i = 0; i < MIN(lst.size(), view.size()); ++i)
+	for (unsigned int i = 0; i < MIN(lst.size(), view.size()); ++i)
 	{
 		double data = atof64(lst[i].c_str(), nullptr);
 		view[i].assign(data);

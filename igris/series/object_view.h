@@ -23,7 +23,7 @@ namespace igris
                 (void *)((char *)ptr + annotations[i].offset), annotations[i]};
         }
 
-        int size()
+        size_t size()
         {
             return annotations.size();
         }
