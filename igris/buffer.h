@@ -162,6 +162,11 @@ namespace igris
         {
             return buffer((char *)&obj, sizeof(obj));
         }
+
+        std::string to_string()
+        {
+            return {data(), size()};
+        }
     };
 
     namespace buffer_literal
