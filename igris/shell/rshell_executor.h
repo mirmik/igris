@@ -28,6 +28,9 @@ namespace igris
         void execute(char *cmdbuf, int cmdlen, char *ansbuf,
                      int ansmax) override
         {
+            if (cmdlen == 0)
+                return;
+
             int ret;
             int sts =
                 rshell_execute(cmdbuf, _cmdtable, &ret, 0, ansbuf, ansmax);
@@ -50,6 +53,9 @@ namespace igris
         void execute(char *cmdbuf, int cmdlen, char *ansbuf,
                      int ansmax) override
         {
+            if (cmdlen == 0)
+                return;
+
             int ret = 0;
             int sts =
                 rshell_tables_execute(cmdbuf, _cmdtable, &ret, ansbuf, ansmax);

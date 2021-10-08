@@ -22,18 +22,6 @@ TEST_CASE("table.capacity")
 }
 
 
-TEST_CASE("table.0") 
-{
-	igris::series data = igris::make_series<A>(); 
-	CHECK_EQ(data.count_of_blocks(), 0);
-
-	data.reserve(15);
-
-	auto iter = data.get_iterator(0);
-	CHECK_EQ(&data.blocks, iter.block_lnk);
-	CHECK_EQ(iter, data.end());
-}
-
 TEST_CASE("table.1") 
 {
 	igris::series data = igris::make_series<A>(); 

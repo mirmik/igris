@@ -23,3 +23,30 @@ TEST_CASE("spaces_test")
 	CHECK_EQ(std::string(argv[2]), std::string("three"));
 	CHECK_EQ(std::string(argv[3]), std::string("314"));
 }
+
+TEST_CASE("spaces_test 2")
+{
+	char* argv[10];
+	char* str = strdup("");
+	int argc = argvc_internal_split(str, argv, 10);
+
+	CHECK_EQ(argc, 0);
+}
+
+TEST_CASE("spaces_test 3")
+{
+	char* argv[10];
+	char* str = strdup(" ");
+	int argc = argvc_internal_split(str, argv, 10);
+
+	CHECK_EQ(argc, 0);
+}
+
+TEST_CASE("spaces_test 4")
+{
+	char* argv[10];
+	char* str = strdup(" \r \n \t ");
+	int argc = argvc_internal_split(str, argv, 10);
+
+	CHECK_EQ(argc, 0);
+}

@@ -59,6 +59,9 @@ int rshell_tables_execute(char *str, const struct rshell_command_table *tables,
 
     argc = argvc_internal_split(str, argv, SSHELL_ARGCMAX);
 
+    if (argc == 0)
+        return 0;
+
     const struct rshell_command_table *tit = tables;
     while (tit->table != NULL)
     {

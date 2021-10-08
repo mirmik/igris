@@ -104,6 +104,29 @@ namespace std {
 			m_size++; 
 		}
 
+		bool operator == (const vector & oth) const
+		{
+			if (size() != oth.size()) 
+				return false;
+
+			auto it = begin();
+			auto eit = end();
+			auto bit = oth.begin();
+
+			for (;it != eit; ++it, ++bit) 
+			{
+				if (*it != *bit)
+					return false;
+			}			
+
+			return true;
+		}
+
+		bool operator != (const vector & oth) const
+		{
+			return ! operator==(oth);
+		}
+
 		template<typename ... Args>
 		iterator emplace(const_iterator pos, Args&& ... args) {
 			//TODO insert optimization 

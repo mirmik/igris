@@ -1,15 +1,13 @@
 #ifndef GENOS_STRING_H
 #define GENOS_STRING_H
 
-//#include <igris/util/setget.h>
-//#include <igris/util/numconvert.h>
-
 #include <string.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <assert.h>
 #include <inttypes.h>
 #include <memory>
+#include <iterator>
 
 namespace std
 {
