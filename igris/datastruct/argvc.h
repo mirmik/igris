@@ -1,6 +1,8 @@
 #ifndef GENOS_DATASTRUCT_ARGV_H
 #define GENOS_DATASTRUCT_ARGV_H
 
+#include <string.h>
+
 // Вычислить длину первого слова строки.
 static inline int argvc_length_of_first(const char *str)
 {
@@ -20,18 +22,20 @@ static inline int argvc_length_of_first(const char *str)
 // Максимальное количество элементов вектора argcmax
 static inline int argvc_internal_split(char *data, char **argv, int argcmax)
 {
+    const char *ws = " \r\n\t";
+
     int argc = 0;
 
 newarg_search:
-    while (*data == ' ')
+    while (strchr(ws, *data) && *data != '\0')
         ++data;
     if (*data == '\0' || argc >= argcmax)
         return argc;
 
     argv[argc++] = data;
-    while (*data != ' ' && *data != '\0')
+    while (!strchr(ws, *data) && *data != '\0')
         ++data;
-    if (*data == ' ')
+    if (strchr(ws, *data))
     {
         *data++ = '\0';
         goto newarg_search;
@@ -45,19 +49,20 @@ newarg_search:
 static inline int argvc_internal_split_n(char *data, int maxlen, char **argv,
                                          int argcmax)
 {
+    const char *ws = " \r\n\t";
     int argc = 0;
     char *eptr = data + maxlen;
 
 newarg_search:
-    while (*data == ' ')
+    while (strchr(ws, *data) && data != eptr)
         ++data;
     if (*data == '\0' || argc >= argcmax || data == eptr)
         return argc;
 
     argv[argc++] = data;
-    while (*data != ' ' && *data != '\0')
+    while (!strchr(ws, *data) && data != eptr)
         ++data;
-    if (*data == ' ')
+    if (strchr(ws, *data))
     {
         *data++ = '\0';
         goto newarg_search;
@@ -65,37 +70,5 @@ newarg_search:
 
     return argc;
 }
-
-#ifdef __cplusplus
-
-namespace igris
-{
-    // аналог с возможностью задания разделителя delim.
-    static inline int internal_split(char *data, int maxlen, char **argv,
-                                     int argcmax, char delim = ' ')
-    {
-        int argc = 0;
-        char *eptr = data + maxlen;
-
-    newarg_search:
-        while (*data == delim)
-            ++data;
-        if (*data == '\0' || argc >= argcmax || data == eptr)
-            return argc;
-
-        argv[argc++] = data;
-        while (*data != delim && *data != '\0')
-            ++data;
-        if (*data == delim)
-        {
-            *data++ = '\0';
-            goto newarg_search;
-        };
-
-        return argc;
-    }
-}
-
-#endif
 
 #endif

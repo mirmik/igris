@@ -180,6 +180,13 @@ static inline int dlist_empty(const struct dlist_head *head)
     return head->next == head;
 }
 
+static inline void dlist_insert_instead(struct dlist_head *iter,
+                                        struct dlist_head *instead)
+{
+    dlist_add_prev(iter, instead);
+    dlist_del_init(instead);
+}
+
 __END_DECLS
 
 #define dlist_entry(ptr, type, member) mcast_out(ptr, type, member)
@@ -287,7 +294,10 @@ static inline void dlist_debug_print(struct dlist_head *head)
     struct dlist_head *it;
 
     dlist_debug_print_node("head: ", head);
-    dlist_for_each(it, head) { dlist_debug_print_node("node: ", it); }
+    dlist_for_each(it, head)
+    {
+        dlist_debug_print_node("node: ", it);
+    }
 }
 
 /// Выясняет количество нодов в кольце за исключением этого.
@@ -296,7 +306,10 @@ static inline int dlist_size(struct dlist_head *head)
     struct dlist_head *it;
     int sz = 0;
 
-    dlist_for_each(it, head) { ++sz; }
+    dlist_for_each(it, head)
+    {
+        ++sz;
+    }
 
     return sz;
 }
@@ -308,7 +321,10 @@ static inline int dlist_size_reversed(struct dlist_head *head)
     struct dlist_head *it;
     int sz = 0;
 
-    dlist_for_each_reverse(it, head) { ++sz; }
+    dlist_for_each_reverse(it, head)
+    {
+        ++sz;
+    }
 
     return sz;
 }

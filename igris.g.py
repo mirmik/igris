@@ -29,7 +29,7 @@ sources = [
 	"igris/util/string.cpp",
 	"igris/string/replace.cpp",
 	"igris/string/hexascii_string.cpp",
-	"igris/sclonner.cpp",
+	#"igris/sclonner.cpp",
 	"igris/deprecated/path.cpp",
 ],
 mdepends=MODULES)
@@ -49,6 +49,14 @@ licant.module("igris.cxx_support", sources=[
 	"compat/cxx/__cxa_pure_virtual.c", 
 	"compat/cxx/__dso_handle.c"
 ])
+
+licant.module("igris.series",
+	sources = [
+		"igris/series/series.cpp",
+		"igris/series/iterator.cpp",
+		"igris/series/block.cpp",
+	]
+)
 
 licant.module("igris.stdlibs", 
 	mdepends = ["igris.libc", "igris.std", "igris.posix"])
@@ -114,7 +122,9 @@ licant.module("igris.util", sources=[
 		"igris/string/replace_substrings.c",
 		"igris/shell/mshell.c",
 		"igris/shell/rshell.c",
-		"igris/sync/syslock.c"
+		"igris/shell/vterm.c",
+		"igris/sync/syslock.c",
+		"igris/halfer.cpp"
 	],
 	mdepends = [
 		"igris.bug"

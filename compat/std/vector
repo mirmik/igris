@@ -75,7 +75,7 @@ namespace std {
 		}
 
 		void clear() {
-			for (int i = 0; i < m_size; ++i) {
+			for (unsigned int i = 0; i < m_size; ++i) {
 				igris::destructor(m_data + i);
 			}
 			m_size = 0;
@@ -102,6 +102,29 @@ namespace std {
 			reserve(m_size + 1);
 			igris::constructor(m_data + m_size, ref);
 			m_size++; 
+		}
+
+		bool operator == (const vector & oth) const
+		{
+			if (size() != oth.size()) 
+				return false;
+
+			auto it = begin();
+			auto eit = end();
+			auto bit = oth.begin();
+
+			for (;it != eit; ++it, ++bit) 
+			{
+				if (*it != *bit)
+					return false;
+			}			
+
+			return true;
+		}
+
+		bool operator != (const vector & oth) const
+		{
+			return ! operator==(oth);
 		}
 
 		template<typename ... Args>

@@ -17,7 +17,7 @@ modules = [
 		"igris",
 		"igris.dprint",
 		"igris.protocols.gstuff",
-#		"igris.protocols.numcmd",
+		"igris.series"
 	]
 
 CCFLAGS = '-fPIC -Wall -pedantic-errors -Wreturn-type -Wno-gnu-zero-variadic-macro-arguments'

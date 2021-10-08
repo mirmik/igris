@@ -27,30 +27,47 @@ static inline uint8_t creader_end(struct creader *reader)
     return reader->cursor == reader->fini;
 }
 
+static inline uint8_t creader_curpos(struct creader *reader)
+{
+    return reader->cursor - reader->strt;
+}
+
+static inline uint8_t creader_itpos(struct creader *reader, const char *it)
+{
+    return it - reader->strt;
+}
+
 static inline int creader_readline(struct creader *reader, const char **token)
 {
     int len;
     const char *it = reader->cursor;
+    *token = reader->cursor;
 
     if (creader_end(reader))
+    {
         return -1;
+    }
 
+    // Шагаем в конец строки.
     while (*it != '\n' && *it != '\0' && it != reader->fini)
         it++;
 
-    *token = reader->cursor;
-
+    // Обновляем положение курсора.
     if (it != reader->fini)
     {
         reader->cursor = it + 1;
     }
     else
     {
-        reader->cursor = reader->fini;
+        return it - *token;
     }
 
-    while (*it == '\n' || *it == '\r')
+    // Отматываем назад, чтобы корректно расчитать расстояние.
+    while ((it != *token) && (*it == '\n' || *it == '\r'))
         --it;
+
+    if (it == *token)
+        return 0;
 
     len = it - *token + 1;
     return len;

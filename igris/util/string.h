@@ -78,17 +78,18 @@ namespace igris
 
         const char *left = view.data();
         const char *right = view.data() + view.size() - 1;
+        const char *end = view.data() + view.size();
 
-        while (left != right && (*left == ' ' || *left == '\n' ||
-                                 *left == '\r' || *left == '\t'))
+        while (left != end && (*left == ' ' || *left == '\n' || *left == '\r' ||
+                               *left == '\t'))
             ++left;
+
+        if (left == end)
+            return "";
 
         while (left != right && (*right == ' ' || *right == '\n' ||
                                  *right == '\r' || *right == '\t'))
             --right;
-
-        if (left == right)
-            return "";
 
         return std::string(left, (right - left) + 1);
     }

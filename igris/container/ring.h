@@ -31,11 +31,10 @@ namespace igris
     {
       public:
         ring_head r;
-        int size;
         T *buffer;
 
       public:
-        ring(T *buffer, int bufsize) : buffer(buffer), size(0)
+        ring(T *buffer, int bufsize) : buffer(buffer)
         {
             ring_init(&r, bufsize);
         }
@@ -83,6 +82,11 @@ namespace igris
         unsigned int room()
         {
             return ring_room(&r);
+        }
+
+        unsigned int size()
+        {
+            return r.size;
         }
 
         T &get(int index)

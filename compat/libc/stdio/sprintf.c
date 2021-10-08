@@ -6,36 +6,46 @@
 
 struct sprint_char_handler_data
 {
-	char* cursor;
+    char *cursor;
 };
 
 static void sprint_printchar(void *d, int c)
 {
-	*(((struct sprint_char_handler_data*) d) -> cursor)++ = c;
+    *(((struct sprint_char_handler_data *)d)->cursor)++ = c;
 }
 
-int vsprintf(char * s, const char *format, va_list ap )
+int vsprintf(char *s, const char *format, va_list ap)
 {
-	int ret;
+    int ret;
 
-	struct sprint_char_handler_data data;
-	data.cursor = s;
+    struct sprint_char_handler_data data;
+    data.cursor = s;
 
-	ret = __printf(sprint_printchar, &data, format, ap);
-	*data.cursor = 0;
+    ret = __printf(sprint_printchar, &data, format, ap);
 
-	return ret;
+    return ret;
 }
 
-
-int sprintf(char* buf, const char *format, ...)
+int sprintf(char *buf, const char *format, ...)
 {
-	int ret;
-	va_list args;
+    int ret;
+    va_list args;
 
-	va_start(args, format);
-	ret = vsprintf(buf, format, args);
-	va_end(args);
+    va_start(args, format);
+    ret = vsprintf(buf, format, args);
+    va_end(args);
 
-	return ret;
+    return ret;
+}
+
+int snprintf(char *buf, size_t maxlen, const char *format, ...)
+{
+    int ret;
+    va_list args;
+
+    va_start(args, format);
+    ret = vsprintf(buf, format, args);
+    va_end(args);
+
+    return ret;
 }

@@ -1,6 +1,9 @@
 #include <errno.h>
+#include <igris/math.h>
 #include <igris/shell/rshell.h>
 #include <string.h>
+
+#include <igris/dprint.h>
 
 #define SSHELL_ARGCMAX 10
 
@@ -33,7 +36,7 @@ int rshell_execute(char *str, const struct rshell_command *cmdtable,
 
     if (*str == '\0')
     {
-        return ENOENT;
+        return 0;
     }
 
     argc = argvc_internal_split(str, argv, SSHELL_ARGCMAX);
@@ -42,8 +45,8 @@ int rshell_execute(char *str, const struct rshell_command *cmdtable,
                             maxsize);
 }
 
-int rshell_tables_execute(char *str, const struct rshell_command *const *tables,
-                          int *retptr, int dropargs, char *output, int maxsize)
+int rshell_tables_execute(char *str, const struct rshell_command_table *tables,
+                          int *retptr, char *output, int maxsize)
 {
     char *argv[SSHELL_ARGCMAX];
     int argc;
@@ -51,21 +54,24 @@ int rshell_tables_execute(char *str, const struct rshell_command *const *tables,
 
     if (*str == '\0')
     {
-        return ENOENT;
+        return 0;
     }
 
     argc = argvc_internal_split(str, argv, SSHELL_ARGCMAX);
 
-    const struct rshell_command *const *tit = tables;
-    while (*tit != NULL)
+    if (argc == 0)
+        return 0;
+
+    const struct rshell_command_table *tit = tables;
+    while (tit->table != NULL)
     {
-        const struct rshell_command *it = *tit;
+        const struct rshell_command *it = tit->table;
         while (it->func != NULL)
         {
             if (!strcmp(argv[0], it->name))
             {
-                res =
-                    it->func(argc - dropargs, argv + dropargs, output, maxsize);
+                res = it->func(argc - tit->dropargs, argv + tit->dropargs,
+                               output, maxsize);
                 if (retptr)
                     *retptr = res;
                 return SSHELL_OK;
@@ -78,32 +84,46 @@ int rshell_tables_execute(char *str, const struct rshell_command *const *tables,
     return ENOENT;
 }
 
-void rshell_help(const struct rshell_command *cmdtable,
-                 void (*write)(void *, const char *, unsigned int),
-                 void *privdata)
+int rshell_help(const struct rshell_command *cmdtable, char *ans, int ansmax)
 {
+    int len = 0;
+    int l;
+
     const struct rshell_command *it = cmdtable;
     while (it->func != NULL)
     {
-        write(privdata, it->name, strlen(it->name));
+        memcpy(ans + len, it->name,
+               l = __MIN__(strlen(it->name), ansmax - len));
+        len += l;
+
         if (it->help)
         {
-            write(privdata, " - ", 3);
-            write(privdata, it->help, strlen(it->help));
+            memcpy(ans + len, " - ", l = __MIN__(3, ansmax - len));
+            len += l;
+
+            memcpy(ans + len, it->help,
+                   l = __MIN__(strlen(it->help), ansmax - len));
+            len += l;
         }
-        write(privdata, "\r\n", 2);
+        memcpy(ans + len, "\r\n", l = __MIN__(2, ansmax - len));
+        len += l;
         ++it;
     }
+
+    return len;
 }
 
-void rshell_tables_help(const struct rshell_command *const *cmdtables,
-                        void (*write)(void *, const char *, unsigned int),
-                        void *privdata)
+int rshell_tables_help(const struct rshell_command_table *cmdtables, char *ans,
+                       int ansmax)
 {
-    const struct rshell_command *const *tit = cmdtables;
-    while (*tit != NULL)
+    int len = 0;
+
+    const struct rshell_command_table *tit = cmdtables;
+    while (tit->table != NULL)
     {
-        rshell_help(*tit, write, privdata);
+        len += rshell_help(tit->table, ans + len, ansmax - len);
         ++tit;
     }
+
+    return len;
 }

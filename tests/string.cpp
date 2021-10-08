@@ -62,3 +62,10 @@ TEST_CASE("string.trim")
 	auto output = igris::trim(input);
 	CHECK_EQ(output, "");
 }
+
+TEST_CASE("s")
+{
+	std::string input = "s";
+	auto output = igris::trim(input);
+	CHECK_EQ(output, "s");
+}

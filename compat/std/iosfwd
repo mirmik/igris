@@ -17,11 +17,14 @@ namespace std
 		virtual int_type overflow(int_type) = 0;
 		virtual int xsputn(const C*, int) = 0;
 	};
-	
+
 	template<
     	class CharT,
     	class Traits = std::char_traits<CharT>
 	> class basic_ostream;
+
+
+	using ostream = basic_ostream<char>;
 }
 
 #endif
