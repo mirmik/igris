@@ -5,5 +5,5 @@ TEST_CASE("field_annotation")
 {
 	igris::series_field_annotator annotator;
 
-	auto annot0 = annotator.add<bool>("lanspik");
+	auto annot0 = annotator.add<bool>("lanspik", "Ланспик");
 }

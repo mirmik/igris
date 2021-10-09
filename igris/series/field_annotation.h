@@ -39,16 +39,38 @@ namespace igris
             struct
             {
                 uint8_t scatter : 1; // подсказка, что данные следует отображать
-                                     // поточечно
+                // поточечно
             } f;
         };
 
-        series_field_annotation(std::string name, int offset, int size,
-                                FieldDataType datatype)
-            : machname(name), username(name), offset(offset), size(size),
-              datatype(datatype), flags(0)
+        series_field_annotation(const std::string &machname,
+                                const std::string &username, int offset,
+                                int size, FieldDataType datatype)
+            : machname(machname), username(username), offset(offset),
+              size(size), datatype(datatype), flags(0)
         {
         }
+
+        series_field_annotation() = default;
+
+        series_field_annotation(const series_field_annotation &oth) =
+            default; /*
+: machname(oth.machname), username(oth.username), offset(oth.offset),
+size(oth.size), datatype(oth.datatype), flags(oth.flags)
+{
+}*/
+
+        series_field_annotation &
+        operator=(const series_field_annotation &oth) = default;
+        /*{
+            this->machname = oth.machname;
+            this->username = oth.username;
+            this->offset = oth.offset;
+            this->size = oth.size;
+            this->datatype = oth.datatype;
+            this->flags = oth.flags;
+            return *this;
+        }*/
 
         series_field_annotation &scatter(bool en)
         {
@@ -159,10 +181,11 @@ namespace igris
     };
 
     template <class T>
-    series_field_annotation make_series_field_annotation(const std::string name,
-                                                         int offset)
+    series_field_annotation
+    make_series_field_annotation(const std::string &machname,
+                                 const std::string &username, int offset)
     {
-        return series_field_annotation(name, offset,
+        return series_field_annotation(machname, username, offset,
                                        series_field_annotation_helper<T>::size,
                                        series_field_annotation_helper<T>::type);
     }

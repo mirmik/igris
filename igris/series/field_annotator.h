@@ -17,10 +17,12 @@ namespace igris
         series_field_annotator(int offset) : inc(offset) {}
         series_field_annotator(const igris::size_incrementor &oth) : inc(oth) {}
 
-        template <class T> series_field_annotation &add(const std::string &name)
+        template <class T>
+        series_field_annotation &add(const std::string &machname,
+                                     const std::string &username)
         {
             auto annot = igris::make_series_field_annotation<T>(
-                name, inc.increment<T>());
+                machname, username, inc.increment<T>());
             _annotations.push_back(annot);
 
             return _annotations[_annotations.size() - 1];
@@ -36,6 +38,16 @@ namespace igris
                     return &obj;
             }
 
+            return nullptr;
+        }
+
+        series_field_annotation *find(const std::string &name)
+        {
+            for (auto &a : _annotations)
+            {
+                if (a.machname == name)
+                    return &a;
+            }
             return nullptr;
         }
     };
