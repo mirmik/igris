@@ -329,17 +329,8 @@ namespace igris
             char readnext_impl() { return is.get(); }
         };
 
-        igris::trent parse(const char *str)
-        {
-            parser_cstr parser(str);
-            return parser.parse();
-        }
-
-        igris::trent parse(const std::string &str)
-        {
-            parser_str parser(str);
-            return parser.parse();
-        }
+        igris::trent parse(const char *str);
+        igris::trent parse(const std::string &str);
 
         template <template <class Allocator> class TAlloc = std::allocator,
                   class Output>

@@ -25,35 +25,26 @@ namespace igris
 {
     class subprocess
     {
-      public:
+    public:
         int pid;
         int ipipe;
         int opipe;
 
         igris::delegate<void> on_close;
 
-      public:
+    public:
         subprocess() = default;
 
-        void sigchld()
-        {
-            on_close.emit();
-        }
+        void sigchld() { on_close.emit(); }
 
-        void set_pid(int pid)
-        {
-            this->pid = pid;
-        }
+        void set_pid(int pid) { this->pid = pid; }
 
-        void terminate()
-        {
-            kill(pid, SIGTERM);
-        }
+        void terminate() { kill(pid, SIGTERM); }
 
         void wait()
         {
             int status;
-            int ret = waitpid(pid, &status, WCONTINUED);
+            waitpid(pid, &status, WCONTINUED);
         }
 
         void set_pipe_fds(int ipipe, int opipe)
@@ -62,21 +53,15 @@ namespace igris
             this->opipe = opipe;
         }
 
-        int input_fd()
-        {
-            return ipipe;
-        }
-        int output_fd()
-        {
-            return opipe;
-        }
+        int input_fd() { return ipipe; }
+        int output_fd() { return opipe; }
     };
 
     class sclonner
     {
         static std::set<std::shared_ptr<subprocess>> _childs;
 
-      public:
+    public:
         static std::shared_ptr<subprocess> start_subprocess(const char *ccmd)
         {
             int pid = fork();
@@ -110,7 +95,7 @@ namespace igris
                 // close(pipes_host_in_child_out[1]);
                 // close(pipes_host_out_child_in[0]);
 
-                int sts = execve(argv[0], argv, NULL);
+                execve(argv[0], argv, NULL);
             }
 
             close(pipes_host_out_child_in[0]);
@@ -148,20 +133,14 @@ namespace igris
             }
         }
 
-        static void install_sigchild_trap()
-        {
-            signal(SIGCHLD, sigchild_trap);
-        }
+        static void install_sigchild_trap() { signal(SIGCHLD, sigchild_trap); }
 
         static const std::set<std::shared_ptr<subprocess>> &childs()
         {
             return _childs;
         }
 
-        ~sclonner()
-        {
-            terminate_childs();
-        }
+        ~sclonner() { terminate_childs(); }
     };
 }
 

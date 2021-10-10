@@ -160,7 +160,7 @@ licant.module("igris.ctrobj", "linux",
 )
 
 licant.module("igris.trent",
-	sources = ["igris/trent/trent.cpp"]
+	sources = ["igris/trent/trent.cpp", "igris/trent/json.cpp"]
 )
 
 #################################################################
