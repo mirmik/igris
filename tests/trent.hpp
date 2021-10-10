@@ -114,7 +114,6 @@ LT_END_TEST(trent_path)
 LT_BEGIN_TEST(igris_test_suite, get_test)
 {
 	igris::trent tr;
-	int a;
 
 	tr["a"]["b"] = 3;
 	CHECK_EQ(tr.get("a/b"), &tr["a"]["b"]);
@@ -140,7 +139,6 @@ LT_BEGIN_TEST(igris_test_suite, get_test)
 	tr["a"]["b"][28] = -123.513;
 	CHECK(fabs(tr.get_as_numer_ex("a/b/28") + 123.513) < 1e-5);
 
-	int except = 0;
 	CHECK_THROWS(tr.get_as_numer_ex("a/c/28"));
 
 	tr = igris::json::parse(R"(

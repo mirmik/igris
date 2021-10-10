@@ -16,8 +16,10 @@ application("runtests",
 		"series/*.cpp"
 	],
 
-	cxx_flags = "-g",
-	cc_flags = "-g",
+	cxxstd="c++2a",
+	ccstd="c11",
+	cxx_flags = "-g -Werror=all -Werror=pedantic",
+	cc_flags = "-g -Werror=all -Werror=pedantic",
 
 	include_paths = ["."],
 	mdepends = [ 

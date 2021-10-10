@@ -40,7 +40,7 @@ namespace igris
 
     template <template <class Allocator> class TAlloc> class trent_basic
     {
-      public:
+    public:
         // SPECS
         using type = trent_type;
         using value_type = std::pair<std::string, trent_basic>;
@@ -54,7 +54,7 @@ namespace igris
             trent_path path;
             std::string str;
 
-          public:
+        public:
             wrong_path(const igris::trent_path &path) : path(path)
             {
                 str = std::string("trent:wrong_path: ") + path.to_string();
@@ -69,7 +69,7 @@ namespace igris
             type t;
             std::string str;
 
-          public:
+        public:
             wrong_type(const trent_path &path, type t, type rt)
                 : path(path), t(t)
             {
@@ -88,7 +88,7 @@ namespace igris
             trent_path path;
             type t;
 
-          public:
+        public:
             wrong_index(const trent_path &path, type t) : path(path), t(t)
             {
                 str = std::string("trent:wrong_index: path: ") +
@@ -106,7 +106,7 @@ namespace igris
                                    std::less<std::string>, malloc_t>;
         using string_type = std::string;
 
-      protected:
+    protected:
         type m_type = type::nil;
         union
         {
@@ -117,7 +117,7 @@ namespace igris
             string_type m_str;
         };
 
-      public:
+    public:
         const char *typestr() { return igris::typestr(m_type); }
 
         ~trent_basic();
@@ -129,7 +129,7 @@ namespace igris
 
         template <class T> trent_basic(const T &obj) { init(obj); }
 
-      public:
+    public:
         void init_sint(const int64_t &i)
         {
             m_type = type::numer;
@@ -183,7 +183,7 @@ namespace igris
             init(obj);
         }
 
-      public:
+    public:
         trent_basic &operator[](int i)
         {
             if (m_type != type::list)
@@ -607,7 +607,7 @@ namespace igris
         list_type &unsafe_list_const() { return m_arr; }
         dict_type &unsafe_dict_const() { return m_dct; }
 
-        //			const integer_type& unsafe_integer_const() const { return
+        //          const integer_type& unsafe_integer_const() const { return
         // m_int;
         //}
         const numer_type &unsafe_numer_const() const { return m_num; }
@@ -627,7 +627,7 @@ namespace igris
 
         template <class O> ssize_t print_to(O &os) const;
 
-      public:
+    public:
         trent_basic &operator=(const trent_basic &other)
         {
             invalidate();
@@ -648,7 +648,7 @@ namespace igris
                 return *this;
             // case type::integer:
             //    m_int = other.m_int;
-            //	return *this;
+            //  return *this;
             case type::nil:
                 return *this;
             default:
@@ -694,7 +694,7 @@ namespace igris
             return *this;
         }
 
-        /*			ssize_t size();
+        /*          ssize_t size();
 
                     bool contains(igris::buffer buf);
         */

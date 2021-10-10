@@ -5,7 +5,6 @@
 
 TEST_CASE("pathops.iterate") 
 {
-	unsigned int len;
 	const char * b = "/dev/null";
 
 	b = path_iterate(b);
