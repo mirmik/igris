@@ -14,7 +14,6 @@
 #include <set>
 
 #include <igris/datastruct/argvc.h>
-#include <nos/print.h>
 
 namespace igris
 {
@@ -27,24 +26,14 @@ namespace igris
       public:
         subprocess() = default;
 
-        void set_pid(int pid)
-        {
-            this->pid = pid;
-        }
+        void set_pid(int pid) { this->pid = pid; }
 
-        void terminate()
-        {
-            kill(pid, SIGTERM);
-        }
+        void terminate() { kill(pid, SIGTERM); }
 
         void wait()
         {
             int status;
             int ret = waitpid(pid, &status, WCONTINUED);
-
-            PRINT(pid);
-            PRINT(status);
-            PRINT(ret);
         }
 
         void set_pipe_fds(int ipipe, int opipe)
@@ -185,10 +174,7 @@ namespace igris
             return _childs;
         }
 
-        ~clonner()
-        {
-            terminate_starter();
-        }
+        ~clonner() { terminate_starter(); }
 
         static void send_fd(int socket, int *fds, int n) // send fd by socket
         {
@@ -211,7 +197,7 @@ namespace igris
             memcpy((int *)CMSG_DATA(cmsg), fds, n * sizeof(int));
 
             if (sendmsg(socket, &msg, 0) < 0)
-                nos::println("Failed to send message");
+                printf("Failed to send message");
         }
 
         static void recv_fd(int socket, int *fds, int n)
@@ -228,7 +214,7 @@ namespace igris
             msg.msg_controllen = sizeof(buf);
 
             if (recvmsg(socket, &msg, 0) < 0)
-                nos::println("Failed to receive message");
+                printf("Failed to receive message");
 
             cmsg = CMSG_FIRSTHDR(&msg);
 
