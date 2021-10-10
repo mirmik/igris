@@ -26,28 +26,30 @@ namespace igris
 
     class series_field_annotation
     {
-      public:
+    public:
         std::string machname;   // имя поля
         std::string username;   // имя поля
         int offset;             // смещение в битах
         int size;               // размер
         FieldDataType datatype; // тип
 
-        union
+        union _u
         {
             uint8_t flags;
-            struct
+            struct _f
             {
                 uint8_t scatter : 1; // подсказка, что данные следует отображать
                 // поточечно
             } f;
-        };
+
+            _u() : flags(0) {}
+        } u;
 
         series_field_annotation(const std::string &machname,
                                 const std::string &username, int offset,
                                 int size, FieldDataType datatype)
             : machname(machname), username(username), offset(offset),
-              size(size), datatype(datatype), flags(0)
+              size(size), datatype(datatype), u()
         {
         }
 
@@ -74,7 +76,7 @@ size(oth.size), datatype(oth.datatype), flags(oth.flags)
 
         series_field_annotation &scatter(bool en)
         {
-            f.scatter = en;
+            u.f.scatter = en;
             return *this;
         }
 

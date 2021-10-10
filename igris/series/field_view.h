@@ -10,7 +10,7 @@ namespace igris
         void *ptr;
         const series_field_annotation &annotation;
 
-      public:
+    public:
         series_field_view(void *ptr, const series_field_annotation &annotation)
             : ptr(ptr), annotation(annotation)
         {

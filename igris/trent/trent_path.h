@@ -11,8 +11,9 @@
 
 namespace igris
 {
-    struct trent_path_node
+    class trent_path_node
     {
+    public:
         bool is_string;
         union
         {
@@ -68,8 +69,9 @@ namespace igris
         }
     };
 
-    struct trent_path : public std::vector<trent_path_node>
+    class trent_path : public std::vector<trent_path_node>
     {
+    public:
         trent_path() {}
         trent_path(const std::string &path) : trent_path(path.c_str()) {}
 

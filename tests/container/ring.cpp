@@ -8,11 +8,11 @@ class A
 
 class B 
 {
-	int i;
+//	int i;
 
 public:
 	B(){}
-	B(int j) : i(j) {}
+//	B(int j) : i(j) {}
 };
 
 TEST_CASE("ring") 

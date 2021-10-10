@@ -12,7 +12,7 @@ namespace igris
         igris::size_incrementor inc;
         std::vector<series_field_annotation> _annotations;
 
-      public:
+    public:
         series_field_annotator() : inc(0) {}
         series_field_annotator(int offset) : inc(offset) {}
         series_field_annotator(const igris::size_incrementor &oth) : inc(oth) {}

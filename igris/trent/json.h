@@ -24,15 +24,10 @@ namespace igris
 
             class unexpected_symbol : public std::runtime_error
             {
-                char symb;
-
             public:
                 unexpected_symbol(char symb)
-                    : std::runtime_error("wuuuui"), symb(symb)
+                    : std::runtime_error(std::string("unexpected:") + symb)
                 {
-                    dprln();
-                    dprchar(symb);
-                    dprln();
                 }
             };
 

@@ -16,10 +16,10 @@ application("runtests",
 		"series/*.cpp"
 	],
 
-	cxxstd="c++2a",
+	cxxstd="c++20",
 	ccstd="c11",
-	cxx_flags = "-g -Werror=all -Werror=pedantic",
-	cc_flags = "-g -Werror=all -Werror=pedantic",
+	cxx_flags = "-g -Werror=all -Werror=pedantic -Wno-gnu-zero-variadic-macro-arguments",
+	cc_flags = "-g -Werror=all -Werror=pedantic -Wno-gnu-zero-variadic-macro-arguments",
 
 	include_paths = ["."],
 	mdepends = [ 

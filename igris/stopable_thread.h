@@ -13,7 +13,7 @@ namespace igris
 
         virtual void run() = 0;
 
-      public:
+    public:
         void start()
         {
             _cancel_token = false;
