@@ -204,7 +204,7 @@ namespace igris
         {
             if (m_type != type::dict)
                 init(type::dict);
-            return m_dct[key];
+            return m_dct[std::string(key)];
         }
 
         trent_basic &operator[](const std::string &key)
@@ -815,6 +815,9 @@ namespace igris
     template <template <class Allocator> class TAlloc>
     void trent_basic<TAlloc>::init(trent_basic::type t)
     {
+        if (m_type != trent_basic::type::nil)
+            invalidate();
+
         m_type = t;
 
         switch (m_type)

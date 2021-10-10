@@ -45,6 +45,7 @@ TEST_CASE("mshell")
 {
 	int ret;
 	char cmd[48];
+	memset(cmd, 0, 48);
 
 	strcpy(cmd, "add 13 23");
 	mshell_execute(cmd, commands_A, &ret);

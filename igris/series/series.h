@@ -77,6 +77,8 @@ namespace igris
         }
 
         int count_of_blocks() { return dlist_size(&blocks); }
+
+        ~series();
     };
 
     template <class T, class... Args> series make_series(Args &&...args)

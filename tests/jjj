@@ -1,0 +1,13 @@
+==24975== Memcheck, a memory error detector
+==24975== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==24975== Using Valgrind-3.16.1 and LibVEX; rerun with -h for copyright info
+==24975== Command: ./runtests
+==24975== 
+==24975== 
+==24975== HEAP SUMMARY:
+==24975==     in use at exit: 0 bytes in 0 blocks
+==24975==   total heap usage: 307 allocs, 307 frees, 119,977 bytes allocated
+==24975== 
+==24975== All heap blocks were freed -- no leaks are possible
+==24975== 
+==24975== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

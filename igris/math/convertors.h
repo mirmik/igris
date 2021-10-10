@@ -1,6 +1,7 @@
 #ifndef IGRIS_MATH_DEG_H
 #define IGRIS_MATH_DEG_H
 
+#include <igris/math/defs.h>
 #include <math.h>
 
 #ifdef __cplusplus

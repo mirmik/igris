@@ -39,6 +39,18 @@ int igris::series::right_capacity()
 	return accum;
 }
 
+igris::series::~series()
+{
+	igris::series_block * block;
+	while (!dlist_empty(&blocks))
+	{
+		block = dlist_first_entry(&blocks, igris::series_block, lnk);
+		dlist_del(&block->lnk);
+		allocator.deallocate((char*)block->ptr, block->size * _elemsize);
+		delete(block);
+	}
+}
+
 int igris::series::size()
 {
 	int accum = 0;
