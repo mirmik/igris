@@ -39,7 +39,7 @@ double igris::series_field_annotation::expand_numeric(void *record_pointer)
 		case FieldDataType::Bool:
 			return *(bool *)ptr;
 		default:
-			return 0;
+			BUG();
 	}
 
 	return 0;
