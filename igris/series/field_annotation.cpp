@@ -1,5 +1,6 @@
 #include <igris/series/field_annotation.h>
 #include <igris/series/iterator.h>
+#include <igris/util/bug.h>
 
 igris::series_field_annotation::series_field_annotation(const std::string &machname,
         const std::string &username, int offset,
