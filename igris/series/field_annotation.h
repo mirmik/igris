@@ -5,6 +5,8 @@
 
 namespace igris
 {
+    class series_iterator;
+
     enum class FieldDataType
     {
         Float,
@@ -45,75 +47,22 @@ namespace igris
             _u() : flags(0) {}
         } u;
 
+    public:
         series_field_annotation(const std::string &machname,
                                 const std::string &username, int offset,
-                                int size, FieldDataType datatype)
-            : machname(machname), username(username), offset(offset),
-              size(size), datatype(datatype), u()
-        {
-        }
+                                int size, FieldDataType datatype);
 
         series_field_annotation() = default;
-
-        series_field_annotation(const series_field_annotation &oth) =
-            default; /*
-: machname(oth.machname), username(oth.username), offset(oth.offset),
-size(oth.size), datatype(oth.datatype), flags(oth.flags)
-{
-}*/
-
+        series_field_annotation(const series_field_annotation &oth) = default;
         series_field_annotation &
         operator=(const series_field_annotation &oth) = default;
-        /*{
-            this->machname = oth.machname;
-            this->username = oth.username;
-            this->offset = oth.offset;
-            this->size = oth.size;
-            this->datatype = oth.datatype;
-            this->flags = oth.flags;
-            return *this;
-        }*/
 
-        series_field_annotation &scatter(bool en)
-        {
-            u.f.scatter = en;
-            return *this;
-        }
+        bool is_scatter() const;
+        series_field_annotation &scatter(bool en);
 
-        double expand_numeric(void *record_pointer)
-        {
-            char *ptr = ((char *)record_pointer) + offset;
-
-            switch (datatype)
-            {
-            case FieldDataType::Float:
-                return *(float *)ptr;
-            case FieldDataType::Double:
-                return *(double *)ptr;
-            case FieldDataType::I8:
-                return *(int8_t *)ptr;
-            case FieldDataType::I16:
-                return *(int16_t *)ptr;
-            case FieldDataType::I32:
-                return *(int32_t *)ptr;
-            case FieldDataType::I64:
-                return *(int64_t *)ptr;
-            case FieldDataType::U8:
-                return *(uint8_t *)ptr;
-            case FieldDataType::U16:
-                return *(uint16_t *)ptr;
-            case FieldDataType::U32:
-                return *(uint32_t *)ptr;
-            case FieldDataType::U64:
-                return *(uint64_t *)ptr;
-            case FieldDataType::Bool:
-                return *(bool *)ptr;
-            default:
-                return 0;
-            }
-
-            return 0;
-        }
+        double expand_numeric(void *record_pointer);
+        double expand_numeric(series_iterator &iterator);
+        double expand(series_iterator &iterator);
     };
 
     template <class T, FieldDataType Field = FieldDataType::Undefined>

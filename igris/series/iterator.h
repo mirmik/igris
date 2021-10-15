@@ -2,6 +2,7 @@
 #define IGRIS_SERIES_ITERATOR_H
 
 #include <igris/datastruct/dlist.h>
+#include <iterator>
 
 namespace igris
 {
@@ -33,6 +34,15 @@ namespace igris
 
         void *pointer();
         series_block *block();
+    };
+}
+
+namespace std
+{
+    template <> struct iterator_traits<igris::series_iterator>
+    {
+        using difference_type = int;
+        using iterator_category = std::bidirectional_iterator_tag;
     };
 }
 

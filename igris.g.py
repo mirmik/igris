@@ -56,6 +56,7 @@ licant.module("igris.series",
 		"igris/series/series.cpp",
 		"igris/series/iterator.cpp",
 		"igris/series/block.cpp",
+		"igris/series/field_annotation.cpp",
 	]
 )
 
