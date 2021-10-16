@@ -8,6 +8,11 @@ void * igris::series_block::get(int num)
 	return (void*)((char*)ptr + (elemsize() * (strt + num)));
 }
 
+const void * igris::series_block::get(int num) const
+{
+	return (const void*)((char*)ptr + (elemsize() * (strt + num)));
+}
+
 void * igris::series_block::last()
 {
 	assert(fini - 1 >= 0);
@@ -21,7 +26,7 @@ igris::series_block::series_block(igris::series * parent, void* ptr, int size)
 	assert(parent);
 }
 
-bool igris::series_block::has_place()
+bool igris::series_block::has_place() const
 {
 	return size != fini;
 }
@@ -32,7 +37,7 @@ void * igris::series_block::emplace()
 	return (void*)((char*)ptr + (elemsize() * pos));
 }
 
-int igris::series_block::elemsize() 
+int igris::series_block::elemsize() const
 {
 	return parent->elemsize();
 }

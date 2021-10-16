@@ -60,9 +60,9 @@ namespace igris
         bool is_scatter() const;
         series_field_annotation &scatter(bool en);
 
-        double expand_numeric(void *record_pointer);
-        double expand_numeric(series_iterator &iterator);
-        double expand(series_iterator &iterator);
+        double expand_numeric(const void *record_pointer) const;
+        double expand_numeric(const series_iterator &iterator) const;
+        double expand(const series_iterator &iterator) const;
     };
 
     template <class T, FieldDataType Field = FieldDataType::Undefined>

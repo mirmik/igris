@@ -33,7 +33,10 @@ namespace igris
         }
 
         void *pointer();
+        const void *pointer() const;
+
         series_block *block();
+        const series_block *block() const;
     };
 }
 

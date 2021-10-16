@@ -11,7 +11,7 @@ igris::series_field_annotation::series_field_annotation(const std::string &machn
 }
 
 
-double igris::series_field_annotation::expand_numeric(void *record_pointer)
+double igris::series_field_annotation::expand_numeric(const void *record_pointer) const
 {
 	char *ptr = ((char *)record_pointer) + offset;
 
@@ -46,12 +46,12 @@ double igris::series_field_annotation::expand_numeric(void *record_pointer)
 	return 0;
 }
 
-double igris::series_field_annotation::expand_numeric(series_iterator& iterator)
+double igris::series_field_annotation::expand_numeric(const series_iterator& iterator) const
 {
 	return expand_numeric(iterator.pointer());
 }
 
-double igris::series_field_annotation::expand(series_iterator& iterator) 
+double igris::series_field_annotation::expand(const series_iterator& iterator) const
 {
 	return expand_numeric(iterator.pointer());
 }

@@ -7,6 +7,11 @@ void * igris::series_iterator::pointer()
 	return block()->get(num);
 }
 
+const void * igris::series_iterator::pointer() const
+{
+	return block()->get(num);
+}
+
 igris::series_iterator igris::series_iterator::operator++()
 {
 	if (num == -1)
@@ -57,6 +62,12 @@ igris::series_iterator igris::series_iterator::operator--(int)
 }
 
 igris::series_block * igris::series_iterator::block()
+{
+	assert(num != -1);
+	return dlist_entry(block_lnk, series_block, lnk);
+}
+
+const igris::series_block * igris::series_iterator::block() const
 {
 	assert(num != -1);
 	return dlist_entry(block_lnk, series_block, lnk);
