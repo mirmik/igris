@@ -15,8 +15,10 @@ namespace igris
         int num;
 
     public:
-        series_iterator() = default;
+        series_iterator() : block_lnk(nullptr), num(0){};
         series_iterator(dlist_head *block_lnk, int num);
+
+        series_iterator(const series_iterator &) = default;
 
         series_iterator operator++();
         series_iterator operator++(int);

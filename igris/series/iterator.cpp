@@ -9,6 +9,7 @@ void * igris::series_iterator::pointer()
 
 const void * igris::series_iterator::pointer() const
 {
+	assert(block());
 	return block()->get(num);
 }
 
@@ -23,6 +24,7 @@ igris::series_iterator igris::series_iterator::operator++()
 		block_lnk = block_lnk->next;
 		num = 0;
 	}
+
 	return *this;
 }
 
