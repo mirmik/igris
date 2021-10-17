@@ -15,6 +15,7 @@ namespace igris
         int num;
 
     public:
+        series_iterator() = default;
         series_iterator(dlist_head *block_lnk, int num);
 
         series_iterator operator++();
@@ -37,6 +38,8 @@ namespace igris
 
         series_block *block();
         const series_block *block() const;
+
+        template <class T> T &get() { return *(T *)pointer(); }
     };
 }
 
