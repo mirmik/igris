@@ -39,7 +39,6 @@ igris::series_iterator igris::series_iterator::operator--()
 	num--;
 	if (num == block()->strt-1)
 	{
-		dprln("FFFFF");
 		block_lnk = block_lnk->prev;
 		if (&parent->blocks != block_lnk) 
 			num = 0;
