@@ -125,7 +125,7 @@ igris::series_iterator igris::series::begin()
 
 igris::series_iterator igris::series::end()
 {
-	return { &blocks, -1 };
+	return { &blocks, 0 };
 }
 
 
