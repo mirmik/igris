@@ -1,6 +1,5 @@
 #include <igris/series/field_annotation.h>
 #include <igris/series/iterator.h>
-#include <igris/util/bug.h>
 
 igris::series_field_annotation::series_field_annotation(const std::string &machname,
         const std::string &username, int offset,
@@ -40,7 +39,7 @@ double igris::series_field_annotation::expand_numeric(const void *record_pointer
 		case FieldDataType::Bool:
 			return *(bool *)ptr;
 		default:
-			BUG();
+            return 0;
 	}
 
 	return 0;

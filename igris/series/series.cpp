@@ -22,7 +22,6 @@ void igris::series::add_block(int size)
 	void * ptr = allocator.allocate(size * _elemsize);
 	auto * block = new series_block(this, ptr, size);
 
-	DPRINTPTR(block);
 	dlist_add(&block->lnk, &blocks);
 }
 
@@ -114,7 +113,6 @@ igris::series_iterator igris::series::get_iterator(int num)
 		}
 	}
 
-	BUG();
 	return end();
 }
 
