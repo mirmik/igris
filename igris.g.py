@@ -1,5 +1,14 @@
 import licant
 
+licant.module("igris.portable_base",
+	mdepends=[
+		"igris.include",
+		"igris.util",
+		"igris.bug",
+		("igris.dprint", "user"),
+	] 
+)
+
 MODULES = [
 	"igris.include",
 	"igris.util",
@@ -8,15 +17,11 @@ MODULES = [
 	"igris.time",
 	"igris.trent",
 	"igris.semaphore",
-
 	"igris.syslock",
 	"igris.ctrobj",
-
 	"igris.protocols.gstuff",
 	"igris.crypt.aes",
-
 	"igris.systime",
-
 #	"igris.os_extension"
 ]
 

@@ -1,10 +1,14 @@
-#if __has_include(<signal.h>)
-#include <signal.h>
-#else
+//#if __has_include(<signal.h>)
+//#include <signal.h>
+//#else
 
-#define SIGHUP 1
+/*#define SIGHUP 1*/
+
+#ifndef SIGINT
 #define SIGINT 2
-#define SIGQUIT 3
+#endif
+
+/*#define SIGQUIT 3
 #define SIGILL 4
 #define SIGTRAP 5
 #define SIGABRT 6
@@ -34,6 +38,6 @@
 #define SIGIO 29
 #define SIGPWR 30
 #define SIGSYS 31
-#define SIGUNUSED 31
+#define SIGUNUSED 31*/
 
-#endif
+//#endif
