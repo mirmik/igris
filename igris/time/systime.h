@@ -9,7 +9,7 @@
 #if __has_include(<asm/systime.h>)
 #include <asm/systime.h>
 #else
-typedef uint64_t systime_t;
+typedef int64_t systime_t;
 typedef int64_t systime_difference_t;
 #endif
 

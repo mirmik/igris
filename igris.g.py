@@ -21,7 +21,6 @@ MODULES = [
 	"igris.ctrobj",
 	"igris.protocols.gstuff",
 	"igris.crypt.aes",
-	"igris.systime",
 #	"igris.os_extension"
 ]
 
@@ -187,10 +186,9 @@ licant.module("igris.time", "posix",
 licant.module("igris.crypt.aes", 
 	sources = ["igris/crypt/aes.c"])
 
-licant.module("igris.systime", 
-	src = [
-		"igris/time/systime.c",
-		"igris/time/jiffies.c",
+licant.module("igris.systime", "jiffies",
+	sources = [
+		"igris/time/jiffies-systime.c"
 	]
 )
 
