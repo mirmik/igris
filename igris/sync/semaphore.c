@@ -1,5 +1,7 @@
 #include <igris/sync/semaphore.h>
 
+#if !__has_include(<semaphore.h>)
+
 void sem_init(struct semaphore *sem, int val)
 {
     sem->count = val;
@@ -63,3 +65,5 @@ int sem_value(struct semaphore *sem)
 
     return count;
 }
+
+#endif
