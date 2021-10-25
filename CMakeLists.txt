@@ -63,7 +63,7 @@ target_include_directories(igris PRIVATE .)
 
 add_executable(igris_test ${SOURCES_TEST})
 target_include_directories(igris_test PRIVATE . tests)
-target_link_libraries(igris_test)
+target_link_libraries(igris_test rt pthread)
 
 if (UNIX AND NOT APPLE)
 	install(TARGETS ${PROJECT_NAME}

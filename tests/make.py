@@ -27,6 +27,8 @@ application("runtests",
 		"igris.series", 
 		("igris.dprint", "user")
 	],
+
+	libs = ["rt", "pthread"]
 )
 
 licant.ex("runtests")

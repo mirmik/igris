@@ -6,7 +6,7 @@ typedef int64_t jiffies_t;
 
 __BEGIN_DECLS
 
-void system_tick();
+void jiffies_increment();
 jiffies_t jiffies();
 uint32_t systime_lomax();
 uint32_t systime_lopart();
