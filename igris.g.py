@@ -143,8 +143,8 @@ licant.module("igris.printf_impl",
 	sources=["igris/util/printf_impl.c"]
 )
 
-licant.module("igris.syslock", impl="genos.atomic", 
-	sources=["igris/sync/syslock_genos_atomic.cpp"])
+licant.module("igris.syslock", impl="irqs", 
+	sources=["igris/sync/syslock_irqs.c"])
 
 licant.module("igris.syslock", impl="mutex", 
 	sources=["igris/sync/syslock_mutex.cpp"], default=True)

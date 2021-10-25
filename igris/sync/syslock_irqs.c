@@ -1,12 +1,10 @@
-#include <hal/irq.h>
+#include <asm/irq.h>
 #include <igris/sync/syslock.h>
-
+#include <igris/compiler.h>
 #include <assert.h>
 
 static irqstate_t save;
 static volatile int count = 0;
-
-__BEGIN_DECLS
 
 void system_lock()
 {
@@ -16,7 +14,7 @@ void system_lock()
         save = tmpsave;
 
     ++count;
-    assert(count < 10);
+    assert(count == 0);
 }
 
 void system_unlock()
@@ -31,7 +29,4 @@ void system_unlock()
 void syslock_reset() { count = 0; }
 
 int syslock_counter() { return count; }
-
 void syslock_counter_set(int newcount) { count = newcount; }
-
-__END_DECLS

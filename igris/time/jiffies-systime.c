@@ -27,7 +27,10 @@ jiffies_t jiffies()
     return ticks;
 }
 
-void jiffies_increment() { __jiffies++; }
+void jiffies_increment()
+{
+    __jiffies++;
+}
 
 void systime_set_frequency(uint32_t freq)
 {
@@ -35,7 +38,7 @@ void systime_set_frequency(uint32_t freq)
     lopart_to_micros = ((uint32_t)1000 << FREQSHIFT2) / systime_lomax();
 }
 
-void delay(double d)
+void delay(systime_t d)
 {
     jiffies_t n = millis();
     jiffies_t f = n + d;
@@ -95,4 +98,7 @@ systime_t micros()
     return jiffies_pair_to_micros(pair);
 }
 
-systime_t millis() { return (jiffies() * jiffies_to_millis) >> FREQSHIFT; }
+systime_t millis()
+{
+    return (jiffies() * jiffies_to_millis) >> FREQSHIFT;
+}

@@ -16,7 +16,10 @@ typedef int64_t systime_difference_t;
 __BEGIN_DECLS
 
 systime_t system_time();
-static inline systime_t systime() { return system_time(); }
+static inline systime_t systime()
+{
+    return system_time();
+}
 float systime_frequency();
 
 uint64_t systime_millis();
@@ -39,6 +42,8 @@ static inline systime_difference_t ns2systime(double ns)
 systime_t millis();
 systime_t micros();
 systime_t nanos();
+
+void delay(systime_t ms);
 
 __END_DECLS
 
