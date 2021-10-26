@@ -1,7 +1,7 @@
 #include <asm/irq.h>
-#include <igris/sync/syslock.h>
-#include <igris/compiler.h>
 #include <assert.h>
+#include <igris/compiler.h>
+#include <igris/sync/syslock.h>
 
 static irqstate_t save;
 static volatile int count = 0;
@@ -14,13 +14,13 @@ void system_lock()
         save = tmpsave;
 
     ++count;
-    assert(count == 0);
+    // assert(count == 0);
 }
 
 void system_unlock()
 {
     --count;
-    assert(count >= 0);
+    // assert(count >= 0);
 
     if (count == 0)
         irqs_restore(save);
