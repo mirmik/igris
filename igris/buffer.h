@@ -2,14 +2,15 @@
     @file
 */
 
-#ifndef IGRIS_BUFFER_H
-#define IGRIS_BUFFER_H
+#ifndef IGRIS_BUFFER_H_
+#define IGRIS_BUFFER_H_
 
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <igris/util/__include_string_view.h>
+#include <string>
 
 namespace igris
 {
@@ -108,4 +109,4 @@ namespace igris
     }
 }
 
-#endif
+#endif // IGRIS_BUFFER_H_
