@@ -148,7 +148,8 @@ namespace igris
             {
                 uint16_t sz;
                 load(sz);
-                assert(sz <= maxsz);
+                if (sz > maxsz)
+                    sz = maxsz;
                 load_data(dat, sz);
             }
 

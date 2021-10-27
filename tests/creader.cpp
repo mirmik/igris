@@ -3,21 +3,21 @@
 
 #include <string>
 
-TEST_CASE("creader.readline") 
+TEST_CASE("creader.readline")
 {
-	const char * str = " lalalal \n casdc  \r\n ";
+    const char *str = " lalalal \n casdc  \r\n ";
 
-	struct creader reader;
-	const char * token;
-	int len;
+    struct creader reader;
+    const char *token;
+    int len;
 
-	creader_init(&reader, str, strlen(str));
+    creader_init(&reader, str, strlen(str));
 
-	len = creader_readline(&reader, &token);
-	CHECK_EQ(len, 9);
-	CHECK_EQ(std::string(token, len), std::string(" lalalal "));
+    len = creader_readline(&reader, &token);
+    CHECK_EQ(len, 9);
+    CHECK_EQ(std::string(token, len), std::string(" lalalal "));
 
-	len = creader_readline(&reader, &token);
-	CHECK_EQ(len, 8);
-	CHECK_EQ(std::string(token, len), std::string(" casdc  "));
+    len = creader_readline(&reader, &token);
+    CHECK_EQ(len, 8);
+    CHECK_EQ(std::string(token, len), std::string(" casdc  "));
 }

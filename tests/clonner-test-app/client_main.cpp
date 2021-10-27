@@ -1,17 +1,17 @@
-#include <nos/print.h>
 #include <nos/io/stdfile.h>
+#include <nos/print.h>
 
-#include <thread>
 #include <chrono>
+#include <thread>
 
 using namespace std::chrono_literals;
 
-int main() 
+int main()
 {
-	nos::println("stdout:HelloWorld");
-	nos::println_to(nos::cerr, "stderr:HelloWorld");
+    nos::println("stdout:HelloWorld");
+    nos::println_to(nos::cerr, "stderr:HelloWorld");
 
-	std::this_thread::sleep_for(500ms);
+    std::this_thread::sleep_for(500ms);
 
-	nos::println_to(nos::cerr, "stderr:AfterSleep");
+    nos::println_to(nos::cerr, "stderr:AfterSleep");
 }
