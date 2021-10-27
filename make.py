@@ -9,7 +9,12 @@ licant.execute("igris.g.py")
 
 licant.cli.add_argument("--toolchain")
 opts, args = licant.cli.parse()
-toolchain = licant.cxx_make.gcc_toolchain(opts.toolchain)
+
+if hasattr(licant, 'gcc_toolchain'):
+	toolchain = licant.cxx_make.gcc_toolchain(opts.toolchain)
+else:
+	toolchain = licant.cxx_make.toolchain_gcc(opts.toolchain)
+
 
 target = lambda suffix: "libigris.{}".format(suffix)
 
