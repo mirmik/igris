@@ -20,7 +20,7 @@ namespace igris
 
     public:
         // Create an object in aligned storage
-        template <typename... Args> void emplace_back(Args &&...args)
+        template <typename... Args> void emplace_back(Args &&... args)
         {
             if (m_size >= N)
                 return;

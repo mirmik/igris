@@ -8,7 +8,7 @@ namespace igris
 {
     template <class T> class test_allocator : public std::allocator<T>
     {
-      public:
+    public:
         int allocations = 0;
         int deallocations = 0;
         int current = 0;

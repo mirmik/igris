@@ -25,7 +25,6 @@ int msleep(int64_t m)
     return 0;
 }
 
-
 /*double igris::time()
 {
     auto duration = std::chrono::system_clock::now().time_since_epoch();
@@ -44,12 +43,9 @@ systime_t igris::nanos()
 
 static int64_t __local_time = igris::nanos();
 
-void igris::start_local_time() 
-{
-    __local_time = igris::nanos();
-}
+void igris::start_local_time() { __local_time = igris::nanos(); }
 
-double igris::local_time() 
+double igris::local_time()
 {
-    return (double)((igris::nanos() - __local_time)*1e-9);
+    return (double)((igris::nanos() - __local_time) * 1e-9);
 }

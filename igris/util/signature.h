@@ -13,12 +13,12 @@
 #define IGRIS_SIGNATURE_ATTRIBUTE_CHECKER(name, attr)                          \
     template <class T> class name##_checker_class                              \
     {                                                                          \
-      private:                                                                 \
+    private:                                                                   \
         template <class U>                                                     \
         static decltype(&U::attr, std::true_type()) test(int);                 \
         template <class> static std::false_type test(...);                     \
                                                                                \
-      public:                                                                  \
+    public:                                                                    \
         static constexpr const bool value = decltype(test<T>(0))::value;       \
     };                                                                         \
                                                                                \

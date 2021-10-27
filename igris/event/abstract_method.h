@@ -19,7 +19,7 @@ namespace igris
 
         mtd_t method;
 
-      public:
+    public:
         template <typename T> abstract_method(R (T::*mtd)(Args...))
         {
             method = horrible_cast<mtd_t, R (T::*)(Args...)>(mtd);

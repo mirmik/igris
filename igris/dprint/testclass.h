@@ -6,7 +6,7 @@ class TestClass
 
     const char *mnem = nullptr;
 
-  public:
+public:
     const char *data() const { return "TestClass::data"; }
     size_t size() const { return 15; }
 

@@ -37,7 +37,7 @@ namespace igris
                 std::string str;
             };
 
-          public:
+        public:
             opt(const char *l, char s, bool def)
                 : long_name(l), short_name(s), type(Type::Bool), b(def)
             {
@@ -80,7 +80,7 @@ namespace igris
             }
         };
 
-      public:
+    public:
         std::vector<opt> opts;
         std::vector<std::string> args;
 

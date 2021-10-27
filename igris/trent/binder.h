@@ -73,16 +73,16 @@ namespace igris
         mutable bool synced = false;
         mutable T _local;
 
-      public:
+    public:
         trent_binder(){};
 
         template <typename... Args>
-        trent_binder(Args &&...args) : saver(std::forward<Args>(args)...)
+        trent_binder(Args &&... args) : saver(std::forward<Args>(args)...)
         {
             sync();
         }
 
-        template <typename... Args> void init(Args &&...args)
+        template <typename... Args> void init(Args &&... args)
         {
             saver.init(args...);
         }

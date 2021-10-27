@@ -27,7 +27,7 @@ namespace igris
     {
         const char *ptr;
 
-      public:
+    public:
         binreader() {}
         binreader(const char *ptr) : ptr(ptr) {}
 

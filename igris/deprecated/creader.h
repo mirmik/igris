@@ -3,8 +3,8 @@
 
 #warning Deprecated need reimplement with binreader
 
-#include <string>
 #include <igris/buffer.h>
+#include <string>
 
 namespace igris
 {
@@ -33,7 +33,7 @@ namespace igris
     {
         const char *ptr;
 
-      public:
+    public:
         creader(const char *_ptr) : ptr(_ptr) {}
 
         template <typename Functor> std::string string_while(Functor &&func)

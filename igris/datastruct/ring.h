@@ -49,10 +49,7 @@ static inline int ring_fixup_index(struct ring_head *r, int index)
     return index % r->size;
 }
 
-static inline int ring_empty(struct ring_head *r)
-{
-    return r->head == r->tail;
-}
+static inline int ring_empty(struct ring_head *r) { return r->head == r->tail; }
 
 static inline int ring_full(struct ring_head *r)
 {

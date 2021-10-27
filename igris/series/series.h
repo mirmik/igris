@@ -81,7 +81,7 @@ namespace igris
         ~series();
     };
 
-    template <class T, class... Args> series make_series(Args &&...args)
+    template <class T, class... Args> series make_series(Args &&... args)
     {
         return igris::series(sizeof(T), args...);
     }

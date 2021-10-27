@@ -11,7 +11,7 @@ namespace gxx
         class directory
         {
 
-          public:
+        public:
             directory(gxx::path pth);
 
             bool exist();

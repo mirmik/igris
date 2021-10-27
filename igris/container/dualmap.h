@@ -7,10 +7,10 @@ namespace igris
 {
     template <class K1, class K2, class T> class dualmap
     {
-      private:
+    private:
         struct record;
 
-      public:
+    public:
         using origin_t = std::map<std::pair<K1, K2>, record>;
         using iter0 = typename origin_t::iterator;
 
@@ -21,7 +21,7 @@ namespace igris
 
         using Key = std::pair<K1, K2>;
 
-      private:
+    private:
         origin_t origin;
         hash1_t hash1;
         hash2_t hash2;
@@ -33,7 +33,7 @@ namespace igris
             T val;
         };
 
-      public:
+    public:
         std::tuple<iter0, iter1, iter2, bool> insert(const K1 &k1, const K2 &k2,
                                                      const T &val)
         {

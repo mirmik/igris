@@ -11,12 +11,12 @@ namespace igris
 {
     class event
     {
-      private:
+    private:
         bool m_bFlag;
         mutable std::mutex m_mutex;
         mutable std::condition_variable m_condition;
 
-      public:
+    public:
         inline event() : m_bFlag(false) {}
 
         inline void wait() const

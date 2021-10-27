@@ -3,41 +3,35 @@
 
 #include <cassert>
 
-void * igris::series_block::get(int num)
+void *igris::series_block::get(int num)
 {
-	return (void*)((char*)ptr + (elemsize() * (strt + num)));
+    return (void *)((char *)ptr + (elemsize() * (strt + num)));
 }
 
-const void * igris::series_block::get(int num) const
+const void *igris::series_block::get(int num) const
 {
-	return (const void*)((char*)ptr + (elemsize() * (strt + num)));
+    return (const void *)((char *)ptr + (elemsize() * (strt + num)));
 }
 
-void * igris::series_block::last()
+void *igris::series_block::last()
 {
-	assert(fini - 1 >= 0);
-	assert(fini - 1 < size);
-	return (void*)((char*)ptr + (elemsize() * (fini - 1)));
+    assert(fini - 1 >= 0);
+    assert(fini - 1 < size);
+    return (void *)((char *)ptr + (elemsize() * (fini - 1)));
 }
 
-igris::series_block::series_block(igris::series * parent, void* ptr, int size)
-	: parent(parent), ptr(ptr), size(size), strt(0), fini(0)
+igris::series_block::series_block(igris::series *parent, void *ptr, int size)
+    : parent(parent), ptr(ptr), size(size), strt(0), fini(0)
 {
-	assert(parent);
+    assert(parent);
 }
 
-bool igris::series_block::has_place() const
+bool igris::series_block::has_place() const { return size != fini; }
+
+void *igris::series_block::emplace()
 {
-	return size != fini;
+    int pos = fini++;
+    return (void *)((char *)ptr + (elemsize() * pos));
 }
 
-void * igris::series_block::emplace()
-{
-	int pos = fini++;
-	return (void*)((char*)ptr + (elemsize() * pos));
-}
-
-int igris::series_block::elemsize() const
-{
-	return parent->elemsize();
-}
+int igris::series_block::elemsize() const { return parent->elemsize(); }
