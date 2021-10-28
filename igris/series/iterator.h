@@ -9,11 +9,11 @@ namespace igris
 
     class series_iterator
     {
-      public:
+    public:
         dlist_head *block_lnk;
         int num;
 
-      public:
+    public:
         series_iterator(dlist_head *block_lnk, int num);
 
         series_iterator operator++();

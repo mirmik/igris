@@ -16,10 +16,7 @@ typedef int64_t systime_difference_t;
 __BEGIN_DECLS
 
 systime_t system_time();
-static inline systime_t systime()
-{
-    return system_time();
-}
+static inline systime_t systime() { return system_time(); }
 float systime_frequency();
 
 uint64_t systime_millis();

@@ -19,14 +19,14 @@ namespace igris
               class Alloc2 = std::allocator<T>>
     class chunked_vector
     {
-      public:
+    public:
         std::vector<T *, Alloc1> _chunks;
         const size_t _chunk_size;
         size_t _size_of_last = 0;
         Alloc2 alloc2;
         T *last_chunk = nullptr;
 
-      public:
+    public:
         chunked_vector(size_t chunk_size)
             : _chunk_size(chunk_size), _size_of_last(chunk_size)
         {
@@ -84,7 +84,7 @@ namespace igris
             ret.resize(size());
 
             auto dit = ret.begin();
-            for (int i = 0; i < _chunks.size() - 1; ++i)
+            for (unsigned int i = 0; i < _chunks.size() - 1; ++i)
             {
                 igris::array_view<T> ch{_chunks[i], _chunk_size};
                 std::copy(ch.begin(), ch.end(), dit);

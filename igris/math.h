@@ -1,8 +1,8 @@
 #ifndef IGRIS_MATH_H
 #define IGRIS_MATH_H
 
+#include <igris/math/convertors.h>
 #include <igris/math/defs.h>
-#include <igris/math/deg.h>
 
 #define CLAMP(val, lo, hi) ((val) < (lo) ? (lo) : (val) > (hi) ? (hi) : (val))
 

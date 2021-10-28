@@ -24,19 +24,14 @@ namespace igris
 
             class unexpected_symbol : public std::runtime_error
             {
-                char symb;
-
-              public:
+            public:
                 unexpected_symbol(char symb)
-                    : symb(symb), std::runtime_error("wuuuui")
+                    : std::runtime_error(std::string("unexpected:") + symb)
                 {
-                    dprln();
-                    dprchar(symb);
-                    dprln();
                 }
             };
 
-          public:
+        public:
             virtual ~parser() {}
             virtual char readnext_impl() = 0;
 
@@ -308,7 +303,7 @@ namespace igris
         {
             const char *ptr;
 
-          public:
+        public:
             parser_cstr(const char *str) : ptr(str) {}
 
             char readnext_impl() { return *ptr++; }
@@ -318,7 +313,7 @@ namespace igris
         {
             const char *ptr;
 
-          public:
+        public:
             parser_str(const std::string &str) : ptr(str.data()) {}
 
             char readnext_impl() { return *ptr++; }
@@ -328,23 +323,14 @@ namespace igris
         {
             std::istream &is;
 
-          public:
+        public:
             parser_input_stream(std::istream &is) : is(is) {}
 
             char readnext_impl() { return is.get(); }
         };
 
-        static igris::trent parse(const char *str)
-        {
-            parser_cstr parser(str);
-            return parser.parse();
-        }
-
-        static igris::trent parse(const std::string &str)
-        {
-            parser_str parser(str);
-            return parser.parse();
-        }
+        igris::trent parse(const char *str);
+        igris::trent parse(const std::string &str);
 
         template <template <class Allocator> class TAlloc = std::allocator,
                   class Output>

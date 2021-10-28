@@ -29,10 +29,11 @@ sources = [
 	"igris/util/string.cpp",
 	"igris/string/replace.cpp",
 	"igris/string/hexascii_string.cpp",
-	#"igris/sclonner.cpp",
 	"igris/deprecated/path.cpp",
 ],
 mdepends=MODULES)
+
+licant.module("igris.sclonner", sources=["igris/sclonner.cpp"])
 
 licant.module("igris.executor", sources=["igris/shell/executor.cpp",])
 
@@ -159,7 +160,7 @@ licant.module("igris.ctrobj", "linux",
 )
 
 licant.module("igris.trent",
-	sources = ["igris/trent/trent.cpp"]
+	sources = ["igris/trent/trent.cpp", "igris/trent/json.cpp"]
 )
 
 #################################################################

@@ -7,19 +7,11 @@ namespace igris
     {
         int value = 0;
 
-      public:
-        size_incrementor()
-        {
-        }
-        size_incrementor(int size) : value(size)
-        {
-        }
+    public:
+        size_incrementor() {}
+        size_incrementor(int size) : value(size) {}
 
-        template <class T>
-        int increment()
-        {
-            return increment(sizeof(T));
-        }
+        template <class T> int increment() { return increment(sizeof(T)); }
 
         int increment(int size)
         {

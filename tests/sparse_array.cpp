@@ -9,15 +9,15 @@ struct A
 
 TEST_CASE("sparse_array") 
 {
-	A a, b;
+	A a[2];
 
-	a.i = 1;
-	a.j = 2;
-	b.i = 3;
-	b.j = 4;
+	a[0].i = 1;
+	a[0].j = 2;
+	a[1].i = 3;
+	a[1].j = 4;
 
-	SPARSE_ARRAY(array0, &a.i, sizeof(A));
-	SPARSE_ARRAY(array1, &a.j, sizeof(A));
+	SPARSE_ARRAY(array0, &a[0].i, sizeof(A));
+	SPARSE_ARRAY(array1, &a[0].j, sizeof(A));
 
 	CHECK_EQ(sparse_array_ref(&array0, 0, int), 1);
 	CHECK_EQ(sparse_array_ref(&array0, 1, int), 3);
@@ -25,8 +25,8 @@ TEST_CASE("sparse_array")
 	CHECK_EQ(sparse_array_ref(&array1, 1, int), 4);
 
 	
-	int * it = &a.i;
-	CHECK_EQ(sparse_array_next(it, array0.stride), &b.i);
+	int * it = &a[0].i;
+	CHECK_EQ(sparse_array_next(it, array0.stride), &a[1].i);
 
 	int acc = 0;
 	sparse_array_for_each(it, &array0, 2) 

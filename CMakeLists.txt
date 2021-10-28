@@ -42,6 +42,9 @@ file(GLOB SOURCES
 	igris/osinter/ktimer.c
 	igris/osutil/realtime.c
 	igris/binreader.c
+	igris/block.cpp
+	igris/iterator.cpp
+	igris/series.cpp
 )
 
 if (UNIX)

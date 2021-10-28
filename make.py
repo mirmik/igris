@@ -17,7 +17,8 @@ modules = [
 		"igris",
 		"igris.dprint",
 		"igris.protocols.gstuff",
-		"igris.series"
+		"igris.series",
+		"igris.sclonner"
 	]
 
 CCFLAGS = '-fPIC -Wall -pedantic-errors -Wreturn-type -Wno-gnu-zero-variadic-macro-arguments'
@@ -30,8 +31,8 @@ licant.cxx_library("shared",
 	cxx_flags = CXXFLAGS,
 	cc_flags = CCFLAGS,
 	shared = True,
-	cxxstd = "gnu++17",
-	ccstd = "gnu11",
+	cxxstd = "c++17 -g",
+	ccstd = "c11 -g",
 	optimize = "-O3"
 )
 

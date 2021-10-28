@@ -24,4 +24,4 @@ TEST_CASE("hexascii")
 	CHECK_EQ(res2[1], 0xCD);
 	CHECK_EQ(res2[2], 0xEF);
 	CHECK_EQ(res2[3], 0x23);
-};
+}

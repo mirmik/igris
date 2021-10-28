@@ -8,7 +8,7 @@ namespace igris
         halfer *opposite = nullptr;
         ~halfer();
 
-      public:
+    public:
         bool is_alive();
 
         friend void connect_halfers(halfer *a, halfer *b);

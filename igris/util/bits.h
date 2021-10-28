@@ -146,11 +146,12 @@ static inline uint32_t bits_multimap_fullset(uint16_t input, uint8_t cllen)
 
 // Присвоит переменной target результат bits_multimap (см. выше),
 // изменяя только биты, попадающие под маску.
-#define bits_masked_assign_multimap(target, input, clone, cllen)               \
-    ({                                                                         \
-        uint32_t macro_value_a = bits_multimap(input, clone, cllen);           \
-        uint32_t macro_value_b = bits_multimap_fullset(input, cllen);          \
-        bits_assign(target, macro_value_b, macro_value_a);                     \
-    })
+static inline void bits_masked_assign_multimap(uint32_t *target, uint16_t input,
+                                               uint32_t clone, uint8_t cllen)
+{
+    uint32_t macro_value_a = bits_multimap(input, clone, cllen);
+    uint32_t macro_value_b = bits_multimap_fullset(input, cllen);
+    bits_assign(*target, macro_value_b, macro_value_a);
+}
 
 #endif

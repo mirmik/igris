@@ -5,8 +5,8 @@
 @file
 */
 
-#include <igris/serialize/helper.h>
 #include <igris/buffer.h>
+#include <igris/serialize/helper.h>
 
 #if __has_include(<string_view>)
 #include <string_view>
@@ -30,7 +30,7 @@ namespace igris
 
         class binary_serializer_basic
         {
-          public:
+        public:
             template <typename T> void operator&(const T &obj)
             {
                 igris::serialize(*this, obj);
@@ -85,7 +85,7 @@ namespace igris
 
         class binary_string_writer : public binary_serializer_basic
         {
-          public:
+        public:
             std::string &sstr;
 
             void dump_data(const char *dat, uint16_t size) override
@@ -98,7 +98,7 @@ namespace igris
 
         class binary_buffer_writer : public binary_serializer_basic
         {
-          public:
+        public:
             char *ptr;
             char *_end;
 
@@ -116,7 +116,7 @@ namespace igris
 
         class writable_buffer : public igris::buffer
         {
-          public:
+        public:
             writable_buffer &operator=(const igris::buffer &oth)
             {
                 igris::buffer::operator=(oth);
@@ -126,16 +126,16 @@ namespace igris
 
         class settable_buffer
         {
-          public:
+        public:
             igris::buffer &ref;
 
-          public:
+        public:
             settable_buffer(igris::buffer &buf) : ref(buf) {}
         };
 
         class binary_deserializer_basic
         {
-          public:
+        public:
             template <typename T> void operator&(T &&obj)
             {
                 igris::deserialize(*this, obj);
@@ -226,7 +226,7 @@ namespace igris
 
         class binary_buffer_reader : public binary_deserializer_basic
         {
-          public:
+        public:
             const char *ptr;
             const char *_end;
 

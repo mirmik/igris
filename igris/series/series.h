@@ -18,7 +18,7 @@ namespace igris
 
     class series
     {
-      public:
+    public:
         dlist_head blocks = DLIST_HEAD_INIT(blocks);
         int _elemsize;
         int block_size_hint = 100;
@@ -26,7 +26,7 @@ namespace igris
 
         std::allocator<char> allocator;
 
-      public:
+    public:
         series(int elemsize);
         series(const series &) = delete;
         series(series &&oth)
@@ -35,7 +35,7 @@ namespace igris
             _elemsize = oth._elemsize;
             block_size_hint = oth.block_size_hint;
             _annotator = std::move(oth._annotator);
-            allocator = std::move(allocator);
+            allocator = std::move(oth.allocator);
         }
 
         int elemsize() { return _elemsize; }
@@ -77,6 +77,8 @@ namespace igris
         }
 
         int count_of_blocks() { return dlist_size(&blocks); }
+
+        ~series();
     };
 
     template <class T, class... Args> series make_series(Args &&...args)

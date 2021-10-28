@@ -9,17 +9,17 @@ namespace igris
 
     class series_block
     {
-      public:
+    public:
         dlist_head lnk = DLIST_HEAD_INIT(lnk);
 
-      public:
+    public:
         igris::series *parent;
         void *ptr;
         int size;
         int strt = 0;
         int fini = 0;
 
-      public:
+    public:
         int elemsize();
         void *get(int num);
         void *last();
