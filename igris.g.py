@@ -11,7 +11,7 @@ licant.module("igris.portable_base",
 
 MODULES = [
 	"igris.include",
-	"igris.util",
+	"igris.utilxx",
 	"igris.bug",
 	"igris.dprint",
 	"igris.time",
@@ -30,9 +30,6 @@ if sys.platform == "linux":
 licant.module("igris", 
 sources = [
 	"igris/datastruct/stimer.c",
-	"igris/util/string.cpp",
-	"igris/string/replace.cpp",
-	"igris/string/hexascii_string.cpp",
 	"igris/deprecated/path.cpp",
 ],
 mdepends=MODULES)
@@ -134,6 +131,16 @@ licant.module("igris.util", sources=[
 	],
 	mdepends = [
 		"igris.bug"
+	]
+)
+
+licant.module("igris.utilxx", sources=[
+		"igris/util/string.cpp",
+		"igris/string/replace.cpp",
+		"igris/string/hexascii_string.cpp",		
+	],
+	mdepends = [
+		"igris.util",
 	]
 )
 
