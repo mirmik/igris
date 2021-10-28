@@ -7,6 +7,9 @@ set(CMAKE_CC_STANDARD 11)
 
 set (PLATFORM_SOURCES )
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIE")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
+
 if (WIN32 OR WIN64)
 	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS")
@@ -56,6 +59,9 @@ endif()
 file(GLOB SOURCES_TEST 
 	${SOURCES}
 	tests/*.cpp
+	container/*.cpp
+	shell/*.cpp
+	series/*.cpp
 )
 
 add_library(igris SHARED ${SOURCES} ${PLATFORM_SOURCES} igris/dprint/dprint_stdout.c)
