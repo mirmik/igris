@@ -22,7 +22,6 @@ extern "C" void debug_write(const char *c, int i)
 #include "event.hpp"
 #include "numconvert.hpp"
 #include "osutil.hpp"
-#include "serialize.hpp"
 #include "signature.hpp"
 #include "sync.hpp"
 #include "test_allocator.hpp"

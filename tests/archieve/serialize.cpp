@@ -1,3 +1,4 @@
+#include <doctest/doctest.h>
 #include <igris/serialize/serialize.h>
 #include <igris/serialize/stdtypes.h>
 
@@ -21,7 +22,7 @@ struct A
 	}
 };
 
-LT_BEGIN_TEST(igris_test_suite, serialize_type_int32_t)
+TEST_CASE("serialize_type_int32_t")
 {
 	int32_t a = 89;
 	
@@ -31,9 +32,8 @@ LT_BEGIN_TEST(igris_test_suite, serialize_type_int32_t)
 	CHECK_EQ(r, a);
 	CHECK_EQ(s.size(), sizeof(a));
 }
-LT_END_TEST(serialize_type_int32_t)
 
-LT_BEGIN_TEST(igris_test_suite, serialize_type_float)
+TEST_CASE("serialize_type_float")
 {
 	float a = 0.15;
 	
@@ -43,9 +43,8 @@ LT_BEGIN_TEST(igris_test_suite, serialize_type_float)
 	CHECK_EQ(r, a);
 	CHECK_EQ(s.size(), sizeof(a));
 }
-LT_END_TEST(serialize_type_float)
 
-LT_BEGIN_TEST(igris_test_suite, serialize_object)
+TEST_CASE("serialize_object")
 {
 	A a;
 	A b;
@@ -54,40 +53,36 @@ LT_BEGIN_TEST(igris_test_suite, serialize_object)
 	auto r = igris::deserialize<A>(s);
 
 	CHECK_EQ(s.size(), sizeof(A::a) + sizeof(A::b) + sizeof(A::c));
-	CHECK(r == b);
+	CHECK_EQ(r, b);
 }
-LT_END_TEST(serialize_object)
 
-LT_BEGIN_TEST(igris_test_suite, serialize_vector)
+TEST_CASE("serialize_vector")
 {
 	std::vector<int32_t> a = { 33, 44, 55 };
 	
 	auto s = igris::serialize(a);
 	auto r = igris::deserialize<std::vector<int32_t>>(s);
 
-	CHECK(r == a);
+	CHECK_EQ(r, a);
 	CHECK_EQ(s.size(), sizeof(typename decltype(a)::value_type) * a.size() + sizeof(uint16_t));
 }
-LT_END_TEST(serialize_vector)
 
-LT_BEGIN_TEST(igris_test_suite, serialize_map)
+TEST_CASE("serialize_map")
 {
 	std::map<std::string, int32_t> a = { {"A", 33}, {"B", 44}, {"C",55} };
 	
 	auto s = igris::serialize(a);
 	auto r = igris::deserialize<decltype(a)>(s);
 
-	CHECK(r == a);
+	CHECK_EQ(r, a);
 }
-LT_END_TEST(serialize_map)
 
-LT_BEGIN_TEST(igris_test_suite, serialize_string)
+TEST_CASE("serialize_string")
 {
 	std::string a = "hello world";
 	
 	auto s = igris::serialize(a);
 	auto r = igris::deserialize<std::string>(s);
 
-	CHECK(r == a);
+	CHECK_EQ(r, a);
 }
-LT_END_TEST(serialize_string)
