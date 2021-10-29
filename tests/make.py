@@ -14,7 +14,7 @@ application("runtests",
 		"container/*.cpp",
 		"shell/*.cpp",
 		"series/*.cpp",
-		"archieve/*.cpp",
+		"archive/*.cpp",
 	],
 
 	cxxstd="c++20",

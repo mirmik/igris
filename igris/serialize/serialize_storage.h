@@ -11,6 +11,9 @@
 #include <cstdlib>
 #include <string>
 
+#include <igris/buffer.h>
+#include <igris/math.h>
+
 namespace igris
 {
 #if __HAS_CONCEPT
@@ -26,28 +29,16 @@ namespace igris
     static_assert(!appendable_storage_type<const char *>);
 #endif
 
-    class serialize_storage_base
+    template <class Self> class serialize_storage_base
     {
-    protected:
-        int readpos = 0;
+    private:
+        Self &self() { return static_cast<Self &>(*this); }
 
     public:
-        void dumps(const std::string &str) { dump(str.data(), str.size()); }
-
-        std::string loads(size_t size)
+        void dumps(const std::string &str)
         {
-            std::string ret;
-            ret.resize(size);
-            load(&*ret.begin(), size);
-            return ret;
+            self().dump(str.data(), str.size());
         }
-
-        size_t avail() { return size() - readpos; }
-
-    public:
-        virtual void dump(const char *data, size_t size) = 0;
-        virtual void load(char *data, size_t size) = 0;
-        virtual size_t size() = 0;
     };
 
 #if __HAS_CONCEPT
@@ -55,32 +46,56 @@ namespace igris
 #else
     template <class T>
 #endif
-    class appendable_storage // : public
-                             // serialize_storage_base<appendable_storage<T>>
+    class appendable_storage
+        : public serialize_storage_base<appendable_storage<T>>
     {
-        T storage;
+        T _storage;
 
     public:
         appendable_storage() = default;
-        appendable_storage(T storage) : storage(storage) {}
+        appendable_storage(const T &storage) : _storage(storage) {}
 
-        void dump(const char *data, size_t size) override
+        void dump(const char *data, size_t size)
         {
-            storage.append(data, size);
+            _storage.append(data, size);
         }
 
-        void load(char *data, size_t size) override
-        {
-            auto it = std::next(storage.begin(), this->readpos);
-            auto eit = storage.end();
+        const T &storage() const { return _storage; }
+    };
 
-            while (size-- && it != eit)
-            {
-                *data++ = *it++;
-            }
+    template <class Self> class deserialize_storage
+    {
+        Self &self() { return static_cast<Self &>(*this); }
+
+    public:
+        std::string loads(size_t size)
+        {
+            std::string ret;
+            ret.resize(size);
+            self().load(&*ret.begin(), size);
+            return ret;
+        }
+    };
+
+    class deserialize_buffer_storage
+        : public deserialize_storage<deserialize_buffer_storage>
+    {
+        igris::buffer _storage;
+        size_t cursor = 0;
+
+    public:
+        deserialize_buffer_storage(igris::buffer buf) : _storage(buf) {}
+        // deserialize_buffer_storage(const std::string& buf) :
+        // _storage(igris::buffer(buf)) {}
+
+        void load(char *data, size_t size)
+        {
+            auto len = MIN(size, _storage.size() - cursor);
+            memcpy(data, _storage.data() + cursor, len);
+            cursor += len;
         }
 
-        size_t size() override { return storage.size(); }
+        int avail() { return _storage.size() - cursor; }
     };
 }
 
