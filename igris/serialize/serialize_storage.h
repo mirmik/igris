@@ -97,6 +97,17 @@ namespace igris
 
         int avail() { return _storage.size() - cursor; }
     };
+
+    using string_storage = appendable_storage<std::string>;
+
+#if __HAS_CONCEPT
+    template <typename T>
+    concept load_storage_type = requires(T a, char *data, size_t size)
+    {
+        a.load(data, size);
+    };
+#endif
+
 }
 
 #endif

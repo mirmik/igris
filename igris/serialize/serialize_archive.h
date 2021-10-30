@@ -25,4 +25,41 @@ public:
 
 static_assert(igris::has_serialize_reflect_method<Test>);
 
+namespace igris
+{
+    template <class Protocol = binary_protocol, class T, class Storage>
+    void serialize(const T &obj, Storage &storage)
+    {
+        igris::serializer<Storage, Protocol> archive(storage);
+        archive.serialize(obj);
+    }
+
+    template <class Protocol = binary_protocol, class T>
+    std::string serialize(const T &obj)
+    {
+        string_storage storage;
+        igris::serializer<string_storage, Protocol> archive(storage);
+        archive.serialize(obj);
+        return storage.storage();
+    }
+
+    template <class T, class Protocol = binary_protocol>
+    T deserialize(const std::string &str)
+    {
+        deserialize_buffer_storage storage(str);
+        igris::deserializer<deserialize_buffer_storage, Protocol> archive(
+            storage);
+        return archive.template deserialize<T>();
+    }
+
+    template <class T, load_storage_type Storage,
+              class Protocol = binary_protocol>
+    T deserialize(Storage &storage)
+    {
+        igris::deserializer<Storage, Protocol> archive(storage);
+        return archive.template deserialize<T>();
+    }
+
+}
+
 #endif

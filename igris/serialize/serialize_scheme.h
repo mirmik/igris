@@ -12,9 +12,10 @@ namespace igris
     template <class T> struct serialize_scheme<std::vector<T>>
     {
         template <class Archive>
-        static void reflect(Archive &archive, const std::vector<T> &obj)
+        static void reflect(Archive &archive, const std::vector<T> &vec)
         {
-            archive &igris::serialize_list_tag(obj.begin(), obj.end());
+            auto listtag = igris::serialize_list_tag(vec);
+            archive &listtag;
         }
     };
 }

@@ -1,6 +1,7 @@
 #ifndef IGRIS_SERIALIZE_PROTOCOL_H
 #define IGRIS_SERIALIZE_PROTOCOL_H
 
+#include <concepts>
 #include <cstdint>
 #include <cstdlib>
 #include <vector>
@@ -9,18 +10,63 @@
 
 namespace igris
 {
+    template <typename T>
+    concept arithmetic = std::is_arithmetic_v<T>;
+
+    template <class T>
+    concept serializer_archive = requires(T a)
+    {
+        a.serialize(32);
+    };
+
+    template <class T>
+    concept deserializer_archive = requires(T a, uint8_t b)
+    {
+        {a.template deserialize<uint8_t>(b)};
+        {
+            a.template deserialize<uint8_t>()
+            } -> std::same_as<uint8_t>;
+    };
+
     class binary_protocol
     {
-        template <class Storage, class Iterator, class EndIterator>
-        void dump(Storage &storage,
-                  igris::serialize_list_tag<Iterator, EndIterator> listtag)
+    public:
+        template <serializer_archive Archive, class Container>
+        static void dump(Archive &archive,
+                         igris::serialize_list_tag<Container> listtag)
         {
-            storage.dump((uint16_t)listtag.distance());
+            archive.serialize((uint16_t)listtag.size());
 
-            auto it = listtag.begin();
-            auto eit = listtag.end();
+            auto it = listtag.container.begin();
+            auto eit = listtag.container.end();
             while (it != eit)
-                storage.dump(*it++);
+                archive.serialize(*it++);
+        }
+
+        template <serializer_archive Archive, igris::arithmetic Type>
+        static void dump(Archive &archive, const Type &obj)
+        {
+            archive.dump(reinterpret_cast<const char *>(&obj), sizeof(Type));
+        }
+
+        template <deserializer_archive Archive, class Container>
+        static void load(Archive &archive,
+                         igris::serialize_list_tag<Container> listtag)
+        {
+            using Type = typename Container::value_type;
+            auto size = archive.template deserialize<uint16_t>();
+
+            for (int i = 0; i < size; ++i)
+            {
+                Type elem = archive.template deserialize<Type>();
+                listtag.container.push_back(elem);
+            }
+        }
+
+        template <deserializer_archive Archive, igris::arithmetic Type>
+        static void load(Archive &archive, Type &obj)
+        {
+            archive.load(reinterpret_cast<char *>(&obj), sizeof(Type));
         }
     };
 }

@@ -3,24 +3,23 @@
 
 namespace igris
 {
-    template <class I, class E> class serialize_list_tag
+    template <class Container> class serialize_list_tag
     {
-        I it;
-        E eit;
-
     public:
-        I begin() { return it; }
-        E end() { return eit; }
+        std::remove_const_t<Container> &container;
+        serialize_list_tag(Container &container)
+            : container(const_cast<std::remove_const_t<Container> &>(container))
+        {
+        }
+        size_t size() { return container.size(); }
     };
 
-    template <class I, class E> class serialize_dict_tag
+    template <class Container> class serialize_dict_tag
     {
-        I it;
-        E eit;
-
     public:
-        I begin() { return it; }
-        E end() { return eit; }
+        Container &container;
+        serialize_dict_tag(Container &container) : container(container) {}
+        size_t size() { return container.size(); }
     };
 }
 
