@@ -8,7 +8,7 @@ TEST_CASE("appendable_storage")
 	auto storage = igris::appendable_storage<std::string>();
 
 	storage.dumps("HelloWorld");
-	std::string str = storage.loads(storage.avail());
+	std::string str = storage.storage();
 
 	CHECK_EQ(str, "HelloWorld"s);
 }
@@ -16,10 +16,11 @@ TEST_CASE("appendable_storage")
 TEST_CASE("appendable_storage ctr") 
 {
 	auto in = "HelloWorld"s;
-	auto storage = igris::appendable_storage(in);
-
-	std::string str = storage.loads(storage.avail());
+	auto storage = igris::deserialize_buffer_storage(in);
 
 	CHECK_EQ(storage.avail(), 10);
+	std::string str = storage.loads(storage.avail());
+
+	CHECK_EQ(storage.avail(), 0);
 	CHECK_EQ(str, "HelloWorld"s);
 }
