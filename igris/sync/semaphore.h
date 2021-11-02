@@ -24,7 +24,7 @@ typedef struct semaphore
 
 __BEGIN_DECLS
 
-void sem_init(struct semaphore *sem, int val);
+void sem_init(struct semaphore *sem, int shared, int val);
 
 void sem_wait(struct semaphore *sem);
 

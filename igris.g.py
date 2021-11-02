@@ -130,6 +130,7 @@ licant.module("igris.util", sources=[
 		"igris/halfer.cpp"
 	],
 	mdepends = [
+		"igris.protocols.gstuff", 
 		"igris.bug"
 	]
 )

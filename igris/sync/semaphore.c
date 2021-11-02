@@ -2,8 +2,9 @@
 
 #if !__has_include(<semaphore.h>)
 
-void sem_init(struct semaphore *sem, int val)
+void sem_init(struct semaphore *sem, int shared, int val)
 {
+    (void)shared;
     sem->count = val;
     dlist_init(&sem->wait_list);
 }
@@ -28,7 +29,7 @@ void sem_wait(struct semaphore *sem)
     }
 }
 
-int sem_try_down(struct semaphore *sem)
+int sem_trywait(struct semaphore *sem)
 {
     int status = -1;
 
@@ -55,7 +56,7 @@ void sem_post(struct semaphore *sem)
     system_unlock();
 }
 
-int sem_value(struct semaphore *sem)
+int sem_getvalue(struct semaphore *sem)
 {
     int count;
 
