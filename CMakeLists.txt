@@ -48,6 +48,8 @@ file(GLOB SOURCES
 	igris/block.cpp
 	igris/iterator.cpp
 	igris/series.cpp
+	igris/shell/*.cpp
+	igris/shell/*.c
 )
 
 if (UNIX)
