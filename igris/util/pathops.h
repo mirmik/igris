@@ -93,10 +93,7 @@ static inline int path_is_double_dot(const char *path)
            (*(path + 2) == '/' || *(path + 2) == '\0');
 }
 
-static inline int path_is_abs(const char *path)
-{
-    return path[0] == '/';
-}
+static inline int path_is_abs(const char *path) { return path[0] == '/'; }
 
 static inline int path_is_simple(const char *path)
 {

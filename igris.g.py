@@ -1,22 +1,26 @@
 import licant
 
+licant.module("igris.portable_base",
+	mdepends=[
+		"igris.include",
+		"igris.util",
+		"igris.bug",
+		("igris.dprint", "user"),
+	] 
+)
+
 MODULES = [
 	"igris.include",
-	"igris.util",
+	"igris.utilxx",
 	"igris.bug",
 	"igris.dprint",
 	"igris.time",
 	"igris.trent",
 	"igris.semaphore",
-
 	"igris.syslock",
 	"igris.ctrobj",
-
 	"igris.protocols.gstuff",
 	"igris.crypt.aes",
-
-	"igris.systime",
-
 #	"igris.os_extension"
 ]
 
@@ -26,9 +30,6 @@ if sys.platform == "linux":
 licant.module("igris", 
 sources = [
 	"igris/datastruct/stimer.c",
-	"igris/util/string.cpp",
-	"igris/string/replace.cpp",
-	"igris/string/hexascii_string.cpp",
 	"igris/deprecated/path.cpp",
 ],
 mdepends=MODULES)
@@ -56,6 +57,7 @@ licant.module("igris.series",
 		"igris/series/series.cpp",
 		"igris/series/iterator.cpp",
 		"igris/series/block.cpp",
+		"igris/series/field_annotation.cpp",
 	]
 )
 
@@ -132,14 +134,24 @@ licant.module("igris.util", sources=[
 	]
 )
 
+licant.module("igris.utilxx", sources=[
+		"igris/util/string.cpp",
+		"igris/string/replace.cpp",
+		"igris/string/hexascii_string.cpp",		
+	],
+	mdepends = [
+		"igris.util",
+	]
+)
+
 #################################################################
 
 licant.module("igris.printf_impl",
 	sources=["igris/util/printf_impl.c"]
 )
 
-licant.module("igris.syslock", impl="genos.atomic", 
-	sources=["igris/sync/syslock_genos_atomic.cpp"])
+licant.module("igris.syslock", impl="irqs", 
+	sources=["igris/sync/syslock_irqs.c"])
 
 licant.module("igris.syslock", impl="mutex", 
 	sources=["igris/sync/syslock_mutex.cpp"], default=True)
@@ -181,10 +193,9 @@ licant.module("igris.time", "posix",
 licant.module("igris.crypt.aes", 
 	sources = ["igris/crypt/aes.c"])
 
-licant.module("igris.systime", 
-	src = [
-		"igris/time/systime.c",
-		"igris/time/jiffies.c",
+licant.module("igris.systime", "jiffies",
+	sources = [
+		"igris/time/jiffies-systime.c"
 	]
 )
 

@@ -9,7 +9,7 @@
 #if __has_include(<asm/systime.h>)
 #include <asm/systime.h>
 #else
-typedef uint64_t systime_t;
+typedef int64_t systime_t;
 typedef int64_t systime_difference_t;
 #endif
 
@@ -39,6 +39,8 @@ static inline systime_difference_t ns2systime(double ns)
 systime_t millis();
 systime_t micros();
 systime_t nanos();
+
+void delay(systime_t ms);
 
 __END_DECLS
 

@@ -125,7 +125,7 @@ static inline int sline_size(struct sline *sl) { return sl->len; }
 
 static inline int sline_putchar(struct sline *sl, char c)
 {
-    if (sl->len >= sl->cap)
+    if (sl->len >= sl->cap - 1)
         return 0;
 
     if (sl->cursor != sl->len)

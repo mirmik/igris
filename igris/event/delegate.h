@@ -50,7 +50,7 @@ namespace igris
     //! параметров.
     template <typename R, typename... Args> class delegate
     {
-      protected:
+    protected:
         enum
         {
             METHOD,
@@ -82,7 +82,7 @@ namespace igris
             } part;
         };
 
-      protected:
+    protected:
         union
         {
             obj_t object;
@@ -90,7 +90,7 @@ namespace igris
         };
         method_union method;
 
-      public:
+    public:
         void clean()
         {
             object = 0;
@@ -209,11 +209,11 @@ namespace igris
             } part;
         };
 
-      public:
+    public:
         obj_t object;
         extfnc_t extfunction;
 
-      public:
+    public:
         void clean()
         {
             object = 0;

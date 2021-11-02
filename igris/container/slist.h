@@ -12,7 +12,7 @@ namespace igris
     {
         slist_head head;
 
-      public:
+    public:
         slist() { head.next = &head; }
 
         bool empty() { return head.next == &head; }
@@ -27,17 +27,17 @@ namespace igris
 
         class iterator
         {
-          public:
+        public:
             // using iterator_category = std::bidirectional_iterator_tag;
             using value_type = type;
             using difference_type = ptrdiff_t;
             using pointer = type *;
             using reference = type &;
 
-          public:
+        public:
             slist_head *current;
 
-          public:
+        public:
             iterator() : current(nullptr){};
             iterator(slist_head *head) : current(head){};
             iterator(const iterator &other) : current(other.current){};
@@ -62,17 +62,17 @@ namespace igris
 
         class const_iterator
         {
-          public:
+        public:
             // using iterator_category = std::bidirectional_iterator_tag;
             using value_type = type;
             using difference_type = ptrdiff_t;
             using pointer = type *;
             using reference = type &;
 
-          public:
+        public:
             slist_head *current;
 
-          public:
+        public:
             const_iterator() : current(nullptr){};
             const_iterator(slist_head *head) : current(head){};
             const_iterator(const const_iterator &other)

@@ -7,7 +7,7 @@ namespace igris
 {
     class pool
     {
-      private:
+    private:
         struct pool_head head = POOL_HEAD_INIT(head);
 
         void *_zone;
@@ -16,7 +16,7 @@ namespace igris
 
         int _count;
 
-      public:
+    public:
         size_t size() const { return _size / _elemsz; }
 
         size_t room() const { return _count; }
@@ -33,11 +33,11 @@ namespace igris
 
         class unlinked_iterator
         {
-          public:
+        public:
             pool *_pool;
             int _num;
 
-          public:
+        public:
             unlinked_iterator(const pool *_pool, int num)
                 : _pool((pool *)_pool), _num(num)
             {

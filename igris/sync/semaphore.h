@@ -1,15 +1,19 @@
 #ifndef IGRIS_SEM_H
 #define IGRIS_SEM_H
 
+#if __has_include(<semaphore.h>)
+#include <semaphore.h>
+#else
+
 #include <igris/datastruct/dlist.h>
 #include <igris/osinter/wait.h>
 #include <igris/sync/syslock.h>
 
-struct semaphore
+typedef struct semaphore
 {
     struct dlist_head wait_list;
     int count;
-};
+} sem_t;
 
 #define SEMAPHORE_INIT(name, n)                                                \
     {                                                                          \
@@ -22,26 +26,15 @@ __BEGIN_DECLS
 
 void sem_init(struct semaphore *sem, int val);
 
-void sem_down(struct semaphore *sem);
+void sem_wait(struct semaphore *sem);
 
-int sem_try_down(struct semaphore *sem);
+int sem_trywait(struct semaphore *sem);
 
-void sem_up(struct semaphore *sem);
+void sem_post(struct semaphore *sem);
 
-int sem_value(struct semaphore *sem);
-
-__attribute__((deprecated)) static inline void
-semaphore_up(struct semaphore *sem)
-{
-    sem_up(sem);
-}
-
-__attribute__((deprecated)) static inline void
-semaphore_down(struct semaphore *sem)
-{
-    sem_down(sem);
-}
+int sem_getvalue(struct semaphore *sem);
 
 __END_DECLS
 
+#endif
 #endif

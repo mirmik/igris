@@ -19,7 +19,7 @@ namespace igris
 {
     class schema
     {
-      public:
+    public:
         enum checker_type
         {
             any_checker_type,
@@ -35,7 +35,7 @@ namespace igris
         {
             checker_type type;
 
-          public:
+        public:
             schema_node &merge(const schema_node &oth)
             {
                 if (type != dict_checker_type || oth.type != dict_checker_type)

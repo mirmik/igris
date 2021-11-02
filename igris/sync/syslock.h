@@ -87,28 +87,16 @@ namespace igris
 {
     class syslock
     {
-      public:
-        void lock()
-        {
-            system_lock();
-        }
-        void unlock()
-        {
-            system_unlock();
-        }
+    public:
+        void lock() { system_lock(); }
+        void unlock() { system_unlock(); }
     };
 
     class syslock_guard
     {
-      public:
-        syslock_guard()
-        {
-            system_lock();
-        }
-        ~syslock_guard()
-        {
-            system_unlock();
-        }
+    public:
+        syslock_guard() { system_lock(); }
+        ~syslock_guard() { system_unlock(); }
     };
 }
 #endif

@@ -8,7 +8,7 @@ namespace igris
 {
     template <typename T, typename A = std::allocator<T>> class unbounded_array
     {
-      public:
+    public:
         using allocator_type = A;
         using value_type = T;
         using reference = T &;

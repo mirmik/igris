@@ -20,13 +20,14 @@ namespace igris
         int fini = 0;
 
     public:
-        int elemsize();
+        int elemsize() const;
         void *get(int num);
+        const void *get(int num) const;
         void *last();
 
         series_block(igris::series *parent, void *ptr, int size);
 
-        bool has_place();
+        bool has_place() const;
         void *emplace();
     };
 }

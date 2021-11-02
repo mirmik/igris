@@ -23,6 +23,15 @@ static inline void ring_counter_fixup(struct ring_counter *rc)
         rc->counter -= rc->size;
 }
 
+static inline int ring_counter_fixup_pos(struct ring_counter *rc, int pos)
+{
+    while (pos >= rc->size)
+        pos -= rc->size;
+    while (pos < 0)
+        pos += rc->size;
+    return pos;
+}
+
 static inline void ring_counter_set(struct ring_counter *rc, int val)
 {
     rc->counter = val;
@@ -49,6 +58,11 @@ static inline int ring_counter_prev(struct ring_counter *rc, int i)
         c += rc->size;
 
     return c;
+}
+
+static inline int ring_counter_last(struct ring_counter *rc, int no)
+{
+    return ring_counter_fixup_pos(rc, rc->counter - no);
 }
 
 __END_DECLS

@@ -34,9 +34,9 @@ namespace std
 	using ::sqrt;
 	using ::log;
 
-#if !(WITHOUT_LOG2)
-	using ::log2;
-#endif
+//#if !(WITHOUT_LOG2)
+//	using ::log2;
+//#endif
 
 	using ::log10;
 

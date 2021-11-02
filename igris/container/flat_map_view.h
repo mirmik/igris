@@ -12,7 +12,7 @@ namespace igris
         size_t _size;
         KeyEqual equal;
 
-      public:
+    public:
         using iterator = std::pair<K, T> *;
         using const_iterator = const std::pair<K, T> *;
 

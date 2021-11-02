@@ -11,7 +11,7 @@ namespace igris
 
     template <typename type, dlist_head type::*member> class dlist
     {
-      public:
+    public:
         // FIELDS:
         dlist_head list;
 
@@ -19,16 +19,16 @@ namespace igris
         class iterator : public std::iterator<std::bidirectional_iterator_tag,
                                               type, ptrdiff_t, type *, type &>
         {
-          public:
+        public:
             using value_type = type;
             using difference_type = ptrdiff_t;
             using pointer = type *;
             using reference = type &;
 
-          public:
+        public:
             dlist_head *current;
 
-          public:
+        public:
             iterator() : current(nullptr){};
             iterator(dlist_head *head) : current(head){};
             iterator(const iterator &other) : current(other.current){};
@@ -66,10 +66,10 @@ namespace igris
             : public std::iterator<std::bidirectional_iterator_tag, type,
                                    ptrdiff_t, type *, type &>
         {
-          private:
+        private:
             dlist_head *current;
 
-          public:
+        public:
             reverse_iterator(dlist_head *head) : current(head) {}
 
             reverse_iterator operator++(int)

@@ -11,14 +11,14 @@
 __BEGIN_DECLS
 
 /**
-	Собрать пакет gstuff.
+    Собрать пакет gstuff.
 
-	@param data - входной буффер
-	@param size - длина входного буффер
-	@param outdata - выходной буффер (рекомендованная длина 2*size+2)
-	@return результирующая длина пакета.
+    @param data - входной буффер
+    @param size - длина входного буффер
+    @param outdata - выходной буффер (рекомендованная длина 2*size+2)
+    @return результирующая длина пакета.
  */
-int gstuffing_v1(char* data, int size, char* outdata);
+int gstuffing_v1(char *data, int size, char *outdata);
 
 __END_DECLS
 

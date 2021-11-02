@@ -71,3 +71,9 @@ doxygen/latex
 
 bindings/arduino/src 
 xxx
+
+build
+*.ninja
+.ninja_*
+
+jjj

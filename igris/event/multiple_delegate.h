@@ -14,7 +14,7 @@ namespace igris
 {
     template <typename... Args> class multiple_delegate
     {
-      public:
+    public:
         std::vector<delegate<void, Args...>> vect;
 
         void operator()(Args... args)
@@ -35,7 +35,7 @@ namespace igris
             erase(std::forward<TArgs>(args)...);
         }
 
-        template <typename... TArgs> void add(const TArgs &...args)
+        template <typename... TArgs> void add(const TArgs &... args)
         {
             vect.emplace_back(args...);
         }

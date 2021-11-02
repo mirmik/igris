@@ -22,7 +22,7 @@ namespace igris
 
     class executor
     {
-      public:
+    public:
         bool debug_mode = false;
         virtual int execute(char *str, size_t len, int flags, int *p_ret) = 0;
     };
@@ -33,7 +33,7 @@ namespace igris
     {
         console_command **tbl;
 
-      public:
+    public:
         syscmd_executor(igris::console_command **syscmdtbl) : tbl(syscmdtbl) {}
 
         int execute(char *str, size_t len, int flags, int *retptr) override
@@ -164,7 +164,7 @@ namespace igris
     {
         console_command *tbl;
 
-      public:
+    public:
         syscmd_executor_onelevel(igris::console_command *syscmdtbl)
             : tbl(syscmdtbl)
         {

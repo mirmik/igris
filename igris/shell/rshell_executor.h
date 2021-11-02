@@ -10,7 +10,7 @@ namespace igris
 {
     class rshell_executor
     {
-      public:
+    public:
         virtual void execute(char *cmdbuf, int cmdlen, char *ansbuf,
                              int ansmax) = 0;
     };
@@ -19,7 +19,7 @@ namespace igris
     {
         const struct rshell_command *_cmdtable;
 
-      public:
+    public:
         rshell_executor_onelevel(const struct rshell_command *cmdtable)
             : _cmdtable(cmdtable)
         {
@@ -44,7 +44,7 @@ namespace igris
     {
         const rshell_command_table *_cmdtable;
 
-      public:
+    public:
         rshell_executor_twolevel(const rshell_command_table *cmdtable)
             : _cmdtable(cmdtable)
         {

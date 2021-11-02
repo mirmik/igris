@@ -41,4 +41,6 @@
 #define _NORETURN __NORETURN
 #endif
 
+#define __HAS_CONCEPT (__cplusplus && (__cplusplus > 201703L))
+
 #endif

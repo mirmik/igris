@@ -86,7 +86,7 @@ namespace igris
 
     class settings_binder_int64 : public trent_settings_slice
     {
-      public:
+    public:
         settings_binder_int64(trent_settings &base, const trent_path &name)
             : trent_settings_slice(base, name)
         {
@@ -110,7 +110,7 @@ namespace igris
 
     class settings_binder_int32 : public trent_settings_slice
     {
-      public:
+    public:
         settings_binder_int32(trent_settings &base, const trent_path &name)
             : trent_settings_slice(base, name)
         {

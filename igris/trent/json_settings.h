@@ -22,14 +22,14 @@ namespace igris
     {
         std::string pathstr;
 
-      public:
+    public:
         const std::string &path() { return pathstr; }
         void path(const std::string &str) { pathstr = str; }
 
         json_settings() = default;
         json_settings(const std::string &str) : pathstr(str){};
 
-      private:
+    private:
         void load()
         {
             std::fstream file(pathstr);
@@ -45,7 +45,7 @@ namespace igris
             synced = true;
         }
 
-      public:
+    public:
         void sync() override { load(); }
 
         void save() override
@@ -68,14 +68,14 @@ namespace igris
 
         std::string pathstr;
 
-      public:
+    public:
         const std::string &path() { return pathstr; }
         void path(const std::string &str) { pathstr = str; }
 
         json_syncer() = default;
         json_syncer(const std::string &str) : pathstr(str) {}
 
-      private:
+    private:
         void load()
         {
             std::fstream file(pathstr);
@@ -91,7 +91,7 @@ namespace igris
             synced = true;
         }
 
-      public:
+    public:
         int sync() override
         {
             if (synced)

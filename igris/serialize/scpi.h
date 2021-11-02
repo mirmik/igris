@@ -15,7 +15,7 @@ namespace igris
 {
     class scpi_string_parser
     {
-      public:
+    public:
         struct header
         {
             std::string str;
@@ -35,7 +35,7 @@ namespace igris
         bool is_question = false;
         bool is_error = false;
 
-      public:
+    public:
         scpi_string_parser(const std::string &str)
         {
             igris::creader reader(str.c_str());

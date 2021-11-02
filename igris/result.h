@@ -101,7 +101,7 @@ namespace igris
 
         template <typename T, typename E = error> class result
         {
-          public:
+        public:
             using Stored = typename tryhelper<T>::storedtype;
             using Result = typename tryhelper<T>::type;
             uint8_t _iserror;
@@ -111,7 +111,7 @@ namespace igris
                 E _error;
             };
 
-          public:
+        public:
             template <typename U>
             result(U &&r) : _iserror(false), _data(std::forward<U>(r))
             {

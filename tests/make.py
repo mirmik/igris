@@ -13,7 +13,8 @@ application("runtests",
 		"*.cpp",
 		"container/*.cpp",
 		"shell/*.cpp",
-		"series/*.cpp"
+		"series/*.cpp",
+		"archive/*.cpp",
 	],
 
 	cxxstd="c++20",
@@ -27,6 +28,8 @@ application("runtests",
 		"igris.series", 
 		("igris.dprint", "user")
 	],
+
+	libs = ["rt", "pthread"]
 )
 
 licant.ex("runtests")
