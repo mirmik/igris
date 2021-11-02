@@ -22,7 +22,7 @@ file(GLOB HEADERS
 	igris/datastruct/*.h
 )
 
-file(GLOB SOURCES 
+file(GLOB IGRIS_SOURCES 
 	igris/util/*.cpp 
 	igris/util/*.c
 	igris/dprint/dprint_func_impl.c
@@ -48,26 +48,38 @@ file(GLOB SOURCES
 	igris/block.cpp
 	igris/iterator.cpp
 	igris/series.cpp
-	igris/shell/*.cpp
+	igris/sclonner.cpp
+	igris/path/*.cpp
 	igris/shell/*.c
 	igris/path/path.cpp
 )
 
+file(GLOB IGRIS_SOURCES_PLUS 
+	igris/dprint/dprint_stdout.c
+)
+
 if (UNIX)
-	set(PLATFORM_SOURCES 
+	file(GLOB PLATFORM_SOURCES 
 		igris/osutil/src/posix.cpp
 	)
 endif()
 
+set(IGRIS_SOURCES 
+	${IGRIS_SOURCES} 
+	${IGRIS_SOURCES_PLUS} 
+	${PLATFORM_SOURCES} 
+	PARENT_SCOPE
+)
+
 file(GLOB SOURCES_TEST 
-	${SOURCES}
+	${IGRIS_SOURCES}
 	tests/*.cpp
 	container/*.cpp
 	shell/*.cpp
 	series/*.cpp
 )
 
-add_library(igris SHARED ${SOURCES} ${PLATFORM_SOURCES} igris/dprint/dprint_stdout.c)
+add_library(igris SHARED ${IGRIS_SOURCES} ${PLATFORM_SOURCES} igris/dprint/dprint_stdout.c)
 target_include_directories(igris PRIVATE .)
 
 add_executable(igris_test ${SOURCES_TEST})
