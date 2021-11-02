@@ -21,7 +21,7 @@ float systime_frequency();
 
 uint64_t systime_millis();
 
-/*static inline systime_difference_t ms2systime(float ms)
+static inline systime_difference_t ms2systime(float ms)
 {
     return ms * (systime_frequency() * 0.001f);
 }
@@ -34,7 +34,7 @@ static inline systime_difference_t us2systime(float us)
 static inline systime_difference_t ns2systime(double ns)
 {
     return ns * (systime_frequency() * 0.000000001);
-}*/
+}
 
 systime_t millis();
 systime_t micros();
