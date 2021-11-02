@@ -50,6 +50,7 @@ file(GLOB SOURCES
 	igris/series.cpp
 	igris/shell/*.cpp
 	igris/shell/*.c
+	igris/path/path.cpp
 )
 
 if (UNIX)
