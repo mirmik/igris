@@ -43,12 +43,12 @@ namespace igris
         size_t size() const { return _size; }
 
         T *begin() { return _data; }
-        const T *end() { return _data + _size; }
+        T *end() { return _data + _size; }
         const T *begin() const { return _data; }
         const T *end() const { return _data + _size; }
 
         T *rbegin() { return _data + _size - 1; }
-        const T *rend() { return _data - 1; }
+        T *rend() { return _data - 1; }
         const T *rbegin() const { return _data + _size - 1; }
         const T *rend() const { return _data - 1; }
 

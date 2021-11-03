@@ -93,11 +93,26 @@ void debug_printhex_uint8(uint8_t b);
 void debug_printhex_uint16(uint16_t a);
 void debug_printhex_uint32(uint32_t a);
 void debug_printhex_uint64(uint64_t a);
-static inline void debug_printhex_int4(int8_t a) { debug_printhex_uint4(a); }
-static inline void debug_printhex_int8(int8_t a) { debug_printhex_uint8(a); }
-static inline void debug_printhex_int16(int16_t a) { debug_printhex_uint16(a); }
-static inline void debug_printhex_int32(int32_t a) { debug_printhex_uint32(a); }
-static inline void debug_printhex_int64(int64_t a) { debug_printhex_uint64(a); }
+static inline void debug_printhex_int4(int8_t a)
+{
+    debug_printhex_uint4((uint8_t)a);
+}
+static inline void debug_printhex_int8(int8_t a)
+{
+    debug_printhex_uint8((uint8_t)a);
+}
+static inline void debug_printhex_int16(int16_t a)
+{
+    debug_printhex_uint16((uint16_t)a);
+}
+static inline void debug_printhex_int32(int32_t a)
+{
+    debug_printhex_uint32((uint32_t)a);
+}
+static inline void debug_printhex_int64(int64_t a)
+{
+    debug_printhex_uint64((uint64_t)a);
+}
 
 /// Binary integer type`s representation (in natural endian)
 void debug_printbin_uint4(uint8_t b);
@@ -444,9 +459,9 @@ template <typename Buffer> void dpr(const Buffer &obj)
 // void dpr_dump(const void* obj, uint32_t size);
 // void dpr_dump_ascii(void* obj, uint32_t size);
 
-template <typename T> void dprptr(const T *const &obj)
+template <typename T> void dprptr(const T *obj)
 {
-    debug_printhex_ptr((void *)obj);
+    debug_printhex_ptr((const void *)obj);
 }
 
 template <typename T> void dprptrln(const T &obj)

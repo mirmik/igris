@@ -86,7 +86,7 @@ namespace igris
 
         char *begin() { return buf; }
 
-        char *end() { return buf + sz; }
+        const char *end() { return buf + sz; }
 
         bool empty() { return buf == nullptr; }
 

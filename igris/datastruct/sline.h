@@ -14,9 +14,9 @@
 struct sline
 {
     char *buf;
-    int cap;
-    int len;
-    int cursor;
+    unsigned int cap;
+    unsigned int len;
+    unsigned int cursor;
 };
 
 __BEGIN_DECLS
@@ -50,7 +50,7 @@ static inline void sline_reset(struct sline *sl)
 
 static inline int sline_equal(struct sline *sl, const char *str)
 {
-    if (sl->len != (int)strlen(str))
+    if (sl->len != strlen(str))
         return 0;
 
     return strncmp(sl->buf, str, sl->len) == 0;
@@ -72,19 +72,21 @@ static inline int sline_right(struct sline *sl)
     return 1;
 }
 
-static inline void sline_setbuf(struct sline *sl, char *buffer, int bufcap)
+static inline void sline_setbuf(struct sline *sl, char *buffer,
+                                unsigned int bufcap)
 {
     sl->buf = buffer;
     sl->cap = bufcap;
 }
 
-static inline void sline_init(struct sline *sl, char *buffer, int bufcap)
+static inline void sline_init(struct sline *sl, char *buffer,
+                              unsigned int bufcap)
 {
     sline_setbuf(sl, buffer, bufcap);
     sline_reset(sl);
 }
 
-static inline int sline_backspace(struct sline *sl, int count)
+static inline int sline_backspace(struct sline *sl, unsigned int count)
 {
     if (count > sl->cursor)
         count = sl->cursor;
@@ -98,7 +100,7 @@ static inline int sline_backspace(struct sline *sl, int count)
                 sl->len - sl->cursor);
     }
 
-    return count;
+    return (int)count;
 }
 
 static inline int sline_delete(struct sline *sl, unsigned int count)
@@ -114,7 +116,7 @@ static inline int sline_delete(struct sline *sl, unsigned int count)
                 sl->len - sl->cursor);
     }
 
-    return count;
+    return (int)count;
 }
 
 static inline int sline_empty(struct sline *sl) { return sl->len == 0; }
