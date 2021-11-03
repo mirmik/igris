@@ -2,14 +2,16 @@
 
 #if !__has_include(<semaphore.h>)
 
-void sem_init(struct semaphore *sem, int val)
+void sem_init(struct semaphore *sem, int shared, int val)
 {
+    (void)shared;
     sem->count = val;
     dlist_init(&sem->wait_list);
 }
 
-void sem_wait(struct semaphore *sem)
+int sem_wait(struct semaphore *sem)
 {
+    int sts;
     void *_;
     system_lock();
 
@@ -23,12 +25,15 @@ void sem_wait(struct semaphore *sem)
         }
 
         system_unlock();
-        wait_current_schedee(&sem->wait_list, 0, &_);
+        sts = wait_current_schedee(&sem->wait_list, 0, &_);
+        if (sts)
+            return sts;
         system_lock();
     }
+    return 0;
 }
 
-int sem_try_down(struct semaphore *sem)
+int sem_trywait(struct semaphore *sem)
 {
     int status = -1;
 
@@ -44,7 +49,7 @@ int sem_try_down(struct semaphore *sem)
     return status;
 }
 
-void sem_post(struct semaphore *sem)
+int sem_post(struct semaphore *sem)
 {
     system_lock();
 
@@ -53,9 +58,10 @@ void sem_post(struct semaphore *sem)
         unwait_one(&sem->wait_list, 0);
 
     system_unlock();
+    return 0;
 }
 
-int sem_value(struct semaphore *sem)
+int sem_getvalue(struct semaphore *sem)
 {
     int count;
 
