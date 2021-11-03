@@ -26,11 +26,11 @@ __BEGIN_DECLS
 
 void sem_init(struct semaphore *sem, int shared, int val);
 
-void sem_wait(struct semaphore *sem);
+int sem_wait(struct semaphore *sem);
 
 int sem_trywait(struct semaphore *sem);
 
-void sem_post(struct semaphore *sem);
+int sem_post(struct semaphore *sem);
 
 int sem_getvalue(struct semaphore *sem);
 

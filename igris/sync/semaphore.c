@@ -9,8 +9,9 @@ void sem_init(struct semaphore *sem, int shared, int val)
     dlist_init(&sem->wait_list);
 }
 
-void sem_wait(struct semaphore *sem)
+int sem_wait(struct semaphore *sem)
 {
+    int sts;
     void *_;
     system_lock();
 
@@ -24,9 +25,12 @@ void sem_wait(struct semaphore *sem)
         }
 
         system_unlock();
-        wait_current_schedee(&sem->wait_list, 0, &_);
+        sts = wait_current_schedee(&sem->wait_list, 0, &_);
+        if (sts)
+            return sts;
         system_lock();
     }
+    return 0;
 }
 
 int sem_trywait(struct semaphore *sem)
@@ -45,7 +49,7 @@ int sem_trywait(struct semaphore *sem)
     return status;
 }
 
-void sem_post(struct semaphore *sem)
+int sem_post(struct semaphore *sem)
 {
     system_lock();
 
@@ -54,6 +58,7 @@ void sem_post(struct semaphore *sem)
         unwait_one(&sem->wait_list, 0);
 
     system_unlock();
+    return 0;
 }
 
 int sem_getvalue(struct semaphore *sem)

@@ -163,7 +163,7 @@ licant.module("igris.protocols.msgtype",
 	sources=["igris/protocols/msgtype.cpp"])
 
 licant.module("igris.ctrobj.common",
-	sources = ["igris/osinter/wait.c"]
+	sources = ["igris/osinter/wait.c", "igris/sync/waitqueue.c"]
 )
 
 licant.module("igris.ctrobj", "linux",
