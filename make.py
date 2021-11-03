@@ -26,8 +26,9 @@ modules = [
 		"igris.sclonner"
 	]
 
-CCFLAGS = '-fPIC -Wall -pedantic-errors -Wreturn-type -Wno-gnu-zero-variadic-macro-arguments'
+CCFLAGS = '-fPIC -Wall -pedantic-errors -Wreturn-type -Wno-gnu-zero-variadic-macro-arguments -g'
 CXXFLAGS = CCFLAGS
+LDFLAGS = '-g'
 
 licant.cxx_library("shared",
 	target="libigris.so",
@@ -35,9 +36,10 @@ licant.cxx_library("shared",
 	mdepends = modules + ["igris.syslock", ("igris.ctrobj", "linux")],
 	cxx_flags = CXXFLAGS,
 	cc_flags = CCFLAGS,
+	ld_flags = LDFLAGS,
 	shared = True,
-	cxxstd = "c++17 -g",
-	ccstd = "c11 -g",
+	cxxstd = "c++17",
+	ccstd = "c11",
 	optimize = "-O3"
 )
 
@@ -47,8 +49,8 @@ licant.cxx_library("static",
 	mdepends = modules,
 	cxx_flags = CXXFLAGS,
 	cc_flags = CCFLAGS,
-	cxxstd = "gnu++17",
-	ccstd = "gnu11",
+	cxxstd = "c++17",
+	ccstd = "c11",
 	optimize = "-O3",
 	shared = False
 )
