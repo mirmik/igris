@@ -37,20 +37,20 @@ namespace igris
             return *this;
         }
 
-        T *const data() const { return _data; }
+        const T *data() const { return _data; }
         T *data() { return _data; }
 
         size_t size() const { return _size; }
 
         T *begin() { return _data; }
-        T *const end() { return _data + _size; }
+        const T *end() { return _data + _size; }
         const T *begin() const { return _data; }
-        const T *const end() const { return _data + _size; }
+        const T *end() const { return _data + _size; }
 
         T *rbegin() { return _data + _size - 1; }
-        T *const rend() { return _data - 1; }
+        const T *rend() { return _data - 1; }
         const T *rbegin() const { return _data + _size - 1; }
-        const T *const rend() const { return _data - 1; }
+        const T *rend() const { return _data - 1; }
 
         T &operator[](int i) { return *(_data + i); }
         const T &operator[](int i) const { return *(_data + i); }

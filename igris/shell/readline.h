@@ -299,7 +299,8 @@ static inline int readline_putchar(struct readline *rl, char c)
 static inline int readline_linecpy(struct readline *rl, char *line,
                                    size_t maxlen)
 {
-    int len = (int)maxlen - 1 > (int)rl->line.len ? rl->line.len : maxlen - 1;
+    int len = (int)maxlen - 1 > (int)rl->line.len ? (int)rl->line.len
+                                                  : (int)maxlen - 1;
 
     memcpy(line, rl->line.buf, len);
     line[len] = 0;

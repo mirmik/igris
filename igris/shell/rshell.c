@@ -93,7 +93,7 @@ int rshell_help(const struct rshell_command *cmdtable, char *ans, int ansmax)
     while (it->func != NULL)
     {
         memcpy(ans + len, it->name,
-               l = __MIN__(strlen(it->name), ansmax - len));
+               l = __MIN__((int)strlen(it->name), ansmax - len));
         len += l;
 
         if (it->help)
@@ -102,7 +102,7 @@ int rshell_help(const struct rshell_command *cmdtable, char *ans, int ansmax)
             len += l;
 
             memcpy(ans + len, it->help,
-                   l = __MIN__(strlen(it->help), ansmax - len));
+                   l = __MIN__((int)strlen(it->help), ansmax - len));
             len += l;
         }
         memcpy(ans + len, "\r\n", l = __MIN__(2, ansmax - len));

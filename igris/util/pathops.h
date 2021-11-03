@@ -122,19 +122,6 @@ static inline const char *path_last_node(const char *path)
     return it;
 }
 
-static inline int path_simplify(char *dst, const char *src)
-{
-    BUG();
-    return 0;
-}
-
-static inline int path_simplify_join(char *dst, const char *src1,
-                                     const char *src2)
-{
-    BUG();
-    return 0;
-}
-
 /// Сравнивает ноды, на которые сейчас указывают указатели, лексикографически
 static inline int path_compare_node(const char *a, const char *b)
 {

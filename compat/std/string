@@ -139,14 +139,14 @@ namespace std
 		};
 
 		char* begin() { return m_data; }
-		char* const end() { return m_data + m_size; }
+		const char* end() { return m_data + m_size; }
 		char* rbegin() { return m_data + m_size - 1; }
-		char* const rend() { return m_data - 1; }
+		const char* rend() { return m_data - 1; }
 
 		const char* begin() const { return m_data; }
-		const char* const end() const { return m_data + m_size; }
+		const char* end() const { return m_data + m_size; }
 		const char* rbegin() const { return m_data + m_size - 1; }
-		const char* const rend() const { return m_data - 1; }
+		const char* rend() const { return m_data - 1; }
 
 
 		unsigned char reserve(size_t sz)

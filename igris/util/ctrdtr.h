@@ -21,8 +21,8 @@ namespace igris
         new (ptr) T(std::move(other));
     }
 
-    template <class InputIterator>
-    void array_destructor(InputIterator first, InputIterator last)
+    template <class InputIterator, class EndIterator>
+    void array_destructor(InputIterator first, EndIterator last)
     {
         while (first != last)
         {
@@ -31,9 +31,8 @@ namespace igris
         }
     }
 
-    template <class InputIterator, typename... Args>
-    void array_constructor(InputIterator first, InputIterator last,
-                           Args... args)
+    template <class InputIterator, class EndIterator, typename... Args>
+    void array_constructor(InputIterator first, EndIterator last, Args... args)
     {
         while (first != last)
         {
