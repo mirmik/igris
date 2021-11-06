@@ -1,0 +1,8 @@
+name: Install igris library
+run: |
+  git clone https://github.com/mirmik/igris
+  cd igris
+  cmake .
+  cmake --build .
+  sudo cmake --install .
+  cd ..
