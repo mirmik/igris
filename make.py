@@ -33,7 +33,10 @@ LDFLAGS = '-g'
 licant.cxx_library("shared",
 	target="libigris.so",
 	toolchain=toolchain,
-	mdepends = modules + ["igris.syslock", ("igris.ctrobj", "linux")],
+	mdepends = modules + [
+		"igris.syslock", 
+		("igris.ctrobj", "linux"), 
+		("igris.platform", "host")],
 	cxx_flags = CXXFLAGS,
 	cc_flags = CCFLAGS,
 	ld_flags = LDFLAGS,
