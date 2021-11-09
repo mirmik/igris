@@ -116,7 +116,6 @@ licant.module("igris.protocols.numcmd",
 
 licant.module("igris.util", sources=[
 		"igris/util/numconvert.c",
-		"igris/util/location.c",
 		"igris/util/hexascii.c",
 		"igris/util/dstring.c",
 		"igris/util/stub.c",
@@ -131,7 +130,8 @@ licant.module("igris.util", sources=[
 	],
 	mdepends = [
 		"igris.protocols.gstuff", 
-		"igris.bug"
+		"igris.bug",
+		"igris.location"
 	]
 )
 
@@ -204,4 +204,12 @@ licant.module("igris.flags.clean",
 	cxx_flags="-Wl,--gc-sections -fdata-sections -fpermissive -DNDEBUG -fno-threadsafe-statics -ffunction-sections -fno-rtti -flto",
 	cc_flags="-Wl,--gc-sections -fdata-sections -DNDEBUG -ffunction-sections -flto",
 	ld_flags="-Wl,--gc-sections -fdata-sections -fpermissive -DNDEBUG -fno-threadsafe-statics -ffunction-sections -fno-rtti -flto",
+)
+
+licant.module("igris.location", "dprint", default = True,
+	sources = ["igris/util/location.c"] 
+)
+
+licant.module("igris.location", "stub",
+	sources = ["igris/util/location-stub.c"] 
 )
