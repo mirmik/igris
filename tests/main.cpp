@@ -24,7 +24,6 @@ extern "C" void debug_write(const char *c, int i)
 #include "osutil.hpp"
 #include "signature.hpp"
 #include "sync.hpp"
-#include "test_allocator.hpp"
 #include "trent.hpp"
 #include "util.hpp"
 

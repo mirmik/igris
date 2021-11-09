@@ -32,7 +32,9 @@ int sem_trywait(struct semaphore *sem);
 
 int sem_post(struct semaphore *sem);
 
-int sem_getvalue(struct semaphore *sem);
+int sem_getvalue(struct semaphore *sem, int *val);
+
+int sem_destroy(struct semaphore *sem);
 
 __END_DECLS
 

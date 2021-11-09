@@ -1,5 +1,7 @@
 import licant
 
+licant.execute("igris/platform/host/host.g.py")
+
 licant.module("igris.portable_base",
 	mdepends=[
 		"igris.include",
