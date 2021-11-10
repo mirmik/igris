@@ -17,7 +17,7 @@ application("runtests",
 		"archive/*.cpp",
 	],
 
-	cxxstd="c++20",
+	cxxstd="c++2a",
 	ccstd="c11",
 	cxx_flags = "-g -Werror=all -Wno-gnu-zero-variadic-macro-arguments",
 	cc_flags = "-g -Werror=all -Wno-gnu-zero-variadic-macro-arguments",
