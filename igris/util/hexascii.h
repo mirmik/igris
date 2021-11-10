@@ -16,15 +16,29 @@ void hexascii_decode(const void *indata, int size, void *out);
 
 __END_DECLS
 
+#ifdef __cplusplus
+constexpr static inline uint8_t hex2half(char c)
+{
+    return (uint8_t)(c <= '9' ? c - '0' : c - 'A' + 10);
+}
+#else
 static inline uint8_t hex2half(char c)
 {
     return (uint8_t)(c <= '9' ? c - '0' : c - 'A' + 10);
 }
+#endif
 
+#ifdef __cplusplus
+constexpr static inline char half2hex(uint8_t n)
+{
+    return (char)(n < 10 ? '0' + n : 'A' - 10 + n);
+}
+#else
 static inline char half2hex(uint8_t n)
 {
     return (char)(n < 10 ? '0' + n : 'A' - 10 + n);
 }
+#endif
 
 static inline uint8_t hex2byte(char hi, char lo)
 {
