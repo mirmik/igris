@@ -34,6 +34,12 @@
 #endif
 #endif
 
+#ifdef __cplusplus
+#define CONSTEXPR constexpr
+#else
+#define CONSTEXPR
+#endif
+
 #define IS_ALIGNED(POINTER, BYTE_COUNT)                                        \
     (((uintptr_t)(const void *)(POINTER)) % (BYTE_COUNT) == 0)
 
