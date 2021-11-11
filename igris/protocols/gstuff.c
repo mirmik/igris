@@ -17,7 +17,7 @@ int gstuffing_v(struct iovec *vec, size_t n, char *outdata)
 
     *outdata++ = GSTUFF_START;
 
-    for (int j = 0; j < n; ++j)
+    for (size_t j = 0; j < n; ++j)
     {
         size_t size = vec[j].iov_len;
         char *data = (char *)vec[j].iov_base;
