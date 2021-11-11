@@ -3,6 +3,12 @@
 
 int gstuffing(const char *data, int size, char *outdata)
 {
+    struct iovec vec[] = {{(void *)data, size}};
+    return gstuffing_v(vec, 1, outdata);
+}
+
+int gstuffing_v(struct iovec *vec, size_t n, char *outdata)
+{
     char *outstrt;
     uint8_t crc;
 
@@ -11,29 +17,34 @@ int gstuffing(const char *data, int size, char *outdata)
 
     *outdata++ = GSTUFF_START;
 
-    while (size--)
+    for (int j = 0; j < n; ++j)
     {
-        char c = *data++;
-        igris_strmcrc8(&crc, c);
-
-        switch (c)
+        size_t size = vec[j].iov_len;
+        char *data = (char *)vec[j].iov_base;
+        while (size--)
         {
-        case GSTUFF_START:
-            *outdata++ = GSTUFF_STUB;
-            *outdata++ = GSTUFF_STUB_START;
-            break;
+            char c = *data++;
+            igris_strmcrc8(&crc, c);
 
-        case GSTUFF_STOP:
-            *outdata++ = GSTUFF_STUB;
-            *outdata++ = GSTUFF_STUB_STOP;
-            break;
+            switch (c)
+            {
+            case GSTUFF_START:
+                *outdata++ = GSTUFF_STUB;
+                *outdata++ = GSTUFF_STUB_START;
+                break;
 
-        case GSTUFF_STUB:
-            *outdata++ = GSTUFF_STUB;
-            *outdata++ = GSTUFF_STUB_STUB;
-            break;
-        default:
-            *outdata++ = c;
+            case GSTUFF_STOP:
+                *outdata++ = GSTUFF_STUB;
+                *outdata++ = GSTUFF_STUB_STOP;
+                break;
+
+            case GSTUFF_STUB:
+                *outdata++ = GSTUFF_STUB;
+                *outdata++ = GSTUFF_STUB_STUB;
+                break;
+            default:
+                *outdata++ = c;
+            }
         }
     }
 
