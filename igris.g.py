@@ -210,5 +210,5 @@ licant.module("igris.location", "dprint", default = True,
 )
 
 licant.module("igris.location", "stub",
-	sources = ["igris/util/location-stub.c"] 
+	sources = ["igris/util/stubs/location-stub.c"] 
 )
