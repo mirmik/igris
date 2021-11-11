@@ -168,7 +168,6 @@ licant.module("igris.protocols.msgtype",
 
 licant.module("igris.ctrobj", "linux",
 	sources = ["igris/osinter/wait-linux.cpp"],
-	mdepends= ["igris.ctrobj.common"],
 	default=True
 )
 
