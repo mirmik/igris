@@ -128,7 +128,9 @@ licant.module("igris.util", sources=[
 		"igris/shell/rshell.c",
 		"igris/shell/vterm.c",
 		"igris/sync/syslock.c",
-		"igris/halfer.cpp"
+		"igris/halfer.cpp",
+		"igris/osinter/wait.c", 
+		"igris/sync/waitqueue.c"
 	],
 	mdepends = [
 		"igris.protocols.gstuff", 
@@ -163,10 +165,6 @@ licant.module("igris.semaphore", sources=["igris/sync/semaphore.c"])
 
 licant.module("igris.protocols.msgtype", 
 	sources=["igris/protocols/msgtype.cpp"])
-
-licant.module("igris.ctrobj.common",
-	sources = ["igris/osinter/wait.c", "igris/sync/waitqueue.c"]
-)
 
 licant.module("igris.ctrobj", "linux",
 	sources = ["igris/osinter/wait-linux.cpp"],
