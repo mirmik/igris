@@ -8,7 +8,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-static inline timeouted_read(int fd, char *data, size_t size, double time)
+static inline int timeouted_read(int fd, char *data, size_t size, double time)
 {
     fd_set set;
     int rv;
