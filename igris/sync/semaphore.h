@@ -3,6 +3,10 @@
 
 #if __has_include(<asm_igris/semaphore.h>)
 #include <asm_igris/semaphore.h>
+#elif __has_include(<semaphore.h>)
+#include <semaphore.h>
+#elif __has_include(<sys/semaphore.h>)
+#include <sys/semaphore.h>
 #else
 
 #include <igris/datastruct/dlist.h>
