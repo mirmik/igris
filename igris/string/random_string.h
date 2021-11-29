@@ -1,6 +1,8 @@
 #ifndef IGRIS_RANDOM_STRING_H
 #define IGRIS_RANDOM_STRING_H
 
+#include <unistd.h>
+
 namespace igris
 {
     std::string random_string(int len)
