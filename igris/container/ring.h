@@ -49,6 +49,14 @@ namespace igris
             ring_move_head_one(&r);
         }
 
+        void clear()
+        {
+            while (!empty())
+            {
+                pop();
+            }
+        }
+
         void pop()
         {
             int idx = r.tail;
