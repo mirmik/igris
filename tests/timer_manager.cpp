@@ -17,9 +17,12 @@ TEST_CASE("TimerManager")
 
 	manager.plan(tim0, current_time, 1000);
 
-	/*manager.exec(current_time + 1001);
+	manager.exec(current_time + 1001);
 	CHECK_EQ(aaa, 12);
 
 	manager.exec(current_time + 2001);
-	CHECK_EQ(aaa, 24);*/
+	CHECK_EQ(aaa, 24);
+
+	manager.exec(current_time + 3001);
+	CHECK_EQ(aaa, 36);
 }

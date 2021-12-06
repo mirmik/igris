@@ -112,7 +112,7 @@ namespace igris
         ~dlist() { dlist_del(&list); }
 
         bool empty() { return dlist_empty(&list); }
-        type *first() { return member_container(list.next, member); }
+        type &first() { return *member_container(list.next, member); }
 
         void add_first(type &obj) { dlist_add(&(obj.*member), &list); }
         void add_last(type &obj) { dlist_add_tail(&(obj.*member), &list); }

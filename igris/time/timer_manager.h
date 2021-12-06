@@ -24,14 +24,22 @@ namespace igris
 
     template <typename TimeSpec> class timer_head
     {
-    public:
-        TimeSpec::time_t start;
-        TimeSpec::difftime_t interval;
+        using time_t = typename TimeSpec::time_t;
+        using difftime_t = typename TimeSpec::difftime_t;
 
-        TimeSpec::time_t final() { return start + interval; }
+    public:
+        time_t start;
+        difftime_t interval;
+
+        time_t final() { return start + interval; }
+        bool check(time_t curtime) { return curtime - start >= interval; }
+        void set_start(time_t t) { start = t; }
+        void set_interval(difftime_t t) { interval = t; }
+        void shift() { start += interval; }
     };
 
-    template <typename TimeSpec> class managed_timer_base : timer_head<TimeSpec>
+    template <typename TimeSpec>
+    class managed_timer_base : public timer_head<TimeSpec>
     {
     public:
         dlist_head lnk = DLIST_HEAD_INIT(lnk);
@@ -49,7 +57,7 @@ namespace igris
         std::tuple<Args...> args;
 
     public:
-        timer_delegate(igris::delegate<void, Args...> dlg, Args &&... args)
+        timer_delegate(igris::delegate<void, Args...> dlg, Args &&...args)
             : dlg(dlg), args(std::forward<Args>(args)...)
         {
         }
@@ -63,7 +71,7 @@ namespace igris
         using parent = timer_delegate<timer_spec<systime_t>, Args...>;
 
     public:
-        timer(igris::delegate<void, Args...> dlg, Args &&... args)
+        timer(igris::delegate<void, Args...> dlg, Args &&...args)
             : parent(dlg, std::forward<Args>(args)...)
         {
         }
@@ -71,47 +79,55 @@ namespace igris
 
     template <typename TimeSpec> class timer_manager
     {
+        using time_t = typename TimeSpec::time_t;
+        using difftime_t = typename TimeSpec::difftime_t;
         using timer = managed_timer_base<TimeSpec>;
 
         igris::dlist<timer, &timer::lnk> timer_list;
 
-        igris::delegate<typename TimeSpec::time_t> gettime;
+        igris::delegate<time_t> gettime;
 
     public:
-        timer_manager(igris::delegate<typename TimeSpec::time_t> gettime)
-            : gettime(gettime){};
+        timer_manager(igris::delegate<time_t> gettime) : gettime(gettime){};
 
-        void plan(timer &tim, TimeSpec::time_t start,
-                  TimeSpec::difftime_t interval)
+        void plan(timer &tim)
         {
             auto final = tim.final();
 
             system_lock();
-            tim->unplan();
+            tim.unplan();
 
             auto it = std::find_if(timer_list.begin(), timer_list.end(),
-                                   [](auto &tim) {
+                                   [final](auto &tim)
+                                   {
                                        auto it_final = tim.start + tim.interval;
                                        return final - it_final < 0;
                                    });
 
-            timer_list.insert(it, tim);
+            timer_list.move_prev(tim, it);
             system_unlock();
         }
 
-        void exec(TimeSpec::time_t cuttime)
+        void plan(timer &tim, time_t start, difftime_t interval)
+        {
+            tim.set_start(start);
+            tim.set_interval(interval);
+            plan(tim);
+        }
+
+        void exec(time_t curtime)
         {
             system_lock();
 
-            while (!dlist_empty(&ktimer_list))
+            while (!timer_list.empty())
             {
-                ktimer_t *it =
-                    dlist_first_entry(&ktimer_list, ktimer_t, ctr.lnk);
+                timer &tim = timer_list.first();
                 system_unlock();
 
-                if (ktimer_check(it, curtime))
+                if (tim.check(curtime))
                 {
-                    ktimer_execute(it);
+                    tim.execute();
+                    tim.shift();
                 }
                 else
                     return;
