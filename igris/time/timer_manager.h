@@ -3,6 +3,7 @@
 
 #include <igris/container/dlist.h>
 #include <igris/event/delegate.h>
+#include <igris/sync/syslock.h>
 #include <igris/time/systime.h>
 
 #include <functional>
@@ -23,9 +24,11 @@ namespace igris
 
     template <typename TimeSpec> class timer_head
     {
-    protected:
+    public:
         TimeSpec::time_t start;
         TimeSpec::difftime_t interval;
+
+        TimeSpec::time_t final() { return start + interval; }
     };
 
     template <typename TimeSpec> class managed_timer_base : timer_head<TimeSpec>
@@ -81,9 +84,43 @@ namespace igris
         void plan(timer &tim, TimeSpec::time_t start,
                   TimeSpec::difftime_t interval)
         {
+            auto final = tim.final();
+
+            system_lock();
+            tim->unplan();
+
+            auto it = std::find_if(timer_list.begin(), timer_list.end(),
+                                   [](auto &tim) {
+                                       auto it_final = tim.start + tim.interval;
+                                       return final - it_final < 0;
+                                   });
+
+            timer_list.insert(it, tim);
+            system_unlock();
         }
 
-        void exec(TimeSpec::time_t cuttime) {}
+        void exec(TimeSpec::time_t cuttime)
+        {
+            system_lock();
+
+            while (!dlist_empty(&ktimer_list))
+            {
+                ktimer_t *it =
+                    dlist_first_entry(&ktimer_list, ktimer_t, ctr.lnk);
+                system_unlock();
+
+                if (ktimer_check(it, curtime))
+                {
+                    ktimer_execute(it);
+                }
+                else
+                    return;
+
+                system_lock();
+            }
+
+            system_unlock();
+        }
     };
 }
 
