@@ -134,13 +134,13 @@ namespace igris
             return error(str);
         }
 
-        result<opt *> get_opt(const char *l, Type type)
+        result<opt *> get_opt(const std::string &name, Type type)
         {
-            char str[64];
+            std::string message;
 
             for (auto &o : opts)
             {
-                if (!strcmp(o.long_name.c_str(), l))
+                if (o.long_name == name)
                 {
                     if (o.type != type)
                         return error("wrong opt type");
@@ -148,37 +148,37 @@ namespace igris
                 }
             }
 
-            sprintf(str, "wrong opt type %s", l);
-            return error(str);
+            message = "wrong opt type " + name;
+            return error(message);
         }
 
-        result<std::string> get_string(const char *l)
+        result<std::string> get_string(const std::string &name)
         {
-            auto &&r = get_opt(l, Type::String);
+            auto &&r = get_opt(name, Type::String);
             if (r.is_error())
                 return r.error();
             return r.value()->str;
         }
 
-        result<int32_t> get_integer(const char *l)
+        result<int32_t> get_integer(const std::string &name)
         {
-            auto &&r = get_opt(l, Type::Integer);
+            auto &&r = get_opt(name, Type::Integer);
             if (r.is_error())
                 return r.error();
             return r.value()->i32;
         }
 
-        result<bool> get_bool(const char *l)
+        result<bool> get_bool(const std::string &name)
         {
-            auto &&r = get_opt(l, Type::Option);
+            auto &&r = get_opt(name, Type::Option);
             if (r.is_error())
                 return r.error();
             return r.value()->b;
         }
 
-        result<bool> get_option(const char *l)
+        result<bool> get_option(const std::string &name)
         {
-            auto &&r = get_opt(l, Type::Option);
+            auto &&r = get_opt(name, Type::Option);
             if (r.is_error())
                 return r.error();
             return r.value()->b;
