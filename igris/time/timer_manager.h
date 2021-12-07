@@ -31,7 +31,7 @@ namespace igris
         time_t start;
         difftime_t interval;
 
-        time_t final() { return start + interval; }
+        time_t finish() { return start + interval; }
         bool check(time_t curtime) { return curtime - start >= interval; }
         void set_start(time_t t) { start = t; }
         void set_interval(difftime_t t) { interval = t; }
@@ -57,7 +57,7 @@ namespace igris
         std::tuple<Args...> args;
 
     public:
-        timer_delegate(igris::delegate<void, Args...> dlg, Args &&...args)
+        timer_delegate(igris::delegate<void, Args...> dlg, Args &&... args)
             : dlg(dlg), args(std::forward<Args>(args)...)
         {
         }
@@ -71,7 +71,7 @@ namespace igris
         using parent = timer_delegate<timer_spec<systime_t>, Args...>;
 
     public:
-        timer(igris::delegate<void, Args...> dlg, Args &&...args)
+        timer(igris::delegate<void, Args...> dlg, Args &&... args)
             : parent(dlg, std::forward<Args>(args)...)
         {
         }
@@ -92,14 +92,13 @@ namespace igris
 
         void plan(timer &tim)
         {
-            auto final = tim.final();
+            auto final = tim.finish();
 
             system_lock();
             tim.unplan();
 
             auto it = std::find_if(timer_list.begin(), timer_list.end(),
-                                   [final](auto &tim)
-                                   {
+                                   [final](auto &tim) {
                                        auto it_final = tim.start + tim.interval;
                                        return final - it_final < 0;
                                    });
@@ -136,6 +135,13 @@ namespace igris
             }
 
             system_unlock();
+        }
+
+        bool empty() const { return timer_list.empty(); }
+
+        difftime_t minimal_interval(time_t curtime)
+        {
+            return timer_list.first().finish() - curtime;
         }
     };
 }

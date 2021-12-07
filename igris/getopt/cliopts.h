@@ -26,7 +26,7 @@ namespace igris
 
         struct opt
         {
-            const char *long_name;
+            std::string long_name;
             char short_name;
             Type type;
 
@@ -108,7 +108,7 @@ namespace igris
 
             for (auto &o : opts)
             {
-                if (!strcmp(o.long_name, l))
+                if (!strcmp(o.long_name.c_str(), l))
                 {
                     return &o;
                 }
@@ -140,7 +140,7 @@ namespace igris
 
             for (auto &o : opts)
             {
-                if (!strcmp(o.long_name, l))
+                if (!strcmp(o.long_name.c_str(), l))
                 {
                     if (o.type != type)
                         return error("wrong opt type");

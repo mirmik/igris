@@ -25,4 +25,8 @@ TEST_CASE("TimerManager")
 
 	manager.exec(current_time + 3001);
 	CHECK_EQ(aaa, 36);
+	tim0.unplan();
+
+	manager.exec(current_time + 4001);
+	CHECK_EQ(aaa, 36);
 }
