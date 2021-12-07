@@ -99,7 +99,7 @@ namespace igris
         }
 
         //! Проверяет, установлен ли какой-либо обработчик.
-        bool armed() { return method.part.function != nullptr; }
+        bool armed() const { return method.part.function != nullptr; }
 
         delegate() { clean(); }
 
@@ -175,6 +175,8 @@ namespace igris
             else
                 return method.part.function(std::forward<Args>(args)...);
         }
+
+        operator bool() const { return armed(); };
 
         bool operator==(delegate<R, Args...> b)
         {
