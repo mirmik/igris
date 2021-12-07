@@ -6,6 +6,7 @@
 #include <igris/sync/syslock.h>
 #include <igris/time/systime.h>
 
+#include <algorithm>
 #include <functional>
 #include <tuple>
 
