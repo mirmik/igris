@@ -102,25 +102,25 @@ namespace igris
         }
         void add_option(const char *l, char s) { opts.emplace_back(l, s); }
 
-        result<opt *> get_opt(const char *l)
+        result<opt *> get_opt(const std::string &name)
         {
-            char str[64];
+            std::string message;
 
             for (auto &o : opts)
             {
-                if (!strcmp(o.long_name.c_str(), l))
+                if (o.long_name == name)
                 {
                     return &o;
                 }
             }
 
-            sprintf(str, "wrong opt name %s", l);
-            return error(str);
+            message = "wrong opt name " + name;
+            return error(message);
         }
 
         result<opt *> get_opt(char c)
         {
-            char str[64];
+            std::string message;
 
             for (auto &o : opts)
             {
@@ -130,8 +130,8 @@ namespace igris
                 }
             }
 
-            sprintf(str, "wrong opt short_name %*s", 1, &c);
-            return error(str);
+            message = "wrong opt short_name " + std::string(&c, 1);
+            return error(message);
         }
 
         result<opt *> get_opt(const std::string &name, Type type)
@@ -148,7 +148,7 @@ namespace igris
                 }
             }
 
-            message = "wrong opt type " + name;
+            message = "wrong opt name " + name;
             return error(message);
         }
 
