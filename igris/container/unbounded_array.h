@@ -18,6 +18,7 @@ namespace igris
         T *m_data;
         size_t m_size;
 
+        T *data() { return m_data; }
         const T *data() const { return m_data; }
         size_t size() const { return m_size; }
 
@@ -56,6 +57,20 @@ namespace igris
             arr.m_size = 0;
             arr.m_data = nullptr;
         }
+
+        void resize(size_t size)
+        {
+            invalidate();
+            create_buffer(size);
+        }
+
+        void create_buffer(size_t size)
+        {
+            m_data = alloc.allocate(size);
+            m_size = size;
+        }
+
+        void invalidate() { alloc.deallocate(m_data, m_size); }
 
         ~unbounded_array() { alloc.deallocate(m_data, m_size); }
 
