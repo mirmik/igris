@@ -1,4 +1,6 @@
 #include <doctest/doctest.h>
+
+#if __cplusplus >= 202002L 
 #include <igris/container/ndarray.h>
 
 TEST_CASE("2darray") 
@@ -62,3 +64,4 @@ TEST_CASE("3darray")
 	CHECK_EQ(arr({1,1,1}), 40);
 	CHECK_EQ(arr({1,2,1}), 60);
 }
+#endif

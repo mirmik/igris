@@ -2,10 +2,12 @@ cmake_minimum_required(VERSION 3.5.1)
 project(igris)
 set( CMAKE_VERBOSE_MAKEFILE on )
 
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CC_STANDARD 11)
+
 set (PLATFORM_SOURCES )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++20 -Werror=all")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=all")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror=all")
 
 if (WIN32 OR WIN64)
