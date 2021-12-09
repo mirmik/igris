@@ -1,6 +1,7 @@
 #include <doctest/doctest.h>
+#include <igris/util/macro.h>
 
-#if __cplusplus >= 202002L 
+#if __cplusplus >= 201703L
 #include <igris/container/ndarray.h>
 
 TEST_CASE("2darray") 
