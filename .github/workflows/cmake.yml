@@ -20,16 +20,18 @@ jobs:
 
     strategy:
       matrix:
-        compiler: [g++10, clang-10]
+        cxx_compiler_path: [g++10, /usr/bin/clang-10]
+        cc_compiler_path: [gcc10, clang-10]
+        compiler_package: [g++10, clang-10]
       
     steps:
     - uses: actions/checkout@v2
 
     - name: Setup dependencies
       run: |
-        sudo apt-get install -y ${{matrix.compiler}}
+        sudo apt-get install -y ${{matrix.compiler_package}}
         sudo update-alternatives \
-          --install /usr/bin/c++ c++ /usr/bin/${{matrix.compiler}} 100
+          --install /usr/bin/c++ c++ ${{matrix.cxx_compiler_path}} 100
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
