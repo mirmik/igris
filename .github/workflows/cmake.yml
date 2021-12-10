@@ -44,9 +44,7 @@ jobs:
 
     - name: Build
       # Build your program with the given configuration
-      run: |
-        cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} \ 
-        -DCMAKE_CXX_COMPILER=${{env.CXX}} -DCMAKE_C_COMPILER=${{env.CC}}
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
     - name: Test
       working-directory: ${{github.workspace}}/build
