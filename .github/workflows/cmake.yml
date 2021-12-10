@@ -29,7 +29,7 @@ jobs:
       run: |
         sudo apt-get install -y ${{matrix.compiler}}
         sudo update-alternatives \
-          --install /usr/bin/c++ c++ ${{matrix.compiler}} 100
+          --install /usr/bin/c++ c++ /usr/bin/${{matrix.compiler}} 100
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
