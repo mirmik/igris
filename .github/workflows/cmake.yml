@@ -20,14 +20,14 @@ jobs:
 
     strategy:
       matrix:
-        compiler: [gcc, clang]
+        compiler: [g++, clang]
       
     steps:
     - uses: actions/checkout@v2
 
     - name: Setup dependencies
       run: |
-        sudo apt-get install -y gcc-11 llvm-10 clang-10
+        sudo apt-get install -y g++-11 llvm-10 clang-10
         sudo update-alternatives \
           --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 \
           --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-11 \
