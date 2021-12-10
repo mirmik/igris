@@ -40,6 +40,8 @@ namespace igris
         std::vector<Value> _values;
 
     public:
+        ndarray() {}
+
         template <class C> void init(const C &container)
         {
             _dim = igris::array_dimension(container);
