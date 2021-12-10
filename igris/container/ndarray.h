@@ -40,7 +40,7 @@ namespace igris
         std::vector<Value> _values;
 
     public:
-        template <class C, bool Hint = false> void init(const C &container)
+        template <class C> void init(const C &container)
         {
             _dim = igris::array_dimension(container);
 
