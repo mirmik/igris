@@ -22,14 +22,14 @@ jobs:
       matrix:
         compiler: 
           - { CXX: g++-11, CC: gcc-11 } 
-          - { CXX: clang++-10, CC: clang-10 }
+          - { CXX: clang++-12, CC: clang-12 }
       
     steps:
     - uses: actions/checkout@v2
 
     - name: Setup dependencies
       run: |
-        sudo apt-get install -y g++-11 llvm-10 clang-10
+        sudo apt-get install -y g++-11 llvm-10 clang-12
         sudo update-alternatives \
           --install /usr/bin/c++ c++ /usr/bin/${{env.CXX}} 100          
 
