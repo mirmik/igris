@@ -61,7 +61,7 @@ TEST_CASE("3darray")
 	CHECK_EQ(arr({0,1,1}), 60);
 	CHECK_EQ(arr({0,2,1}), 100);
 	CHECK_EQ(arr({1,0,1}), 20);
-	CHECK_EQ(arr({1,1,1}), 40);
+	CHECK_EQ(arr({1,1,1}), 41);
 	CHECK_EQ(arr({1,2,1}), 60);
 }
 #endif
