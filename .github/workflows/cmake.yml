@@ -23,18 +23,18 @@ jobs:
 
     - name: Setup dependencies
       run: |
-        sudo apt-get install -y gcc-11 llvm-14 clang-14
+        sudo apt-get install -y gcc-11 llvm-12 clang-12
         sudo update-alternatives \
           --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 \
           --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-11 \
           --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-11 \
           --slave /usr/bin/gcov gcov /usr/bin/gcov-11
         sudo update-alternatives \
-          --install /usr/bin/llvm-ar llvm-ar /usr/bin/llvm-ar-14 100 \
-          --slave /usr/bin/llvm-ranlib llvm-ranlib /usr/bin/llvm-ranlib-14 \
-          --slave /usr/bin/llvm-cov llvm-cov /usr/bin/llvm-cov-14
+          --install /usr/bin/llvm-ar llvm-ar /usr/bin/llvm-ar-12 100 \
+          --slave /usr/bin/llvm-ranlib llvm-ranlib /usr/bin/llvm-ranlib-12 \
+          --slave /usr/bin/llvm-cov llvm-cov /usr/bin/llvm-cov-12
         sudo update-alternatives \
-          --install /usr/bin/clang clang /usr/bin/clang-14 100
+          --install /usr/bin/clang clang /usr/bin/clang-12 100
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
