@@ -30,10 +30,6 @@ jobs:
     - name: Setup dependencies
       run: |
         sudo apt-get install -y g++-11 clang-12
-        sudo update-alternatives \
-          --install /usr/bin/c++ c++ /usr/bin/${{matrix.compiler.CXX}} 100          
-        sudo update-alternatives \
-          --install /usr/bin/cc cc /usr/bin/${{matrix.compiler.CC}} 100          
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
