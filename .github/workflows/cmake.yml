@@ -35,6 +35,8 @@ jobs:
           --slave /usr/bin/llvm-cov llvm-cov /usr/bin/llvm-cov-12
         sudo update-alternatives \
           --install /usr/bin/clang clang /usr/bin/clang-12 100
+        sudo update-alternatives \
+          --install /usr/bin/c++ c++ /usr/bin/clang-12 100
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
