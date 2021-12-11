@@ -3,10 +3,11 @@ project(igris)
 set( CMAKE_VERBOSE_MAKEFILE on )
 
 set(CMAKE_CC_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
 
 set (PLATFORM_SOURCES )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++20 -Werror=all")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=all")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror=all")
 
 if (WIN32 OR WIN64)
@@ -81,9 +82,11 @@ file(GLOB SOURCES_TEST
 add_library(igris SHARED ${IGRIS_SOURCES} ${PLATFORM_SOURCES} igris/dprint/dprint_stdout.c)
 target_include_directories(igris PRIVATE .)
 
-add_executable(igris_test ${SOURCES_TEST})
-target_include_directories(igris_test PRIVATE . tests)
-target_link_libraries(igris_test rt pthread)
+if (!${WITHOUT_TESTS})
+	add_executable(igris_test ${SOURCES_TEST})
+	target_include_directories(igris_test PRIVATE . tests)
+	target_link_libraries(igris_test rt pthread)
+endif()
 
 if (UNIX AND NOT APPLE)
 	install(TARGETS ${PROJECT_NAME}

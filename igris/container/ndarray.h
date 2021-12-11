@@ -1,3 +1,5 @@
+#if __has_include(<concepts>)
+
 #ifndef IGRIS_NDARRAY_H
 #define IGRIS_NDARRAY_H
 
@@ -8,7 +10,8 @@
 
 namespace igris
 {
-    template <class T> concept ArrayType = requires(const T &a)
+    template <class T>
+    concept ArrayType = requires(const T &a)
     {
         std::size(a);
         std::begin(a);
@@ -131,4 +134,5 @@ namespace igris
     };
 }
 
+#endif
 #endif
