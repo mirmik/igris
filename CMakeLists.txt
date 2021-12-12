@@ -86,11 +86,11 @@ file(GLOB SOURCES_TEST
 add_library(igris SHARED ${IGRIS_SOURCES} ${PLATFORM_SOURCES} igris/dprint/dprint_stdout.c)
 target_include_directories(igris PRIVATE .)
 
-#if (!${WITHOUT_TESTS})
+if (NOT DEFINED WITHOUT_TESTS)
 	add_executable(igris_test ${SOURCES_TEST})
 	target_include_directories(igris_test PRIVATE . tests)
 	target_link_libraries(igris_test rt pthread)
-#endif()
+endif()
 
 if (UNIX AND NOT APPLE)
 	install(TARGETS ${PROJECT_NAME}
