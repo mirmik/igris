@@ -11,26 +11,29 @@
 
 namespace igris
 {
-    template <class T>
-    concept ArrayType = requires(const T &a)
+    template <class T> concept ArrayType = requires(const T &a)
     {
         std::size(a);
         std::begin(a);
         std::end(a);
     };
 
-    template <class C> size_t array_dimension(const C &container)
+    template <class C, class V> size_t array_dimension(const C &container)
     {
+        if constexpr (std::same_as<C, V>)
+            return 0;
         if constexpr (ArrayType<C>)
             return array_dimension(*std::begin(container)) + 1;
         else
             return 0;
     }
 
-    template <class C, class S>
+    template <class C, class V, class S>
     void assign_array_shape(const C &container, S &shape, int idx)
     {
-        if constexpr (ArrayType<C>)
+        if constexpr (std::same_as<C, V>)
+            return;
+        else if constexpr (ArrayType<C>)
         {
             shape[idx] = container.size();
             assign_array_shape(*std::begin(container), shape, idx + 1);
@@ -48,10 +51,10 @@ namespace igris
 
         template <class C> void init(const C &container)
         {
-            _dim = igris::array_dimension(container);
+            _dim = igris::array_dimension<C, Value>(container);
 
             _shape.resize(_dim);
-            igris::assign_array_shape(container, _shape, 0);
+            igris::assign_array_shape<C, Value>(container, _shape, 0);
 
             _values.reserve(plane_size());
             set_values(container);
