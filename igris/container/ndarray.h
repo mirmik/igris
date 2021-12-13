@@ -4,6 +4,7 @@
 #include <array>
 #include <concepts>
 #include <igris/container/array_view.h>
+#include <stdexcept>
 #include <vector>
 
 namespace igris
@@ -122,11 +123,13 @@ namespace igris
     private:
         template <class C> void set_values(const C &val)
         {
-            if constexpr (ArrayType<C>)
+            if constexpr (std::same_as<C, Value>)
+                _values.push_back(val);
+            else if constexpr (ArrayType<C>)
                 for (auto &c : val)
                     set_values(c);
             else
-                _values.push_back(val);
+                throw std::logic_error("ndarray wrong constructor");
         }
     };
 }

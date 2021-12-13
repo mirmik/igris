@@ -7,8 +7,8 @@ TEST_CASE("2darray")
 {
 	igris::ndarray<double> arr = 
 	{
-		{ 10, 30, 50 }, 
-		{ 10, 20, 30 }, 
+		{ 10., 30., 50. }, 
+		{ 10., 20., 30. }, 
 	};
 
 	CHECK_EQ(arr.dimension(), 2);
@@ -40,8 +40,8 @@ TEST_CASE("3darray")
 {
 	igris::ndarray<double> arr = 
 	{
-		{ { 10, 20 }, { 30, 60 }, { 50, 100} }, 
-		{ { 10, 20 }, { 20, 40 }, { 30, 60 } }, 
+		{ { 10., 20. }, { 30., 60. }, { 50., 100.} }, 
+		{ { 10., 20. }, { 20., 40. }, { 30., 60. } }, 
 	};
 
 	CHECK_EQ(arr.dimension(), 3);
@@ -51,6 +51,8 @@ TEST_CASE("3darray")
 	CHECK_EQ(arr.shape().size(), 3);
 
 	CHECK_EQ(arr.planed_index({0,0,0}), 0);
+	CHECK_EQ(arr.planed_index({0,0,1}), 1);
+	CHECK_EQ(arr.planed_index({1,0,1}), 7);
 	CHECK_EQ(arr({0,0,0}), 10);
 	CHECK_EQ(arr({0,1,0}), 30);
 	CHECK_EQ(arr({0,2,0}), 50);
