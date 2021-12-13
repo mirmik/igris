@@ -1,6 +1,6 @@
 #include <doctest/doctest.h>
 
-#if __cplusplus > 201703L
+#if __cplusplus > 201709L && __has_include(<concepts>)
 #include <igris/container/ndarray.h>
 
 TEST_CASE("2darray") 
