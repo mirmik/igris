@@ -20,10 +20,12 @@ namespace igris
 
     template <class C, class V> size_t array_dimension(const C &container)
     {
-        if constexpr (std::same_as<C, V>)
+        if constexpr (std::convertible_to<C, V>)
             return 0;
         if constexpr (ArrayType<C>)
-            return array_dimension(*std::begin(container)) + 1;
+            return array_dimension<decltype(*std::begin(container)), V>(
+                       *std::begin(container)) +
+                   1;
         else
             return 0;
     }
@@ -31,60 +33,62 @@ namespace igris
     template <class C, class V, class S>
     void assign_array_shape(const C &container, S &shape, int idx)
     {
-        if constexpr (std::same_as<C, V>)
+        if constexpr (std::convertible_to<C, V>)
             return;
         else if constexpr (ArrayType<C>)
         {
             shape[idx] = container.size();
-            assign_array_shape(*std::begin(container), shape, idx + 1);
+            assign_array_shape<decltype(*std::begin(container)), V>(
+                *std::begin(container), shape, idx + 1);
         }
     }
 
     template <typename Value> class ndarray
     {
-        size_t _dim;
         std::vector<size_t> _shape;
         std::vector<Value> _values;
 
     public:
-        ndarray() {}
+        ndarray() = default;
+        ndarray(const ndarray &other) = default;
+        ndarray(ndarray &&other) = default;
+        ndarray &operator=(const ndarray &other) = default;
+        ndarray &operator=(ndarray &&other) = default;
 
         template <class C> void init(const C &container)
         {
-            _dim = igris::array_dimension<C, Value>(container);
+            size_t dim = igris::array_dimension<C, Value>(container);
 
-            _shape.resize(_dim);
+            _shape.resize(dim);
             igris::assign_array_shape<C, Value>(container, _shape, 0);
 
             _values.reserve(plane_size());
             set_values(container);
         }
 
-        template <class C> ndarray(const std::initializer_list<C> &container)
+        ndarray(const std::initializer_list<Value> &container)
         {
             init(container);
         }
 
-        template <class C>
-        ndarray(
-            const std::initializer_list<std::initializer_list<C>> &container)
+        ndarray(const std::initializer_list<std::initializer_list<Value>>
+                    &container)
         {
             init(container);
         }
 
-        template <class C>
         ndarray(const std::initializer_list<
-                std::initializer_list<std::initializer_list<C>>> &container)
+                std::initializer_list<std::initializer_list<Value>>> &container)
         {
             init(container);
         }
 
-        template <class C> ndarray(const C &container) { init(container); }
+        size_t dim() { return _shape.size(); }
 
         size_t plane_size()
         {
             size_t acc = 1;
-            for (size_t i = 0; i < _dim; ++i)
+            for (size_t i = 0; i < dim(); ++i)
                 acc *= _shape[i];
             return acc;
         }
@@ -93,7 +97,7 @@ namespace igris
         {
             int acc = 0;
             int step = 1;
-            for (int i = _dim - 1; i >= 0; --i)
+            for (int i = dim() - 1; i >= 0; --i)
             {
                 acc += indexes[i] * step;
                 step *= _shape[i];
@@ -116,20 +120,117 @@ namespace igris
             return _values[planed_index(indexes)];
         }
 
-        size_t dimension() const { return _dim; }
+        Value &operator()(const std::vector<size_t> &indexes)
+        {
+            return _values[planed_index(indexes.data(), indexes.size())];
+        }
+
+        Value &operator()(const std::initializer_list<size_t> &indexes)
+        {
+            return _values[planed_index(igris::array_view<size_t>(indexes))];
+        }
 
         const std::vector<size_t> &shape() const { return _shape; }
 
         void reshape(const igris::array_view<size_t> &indexes)
         {
-            _dim = indexes.size();
             _shape = {indexes.data(), indexes.data() + indexes.size()};
+        }
+
+        void resize(igris::array_view<size_t> newshape)
+        {
+            _shape.resize(newshape.size());
+            std::copy(newshape.begin(), newshape.end(), _shape.begin());
+            _values.resize(plane_size());
+        }
+
+        void resize(const std::vector<size_t> &newshape)
+        {
+            _shape.resize(newshape.size());
+            std::copy(newshape.begin(), newshape.end(), _shape.begin());
+            _values.resize(plane_size());
+        }
+
+        ndarray operator+(const ndarray &oth)
+        {
+            ndarray ret;
+            ret.resize(shape());
+
+            for (size_t i = 0; i < plane_size(); ++i)
+            {
+                ret[i] = (*this)[i] + oth[i];
+            }
+
+            return ret;
+        }
+
+        ndarray operator-(const ndarray &oth)
+        {
+            ndarray ret;
+            ret.resize(shape());
+
+            for (size_t i = 0; i < plane_size(); ++i)
+            {
+                ret[i] = (*this)[i] - oth[i];
+            }
+
+            return ret;
+        }
+
+        ndarray operator*(double scalar)
+        {
+            ndarray ret;
+            ret.resize(shape());
+
+            for (size_t i = 0; i < plane_size(); ++i)
+            {
+                ret[i] = (*this)[i] * scalar;
+            }
+
+            return ret;
+        }
+
+        ndarray operator/(double scalar)
+        {
+            ndarray ret;
+            ret.resize(shape());
+
+            for (size_t i = 0; i < plane_size(); ++i)
+            {
+                ret[i] = (*this)[i] / scalar;
+            }
+
+            return ret;
+        }
+
+        Value &operator[](size_t i) { return _values[i]; }
+
+        const Value &operator[](size_t i) const { return _values[i]; }
+
+        bool operator==(const ndarray &oth) const
+        {
+            return _shape == oth._shape && _values == oth._values;
+        }
+
+        bool operator!=(const ndarray &oth) const
+        {
+            return _shape != oth._shape || _values != oth._values;
+        }
+
+        auto get(std::vector<std::vector<size_t>> indexes)
+        {
+            std::vector<Value> rets;
+            for (size_t i = 0; i < indexes.size(); ++i)
+            {
+                rets.push_back((*this)(indexes[i]));
+            }
+            return rets;
         }
 
     private:
         template <class C> void set_values(const C &val)
         {
-            if constexpr (std::same_as<C, Value>)
+            if constexpr (std::convertible_to<C, Value>)
                 _values.push_back(val);
             else if constexpr (ArrayType<C>)
                 for (auto &c : val)
