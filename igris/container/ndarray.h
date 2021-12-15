@@ -93,7 +93,12 @@ namespace igris
             return acc;
         }
 
-        size_t planed_index(const size_t *indexes, size_t)
+        size_t planed_index(const std::initializer_list<size_t> &indexes)
+        {
+            return planed_index(indexes.begin(), indexes.size());
+        }
+
+        template <class Index> size_t planed_index(const Index *indexes, size_t)
         {
             int acc = 0;
             int step = 1;
@@ -105,12 +110,18 @@ namespace igris
             return acc;
         }
 
-        size_t planed_index(const igris::array_view<size_t> &indexes)
+        template <class Index>
+        size_t planed_index(const igris::array_view<Index> &indexes)
         {
             return planed_index(indexes.data(), indexes.size());
         }
 
         Value &operator()(const size_t *indexes, size_t)
+        {
+            return _values[planed_index(indexes)];
+        }
+
+        Value &operator()(const int *indexes, size_t)
         {
             return _values[planed_index(indexes)];
         }
@@ -121,6 +132,11 @@ namespace igris
         }
 
         Value &operator()(const std::vector<size_t> &indexes)
+        {
+            return _values[planed_index(indexes.data(), indexes.size())];
+        }
+
+        template <class Indexes> Value &operator()(const Indexes &indexes)
         {
             return _values[planed_index(indexes.data(), indexes.size())];
         }
@@ -218,6 +234,16 @@ namespace igris
         }
 
         auto get(std::vector<std::vector<size_t>> indexes)
+        {
+            std::vector<Value> rets;
+            for (size_t i = 0; i < indexes.size(); ++i)
+            {
+                rets.push_back((*this)(indexes[i]));
+            }
+            return rets;
+        }
+
+        template <class Set> auto get(const Set &indexes)
         {
             std::vector<Value> rets;
             for (size_t i = 0; i < indexes.size(); ++i)
