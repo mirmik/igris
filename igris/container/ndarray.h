@@ -253,6 +253,8 @@ namespace igris
             return rets;
         }
 
+        auto begin() { return _values.begin(); }
+
     private:
         template <class C> void set_values(const C &val)
         {
