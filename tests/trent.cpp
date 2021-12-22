@@ -1,6 +1,8 @@
+#include <doctest/doctest.h>
 #include <igris/trent/json.h>
+#include <cmath>
 
-LT_BEGIN_TEST(igris_test_suite, json_test)
+TEST_CASE("json_test")
 {
 	igris::trent tr;
 
@@ -39,9 +41,8 @@ LT_BEGIN_TEST(igris_test_suite, json_test)
 	)");
 	CHECK(tr.is_list());
 }
-LT_END_TEST(json_test)
 
-LT_BEGIN_TEST(igris_test_suite, trent_basic_test)
+TEST_CASE("trent_basic_test")
 {
 	igris::trent tr;
 	
@@ -49,22 +50,16 @@ LT_BEGIN_TEST(igris_test_suite, trent_basic_test)
 	int a = tr["a"]["b"][28].as_numer();
 	CHECK_EQ(a, 42);
 }
-LT_END_TEST(trent_basic_test)
 
-
-
-LT_BEGIN_TEST(igris_test_suite, trent_basic_test)
+TEST_CASE("trent_basic_test")
 {
 	igris::trent tr;
 	
 	tr = igris::json::parse(" 20e-1 ");
 	CHECK_EQ(tr.as_numer(), 2.0);
 }
-LT_END_TEST(trent_basic_test)
 
-
-
-LT_BEGIN_TEST(igris_test_suite, trent_path)
+TEST_CASE("trent_path")
 {
 	igris::trent tr;
 	int a;
@@ -81,9 +76,8 @@ LT_BEGIN_TEST(igris_test_suite, trent_path)
 	a = tr[igris::trent_path("7")].as_numer();
 	CHECK_EQ(a, 42);
 }
-LT_END_TEST(trent_path)
 
-LT_BEGIN_TEST(igris_test_suite, trent_bool)
+TEST_CASE("trent_bool")
 {
 	igris::trent tr;
 
@@ -108,10 +102,8 @@ LT_BEGIN_TEST(igris_test_suite, trent_bool)
 	CHECK(tr2["a"].is_bool());
 	CHECK_EQ(tr2["a"].as_bool(), false);
 }
-LT_END_TEST(trent_path)
 
-
-LT_BEGIN_TEST(igris_test_suite, get_test)
+TEST_CASE("get_test")
 {
 	igris::trent tr;
 
@@ -137,7 +129,7 @@ LT_BEGIN_TEST(igris_test_suite, get_test)
 	CHECK_EQ(tr.get_as_numer_ex("a/b/28"), 42);
 
 	tr["a"]["b"][28] = -123.513;
-	CHECK(fabs(tr.get_as_numer_ex("a/b/28") + 123.513) < 1e-5);
+	CHECK(std::fabs(tr.get_as_numer_ex("a/b/28") + 123.513) < 1e-5);
 
 	CHECK_THROWS(tr.get_as_numer_ex("a/c/28"));
 
@@ -181,4 +173,3 @@ LT_BEGIN_TEST(igris_test_suite, get_test)
 		CHECK_EQ(what, std::string("trent:wrong_type: path:a/b/28 request:num realtype:str"));
 	}
 }
-LT_END_TEST(get_test)

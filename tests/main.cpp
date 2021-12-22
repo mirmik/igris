@@ -23,7 +23,6 @@ extern "C" void debug_write(const char *c, int i)
 #include "osutil.hpp"
 #include "signature.hpp"
 #include "sync.hpp"
-#include "trent.hpp"
 #include "util.hpp"
 
 #include "container/array_view.hpp"
