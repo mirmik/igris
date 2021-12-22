@@ -4,8 +4,6 @@
 #include <igris/util/string.h>
 
 #include <igris/math.h>
-#include <igris/util/numconvert.h>
-
 #include <igris/util/bug.h>
 
 igris::series::series(int elemsize) : _elemsize(elemsize) {}
@@ -83,7 +81,7 @@ void igris::series::push_csv_string_parse(const std::string &str)
 
     for (unsigned int i = 0; i < MIN(lst.size(), view.size()); ++i)
     {
-        double data = atof64(lst[i].c_str(), nullptr);
+        double data = strtod(lst[i].c_str(), nullptr);
         view[i].assign(data);
     }
 }
