@@ -61,7 +61,7 @@ namespace igris
 
         int read_ascii_decimal_float(float *ret)
         {
-            *ret = atof32(ptr, (char **)&ptr);
+            *ret = strtof(ptr, (char **)&ptr);
             return 0;
         }
     };

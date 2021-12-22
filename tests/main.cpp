@@ -20,7 +20,6 @@ extern "C" void debug_write(const char *c, int i)
 #include "chunked_vector.hpp"
 #include "dprint.hpp"
 #include "event.hpp"
-#include "numconvert.hpp"
 #include "osutil.hpp"
 #include "signature.hpp"
 #include "sync.hpp"
