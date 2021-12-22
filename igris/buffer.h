@@ -101,7 +101,7 @@ namespace igris
 
         template <class Output> size_t print_to(Output &out) const
         {
-            return out.write(out.data(), out.size());
+            return out.write(data(), size());
         }
     };
 
