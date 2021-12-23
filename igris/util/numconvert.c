@@ -316,7 +316,7 @@ char *f32toa(float32_t f, char *buf, int8_t precision)
     return buf;
 }
 
-static inline double local_pow(int b, int n)
+/*static inline double local_pow(int b, int n)
 {
     int64_t res = 1;
     while (n--)
@@ -324,7 +324,7 @@ static inline double local_pow(int b, int n)
         res *= b;
     }
     return res;
-}
+}*/
 
 /*float32_t atof32(const char *str, char **pend)
 {
