@@ -1,23 +1,5 @@
 cmake_minimum_required(VERSION 3.5.1)
 project(igris)
-set( CMAKE_VERBOSE_MAKEFILE on )
-
-set(CMAKE_CC_STANDARD 11)
-set(CMAKE_CXX_STANDARD 20)
-
-set (PLATFORM_SOURCES )
-
-set(CMAKE_INSTALL_RPATH "\$ORIGIN")
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
-if (${STATIC_LIBS})
-	set(CMAKE_SHARED_LINKER_FLAGS "-static-libstdc++")
-endif()
-
-if (WIN32 OR WIN64)
-	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS")
-endif()
 
 file(GLOB HEADERS 
 	igris/util/*.h	
@@ -68,13 +50,6 @@ if (UNIX)
 	)
 endif()
 
-set(IGRIS_SOURCES 
-	${IGRIS_SOURCES} 
-	${IGRIS_SOURCES_PLUS} 
-	${PLATFORM_SOURCES} 
-	PARENT_SCOPE
-)
-
 file(GLOB SOURCES_TEST 
 	${IGRIS_SOURCES}
 	tests/*.cpp
@@ -83,37 +58,62 @@ file(GLOB SOURCES_TEST
 	series/*.cpp
 )
 
-add_library(igris SHARED ${IGRIS_SOURCES} ${PLATFORM_SOURCES} igris/dprint/dprint_stdout.c)
-target_include_directories(igris PRIVATE .)
+if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 
-if (NOT DEFINED WITHOUT_TESTS)
-	add_executable(igris_test ${SOURCES_TEST})
-	target_include_directories(igris_test PRIVATE . tests)
-	target_link_libraries(igris_test rt pthread)
-endif()
+	set(CMAKE_VERBOSE_MAKEFILE on )
+	set(CMAKE_CC_STANDARD 11)
+	set(CMAKE_CXX_STANDARD 20)
+	
+	if (${STATIC_LIBS})
+		set(CMAKE_SHARED_LINKER_FLAGS "-static-libstdc++")
+	endif()
+	
+	if (WIN32 OR WIN64)
+		set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS")
+	endif()
+	
+	add_library(igris SHARED ${IGRIS_SOURCES} igris/dprint/dprint_stdout.c)
+	target_include_directories(igris PRIVATE .)
+	
+	if (NOT DEFINED WITHOUT_TESTS)
+		add_executable(igris_test ${SOURCES_TEST})
+		target_include_directories(igris_test PRIVATE . tests)
+		target_link_libraries(igris_test rt pthread)
+	endif()
+	
+	if (UNIX AND NOT APPLE)
+		install(TARGETS ${PROJECT_NAME}
+			LIBRARY DESTINATION /usr/lib
+		)
+	
+		install(DIRECTORY ${PROJECT_NAME}
+	    	    DESTINATION /usr/local/include
+	    	    PATTERN "*HIDE*" EXCLUDE
+	   	)
+	endif()
+	
+	
+	if (APPLE)
+		install(TARGETS ${PROJECT_NAME}
+			LIBRARY DESTINATION /usr/local/lib
+		)
+	
+		install(DIRECTORY ${PROJECT_NAME}
+	    	    DESTINATION /usr/local/include
+	    	    PATTERN "*HIDE*" EXCLUDE
+	   	)
+	endif()
+	
+	enable_testing()
+	add_test(NAME igris_test COMMAND igris_test)
 
-if (UNIX AND NOT APPLE)
-	install(TARGETS ${PROJECT_NAME}
-		LIBRARY DESTINATION /usr/lib
+else()
+	set(IGRIS_SOURCES 
+		${IGRIS_SOURCES} 
+		${PLATFORM_SOURCES} 
+		${IGRIS_SOURCES_PLUS} 
+		PARENT_SCOPE
 	)
 
-	install(DIRECTORY ${PROJECT_NAME}
-    	    DESTINATION /usr/local/include
-    	    PATTERN "*HIDE*" EXCLUDE
-   	)
 endif()
-
-
-if (APPLE)
-	install(TARGETS ${PROJECT_NAME}
-		LIBRARY DESTINATION /usr/local/lib
-	)
-
-	install(DIRECTORY ${PROJECT_NAME}
-    	    DESTINATION /usr/local/include
-    	    PATTERN "*HIDE*" EXCLUDE
-   	)
-endif()
-
-enable_testing()
-add_test(NAME igris_test COMMAND igris_test)
