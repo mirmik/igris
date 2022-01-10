@@ -74,7 +74,7 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS")
 	endif()
 	
-	add_library(igris SHARED ${IGRIS_SOURCES} igris/dprint/dprint_stdout.c)
+	add_library(igris SHARED ${IGRIS_SOURCES} ${PLATFORM_SOURCES} igris/dprint/dprint_stdout.c)
 	target_include_directories(igris PRIVATE .)
 	
 	if (NOT DEFINED WITHOUT_TESTS)
