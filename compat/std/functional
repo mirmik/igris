@@ -415,6 +415,14 @@ namespace std
 
 	template< class Key >
 	struct hash;
+
+
+ 
+template<class F, class... Args>
+constexpr auto invoke(F&& f, Args&&... args) 
+{
+        return std::forward<F>(f)(std::forward<Args>(args)...);
+}
 }
 
 

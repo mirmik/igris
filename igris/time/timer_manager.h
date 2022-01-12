@@ -12,8 +12,8 @@
 
 namespace igris
 {
-    template <class Time_t, class Difftime_t = decltype(std::declval<time_t>() -
-                                                        std::declval<time_t>())>
+    template <class Time_t, class Difftime_t = decltype(std::declval<Time_t>() -
+                                                        std::declval<Time_t>())>
     class timer_spec
     {
     public:
