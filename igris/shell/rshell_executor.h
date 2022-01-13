@@ -28,6 +28,12 @@ namespace igris
         void execute(char *cmdbuf, int cmdlen, char *ansbuf,
                      int ansmax) override
         {
+            while ((*cmdbuf == ' ' || *cmdbuf == '\t' || *cmdbuf == '\n') && *cmdbuf != '\0' && cmdlen != 0) 
+            {
+                cmdbuf++;
+                cmdlen--;
+            }
+
             if (cmdlen == 0)
                 return;
 
