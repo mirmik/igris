@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <memory>
 #include <utility>
+#include <initializer_list>
 
 #include <igris/util/ctrdtr.h>
 
@@ -34,6 +35,13 @@ namespace std
 
 		vector(const Allocator& alloc = Allocator()) : m_alloc(alloc) {}
 
+		vector(const std::initializer_list<T>& initializers) 
+		{
+			reserve(initializers.size());
+			for (auto& a : initializers)
+				push_back(a);
+		}
+
 		vector(const vector& other) :
 			m_size(other.m_size)
 		{
@@ -42,6 +50,16 @@ namespace std
 			for (auto ip = other.m_data, op = m_data; ip != other.m_data + other.m_size; ip++, op++)
 			{
 				igris::constructor(op, *ip);
+			}
+		}
+
+		template <class I, class O>
+		vector(I first, O last) 
+		{
+			reserve(std::distance(first, last));
+			for (;first!=last;first++) 
+			{
+				push_back(*first);
 			}
 		}
 
@@ -229,8 +247,11 @@ namespace std
 
 		T& operator[](size_t num)
 		{
-			reserve(num + 1);
-			if (num >= m_size) m_size = num + 1;
+			return *(m_data + num);
+		}
+
+		const T& operator[](size_t num) const 
+		{
 			return *(m_data + num);
 		}
 
