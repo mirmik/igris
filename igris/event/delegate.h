@@ -156,9 +156,11 @@ namespace igris
             return *this;
         };
 
-        R operator()(Args... args) { return emit(std::forward<Args>(args)...); }
+        R operator()(Args... args) const
+        { 
+            return emit(std::forward<Args>(args)...); }
 
-        R emit(Args... args)
+        R emit(Args... args) const
         {
             if (!armed())
                 return R();
@@ -176,7 +178,8 @@ namespace igris
                 return method.part.function(std::forward<Args>(args)...);
         }
 
-        operator bool() const { return armed(); };
+        operator bool() const { 
+            return armed(); };
 
         bool operator==(delegate<R, Args...> b)
         {
