@@ -24,7 +24,8 @@ application("runtests",
 
 	include_paths = ["."],
 	mdepends = [ 
-		"igris", 
+		"igris",
+		"igris.printf_impl",
 		"igris.series", 
 		("igris.dprint", "user")
 	],
