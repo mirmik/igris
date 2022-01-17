@@ -10,6 +10,7 @@ file(GLOB HEADERS
 
 file(GLOB IGRIS_SOURCES 
 	igris/util/*.cpp 
+	igris/series/*.cpp  
 	igris/util/*.c
 	igris/dprint/dprint_func_impl.c
 	igris/event/*.cpp
