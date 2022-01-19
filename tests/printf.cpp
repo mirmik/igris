@@ -61,6 +61,7 @@ void prdbl(char * buf, double fl)
 TEST_CASE("sprintf") 
 {
 	char buf[48];
+    memset(buf, 0, 48);
 	sprintf(buf, "%d", 42);
 	CHECK(strcmp("42", buf) == 0);
 

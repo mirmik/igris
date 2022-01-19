@@ -8,28 +8,14 @@ namespace std {
 	template <typename T>
 	class allocator {
 	public:
-		template <typename ... Args>
-		void construct(T* ptr, Args&& ... args) {
-			new (ptr) T(std::forward<Args>(args) ...);
-		}
-
-		void destroy(T* ptr) {
-			ptr->~T();
-		}
-
 		T* allocate(size_t n) {
-			return (T*) ::operator new(n * sizeof(T));
+			return (T*)malloc(n*sizeof(T));
 		}
 
-		void deallocate(T* ptr) {
-			::operator delete(ptr);
+		void deallocate(T* ptr, size_t) {
+			free(ptr);
 		}
 	};
-
-	template< class T >
-	T* addressof(T& arg) {
-		return reinterpret_cast<T*>( &const_cast<char&>( reinterpret_cast<const volatile char&>(arg) ) );
-	}
 }
 
 #include <shared.h>

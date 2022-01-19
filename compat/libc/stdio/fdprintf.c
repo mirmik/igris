@@ -10,7 +10,7 @@ struct printchar_handler_data
 	int fd;
 };
 
-static void file_printchar(void *d, int c)
+static int file_printchar(void *d, int c)
 {
 	struct printchar_handler_data * data = (struct printchar_handler_data *) d;
 	int ret = fdputc(c, data->fd);
@@ -19,6 +19,7 @@ static void file_printchar(void *d, int c)
 	{
 		data->errcode = ret;
 	}
+	return 1;
 }
 
 int vfdprintf(int fd, const char *format, va_list args)
@@ -29,8 +30,6 @@ int vfdprintf(int fd, const char *format, va_list args)
 	data.errcode = 0;
 
 	int ret = __printf(file_printchar, &data, format, args);
-	//dprln(format, ret);
-
 	return data.errcode != 0 ? data.errcode : ret;
 }
 
