@@ -21,6 +21,7 @@ MODULES = [
 	"igris.semaphore",
 	"igris.syslock",
 	"igris.ctrobj",
+	"igris.series",
 	"igris.protocols.gstuff",
 	"igris.crypt.aes",
 #	"igris.os_extension"
