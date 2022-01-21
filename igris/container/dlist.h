@@ -55,8 +55,8 @@ namespace igris
                 current = current->prev;
                 return *this;
             }
-            bool operator!=(const iterator &b) { return current != b.current; }
-            bool operator==(const iterator &b) { return current == b.current; }
+            bool operator!=(const iterator &b) const { return current != b.current; }
+            bool operator==(const iterator &b) const { return current == b.current; }
 
             type &operator*() { return *member_container(current, member); }
             type *operator->() { return member_container(current, member); }
@@ -94,11 +94,11 @@ namespace igris
                 current = current->next;
                 return *this;
             }
-            bool operator!=(const reverse_iterator &b)
+            bool operator!=(const reverse_iterator &b) const 
             {
                 return current != b.current;
             }
-            bool operator==(const reverse_iterator &b)
+            bool operator==(const reverse_iterator &b) const 
             {
                 return current == b.current;
             }

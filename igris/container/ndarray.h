@@ -1,5 +1,3 @@
-#if __has_include(<concepts>)
-
 #ifndef IGRIS_NDARRAY_H
 #define IGRIS_NDARRAY_H
 
@@ -269,5 +267,4 @@ namespace igris
     };
 }
 
-#endif
 #endif
