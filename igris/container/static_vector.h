@@ -5,6 +5,7 @@
 #include <type_traits>
 #include <string.h>
 #include <utility>
+#include <algorithm>
 
 namespace igris
 {
@@ -16,13 +17,13 @@ namespace igris
         using const_iterator = const T *;
 
         // Переместить во внешний буффер.
-        typename std::aligned_storage<sizeof(T), alignof(T)>::type data[N];
+        typename std::aligned_storage<sizeof(T), alignof(T)>::type _data[N];
         std::size_t m_size = 0;
 
     public:
         static_vector() 
         {
-            memset(data, 0, sizeof(data));
+            memset(_data, 0, sizeof(_data));
         }
 
         // Create an object in aligned storage
@@ -30,41 +31,60 @@ namespace igris
         {
             if (m_size >= N)
                 return;
-            new (&data[m_size]) T(std::forward<Args>(args)...);
+            new (&_data[m_size]) T(std::forward<Args>(args)...);
             ++m_size;
         }
 
         T &operator[](std::size_t pos)
         {
-            return *reinterpret_cast<T *>(&data[pos]);
+            return *reinterpret_cast<T *>(&_data[pos]);
         }
 
         const T &operator[](std::size_t pos) const
         {
-            return *reinterpret_cast<const T *>(&data[pos]);
+            return *reinterpret_cast<const T *>(&_data[pos]);
         }
 
-        std::size_t room() { return N - m_size; }
-        std::size_t size() { return m_size; }
+        T* data() 
+        {
+            return *reinterpret_cast<T *>(&_data[0]);
+        }
+
+        const T* data() const 
+        {
+            return *reinterpret_cast<const T *>(&_data[0]);
+        }
+
+        std::size_t room() const { return N - m_size; }
+        std::size_t size() const { return m_size; }
 
         // Delete objects from aligned storage
         ~static_vector()
         {
             for (std::size_t pos = 0; pos < m_size; ++pos)
             {
-                // note: needs std::launder as of C++17
-                reinterpret_cast<T *>(&data[pos])->~T();
+                reinterpret_cast<T *>(&_data[pos])->~T();
             }
         }
 
         iterator begin() 
         { 
-            return reinterpret_cast<T *>(&data[0]); 
+            return reinterpret_cast<T *>(&_data[0]); 
         }
         
         const_iterator end() 
         { 
-            return reinterpret_cast<T *>(&data[m_size]); 
+            return reinterpret_cast<T *>(&_data[m_size]); 
+        }
+
+        const_iterator begin() const
+        { 
+            return reinterpret_cast<const T *>(&_data[0]); 
+        }
+        
+        const_iterator end() const
+        { 
+            return reinterpret_cast<const T *>(&_data[m_size]); 
         }
 
         void resize(size_t newsize) 
@@ -74,10 +94,18 @@ namespace igris
          
             for (size_t i = m_size; i < newsize; ++i) 
             {
-                new (&data[i]) T{};
+                new (&_data[i]) T{};
             }
         
             m_size = newsize;
+        }
+
+        template<class U>
+        static_vector& operator=(const U& oth) 
+        {
+            resize(oth.size());
+            for (int i = 0; i < oth.size(); ++i) 
+                operator[](i) = oth[i];
         }
     };
 }
