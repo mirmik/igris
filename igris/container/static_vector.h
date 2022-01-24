@@ -3,6 +3,7 @@
 
 #include <new>
 #include <type_traits>
+#include <string.h>
 #include <utility>
 
 namespace igris
@@ -19,14 +20,16 @@ namespace igris
         std::size_t m_size = 0;
 
     public:
+        static_vector() 
+        {
+            memset(data, 0, sizeof(data));
+        }
+
         // Create an object in aligned storage
         template <typename... Args> void emplace_back(Args &&... args)
         {
             if (m_size >= N)
                 return;
-
-            // construct value in memory of aligned storage
-            // using inplace operator new
             new (&data[m_size]) T(std::forward<Args>(args)...);
             ++m_size;
         }
@@ -54,8 +57,28 @@ namespace igris
             }
         }
 
-        iterator begin() { return reinterpret_cast<T *>(&data[0]); }
-        const_iterator end() { return reinterpret_cast<T *>(&data[m_size]); }
+        iterator begin() 
+        { 
+            return reinterpret_cast<T *>(&data[0]); 
+        }
+        
+        const_iterator end() 
+        { 
+            return reinterpret_cast<T *>(&data[m_size]); 
+        }
+
+        void resize(size_t newsize) 
+        {
+            if (newsize >= N)
+                newsize = N;
+         
+            for (size_t i = m_size; i < newsize; ++i) 
+            {
+                new (&data[i]) T{};
+            }
+        
+            m_size = newsize;
+        }
     };
 }
 
