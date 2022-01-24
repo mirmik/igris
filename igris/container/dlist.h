@@ -94,11 +94,11 @@ namespace igris
                 current = current->next;
                 return *this;
             }
-            bool operator!=(const reverse_iterator &b)
+            bool operator!=(const reverse_iterator &b) const 
             {
                 return current != b.current;
             }
-            bool operator==(const reverse_iterator &b)
+            bool operator==(const reverse_iterator &b) const 
             {
                 return current == b.current;
             }
