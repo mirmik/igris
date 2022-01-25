@@ -11,11 +11,14 @@ namespace igris
 {
     template <class T, std::size_t N> class static_vector
     {
+    public:
+        using value_type = T;
         using pointer = T *;
         using reference = T &;
         using iterator = T *;
         using const_iterator = const T *;
 
+    private:
         // Переместить во внешний буффер.
         typename std::aligned_storage<sizeof(T), alignof(T)>::type _data[N];
         std::size_t m_size = 0;
@@ -26,6 +29,12 @@ namespace igris
             memset(_data, 0, sizeof(_data));
         }
 
+        static_vector(const std::initializer_list<T>& lst) 
+        {
+            m_size = lst.size();
+            std::copy(lst.begin(), lst.end(), begin());
+        }
+
         // Create an object in aligned storage
         template <typename... Args> void emplace_back(Args &&... args)
         {
@@ -33,6 +42,14 @@ namespace igris
                 return;
             new (&_data[m_size]) T(std::forward<Args>(args)...);
             ++m_size;
+        }
+
+        void push_back(const T& obj) 
+        {
+            if (m_size >= N)
+                return;
+            new (&_data[m_size]) T(obj);
+            ++m_size;   
         }
 
         T &operator[](std::size_t pos)
@@ -100,12 +117,9 @@ namespace igris
             m_size = newsize;
         }
 
-        template<class U>
-        static_vector& operator=(const U& oth) 
+        void clear() 
         {
-            resize(oth.size());
-            for (int i = 0; i < oth.size(); ++i) 
-                operator[](i) = oth[i];
+            m_size = 0;
         }
     };
 }
