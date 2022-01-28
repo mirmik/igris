@@ -379,9 +379,9 @@ namespace std
 	}
 
 
-	template<class InputIterator, class OutputIterator>
+	template<class InputIterator, class InputIterator2, class OutputIterator>
 	OutputIterator
-	copy(InputIterator first, InputIterator last, OutputIterator result)
+	copy(InputIterator first, InputIterator2 last, OutputIterator result)
 	{
 		while (first != last)
 		{
