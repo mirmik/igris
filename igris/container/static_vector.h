@@ -64,12 +64,12 @@ namespace igris
 
         T* data() 
         {
-            return *reinterpret_cast<T *>(&_data[0]);
+            return reinterpret_cast<T *>(&_data[0]);
         }
 
         const T* data() const 
         {
-            return *reinterpret_cast<const T *>(&_data[0]);
+            return reinterpret_cast<const T *>(&_data[0]);
         }
 
         std::size_t room() const { return N - m_size; }
