@@ -33,7 +33,15 @@ namespace igris
         /// Получить элемент z*i, где z - дискретный оператор.
         /// 0 - последний, 1 - предпоследний
         // и так далее
-        T operator[](int i) { return data[ring_counter_prev(&counter, i)]; }
+        T operator[](int i) { 
+            return data[ring_counter_prev(&counter, i)]; 
+        }
+
+        void resize(size_t size) 
+        {
+            data.resize(size);
+            ring_counter_init(&counter, size);            
+        }
     };
 }
 
