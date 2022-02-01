@@ -83,7 +83,11 @@ namespace igris
 
         T &tail() { return buffer[r.tail]; }
 
-        int index_of(T *element) { return element - buffer; }
+        // Determine element index in current ring array.
+        int index_of(T *element) 
+        { 
+            return element - buffer.data(); 
+        }
 
         int tail_index() { return r.tail; }
 
