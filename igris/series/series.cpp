@@ -5,6 +5,7 @@
 
 #include <igris/math.h>
 #include <igris/util/numconvert.h>
+#include <igris/datastruct/dlist.h>
 
 #include <igris/util/bug.h>
 
