@@ -16,18 +16,19 @@ public:
 
 TEST_CASE("ring")
 {
-    A abuf[12];
-    igris::ring<A> aring(abuf, 12);
-    igris::ring<B, 3> bring;
+    igris::ring<A> aring(12);
+    igris::ring<B> bring;
+
+    bring.resize(3);
 
     CHECK_EQ(aring.avail(), 0);
-    CHECK_EQ(aring.room(), 11);
+    CHECK_EQ(aring.room(), 12);
 
     CHECK_EQ(bring.avail(), 0);
-    CHECK_EQ(bring.room(), 2);
+    CHECK_EQ(bring.room(), 3);
 
     aring.push(A());
-    CHECK_EQ(aring.room(), 10);
-    aring.pop();
     CHECK_EQ(aring.room(), 11);
+    aring.pop();
+    CHECK_EQ(aring.room(), 12);
 }

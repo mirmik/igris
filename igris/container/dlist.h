@@ -55,8 +55,8 @@ namespace igris
                 current = current->prev;
                 return *this;
             }
-            bool operator!=(const iterator &b) { return current != b.current; }
-            bool operator==(const iterator &b) { return current == b.current; }
+            bool operator!=(const iterator &b) const { return current != b.current; }
+            bool operator==(const iterator &b) const { return current == b.current; }
 
             type &operator*() { return *member_container(current, member); }
             type *operator->() { return member_container(current, member); }
@@ -94,11 +94,11 @@ namespace igris
                 current = current->next;
                 return *this;
             }
-            bool operator!=(const reverse_iterator &b)
+            bool operator!=(const reverse_iterator &b) const 
             {
                 return current != b.current;
             }
-            bool operator==(const reverse_iterator &b)
+            bool operator==(const reverse_iterator &b) const 
             {
                 return current == b.current;
             }
@@ -111,8 +111,8 @@ namespace igris
         dlist() { dlist_init(&list); }
         ~dlist() { dlist_del(&list); }
 
-        bool empty() { return dlist_empty(&list); }
-        type *first() { return member_container(list.next, member); }
+        bool empty() const { return dlist_empty(&list); }
+        type &first() { return *member_container(list.next, member); }
 
         void add_first(type &obj) { dlist_add(&(obj.*member), &list); }
         void add_last(type &obj) { dlist_add_tail(&(obj.*member), &list); }

@@ -9,9 +9,10 @@ struct sprint_char_handler_data
     char *cursor;
 };
 
-static void sprint_printchar(void *d, int c)
+static int sprint_printchar(void *d, int c)
 {
     *(((struct sprint_char_handler_data *)d)->cursor)++ = c;
+    return 1;
 }
 
 int vsprintf(char *s, const char *format, va_list ap)
@@ -22,6 +23,7 @@ int vsprintf(char *s, const char *format, va_list ap)
     data.cursor = s;
 
     ret = __printf(sprint_printchar, &data, format, ap);
+    *data.cursor = 0;    
 
     return ret;
 }

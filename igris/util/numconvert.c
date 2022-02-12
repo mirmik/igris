@@ -134,7 +134,7 @@ char *u8toa(uint64_t num, char *buf, uint8_t base)
     return u64toa(num, buf, base);
 }
 
-uint32_t atou32(const char *buf, uint8_t base, char **end)
+/*uint32_t atou32(const char *buf, uint8_t base, char **end)
 {
     char c;
     uint32_t res = 0;
@@ -164,9 +164,9 @@ uint64_t atou64(const char *buf, uint8_t base, char **end)
         *end = (char *)buf - 1;
 
     return res;
-}
+}*/
 
-int32_t atoi32(const char *buf, uint8_t base, char **end)
+/*int32_t atoi32(const char *buf, uint8_t base, char **end)
 {
     uint8_t minus;
     int32_t u;
@@ -190,7 +190,7 @@ int64_t atoi64(const char *buf, uint8_t base, char **end)
 
     u = atou64(buf, base, end);
     return minus ? -u : u;
-}
+}*/
 
 #define MAX_PRECISION (10)
 static const double rounders[MAX_PRECISION + 1] = {
@@ -316,7 +316,7 @@ char *f32toa(float32_t f, char *buf, int8_t precision)
     return buf;
 }
 
-static inline double local_pow(int b, int n)
+/*static inline double local_pow(int b, int n)
 {
     int64_t res = 1;
     while (n--)
@@ -324,9 +324,9 @@ static inline double local_pow(int b, int n)
         res *= b;
     }
     return res;
-}
+}*/
 
-float32_t atof32(const char *str, char **pend)
+/*float32_t atof32(const char *str, char **pend)
 {
     if (!isdigit(*str) && *str != '-')
     {
@@ -357,7 +357,7 @@ float32_t atof32(const char *str, char **pend)
             *pend = end;
         return minus ? -(float)u : (float)u;
     }
-}
+}*/
 
 #ifndef WITHOUT_FLOAT64
 char *f64toa(float64_t f, char *buf, int8_t precision)
@@ -365,7 +365,7 @@ char *f64toa(float64_t f, char *buf, int8_t precision)
     return f32toa(f, buf, precision);
 }
 
-float64_t atof64(const char *str, char **pend)
+/*float64_t atof64(const char *str, char **pend)
 {
     if (!isdigit(*str) && *str != '-')
     {
@@ -396,5 +396,6 @@ float64_t atof64(const char *str, char **pend)
             *pend = end;
         return minus ? -(double)u : (double)u;
     }
-}
+}*/
+
 #endif

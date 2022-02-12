@@ -11,8 +11,8 @@
 namespace std
 {
 
-	template<class InputIterator, class Function>
-	Function for_each(InputIterator first, InputIterator last, Function f)
+	template<class InputIterator, class EndIterator, class Function>
+	Function for_each(InputIterator first, EndIterator last, Function f)
 	{
 		while (first != last)
 		{
@@ -22,8 +22,8 @@ namespace std
 		return f;
 	}
 
-	template<class InputIterator, class T>
-	InputIterator find(InputIterator first, InputIterator last, const T& value)
+	template<class InputIterator, class EndIterator, class T>
+	InputIterator find(InputIterator first, EndIterator last, const T& value)
 	{
 		while (first != last && ! ( *first == value ) )
 		{
@@ -32,8 +32,8 @@ namespace std
 		return first;
 	}
 
-	template<class InputIterator, class Predicate>
-	InputIterator find_if(InputIterator first, InputIterator last, Predicate pred)
+	template<class InputIterator, class EndIterator, class Predicate>
+	InputIterator find_if(InputIterator first, EndIterator last, Predicate pred)
 	{
 		while (first != last && !pred(*first))
 		{
@@ -379,9 +379,9 @@ namespace std
 	}
 
 
-	template<class InputIterator, class OutputIterator>
+	template<class InputIterator, class InputIterator2, class OutputIterator>
 	OutputIterator
-	copy(InputIterator first, InputIterator last, OutputIterator result)
+	copy(InputIterator first, InputIterator2 last, OutputIterator result)
 	{
 		while (first != last)
 		{

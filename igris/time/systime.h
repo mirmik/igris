@@ -17,8 +17,7 @@ __BEGIN_DECLS
 
 systime_t system_time();
 static inline systime_t systime() { return system_time(); }
-float systime_frequency();
-
+uint32_t systime_frequency();
 uint64_t systime_millis();
 
 static inline systime_difference_t ms2systime(float ms)

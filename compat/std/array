@@ -2,9 +2,34 @@
 #define GXX_STD_ARRAY_H
 
 #include <memory>
+#include <utility>
+#include <algorithm>
 
 namespace std {
-	template <typename T, size_t N> struct array {};
+	template <typename T, size_t N> struct array 
+	{
+		T arr[N];
+
+		array() = default;
+		
+		array(const T& oth) 
+		{
+			std::copy(oth.begin(), oth.end(), begin());
+		}
+
+		T& operator[](size_t i) { return arr[i]; }
+		const T& operator[](size_t i) const { return arr[i]; }
+	
+		T* begin() { return arr; }
+		const T* begin() const { return arr; }
+		const T* end() { return arr + N; }
+		const T* end() const { return arr + N; }
+
+		T* data() {return arr;}
+		const T* data() const {return arr;}
+
+		size_t size() const { return N; }
+	};
 }
 
 #endif

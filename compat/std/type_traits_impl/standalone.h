@@ -197,6 +197,12 @@ namespace std
 		: public integral_constant < bool, !_Pp::value >
 	{ };
 
+	template<std::size_t Len, std::size_t Align=sizeof(int)>
+	struct aligned_storage {
+    struct type {
+        alignas(Align) unsigned char data[Len];
+    };
+};
 }
 
 #endif

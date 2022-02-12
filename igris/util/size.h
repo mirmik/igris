@@ -21,13 +21,13 @@ namespace igris
     }
 
     template <class T, std::size_t N>
-    constexpr std::size_t size(const T (&array)[N]) noexcept
+    constexpr std::size_t size(const T (&)[N]) noexcept
     {
         return N;
     }
 
     template <class T, int N>
-    constexpr auto ssize(const T (&array)[N]) noexcept
+    constexpr auto ssize(const T (&)[N]) noexcept
         -> decltype(std::size_t() - std::size_t())
     {
         return N;

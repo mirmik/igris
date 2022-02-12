@@ -93,23 +93,24 @@ int rshell_help(const struct rshell_command *cmdtable, char *ans, int ansmax)
     while (it->func != NULL)
     {
         memcpy(ans + len, it->name,
-               l = __MIN__((int)strlen(it->name), ansmax - len));
+               l = __MIN__((int)strlen(it->name), ansmax - len - 1));
         len += l;
 
         if (it->help)
         {
-            memcpy(ans + len, " - ", l = __MIN__(3, ansmax - len));
+            memcpy(ans + len, " - ", l = __MIN__(3, ansmax - len - 1));
             len += l;
 
             memcpy(ans + len, it->help,
-                   l = __MIN__((int)strlen(it->help), ansmax - len));
+                   l = __MIN__((int)strlen(it->help), ansmax - len - 1));
             len += l;
         }
-        memcpy(ans + len, "\r\n", l = __MIN__(2, ansmax - len));
+        memcpy(ans + len, "\r\n", l = __MIN__(2, ansmax - len - 1));
         len += l;
         ++it;
     }
 
+    ans[len] = '\0';
     return len;
 }
 
@@ -121,9 +122,10 @@ int rshell_tables_help(const struct rshell_command_table *cmdtables, char *ans,
     const struct rshell_command_table *tit = cmdtables;
     while (tit->table != NULL)
     {
-        len += rshell_help(tit->table, ans + len, ansmax - len);
+        len += rshell_help(tit->table, ans + len, ansmax - len - 1);
         ++tit;
     }
 
+    ans[len] = '\0';
     return len;
 }

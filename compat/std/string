@@ -19,9 +19,9 @@ namespace std
 	class basic_string
 	{
 
-		char* m_data;
-		size_t m_capacity;
-		size_t m_size;
+		char* m_data = nullptr;
+		size_t m_capacity = 0;
+		size_t m_size = 0;
 
 		Allocator m_alloc;
 
@@ -34,7 +34,7 @@ namespace std
 		size_t size() const {return m_size; }
 		size_t length() const { return m_size; }
 
-		basic_string()  : m_data(nullptr), m_capacity(0), m_size(0) {}
+		basic_string() = default;
 
 		basic_string(const basic_string& other) : basic_string()
 		{
@@ -53,12 +53,12 @@ namespace std
 
 		basic_string(const char* str, size_t sz) : basic_string()
 		{
-			if (str) copy(str, sz);
+			if (str && sz) copy(str, sz);
 		}
 
 		~basic_string()
 		{
-			if (m_data) m_alloc.deallocate(m_data);
+			if (m_data) m_alloc.deallocate(m_data, m_capacity);
 		};
 
 
@@ -77,7 +77,7 @@ namespace std
 
 		void move(basic_string &rhs)
 		{
-			if (m_data) m_alloc.deallocate(m_data);
+			if (m_data) m_alloc.deallocate(m_data, m_capacity);
 			m_data = rhs.m_data;
 			m_capacity = rhs.m_capacity;
 			m_size = rhs.m_size;
@@ -90,7 +90,7 @@ namespace std
 
 		void invalidate(void)
 		{
-			if (m_data) m_alloc.deallocate(m_data);
+			if (m_data) m_alloc.deallocate(m_data, m_capacity);
 			m_data = nullptr;
 			m_capacity = m_size = 0;
 		}
@@ -161,6 +161,7 @@ namespace std
 
 		unsigned char changeBuffer(size_t maxStrLen)
 		{
+			size_t oldcap = m_capacity;
 			char* newbuf = (char *)m_alloc.allocate(maxStrLen);
 			char* oldbuf = m_data;
 			memcpy(newbuf, oldbuf, m_size);
@@ -168,7 +169,7 @@ namespace std
 			{
 				m_data = newbuf;
 				m_capacity = maxStrLen;
-				m_alloc.deallocate(oldbuf);
+				m_alloc.deallocate(oldbuf, oldcap);
 				return 1;
 			}
 			return 0;

@@ -1,5 +1,5 @@
-#ifndef GENOS_DATASTRUCT_ARGV_H
-#define GENOS_DATASTRUCT_ARGV_H
+#ifndef IGRIS_DATASTRUCT_ARGV_H
+#define IGRIS_DATASTRUCT_ARGV_H
 
 #include <string.h>
 

@@ -1,8 +1,12 @@
 #ifndef IGRIS_SEM_H
 #define IGRIS_SEM_H
 
-#if __has_include(<semaphore.h>)
+#if __has_include(<asm_igris/semaphore.h>)
+#include <asm_igris/semaphore.h>
+#elif __has_include(<semaphore.h>)
 #include <semaphore.h>
+#elif __has_include(<sys/semaphore.h>)
+#include <sys/semaphore.h>
 #else
 
 #include <igris/datastruct/dlist.h>
@@ -32,7 +36,9 @@ int sem_trywait(struct semaphore *sem);
 
 int sem_post(struct semaphore *sem);
 
-int sem_getvalue(struct semaphore *sem);
+int sem_getvalue(struct semaphore *sem, int *val);
+
+int sem_destroy(struct semaphore *sem);
 
 __END_DECLS
 

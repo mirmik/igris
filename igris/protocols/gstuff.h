@@ -7,6 +7,7 @@
 
 #include <igris/compiler.h>
 #include <igris/datastruct/sline.h>
+#include <igris/iovec.h>
 #include <stdint.h>
 
 #define GSTUFF_START ((char)0xA8)
@@ -44,6 +45,7 @@ __BEGIN_DECLS
     @return результирующая длина пакета.
  */
 int gstuffing(const char *data, int size, char *outdata);
+int gstuffing_v(struct iovec *vec, size_t n, char *outdata);
 
 /**
     Инициализация автомата.

@@ -26,7 +26,7 @@ namespace igris
 
         struct opt
         {
-            const char *long_name;
+            std::string long_name;
             char short_name;
             Type type;
 
@@ -102,25 +102,25 @@ namespace igris
         }
         void add_option(const char *l, char s) { opts.emplace_back(l, s); }
 
-        result<opt *> get_opt(const char *l)
+        result<opt *> get_opt(const std::string &name)
         {
-            char str[64];
+            std::string message;
 
             for (auto &o : opts)
             {
-                if (!strcmp(o.long_name, l))
+                if (o.long_name == name)
                 {
                     return &o;
                 }
             }
 
-            sprintf(str, "wrong opt name %s", l);
-            return error(str);
+            message = "wrong opt name " + name;
+            return error(message);
         }
 
         result<opt *> get_opt(char c)
         {
-            char str[64];
+            std::string message;
 
             for (auto &o : opts)
             {
@@ -130,17 +130,17 @@ namespace igris
                 }
             }
 
-            sprintf(str, "wrong opt short_name %*s", 1, &c);
-            return error(str);
+            message = "wrong opt short_name " + std::string(&c, 1);
+            return error(message);
         }
 
-        result<opt *> get_opt(const char *l, Type type)
+        result<opt *> get_opt(const std::string &name, Type type)
         {
-            char str[64];
+            std::string message;
 
             for (auto &o : opts)
             {
-                if (!strcmp(o.long_name, l))
+                if (o.long_name == name)
                 {
                     if (o.type != type)
                         return error("wrong opt type");
@@ -148,37 +148,37 @@ namespace igris
                 }
             }
 
-            sprintf(str, "wrong opt type %s", l);
-            return error(str);
+            message = "wrong opt name " + name;
+            return error(message);
         }
 
-        result<std::string> get_string(const char *l)
+        result<std::string> get_string(const std::string &name)
         {
-            auto &&r = get_opt(l, Type::String);
+            auto &&r = get_opt(name, Type::String);
             if (r.is_error())
                 return r.error();
             return r.value()->str;
         }
 
-        result<int32_t> get_integer(const char *l)
+        result<int32_t> get_integer(const std::string &name)
         {
-            auto &&r = get_opt(l, Type::Integer);
+            auto &&r = get_opt(name, Type::Integer);
             if (r.is_error())
                 return r.error();
             return r.value()->i32;
         }
 
-        result<bool> get_bool(const char *l)
+        result<bool> get_bool(const std::string &name)
         {
-            auto &&r = get_opt(l, Type::Option);
+            auto &&r = get_opt(name, Type::Option);
             if (r.is_error())
                 return r.error();
             return r.value()->b;
         }
 
-        result<bool> get_option(const char *l)
+        result<bool> get_option(const std::string &name)
         {
-            auto &&r = get_opt(l, Type::Option);
+            auto &&r = get_opt(name, Type::Option);
             if (r.is_error())
                 return r.error();
             return r.value()->b;

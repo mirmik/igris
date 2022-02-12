@@ -61,15 +61,12 @@ int sem_post(struct semaphore *sem)
     return 0;
 }
 
-int sem_getvalue(struct semaphore *sem)
+int sem_getvalue(struct semaphore *sem, int *val)
 {
-    int count;
-
     system_lock();
-    count = sem->count;
+    *val = sem->count;
     system_unlock();
-
-    return count;
+    return 0;
 }
 
 #endif

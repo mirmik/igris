@@ -331,6 +331,7 @@ namespace igris
 
         igris::trent parse(const char *str);
         igris::trent parse(const std::string &str);
+        igris::trent parse_file(const std::string &str);
 
         template <template <class Allocator> class TAlloc = std::allocator,
                   class Output>

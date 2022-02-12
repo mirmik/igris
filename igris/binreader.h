@@ -55,13 +55,13 @@ namespace igris
 
         int read_ascii_decimal_integer(int *ret)
         {
-            *ret = atoi32(ptr, 10, (char **)&ptr);
+            *ret = strtol(ptr, (char **)&ptr, 10);
             return 0;
         }
 
         int read_ascii_decimal_float(float *ret)
         {
-            *ret = atof32(ptr, (char **)&ptr);
+            *ret = strtof(ptr, (char **)&ptr);
             return 0;
         }
     };
