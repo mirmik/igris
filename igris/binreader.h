@@ -47,7 +47,7 @@ namespace igris
 
         void bind_buffer(igris::buffer &data, size_t sz)
         {
-            data = {ptr, sz};
+            data = igris::buffer{ptr, sz};
             ptr += sz;
         }
 
