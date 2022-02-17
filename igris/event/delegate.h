@@ -156,11 +156,13 @@ namespace igris
             return *this;
         };
 
-        R operator()(Args... args) const
+        template<class ... UArgs>
+        R operator()(UArgs&&... args) const
         { 
-            return emit(std::forward<Args>(args)...); }
+            return emit(std::forward<UArgs>(args)...); }
 
-        R emit(Args... args) const
+        template<class ... UArgs>
+        R emit(UArgs&&... args) const
         {
             if (!armed())
                 return R();
@@ -168,14 +170,14 @@ namespace igris
             if (method.part.external_attributes == (uintptr_t)-1)
             {
                 return method.part.external_function(
-                    external_object, std::forward<Args>(args)...);
+                    external_object, std::forward<UArgs>(args)...);
             }
 
             uint8_t type = object ? METHOD : FUNCTION;
             if (type == METHOD)
-                return (object->*method.method)(std::forward<Args>(args)...);
+                return (object->*method.method)(std::forward<UArgs>(args)...);
             else
-                return method.part.function(std::forward<Args>(args)...);
+                return method.part.function(std::forward<UArgs>(args)...);
         }
 
         operator bool() const { 
