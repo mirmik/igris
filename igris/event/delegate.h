@@ -158,9 +158,9 @@ namespace igris
 
         R operator()(Args... args) const
         { 
-            return emit(std::forward<Args>(args)...); }
+            return invoke(std::forward<Args>(args)...); }
 
-        R emit(Args... args) const
+        R invoke(Args... args) const
         {
             if (!armed())
                 return R();
@@ -187,7 +187,7 @@ namespace igris
         };
 
         //! Вызвать единожды и сбросить обработчик.
-        R emit_and_reset(Args... args)
+        R invoke_and_reset(Args... args)
         {
             delegate<R, Args...> copydlg = *this;
             clean();
