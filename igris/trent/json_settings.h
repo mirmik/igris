@@ -102,18 +102,15 @@ namespace igris
 
         int save() override
         {
-            // std::fstream file(pathstr, std::ios_base::trunc | std::ios::out);
-            // if (!file.good())
-            //{
-            //	BUG();
-            //}
             nos::file file(pathstr.c_str(), O_WRONLY);
             json::pretty_print_to(tr, file);
-            // file.close();
             return 0;
         }
 
-        igris::trent &node() { return tr; }
+        igris::trent &node() override 
+        { 
+            return tr; 
+        }
     };
 }
 

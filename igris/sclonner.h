@@ -35,7 +35,7 @@ namespace igris
     public:
         subprocess() = default;
 
-        void sigchld() { on_close.emit(); }
+        void sigchld() { on_close.invoke(); }
 
         void set_pid(int pid) { this->pid = pid; }
 

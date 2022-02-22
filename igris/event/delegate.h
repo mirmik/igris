@@ -159,10 +159,10 @@ namespace igris
         template<class ... UArgs>
         R operator()(UArgs&&... args) const
         { 
-            return emit(std::forward<UArgs>(args)...); }
+            return invoke(std::forward<Args>(args)...); 
+        }
 
-        template<class ... UArgs>
-        R emit(UArgs&&... args) const
+        R invoke(Args... args) const
         {
             if (!armed())
                 return R();
@@ -189,7 +189,7 @@ namespace igris
         };
 
         //! Вызвать единожды и сбросить обработчик.
-        R emit_and_reset(Args... args)
+        R invoke_and_reset(Args... args)
         {
             delegate<R, Args...> copydlg = *this;
             clean();
