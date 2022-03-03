@@ -6,6 +6,8 @@
 #include <igris/datastruct/ring.h>
 #include <new>
 #include <utility>
+#include <memory>
+#include <igris/container/unbounded_array.h>
 
 namespace igris
 {
@@ -15,37 +17,40 @@ namespace igris
      * С целью оптимизации разрешает доступ к внутренним переменным и прямое
      * управление буффером.
      * */
-    template <typename T, int N = 0> class ring : public ring<T, 0>
-    {
-        T data[N];
-
-    public:
-        ring() : ring<T, 0>(data, N) {}
-    };
-
-    template <typename T> class ring<T, 0>
+    template <typename T, class Alloc=std::allocator<T>> class ring
     {
     public:
         ring_head r;
-        T *buffer;
+        unbounded_array<T,Alloc> buffer;
 
     public:
-        ring(T *buffer, int bufsize) : buffer(buffer)
+        ring() = default;
+
+        ring(int bufsize) : buffer(bufsize+1)
         {
-            ring_init(&r, bufsize);
+            ring_init(&r, bufsize+1);
         }
 
-        bool empty() { return ring_empty(&r); }
+        void resize(size_t sz) 
+        {
+            buffer.resize(sz);
+            ring_init(&r, sz+1);
+        }
+
+        bool empty() 
+        { 
+            return ring_empty(&r); 
+        }
 
         void push(const T &obj)
         {
-            new (buffer + r.head) T(obj);
+            new (buffer.data() + r.head) T(obj);
             ring_move_head_one(&r);
         }
 
         template <typename... Args> void emplace(Args &&... args)
         {
-            new (buffer + r.head) T(std::forward<Args>(args)...);
+            new (buffer.data() + r.head) T(std::forward<Args>(args)...);
             ring_move_head_one(&r);
         }
 
@@ -78,7 +83,11 @@ namespace igris
 
         T &tail() { return buffer[r.tail]; }
 
-        int index_of(T *element) { return element - buffer; }
+        // Determine element index in current ring array.
+        int index_of(T *element) 
+        { 
+            return element - buffer.data(); 
+        }
 
         int tail_index() { return r.tail; }
 

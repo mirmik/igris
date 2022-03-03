@@ -91,6 +91,7 @@ namespace std
 	struct invoke_result : detail::invoke_result<void, F, ArgTypes...> {};
 
 	template <class A> using result_of_t = typename result_of<A>::type;
+	template <class A> using invoke_result_t = typename invoke_result<A>::type;
 }
 
 #endif

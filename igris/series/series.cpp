@@ -4,6 +4,8 @@
 #include <igris/util/string.h>
 
 #include <igris/math.h>
+#include <igris/util/numconvert.h>
+#include <igris/datastruct/dlist.h>
 #include <igris/util/bug.h>
 
 igris::series::series(int elemsize) : _elemsize(elemsize) {}
