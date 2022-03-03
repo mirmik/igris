@@ -84,6 +84,11 @@ namespace igris
 
         int head_index() { return r.head; }
 
+        void set_last_index(int idx) { 
+            r.head = idx; 
+            move_head_one();
+        }
+        
         int fixup_index(int index) { return ring_fixup_index(&r, index); }
 
         T &head_place() { return buffer[r.head]; }
