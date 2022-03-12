@@ -196,7 +196,7 @@ namespace igris
             delegate<R, UArgs...> copydlg = *this;
             clean();
             return copydlg(std::forward<UArgs>(args)...);
-        };
+        }
     };
 
     template <typename R, typename... Args> class fastdelegate
