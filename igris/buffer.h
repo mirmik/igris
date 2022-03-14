@@ -32,6 +32,13 @@ namespace igris
         void data(char *buf) { this->buf = buf; }
         void size(size_t sz) { this->sz = sz; }
 
+        buffer& operator=(const buffer& oth) 
+        {
+            buf = oth.buf;
+            sz = oth.sz;
+            return *this;
+        }
+
         // ctors:
         buffer() : buf(nullptr), sz(0) {}
         buffer(const char *_buf) : buf((char *)_buf), sz(strlen(_buf)) {}

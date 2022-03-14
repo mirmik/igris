@@ -192,10 +192,10 @@ __END_DECLS
 #define dlist_entry(ptr, type, member) mcast_out(ptr, type, member)
 
 #define dlist_next_entry(pos, member)                                          \
-    dlist_entry((pos)->member.next, __typeof__(*(pos)), member)
+    dlist_entry((pos)->member.next, decltypeof(*(pos)), member)
 
 #define dlist_prev_entry(pos, member)                                          \
-    dlist_entry((pos)->member.prev, __typeof__(*(pos)), member)
+    dlist_entry((pos)->member.prev, decltypeof(*(pos)), member)
 
 #define dlist_first_entry(ptr, type, member)                                   \
     dlist_entry((ptr)->next, type, member)
@@ -214,15 +214,15 @@ __END_DECLS
          pos = n, n = pos->next)
 
 #define dlist_for_each_entry(pos, head, member)                                \
-    for (pos = dlist_first_entry(head, __typeof__(*pos), member);              \
+    for (pos = dlist_first_entry(head, decltypeof(*pos), member);              \
          &pos->member != (head); pos = dlist_next_entry(pos, member))
 
 #define dlist_for_each_entry_reverse(pos, head, member)                        \
-    for (pos = dlist_last_entry(head, __typeof__(*pos), member);               \
+    for (pos = dlist_last_entry(head, decltypeof(*pos), member);               \
          &pos->member != (head); pos = dlist_prev_entry(pos, member))
 
 #define dlist_for_each_entry_safe(pos, n, head, member)                        \
-    for (pos = dlist_first_entry(head, __typeof__(*pos), member),              \
+    for (pos = dlist_first_entry(head, decltypeof(*pos), member),              \
         n = dlist_next_entry(pos, member);                                     \
          &pos->member != (head); pos = n, n = dlist_next_entry(n, member))
 

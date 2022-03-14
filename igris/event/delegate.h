@@ -156,11 +156,14 @@ namespace igris
             return *this;
         };
 
-        R operator()(Args... args) const
+        template<class ... UArgs>
+        R operator()(UArgs&&... args) const
         { 
-            return invoke(std::forward<Args>(args)...); }
+            return invoke(std::forward<UArgs>(args)...); 
+        }
 
-        R invoke(Args... args) const
+        template<class ... UArgs>
+        R invoke(UArgs&&... args) const
         {
             if (!armed())
                 return R();
@@ -168,14 +171,14 @@ namespace igris
             if (method.part.external_attributes == (uintptr_t)-1)
             {
                 return method.part.external_function(
-                    external_object, std::forward<Args>(args)...);
+                    external_object, std::forward<UArgs>(args)...);
             }
 
             uint8_t type = object ? METHOD : FUNCTION;
             if (type == METHOD)
-                return (object->*method.method)(std::forward<Args>(args)...);
+                return (object->*method.method)(std::forward<UArgs>(args)...);
             else
-                return method.part.function(std::forward<Args>(args)...);
+                return method.part.function(std::forward<UArgs>(args)...);
         }
 
         operator bool() const { 
@@ -187,11 +190,12 @@ namespace igris
         };
 
         //! Вызвать единожды и сбросить обработчик.
-        R invoke_and_reset(Args... args)
+        template<class ... UArgs>
+        R invoke_and_reset(UArgs&&... args)
         {
-            delegate<R, Args...> copydlg = *this;
+            delegate<R, UArgs...> copydlg = *this;
             clean();
-            return copydlg(std::forward<Args>(args)...);
+            return copydlg(std::forward<UArgs>(args)...);
         };
     };
 
