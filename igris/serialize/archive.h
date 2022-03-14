@@ -36,6 +36,7 @@ namespace igris
                 igris::serialize(*this, obj);
             }
 
+            virtual ~binary_serializer_basic() = default;
             virtual void dump_data(const char *dat, uint16_t sz) = 0;
             void do_data(const char *dat, uint16_t sz) { dump_data(dat, sz); }
 
@@ -112,6 +113,8 @@ namespace igris
                 : ptr(str), _end(str + size)
             {
             }
+
+            virtual ~binary_buffer_writer() = default;
         };
 
         class writable_buffer : public igris::buffer
@@ -136,6 +139,7 @@ namespace igris
         class binary_deserializer_basic
         {
         public:
+            virtual ~binary_deserializer_basic() = default;
             template <typename T> void operator&(T &&obj)
             {
                 igris::deserialize(*this, obj);
@@ -250,6 +254,8 @@ namespace igris
                 : ptr(buf.data()), _end(buf.data() + buf.size())
             {
             }
+
+            virtual ~binary_buffer_reader() = default;
         };
 
         using binreader = binary_buffer_reader;

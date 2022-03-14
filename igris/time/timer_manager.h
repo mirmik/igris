@@ -49,6 +49,7 @@ namespace igris
         void unplan() { dlist_del_init(&lnk); }
 
         virtual void execute() = 0;
+        virtual ~managed_timer_base() = default;
     };
 
     template <typename TimeSpec, typename... Args>

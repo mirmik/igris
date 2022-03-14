@@ -13,6 +13,7 @@ namespace igris
     public:
         virtual void execute(char *cmdbuf, int cmdlen, char *ansbuf,
                              int ansmax) = 0;
+        virtual ~rshell_executor() = default;
     };
 
     class rshell_executor_onelevel : public rshell_executor

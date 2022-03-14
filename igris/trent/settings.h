@@ -11,15 +11,18 @@
 namespace igris
 {
 
-    struct trent_syncer
+    class trent_syncer
     {
+    public:
         virtual int sync() = 0;
         virtual int save() = 0;
         virtual igris::trent &node() = 0;
+        virtual ~trent_syncer() = default;
     };
 
-    struct trent_syncer_slice : public trent_syncer
+    class trent_syncer_slice : public trent_syncer
     {
+    public:
         igris::trent_syncer *syncer;
         igris::trent_path path;
 
@@ -44,8 +47,9 @@ namespace igris
         igris::trent &node() override { return syncer->node()[path]; }
     };
 
-    struct trent_settings
+    class trent_settings
     {
+    public:
         igris::trent tr;
         bool synced = false;
 
@@ -54,10 +58,12 @@ namespace igris
 
         igris::trent &node() { return tr; }
         const igris::trent &node() const { return tr; }
+        virtual ~trent_settings() = default;
     };
 
-    struct trent_settings_slice : public trent_settings
+    class trent_settings_slice : public trent_settings
     {
+    public:
         igris::trent_settings &settings;
         igris::trent_path path;
 
