@@ -5,8 +5,8 @@
 
 struct linux_waiter
 {
-    struct waiter w;
-    igris::event event;
+    struct waiter w = {};
+    igris::event event = {};
 };
 
 int wait_current_schedee(struct dlist_head *head, int priority, void **future)

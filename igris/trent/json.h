@@ -301,20 +301,24 @@ namespace igris
 
         class parser_cstr : public parser
         {
-            const char *ptr;
+            const char *ptr=nullptr;
 
         public:
             parser_cstr(const char *str) : ptr(str) {}
+            parser_cstr(const parser_cstr &) =default;
+            parser_cstr& operator=(const parser_cstr &) =default;
 
             char readnext_impl() { return *ptr++; }
         };
 
         class parser_str : public parser
         {
-            const char *ptr;
+            const char *ptr=nullptr;
 
         public:
             parser_str(const std::string &str) : ptr(str.data()) {}
+            parser_str(const parser_str &) =default;
+            parser_str& operator=(const parser_str &) =default;
 
             char readnext_impl() { return *ptr++; }
         };

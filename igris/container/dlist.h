@@ -39,7 +39,7 @@ namespace igris
                 current = current->next;
                 return i;
             }
-            iterator operator++()
+            iterator& operator++()
             {
                 current = current->next;
                 return *this;
@@ -50,7 +50,7 @@ namespace igris
                 current = current->prev;
                 return i;
             }
-            iterator operator--()
+            iterator& operator--()
             {
                 current = current->prev;
                 return *this;
@@ -78,7 +78,7 @@ namespace igris
                 current = current->prev;
                 return i;
             }
-            reverse_iterator operator++()
+            reverse_iterator& operator++()
             {
                 current = current->prev;
                 return *this;
@@ -89,7 +89,7 @@ namespace igris
                 current = current->next;
                 return i;
             }
-            reverse_iterator operator--()
+            reverse_iterator& operator--()
             {
                 current = current->next;
                 return *this;
