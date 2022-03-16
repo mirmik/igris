@@ -20,10 +20,10 @@ namespace igris
     class chunked_vector
     {
     public:
-        std::vector<T *, Alloc1> _chunks;
-        const size_t _chunk_size;
+        std::vector<T *, Alloc1> _chunks = {};
+        const size_t _chunk_size = 0;
         size_t _size_of_last = 0;
-        Alloc2 alloc2;
+        Alloc2 alloc2 = {};
         T *last_chunk = nullptr;
 
     public:
@@ -31,6 +31,9 @@ namespace igris
             : _chunk_size(chunk_size), _size_of_last(chunk_size)
         {
         }
+
+        chunked_vector(const chunked_vector&) =delete;
+        chunked_vector& operator=(const chunked_vector&) =delete;
 
         size_t size() const
         {

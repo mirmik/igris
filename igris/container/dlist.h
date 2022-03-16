@@ -13,7 +13,7 @@ namespace igris
     {
     public:
         // FIELDS:
-        dlist_head list;
+        dlist_head list = DLIST_HEAD_INIT(list);
 
         // SUBCLASSES:
         class iterator : public std::iterator<std::bidirectional_iterator_tag,
@@ -67,7 +67,7 @@ namespace igris
                                    ptrdiff_t, type *, type &>
         {
         private:
-            dlist_head *current;
+            dlist_head *current = nullptr;
 
         public:
             reverse_iterator(dlist_head *head) : current(head) {}

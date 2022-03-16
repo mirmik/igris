@@ -51,8 +51,8 @@ namespace igris
 
         class wrong_path : public std::exception
         {
-            trent_path path;
-            std::string str;
+            trent_path path = {};
+            std::string str = {};
 
         public:
             wrong_path(const igris::trent_path &path) : path(path)
@@ -65,9 +65,9 @@ namespace igris
 
         class wrong_type : public std::exception
         {
-            trent_path path;
-            type t;
-            std::string str;
+            trent_path path = {};
+            type t = {};
+            std::string str = {};
 
         public:
             wrong_type(const trent_path &path, type t, type rt)

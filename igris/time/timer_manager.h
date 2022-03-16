@@ -29,14 +29,15 @@ namespace igris
         using difftime_t = typename TimeSpec::difftime_t;
 
     public:
-        time_t start;
-        difftime_t interval;
+        time_t start=0;
+        difftime_t interval=0;
 
         time_t finish() { return start + interval; }
         bool check(time_t curtime) { return curtime - start >= interval; }
         void set_start(time_t t) { start = t; }
         void set_interval(difftime_t t) { interval = t; }
         void shift() { start += interval; }
+        virtual ~timer_head() = default;
     };
 
     template <typename TimeSpec>
@@ -44,7 +45,7 @@ namespace igris
     {
     public:
         dlist_head lnk = DLIST_HEAD_INIT(lnk);
-        timer_manager<TimeSpec> *manager;
+        timer_manager<TimeSpec> *manager = nullptr;
 
         void unplan() { dlist_del_init(&lnk); }
 
@@ -85,9 +86,8 @@ namespace igris
         using difftime_t = typename TimeSpec::difftime_t;
         using timer = managed_timer_base<TimeSpec>;
 
-        igris::dlist<timer, &timer::lnk> timer_list;
-
-        igris::delegate<time_t> gettime;
+        igris::dlist<timer, &timer::lnk> timer_list = {};
+        igris::delegate<time_t> gettime = {};
 
     public:
         timer_manager(igris::delegate<time_t> gettime) : gettime(gettime){};
