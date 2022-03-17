@@ -23,8 +23,8 @@ namespace igris
     class trent_syncer_slice : public trent_syncer
     {
     public:
-        igris::trent_syncer *syncer;
-        igris::trent_path path;
+        igris::trent_syncer *syncer = nullptr;
+        igris::trent_path path = {};
 
         trent_syncer_slice(igris::trent_syncer &stgs,
                            const igris::trent_path &path)
@@ -32,7 +32,9 @@ namespace igris
         {
         }
 
-        trent_syncer_slice(){};
+        trent_syncer_slice()=default;
+        trent_syncer_slice(const trent_syncer_slice&)=default;
+        trent_syncer_slice& operator=(const trent_syncer_slice&)=default;
 
         void init(igris::trent_syncer &stgs, const igris::trent_path &path)
         {
@@ -50,7 +52,7 @@ namespace igris
     class trent_settings
     {
     public:
-        igris::trent tr;
+        igris::trent tr = {};
         bool synced = false;
 
         virtual void sync() = 0;
@@ -65,7 +67,7 @@ namespace igris
     {
     public:
         igris::trent_settings &settings;
-        igris::trent_path path;
+        igris::trent_path path = {};
 
         trent_settings_slice(igris::trent_settings &stgs,
                              const igris::trent_path &path)

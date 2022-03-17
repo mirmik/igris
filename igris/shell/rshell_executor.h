@@ -18,9 +18,12 @@ namespace igris
 
     class rshell_executor_onelevel : public rshell_executor
     {
-        const struct rshell_command *_cmdtable;
+        const struct rshell_command *_cmdtable = nullptr;
 
     public:
+        rshell_executor_onelevel(const rshell_executor_onelevel&) = default;
+        rshell_executor_onelevel& operator=(const rshell_executor_onelevel&) = default;
+
         rshell_executor_onelevel(const struct rshell_command *cmdtable)
             : _cmdtable(cmdtable)
         {
@@ -49,9 +52,12 @@ namespace igris
 
     class rshell_executor_twolevel : public rshell_executor
     {
-        const rshell_command_table *_cmdtable;
+        const rshell_command_table *_cmdtable = nullptr;
 
     public:
+        rshell_executor_twolevel(const rshell_executor_twolevel&) = default;
+        rshell_executor_twolevel& operator=(const rshell_executor_twolevel&) = default;
+
         rshell_executor_twolevel(const rshell_command_table *cmdtable)
             : _cmdtable(cmdtable)
         {
