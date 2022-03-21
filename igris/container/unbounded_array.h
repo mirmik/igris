@@ -14,9 +14,9 @@ namespace igris
         using reference = T &;
         using const_reference = const T &;
 
-        A alloc;
-        T *m_data;
-        size_t m_size;
+        A alloc = {};
+        T *m_data = nullptr;
+        size_t m_size = 0;
 
         T *data() { return m_data; }
         const T *data() const { return m_data; }
@@ -49,6 +49,20 @@ namespace igris
             {
                 new (ptr++) T(ref);
             }
+        }
+
+        unbounded_array& operator=(const unbounded_array &oth)
+        {
+            m_data = alloc.allocate(oth.size());
+            m_size = oth.size();
+        
+            auto ptr = m_data;
+            for (const auto &ref : oth)
+            {
+                new (ptr++) T(ref);
+            }
+
+            return *this;
         }
 
         unbounded_array(unbounded_array &&arr)

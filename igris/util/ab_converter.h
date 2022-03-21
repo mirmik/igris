@@ -11,8 +11,8 @@ namespace igris
         template <class A, class B, bool SameTypes> class ab_converter
         {
         protected:
-            std::map<A, B> ab;
-            std::map<B, A> ba;
+            std::map<A, B> ab = {};
+            std::map<B, A> ba = {};
 
         public:
             void add(const std::pair<A, B> &pair)

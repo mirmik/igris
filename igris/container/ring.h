@@ -20,8 +20,8 @@ namespace igris
     template <typename T, class Alloc=std::allocator<T>> class ring
     {
     public:
-        ring_head r;
-        unbounded_array<T,Alloc> buffer;
+        ring_head r = {};
+        unbounded_array<T,Alloc> buffer = {};
 
     public:
         ring() = default;

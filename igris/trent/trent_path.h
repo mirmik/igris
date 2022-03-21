@@ -14,7 +14,7 @@ namespace igris
     class trent_path_node
     {
     public:
-        bool is_string;
+        bool is_string = false;
         union
         {
             std::string str;

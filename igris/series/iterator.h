@@ -20,9 +20,9 @@ namespace igris
 
         series_iterator(const series_iterator &) = default;
 
-        series_iterator operator++();
+        series_iterator& operator++();
         series_iterator operator++(int);
-        series_iterator operator--();
+        series_iterator& operator--();
         series_iterator operator--(int);
 
         bool operator!=(const series_iterator &oth) const

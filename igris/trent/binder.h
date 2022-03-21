@@ -67,14 +67,14 @@ namespace igris
 
     template <typename T> class trent_binder
     {
-        mutable trent_syncer_slice saver;
-        trent_binder_ops<T> ops;
+        mutable trent_syncer_slice saver = {};
+        trent_binder_ops<T> ops = {};
 
         mutable bool synced = false;
-        mutable T _local;
+        mutable T _local = {};
 
     public:
-        trent_binder(){};
+        trent_binder() = default;
 
         template <typename... Args>
         trent_binder(Args &&... args) : saver(std::forward<Args>(args)...)

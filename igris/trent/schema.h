@@ -33,7 +33,7 @@ namespace igris
 
         class schema_node
         {
-            checker_type type;
+            checker_type type = {};
 
         public:
             schema_node &merge(const schema_node &oth)
@@ -49,6 +49,9 @@ namespace igris
                 merge(oth.root);
                 return *this;
             }
+
+            schema_node() = default;
+            schema_node& operator=(const schema_node&) = delete;
 
             schema_node(checker_type type) : type(type) {}
 
@@ -268,7 +271,7 @@ namespace igris
                     delete (_content);
             }
 
-            std::map<std::string, schema_node> nodes;
+            std::map<std::string, schema_node> nodes = {};
             int len = -1;
             const std::set<std::string> *_inset = nullptr;
             const schema_node *_content = nullptr;
@@ -287,8 +290,8 @@ namespace igris
 
         struct schema_dict_pair
         {
-            std::string str;
-            schema_node node;
+            std::string str={};
+            schema_node node={};
         };
 
         struct dict : public schema_node

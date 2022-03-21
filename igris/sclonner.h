@@ -26,11 +26,11 @@ namespace igris
     class subprocess
     {
     public:
-        int pid;
-        int ipipe;
-        int opipe;
+        int pid = 0;
+        int ipipe = 0;
+        int opipe = 0;
 
-        igris::delegate<void> on_close;
+        igris::delegate<void> on_close = {};
 
     public:
         subprocess() = default;

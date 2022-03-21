@@ -15,7 +15,7 @@ namespace igris
     template <typename... Args> class multiple_delegate
     {
     public:
-        std::vector<delegate<void, Args...>> vect;
+        std::vector<delegate<void, Args...>> vect = {};
 
         void operator()(Args... args)
         {

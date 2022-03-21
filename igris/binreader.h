@@ -25,11 +25,13 @@ namespace igris
 {
     class binreader
     {
-        const char *ptr;
+        const char *ptr=nullptr;
 
     public:
         binreader() {}
         binreader(const char *ptr) : ptr(ptr) {}
+        binreader(const binreader& reader) =default;
+        binreader& operator=(const binreader& reader) =default;
 
         void init(const char *ptr) { this->ptr = ptr; }
 

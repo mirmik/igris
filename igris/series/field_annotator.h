@@ -9,8 +9,8 @@ namespace igris
 {
     class series_field_annotator
     {
-        igris::size_incrementor inc;
-        std::vector<series_field_annotation> _annotations;
+        igris::size_incrementor inc = {};
+        std::vector<series_field_annotation> _annotations = {};
 
     public:
         series_field_annotator() : inc(0) {}
