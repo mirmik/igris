@@ -26,7 +26,7 @@ modules = [
 		"igris.sclonner"
 	]
 
-CCFLAGS = '-fPIC -Wall -pedantic-errors -Wreturn-type -Wno-gnu-zero-variadic-macro-arguments -g'
+CCFLAGS = '-fPIC -Werror=all -Werror=extra -pedantic-errors -Wreturn-type -g'
 CXXFLAGS = CCFLAGS
 LDFLAGS = '-g'
 

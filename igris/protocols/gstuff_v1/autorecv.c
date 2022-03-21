@@ -24,8 +24,8 @@ int gstuff_autorecv_newchar_v1(struct gstuff_autorecv_v1 *autom, char c)
 
         // goto state 1 imediatly;
         autom->state = 1;
-
-    // fallthrow
+        __attribute__ ((fallthrough));
+        
     case 1:
         switch (c)
         {

@@ -15,7 +15,7 @@ igris::trent igris::json::parse(const std::string &str)
 
 igris::trent igris::json::parse_file(const std::string &str)
 {
-    std::ifstream t("file.txt");
+    std::ifstream t(str);
     t.seekg(0, std::ios::end);
     size_t size = t.tellg();
     std::string buffer(size, ' ');
