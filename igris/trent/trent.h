@@ -528,30 +528,41 @@ namespace igris
 
         numer_type as_numer()
         {
+            if (is_bool())
+                return (int)m_bool;
             if (!is_numer())
                 init(type::numer);
             return m_num;
         }
         numer_type as_numer() const
         {
+            if (is_bool())
+                return (int)m_bool;
             if (!is_numer())
                 BUG();
             return m_num;
         }
         result<numer_type> as_numer_critical() const
         {
+            if (is_bool())
+                return (int)m_bool;
+
             if (!is_numer())
                 return error("is't numer");
             return m_num;
         }
         numer_type as_numer_except() const
         {
+                if (is_bool())
+                return (int)m_bool;
             if (!is_numer())
                 throw std::runtime_error("is't numer");
             return m_num;
         }
         numer_type as_numer_default(numer_type def) const
         {
+            if (is_bool())
+                return (int)m_bool;
             if (!is_numer())
                 return def;
             return m_num;
