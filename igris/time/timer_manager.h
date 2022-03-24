@@ -47,6 +47,7 @@ namespace igris
         dlist_head lnk = DLIST_HEAD_INIT(lnk);
         timer_manager<TimeSpec> *manager = nullptr;
 
+        bool is_planned() { return lnk.next != &lnk && &lnk != lnk.prev; }
         void unplan() { dlist_del_init(&lnk); }
 
         virtual void execute() = 0;
@@ -128,7 +129,13 @@ namespace igris
                 if (tim.check(curtime))
                 {
                     tim.execute();
-                    tim.shift();
+                    auto linked = tim.is_planned();
+                    if (linked) 
+                    {
+                        tim.unplan();
+                        tim.shift();
+                        plan(tim);
+                    }
                 }
                 else
                     return;
