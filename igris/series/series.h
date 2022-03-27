@@ -68,6 +68,7 @@ namespace igris
 
         template <class T> T &get(int i);
         template <class T> T &last();
+        series_iterator last_iterator();
 
         void push_csv_string_parse(const std::string &str);
 

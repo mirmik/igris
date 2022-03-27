@@ -114,6 +114,11 @@ igris::series_iterator igris::series::begin()
     return {blocks.next, dlist_first_entry(&blocks, series_block, lnk)->strt};
 }
 
+igris::series_iterator igris::series::last_iterator()
+{
+    return {blocks.prev, dlist_last_entry(&blocks, series_block, lnk)->fini-1};
+}
+
 igris::series_iterator igris::series::end() { return {&blocks, 0}; }
 
 igris::series_block *igris::series::last_block()
