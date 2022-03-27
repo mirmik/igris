@@ -10,11 +10,11 @@ namespace igris
     private:
         struct pool_head head = POOL_HEAD_INIT(head);
 
-        void *_zone;
-        size_t _size;
-        size_t _elemsz;
+        void *_zone=nullptr;
+        size_t _size=0;
+        size_t _elemsz=0;
 
-        int _count;
+        int _count=0;
 
     public:
         size_t size() const { return _size / _elemsz; }
@@ -64,7 +64,7 @@ namespace igris
                 return oth._pool != _pool || oth._num != _num;
             }
 
-            unlinked_iterator operator++()
+            unlinked_iterator& operator++()
             {
                 *this = next();
                 return *this;
@@ -78,7 +78,7 @@ namespace igris
         };
         const unlinked_iterator end() const { return {this, -1}; }
 
-        pool() {}
+        pool() = default;
 
         pool(void *zone, size_t size, size_t elsize)
         {

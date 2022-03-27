@@ -9,8 +9,8 @@ namespace igris
     template <class T, class Alloc=std::allocator<T>> class cyclic_buffer
     {
     public:
-        igris::unbounded_array<T,Alloc> data;
-        ring_counter counter;
+        igris::unbounded_array<T,Alloc> data = {};
+        ring_counter counter = {};
 
         cyclic_buffer(size_t size) : data(size)
         {

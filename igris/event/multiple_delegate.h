@@ -15,14 +15,19 @@ namespace igris
     template <typename... Args> class multiple_delegate
     {
     public:
-        std::vector<delegate<void, Args...>> vect;
+        std::vector<delegate<void, Args...>> vect = {};
 
-        void operator()(Args... args)
+        void operator()(const Args&... args)
+        {
+            invoke(args ...);
+        }
+
+        void invoke(const Args&... args) 
         {
             for (auto dlg : vect)
             {
-                dlg(args...);
-            }
+                dlg(args ...);
+            }            
         }
 
         template <typename... TArgs> void operator+=(TArgs... args)

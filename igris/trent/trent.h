@@ -51,8 +51,8 @@ namespace igris
 
         class wrong_path : public std::exception
         {
-            trent_path path;
-            std::string str;
+            trent_path path = {};
+            std::string str = {};
 
         public:
             wrong_path(const igris::trent_path &path) : path(path)
@@ -65,9 +65,9 @@ namespace igris
 
         class wrong_type : public std::exception
         {
-            trent_path path;
-            type t;
-            std::string str;
+            trent_path path = {};
+            type t = {};
+            std::string str = {};
 
         public:
             wrong_type(const trent_path &path, type t, type rt)
@@ -374,7 +374,7 @@ namespace igris
             return tr.m_str;
         }
 
-        const bool get_as_boolean_ex(const trent_path &path) const
+        bool get_as_boolean_ex(const trent_path &path) const
         {
             const trent_basic &tr = get_except(path);
 
@@ -404,7 +404,7 @@ namespace igris
             return tr->m_str;
         }
 
-        const bool get_as_boolean_def(const trent_path &path, bool def) const
+        bool get_as_boolean_def(const trent_path &path, bool def) const
         {
             const trent_basic *tr = get(path);
             if (tr == nullptr || tr->m_type != trent_type::boolean)
@@ -528,30 +528,41 @@ namespace igris
 
         numer_type as_numer()
         {
+            if (is_bool())
+                return (int)m_bool;
             if (!is_numer())
                 init(type::numer);
             return m_num;
         }
         numer_type as_numer() const
         {
+            if (is_bool())
+                return (int)m_bool;
             if (!is_numer())
                 BUG();
             return m_num;
         }
         result<numer_type> as_numer_critical() const
         {
+            if (is_bool())
+                return (int)m_bool;
+
             if (!is_numer())
                 return error("is't numer");
             return m_num;
         }
         numer_type as_numer_except() const
         {
+                if (is_bool())
+                return (int)m_bool;
             if (!is_numer())
                 throw std::runtime_error("is't numer");
             return m_num;
         }
         numer_type as_numer_default(numer_type def) const
         {
+            if (is_bool())
+                return (int)m_bool;
             if (!is_numer())
                 return def;
             return m_num;

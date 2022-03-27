@@ -46,6 +46,7 @@ void vterm_automate_newdata(struct vterm_automate *vterm, int16_t input_c)
                                       vterm->prefix_string,
                                       strlen(vterm->prefix_string));
             }
+            __attribute__ ((fallthrough));
 
         case 2:
             if (input_c < 0)

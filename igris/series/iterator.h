@@ -21,10 +21,9 @@ namespace igris
         series_iterator(const series_iterator &) = default;
 
         bool inited() { return block_lnk != nullptr; }
-
-        series_iterator operator++();
+        series_iterator& operator++();
         series_iterator operator++(int);
-        series_iterator operator--();
+        series_iterator& operator--();
         series_iterator operator--(int);
 
         bool operator!=(const series_iterator &oth) const

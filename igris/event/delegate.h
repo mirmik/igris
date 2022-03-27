@@ -66,7 +66,7 @@ namespace igris
         //Соответствует истине и будет работать только в G++
         union method_union
         {
-            mtd_t method;
+            mtd_t method = nullptr;
             struct
             {
                 union
@@ -85,10 +85,10 @@ namespace igris
     protected:
         union
         {
-            obj_t object;
+            obj_t object = {};
             void *external_object;
         };
-        method_union method;
+        method_union method = {};
 
     public:
         void clean()
@@ -199,7 +199,7 @@ namespace igris
         }
     };
 
-    template <typename R, typename... Args> class fastdelegate
+    /*template <typename R, typename... Args> class fastdelegate
     {
         using obj_t = AbstractDelegate *;
         using mtd_t = R (AbstractDelegate::*)(Args...);
@@ -265,7 +265,7 @@ namespace igris
         {
             return extfunction(object, arg...);
         };
-    };
+    };*/
 
     template <typename T, typename Ret, typename... Args>
     delegate<Ret, Args...> make_delegate(Ret (T::*mtd)(Args...), T *ptr)
@@ -286,7 +286,7 @@ namespace igris
         return delegate<Ret, Args...>(fnc, extobj);
     }
 
-    template <typename T, typename Ret, typename... Args>
+    /*template <typename T, typename Ret, typename... Args>
     fastdelegate<Ret, Args...> make_fastdelegate(Ret (T::*mtd)(Args...), T *ptr)
     {
         return fastdelegate<Ret, Args...>(mtd, ptr);
@@ -297,16 +297,16 @@ namespace igris
                                                  void *obj)
     {
         return fastdelegate<Ret, Args...>(fnc, obj);
-    }
+    }*/
 
-    using action = delegate<void>;
+    /*using action = delegate<void>;
     using fastaction = fastdelegate<void>;
 
     static inline fastaction make_fastaction(void (*fnc)())
     {
         return make_fastdelegate(reinterpret_cast<void (*)(void *)>(fnc),
                                  nullptr);
-    }
+    }*/
 }
 
 #endif

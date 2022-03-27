@@ -20,7 +20,7 @@ namespace igris
 {
     class json_settings : public trent_settings
     {
-        std::string pathstr;
+        std::string pathstr = {};
 
     public:
         const std::string &path() { return pathstr; }
@@ -50,23 +50,16 @@ namespace igris
 
         void save() override
         {
-            // std::fstream file(pathstr, std::ios_base::trunc | std::ios::out);
-            // if (!file.good())
-            //{
-            //	BUG();
-            //}
             nos::file file(pathstr.c_str(), O_WRONLY);
             json::pretty_print_to(tr, file);
-            // file.close();
         }
     };
 
     class json_syncer : public trent_syncer
     {
-        igris::trent tr;
+        igris::trent tr = {};
         bool synced = false;
-
-        std::string pathstr;
+        std::string pathstr = {};
 
     public:
         const std::string &path() { return pathstr; }

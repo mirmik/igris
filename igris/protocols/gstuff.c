@@ -105,7 +105,7 @@ int gstuff_autorecv_newchar(struct gstuff_autorecv *autom, char c)
 
         // goto state 1 imediatly;
         autom->state = 4;
-        // fallthrow
+        __attribute__ ((fallthrough));
 
     case 4:
         // wait start

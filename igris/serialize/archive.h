@@ -36,6 +36,7 @@ namespace igris
                 igris::serialize(*this, obj);
             }
 
+            virtual ~binary_serializer_basic() = default;
             virtual void dump_data(const char *dat, uint16_t sz) = 0;
             void do_data(const char *dat, uint16_t sz) { dump_data(dat, sz); }
 
@@ -99,8 +100,8 @@ namespace igris
         class binary_buffer_writer : public binary_serializer_basic
         {
         public:
-            char *ptr;
-            char *_end;
+            char *ptr = nullptr;
+            char *_end = nullptr;
 
             void dump_data(const char *dat, uint16_t size) override
             {
@@ -112,6 +113,11 @@ namespace igris
                 : ptr(str), _end(str + size)
             {
             }
+
+            binary_buffer_writer(const binary_buffer_writer&) = default;
+            binary_buffer_writer& operator=(const binary_buffer_writer&) = default;
+
+            virtual ~binary_buffer_writer() = default;
         };
 
         class writable_buffer : public igris::buffer
@@ -136,6 +142,7 @@ namespace igris
         class binary_deserializer_basic
         {
         public:
+            virtual ~binary_deserializer_basic() = default;
             template <typename T> void operator&(T &&obj)
             {
                 igris::deserialize(*this, obj);
@@ -228,8 +235,8 @@ namespace igris
         class binary_buffer_reader : public binary_deserializer_basic
         {
         public:
-            const char *ptr;
-            const char *_end;
+            const char *ptr = nullptr;
+            const char *_end = nullptr;
 
             void load_data(char *dat, uint16_t size) override
             {
@@ -250,6 +257,11 @@ namespace igris
                 : ptr(buf.data()), _end(buf.data() + buf.size())
             {
             }
+
+            binary_buffer_reader(const binary_buffer_reader&) = default;
+            binary_buffer_reader& operator=(const binary_buffer_reader&) = default;
+
+            virtual ~binary_buffer_reader() = default;
         };
 
         using binreader = binary_buffer_reader;

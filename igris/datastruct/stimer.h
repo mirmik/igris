@@ -12,7 +12,7 @@
 
 struct stimer_head
 {
-    unsigned long start;
+    long start;
     long interval;
     int planed;
 };
@@ -21,16 +21,16 @@ typedef struct stimer_head stimer_t;
 __BEGIN_DECLS
 
 // Инициализировать таймер
-void stimer_init(struct stimer_head *timer, unsigned long start, long interval);
+void stimer_init(struct stimer_head *timer, long start, long interval);
 
 // Инициализировать и активировать таймер
-void stimer_plan(struct stimer_head *timer, unsigned long start, long interval);
+void stimer_plan(struct stimer_head *timer, long start, long interval);
 
 // Сменить точку старта и запланировать
-void stimer_start(struct stimer_head *timer, unsigned long start);
+void stimer_start(struct stimer_head *timer, long start);
 
 // Проверить, сработал ли таймер
-int stimer_check(struct stimer_head *timer, unsigned long curtime);
+int stimer_check(struct stimer_head *timer, long curtime);
 
 // Сместить start на значение interval, чтобы отмерить следующий
 // квант времени

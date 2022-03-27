@@ -11,6 +11,18 @@
 
 namespace std
 {
+	template<class T>
+	auto data(T& obj) 
+	{
+		return obj.data();
+	}
+
+	template<class T>
+	const auto data(const T& obj) 
+	{
+		return obj.data();
+	}
+
 	template<std::size_t _Int>
 	struct __pair_get;
 

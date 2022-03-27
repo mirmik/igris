@@ -9,8 +9,8 @@ namespace igris
 {
     template <class T> class array_view
     {
-        T *_data;
-        size_t _size;
+        T *_data = nullptr;
+        size_t _size = 0;
 
     public:
         using iterator = T *;

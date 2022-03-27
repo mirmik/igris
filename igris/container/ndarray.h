@@ -43,8 +43,8 @@ namespace igris
 
     template <typename Value> class ndarray
     {
-        std::vector<size_t> _shape;
-        std::vector<Value> _values;
+        std::vector<size_t> _shape = {};
+        std::vector<Value> _values = {};
 
     public:
         ndarray() = default;

@@ -20,11 +20,11 @@ namespace igris
     {
     public:
         dlist_head blocks = DLIST_HEAD_INIT(blocks);
-        int _elemsize;
+        int _elemsize = 0;
         int block_size_hint = 100;
-        igris::series_field_annotator _annotator;
+        igris::series_field_annotator _annotator = {};
 
-        std::allocator<char> allocator;
+        std::allocator<char> allocator = {};
 
     public:
         series(int elemsize);

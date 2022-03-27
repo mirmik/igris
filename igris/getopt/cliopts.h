@@ -32,7 +32,7 @@ namespace igris
 
             union
             {
-                bool b;
+                bool b = false;
                 int32_t i32;
                 std::string str;
             };
@@ -81,8 +81,8 @@ namespace igris
         };
 
     public:
-        std::vector<opt> opts;
-        std::vector<std::string> args;
+        std::vector<opt> opts = {};
+        std::vector<std::string> args = {};
 
         void add_bool(const char *l, char s, bool def)
         {

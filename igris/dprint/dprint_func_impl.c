@@ -311,7 +311,7 @@ void debug_print(const char *c)
 
 void debug_print_dump(const void *mem, uint16_t len)
 {
-    unsigned int i, j;
+    int i, j;
 
     // In real, we doesn't need configure that in debug print library.
     const int HEXDUMP_COLS = 8;
