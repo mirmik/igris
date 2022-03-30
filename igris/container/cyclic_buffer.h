@@ -11,6 +11,7 @@ namespace igris
     public:
         igris::unbounded_array<T,Alloc> data = {};
         ring_counter counter = {};
+        size_t _size = 0;
 
         cyclic_buffer(size_t size) : data(size)
         {
@@ -19,11 +20,13 @@ namespace igris
 
         size_t size() 
         { 
-            return counter.size; 
+            return _size; 
         }
 
         T push(T val)
         {
+            if (_size < counter.size) _size++;
+
             ring_counter_increment(&counter, 1);
             T ret = data[ring_counter_get(&counter)];
             data[ring_counter_get(&counter)] = val;
