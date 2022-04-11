@@ -57,7 +57,7 @@ namespace igris
 
         ret.append(prefix);
         Iter it = start;
-        for (unsigned int i = 0; i < tot; ++i)
+        for (unsigned int i = 0; i < tot - 1; ++i)
         {
             ret.append(*it++);
             ret.append(delim);

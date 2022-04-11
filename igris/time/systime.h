@@ -49,6 +49,9 @@ namespace igris
     // double time();
     void start_local_time();
     double local_time();
+
+    systime_t millis();
+    systime_t micros();
     systime_t nanos();
 }
 #endif
