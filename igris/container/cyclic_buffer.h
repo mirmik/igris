@@ -25,7 +25,7 @@ namespace igris
 
         T push(T val)
         {
-            if (_size < counter.size) _size++;
+            if (_size < (size_t)counter.size) _size++;
 
             ring_counter_increment(&counter, 1);
             T ret = data[ring_counter_get(&counter)];
