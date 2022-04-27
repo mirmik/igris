@@ -19,20 +19,30 @@ namespace std
 	};
 
 	template <class CharT, class Traits>
-	basic_ostream<CharT,Traits>& operator<< (basic_ostream<CharT,Traits> &os, char * data) 
-	{
-		return os;
-	}
-
-	template <class CharT, class Traits>
 	basic_ostream<CharT,Traits>& operator<< (basic_ostream<CharT,Traits> &os, char data) 
 	{
+		os.write(&data, 1);
 		return os;
 	}
 
 	template <class CharT, class Traits>
 	basic_ostream<CharT,Traits>& operator<< (basic_ostream<CharT,Traits> &os, endl_class) 
 	{
+		os.write("\n", 1);
+		return os;
+	}
+
+	template <class CharT, class Traits>
+	basic_ostream<CharT,Traits>& operator<< (basic_ostream<CharT,Traits> &os, const std::string &data) 
+	{
+		os.write(data.c_str(), data.size());
+		return os;
+	}
+
+	template <class CharT, class Traits>
+	basic_ostream<CharT,Traits>& operator<< (basic_ostream<CharT,Traits> &os, const char * data) 
+	{
+		os.write(data, strlen(data));
 		return os;
 	}
 }

@@ -7,7 +7,8 @@
 #include <utility>
 #include <initializer_list>
 #include <igris/util/ctrdtr.h>
-#include <memory>
+
+#include <stdexcept>
 
 namespace igris 
 {
@@ -138,6 +139,16 @@ namespace igris
 			invalidate();
 		}
 
+		T& front()
+		{
+			return m_data[0];
+		}
+
+		T& back()
+		{
+			return m_data[m_size - 1];
+		}
+
 		void invalidate()
 		{
 			if (m_data)
@@ -257,16 +268,6 @@ namespace igris
 			return insert(std::upper_bound(begin(), end(), item ), item);
 		}
 
-		T& operator[](size_t num)
-		{
-			return *(m_data + num);
-		}
-
-		const T& operator[](size_t num) const 
-		{
-			return *(m_data + num);
-		}
-
 		void resize(size_t n)
 		{
 			reserve(n);
@@ -276,6 +277,40 @@ namespace igris
 		void erase(iterator newend)
 		{
 			m_size = newend - m_data;
+		}
+
+		T& at(size_t num)
+		{
+			if (num >= m_size)
+				throw std::out_of_range("vector::at");
+			return m_data[num];
+		}
+
+		T& operator[](size_t num)
+		{
+			return m_data[num];
+		}
+
+		const T& operator[](size_t num) const
+		{
+			return m_data[num];
+		}
+
+		const T& at(size_t num) const
+		{
+			if (num >= m_size)
+				throw std::out_of_range("vector::at");
+			return m_data[num];
+		}
+
+		const T& back() const
+		{
+			return m_data[m_size - 1];
+		}
+
+		const T& front() const
+		{
+			return m_data[0];
 		}
 
 	protected:

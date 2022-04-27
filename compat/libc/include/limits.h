@@ -93,10 +93,45 @@
 #define LLONG_MAX	9223372036854775807LL
 #endif /* LLONG_MAX */
 
+#ifndef LONG_DIG
+#define LONG_DIG	10
+#endif /* LONG_DIG */
 
-#ifndef ULLONG_MAX
-#define ULLONG_MAX	18446744073709551615ULL
-#endif /* ULLONG_MAX */
+#ifndef INT_DIG
+#define INT_DIG		10
+#endif /* INT_DIG */
+
+#ifndef LLONG_DIG
+#define LLONG_DIG	19
+#endif /* LLONG_DIG */
+
+#ifndef LONG_MAX_DIG
+#define LONG_MAX_DIG    19
+#endif /* LONG_MAX_DIG */
+
+#ifndef INT_MAX_EXP
+#define INT_MAX_EXP	32
+#endif /* INT_MAX_EXP */
+
+#ifndef INT_RADIX
+#define INT_RADIX	10
+#endif /* INT_RADIX */
+
+#ifndef LLONG_RADIX
+#define LLONG_RADIX	10
+#endif /* LLONG_RADIX */
+
+#ifndef LONG_RADIX
+#define LONG_RADIX	10
+#endif /* LONG_RADIX */
+
+#ifndef DBL_RADIX 
+#define DBL_RADIX	2
+#endif /* DBL_RADIX */
+
+#ifndef LDBL_RADIX
+#define LDBL_RADIX	2
+#endif /* LDBL_RADIX */
 
 
 /**

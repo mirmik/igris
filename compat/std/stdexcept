@@ -1,0 +1,34 @@
+#include <exception>
+
+namespace std 
+{
+    class out_of_range : public exception
+    {
+    public:
+        out_of_range(const char* msg) : exception(msg) {}
+    };
+
+    class logic_error : public exception
+    {
+    public:
+        logic_error(const char* msg) : exception(msg) {}
+    };
+
+    class runtime_error : public exception
+    {
+    public:
+        runtime_error(const char* msg) : exception(msg) {}
+    };
+
+    class invalid_argument : public exception
+    {
+    public:
+        invalid_argument(const char* msg) : exception(msg) {}
+    };
+
+    class length_error : public exception
+    {
+    public:
+        length_error(const char* msg) : exception(msg) {}
+    };
+}

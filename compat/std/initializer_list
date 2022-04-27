@@ -37,6 +37,12 @@ namespace std
 
 		constexpr const_iterator
 		end() const noexcept { return begin() + size(); }
+
+		constexpr reference
+		operator[](size_type __n) const noexcept
+		{
+			return _M_array[__n];
+		}
 	};
 
 	template<class _Tp>

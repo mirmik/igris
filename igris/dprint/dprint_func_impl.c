@@ -311,12 +311,10 @@ void debug_print(const char *c)
 
 void debug_print_dump(const void *mem, uint16_t len)
 {
-    int i, j;
-
     // In real, we doesn't need configure that in debug print library.
-    const int HEXDUMP_COLS = 8;
+    const unsigned int HEXDUMP_COLS = 8;
 
-    for (i = 0;
+    for (unsigned int i = 0;
          i <
          len + ((len % HEXDUMP_COLS) ? (HEXDUMP_COLS - len % HEXDUMP_COLS) : 0);
          i++)
@@ -343,7 +341,7 @@ void debug_print_dump(const void *mem, uint16_t len)
         /* print ASCII dump */
         if (i % HEXDUMP_COLS == (HEXDUMP_COLS - 1))
         {
-            for (j = i - (HEXDUMP_COLS - 1); j <= i; j++)
+            for (unsigned int j = i - (HEXDUMP_COLS - 1); j <= i; j++)
             {
                 if (j >= len) /* end of block, not really printing */
                 {
