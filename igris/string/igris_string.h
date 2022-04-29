@@ -9,6 +9,7 @@
 __BEGIN_DECLS
 	char * igris_strdup(const char *s);
 	size_t igris_strlen(const char *str);
+	char *igris_strtok_r(char *str, const char *delim, char **saveptr);
 __END_DECLS
 
 #endif

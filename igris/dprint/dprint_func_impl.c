@@ -347,7 +347,7 @@ void debug_print_dump(const void *mem, uint16_t len)
                 {
                     debug_putchar(' ');
                 }
-                else if (isprint(((char *)mem)[j])) /* printable char */
+                else if (isprint(*((char *)mem)+j)) /* printable char */
                 {
                     debug_putchar(0xFF & ((char *)mem)[j]);
                 }

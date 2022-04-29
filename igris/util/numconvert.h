@@ -8,7 +8,6 @@
 #include <inttypes.h>
 #include <stdlib.h>
 
-
 __BEGIN_DECLS
 
 char *i64toa(int64_t num, char *buf, uint8_t base);
@@ -30,23 +29,32 @@ __attribute__((deprecated("Use strtol instead")))
 static inline int32_t atoi32(const char *buf, uint8_t base, char **end)
 { return strtol(buf, end, base); }
 
+#ifndef WITHOUT_ATOU64
 __attribute__((deprecated("Use strtoull instead")))
 static inline uint64_t atou64(const char *buf, uint8_t base, char **end)
 { return strtoull(buf, end, base); }
+#endif
 
+#ifndef WITHOUT_ATOI64
 __attribute__((deprecated("Use strtoll instead")))
 static inline int64_t atoi64(const char *buf, uint8_t base, char **end)
 { return strtoll(buf, end, base); }
+#endif
 
 __attribute__((deprecated("Use strtof instead")))
-static inline float32_t atof32(const char *str, char **pend) { return strtof(str, pend); } 
+static inline float32_t atof32(const char *str, char **pend) { return strtod(str, pend); } 
 char *f32toa(float32_t f, char *buf, int8_t precision);
 
-#ifndef WITHOUT_FLOAT64
+#ifndef WITHOUT_ATOF64
 __attribute__((deprecated("Use strtod instead")))
 static inline float64_t atof64(const char *str, char **pend) { return strtod(str, pend); } 
 char *f64toa(float64_t f, char *buf, int8_t precision);
 #endif
+
+uint32_t igris_atou32(const char *buf, uint8_t base, char **end);
+uint64_t igris_atou64(const char *buf, uint8_t base, char **end);
+int32_t igris_atoi32(const char *buf, uint8_t base, char **end);
+int64_t igris_atoi64(const char *buf, uint8_t base, char **end);
 
 __END_DECLS
 

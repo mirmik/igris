@@ -197,7 +197,7 @@ licant.module("igris.crypt.aes",
 
 licant.module("igris.systime", "jiffies",
 	sources = [
-		"igris/time/jiffies-systime.c"
+		"igris/time/jiffies-systime.cpp"
 	]
 )
 

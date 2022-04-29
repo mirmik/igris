@@ -423,7 +423,8 @@ int __printf(void (*printchar_handler)(void *d, int c), void *printchar_data,
         else
         {
             width = atoi(format);
-            while (isdigit(*format))
+            char c = *format;
+            while (isdigit(c))
                 ++format;
         }
         width = MAX(width, 0);
@@ -438,7 +439,8 @@ int __printf(void (*printchar_handler)(void *d, int c), void *printchar_data,
         else
         {
             precision = atoi(format);
-            while (isdigit(*format))
+            char c = *format;
+            while (isdigit(c))
                 ++format;
         }
         precision = precision >= 0 ? precision : (ops &= ~OPS_PREC_IS_GIVEN, 0);
@@ -472,8 +474,9 @@ int __printf(void (*printchar_handler)(void *d, int c), void *printchar_data,
         }
 
         /* handle specifier */
-        ops |= isupper(*format) ? OPS_SPEC_UPPER_CASE : 0;
-        switch (*format)
+        char c = *format;
+        ops |= isupper(c) ? OPS_SPEC_UPPER_CASE : 0;
+        switch (c)
         {
         default:
             pc += format - begin + 1;
