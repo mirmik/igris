@@ -47,6 +47,14 @@ void vterm_automate_init(struct vterm_automate *vterm, char *buffer,
 
 void vterm_automate_newdata(struct vterm_automate *vterm, int16_t c);
 
+static inline void vterm_write(struct vterm_automate *vterm, const char *str, unsigned int len) 
+{
+    for (unsigned int i = 0; i < len; i++)
+    {
+        vterm_automate_newdata(vterm, str[i]);
+    }
+}
+
 static inline void vterm_set_write_callback(struct vterm_automate *vterm,
                                             vterm_write_t callback,
                                             void *privdata)
