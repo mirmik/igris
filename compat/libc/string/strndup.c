@@ -18,7 +18,7 @@ char *strndup(const char *s, size_t size) {
 		return NULL;
 	}
 
-	strncpy(ret, s, len);
+	memcpy(ret, s, len);
 	ret[len] = '\0';
 
 	return ret;
