@@ -2,6 +2,7 @@
 #define IGRIS_CONTAINER_STATIC_STRING_H
 
 #include <new>
+#include <cstring>
 #include <type_traits>
 #include <utility>
 
@@ -19,8 +20,13 @@ namespace igris
         std::size_t m_size = 0;
 
     public:
-        char &operator[](std::size_t pos) { return &data[pos]; }
+        static_string(const char * dat) 
+        {
+            m_size = strlen(dat);
+            memcpy(data, dat, m_size);
+        }
 
+        char &operator[](std::size_t pos) { return &data[pos]; }
         const char &operator[](std::size_t pos) const { return &data[pos]; }
 
         std::size_t room() { return N - m_size; }
