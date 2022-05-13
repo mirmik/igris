@@ -11,7 +11,8 @@ int bytes_to_dstring(char *out, const void *data, size_t size)
 
     for (; it != eit; ++it)
     {
-        if (isprint(*it))
+        char c = *it;
+        if (isprint(c))
             *dst++ = *it;
 
         else if (*it == '\n')

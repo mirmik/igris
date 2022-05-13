@@ -134,13 +134,14 @@ char *u8toa(uint64_t num, char *buf, uint8_t base)
     return u64toa(num, buf, base);
 }
 
-/*uint32_t atou32(const char *buf, uint8_t base, char **end)
+uint32_t igris_atou32(const char *buf, uint8_t base, char **end)
 {
-    char c;
+    char c = *buf;
     uint32_t res = 0;
 
-    while (isxdigit(c = *buf++))
+    while (isxdigit(c))
     {
+        c = *buf++;
         res = res * base + hex2half(c);
     }
 
@@ -150,13 +151,14 @@ char *u8toa(uint64_t num, char *buf, uint8_t base)
     return res;
 }
 
-uint64_t atou64(const char *buf, uint8_t base, char **end)
+uint64_t igris_atou64(const char *buf, uint8_t base, char **end)
 {
-    char c;
+    char c = *buf;
     uint64_t res = 0;
 
-    while (isxdigit(c = *buf++))
+    while (isxdigit(c))
     {
+        c = *buf++;
         res = res * base + hex2half(c);
     }
 
@@ -164,9 +166,9 @@ uint64_t atou64(const char *buf, uint8_t base, char **end)
         *end = (char *)buf - 1;
 
     return res;
-}*/
+}
 
-/*int32_t atoi32(const char *buf, uint8_t base, char **end)
+int32_t igris_atoi32(const char *buf, uint8_t base, char **end)
 {
     uint8_t minus;
     int32_t u;
@@ -175,11 +177,11 @@ uint64_t atou64(const char *buf, uint8_t base, char **end)
     if (minus)
         ++buf;
 
-    u = atou32(buf, base, end);
+    u = igris_atou32(buf, base, end);
     return minus ? -u : u;
 }
 
-int64_t atoi64(const char *buf, uint8_t base, char **end)
+int64_t igris_atoi64(const char *buf, uint8_t base, char **end)
 {
     uint8_t minus;
     int64_t u;
@@ -188,9 +190,9 @@ int64_t atoi64(const char *buf, uint8_t base, char **end)
     if (minus)
         ++buf;
 
-    u = atou64(buf, base, end);
+    u = igris_atou64(buf, base, end);
     return minus ? -u : u;
-}*/
+}
 
 #define MAX_PRECISION (10)
 static const double rounders[MAX_PRECISION + 1] = {

@@ -28,7 +28,10 @@ MODULES = [
 ]
 
 if sys.platform == "linux":
-		MODULES.append("igris.os_extension")
+		MODULES.append(("igris.os_extension", "unix"))
+
+if sys.platform == "win32":
+		MODULES.append(("igris.os_extension", "windows"))
 
 licant.module("igris", 
 sources = [
@@ -186,6 +189,13 @@ licant.module("igris.os_extension", "unix",
 	default = True
 )
 
+licant.module("igris.os_extension", "windows",
+	sources=[
+#		"igris/osutil/src/osutil_windows.cpp",
+#		"igris/osutil/realtime.c"
+	],
+	default = True
+)
 
 licant.module("igris.time", "posix",
 	sources = ["igris/time/time_posix.cpp"],
@@ -197,7 +207,7 @@ licant.module("igris.crypt.aes",
 
 licant.module("igris.systime", "jiffies",
 	sources = [
-		"igris/time/jiffies-systime.c"
+		"igris/time/jiffies-systime.cpp"
 	]
 )
 

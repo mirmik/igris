@@ -10,6 +10,12 @@
 
 namespace std
 {
+	template<class I, class E, class T>
+	void fill(I first, E last, const T& value)
+	{
+		for (; first != last; ++first)
+			*first = value;
+	}
 
 	template<class InputIterator, class EndIterator, class Function>
 	Function for_each(InputIterator first, EndIterator last, Function f)

@@ -2,6 +2,8 @@
 #define IGRIS_FLAT_MAP_VIEW_H
 
 #include <utility>
+#include <cstdlib>
+#include <functional>
 
 namespace igris
 {
