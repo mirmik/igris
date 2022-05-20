@@ -53,6 +53,8 @@ namespace igris
         ndarray &operator=(const ndarray &other) = default;
         ndarray &operator=(ndarray &&other) = default;
 
+        std::vector<Value>& storage() { return _values; }
+
         template <class C> void init(const C &container)
         {
             size_t dim = igris::array_dimension<C, Value>(container);

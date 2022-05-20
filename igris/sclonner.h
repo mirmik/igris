@@ -6,20 +6,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/socket.h>
-#include <sys/wait.h>
+//#include <sys/wait.h>
 #include <unistd.h>
-
-//#include <nos/io/stdfile.h>
-
 #include <algorithm>
 #include <memory>
 #include <set>
-
 #include <igris/datastruct/argvc.h>
-//#include <nos/print.h>
-
 #include <igris/event/delegate.h>
+
+#ifdef __WIN32__
+#include <winsock2.h>
+#else
+#include <sys/socket.h>
+#endif
 
 namespace igris
 {
