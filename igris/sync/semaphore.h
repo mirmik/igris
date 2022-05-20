@@ -9,9 +9,9 @@
 #include <sys/semaphore.h>
 #else
 
+#include <igris/sync/syslock.h>
 #include <igris/datastruct/dlist.h>
 #include <igris/osinter/wait.h>
-#include <igris/sync/syslock.h>
 
 typedef struct semaphore
 {
