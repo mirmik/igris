@@ -52,6 +52,7 @@ licant.execute("compat/libc/libc.g.py")
 licant.execute("compat/std/std.g.py")
 licant.execute("compat/posix/posix.g.py")
 licant.execute("compat/newlib-stub/newlib-stub.g.py")
+licant.execute("compat/mem/lin_malloc.g.py")
 
 licant.module("igris.cxx_support", sources=[
 	"compat/cxx/__cxa_pure_virtual.c", 
@@ -205,7 +206,7 @@ licant.module("igris.time", "posix",
 licant.module("igris.crypt.aes", 
 	sources = ["igris/crypt/aes.c"])
 
-licant.module("igris.systime", "jiffies",
+licant.module("igris.time", "jiffies",
 	sources = [
 		"igris/time/jiffies-systime.cpp"
 	]

@@ -7,6 +7,7 @@
 #include <igris/util/numconvert.h>
 #include <igris/datastruct/dlist.h>
 #include <igris/util/bug.h>
+#include <stdexcept>
 
 igris::series::series(int elemsize) : _elemsize(elemsize) {}
 
@@ -15,6 +16,7 @@ void igris::series::reserve(int size) { add_block(size); }
 void igris::series::add_block(int size)
 {
     void *ptr = allocator.allocate(size * _elemsize);
+    memset(ptr, 0, size * _elemsize);
     auto *block = new series_block(this, ptr, size);
 
     dlist_add(&block->lnk, &blocks);
@@ -107,6 +109,7 @@ igris::series_iterator igris::series::get_iterator(int num)
     }
 
     return end();
+    //throw std::range_error("series_iterator range error");
 }
 
 igris::series_iterator igris::series::begin()

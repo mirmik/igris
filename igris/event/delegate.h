@@ -98,6 +98,9 @@ namespace igris
             method.part.attributes = 0;
         }
 
+        extfnc_t get_extfunc() const { return method.part.external_function; }
+        void* get_object() const { return external_object; }
+
         //! Проверяет, установлен ли какой-либо обработчик.
         bool armed() const { return method.part.function != nullptr; }
 
@@ -199,74 +202,6 @@ namespace igris
         }
     };
 
-    /*template <typename R, typename... Args> class fastdelegate
-    {
-        using obj_t = AbstractDelegate *;
-        using mtd_t = R (AbstractDelegate::*)(Args...);
-        using fnc_t = R (*)(Args...);
-        using extfnc_t = R (*)(void *, Args...);
-        using absmemb_t = std::pair<mtd_t, obj_t>;
-
-        //Соответствует истине и будет работать только в G++
-        union method_union
-        {
-            mtd_t method;
-            struct
-            {
-                fnc_t function;
-                fnc_t attributes;
-            } part;
-        };
-
-    public:
-        obj_t object;
-        extfnc_t extfunction;
-
-    public:
-        void clean()
-        {
-            object = 0;
-            extfunction = nullptr;
-        }
-
-        fastdelegate() { clean(); }
-
-        fastdelegate(const fastdelegate &d)
-            : object(d.object), extfunction(d.extfunction){};
-
-        void operator=(const fastdelegate &d) volatile
-        {
-            object = d.object;
-            extfunction = d.extfunction;
-        }
-
-        fastdelegate(absmemb_t &&pr)
-        {
-            object = pr.second;
-            extfunction = reinterpret_cast<extfnc_t>(
-                horrible_cast<method_union, mtd_t>(pr.first).function);
-        };
-
-        fastdelegate(extfnc_t func, void *obj)
-        {
-            object = (obj_t)obj;
-            extfunction = func;
-        };
-
-        template <typename T> fastdelegate(R (T::*mtd)(Args...), T *ptr_obj)
-        {
-            object = reinterpret_cast<obj_t>(ptr_obj);
-            extfunction = reinterpret_cast<extfnc_t>(
-                horrible_cast<method_union, R (T::*)(Args...)>(mtd)
-                    .part.function);
-        }
-
-        R operator()(Args... arg) volatile
-        {
-            return extfunction(object, arg...);
-        };
-    };*/
-
     template <typename T, typename Ret, typename... Args>
     delegate<Ret, Args...> make_delegate(Ret (T::*mtd)(Args...), T *ptr)
     {
@@ -285,28 +220,6 @@ namespace igris
     {
         return delegate<Ret, Args...>(fnc, extobj);
     }
-
-    /*template <typename T, typename Ret, typename... Args>
-    fastdelegate<Ret, Args...> make_fastdelegate(Ret (T::*mtd)(Args...), T *ptr)
-    {
-        return fastdelegate<Ret, Args...>(mtd, ptr);
-    }
-
-    template <typename Ret, typename... Args>
-    fastdelegate<Ret, Args...> make_fastdelegate(Ret (*fnc)(void *, Args...),
-                                                 void *obj)
-    {
-        return fastdelegate<Ret, Args...>(fnc, obj);
-    }*/
-
-    /*using action = delegate<void>;
-    using fastaction = fastdelegate<void>;
-
-    static inline fastaction make_fastaction(void (*fnc)())
-    {
-        return make_fastdelegate(reinterpret_cast<void (*)(void *)>(fnc),
-                                 nullptr);
-    }*/
 }
 
 #endif
