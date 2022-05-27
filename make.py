@@ -23,7 +23,7 @@ modules = [
 		"igris.dprint",
 		"igris.protocols.gstuff",
 		"igris.series",
-#		"igris.sclonner"
+		"igris.sclonner"
 	]
 
 CCFLAGS = '-fPIC -Werror=all -Werror=extra -pedantic-errors -Wreturn-type -g'
