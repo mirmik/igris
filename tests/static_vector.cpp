@@ -1,6 +1,9 @@
 #include <doctest/doctest.h>
 #include <igris/container/static_vector.h>
 #include <vector>
+#include <utility>
+#include <algorithm>
+#include <iterator>
 
 TEST_CASE("static_vector") 
 {

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5.1)
 project(igris)
 
+message("${CMAKE_INSTALL_INCLUDEDIR}/igris")
+
 file(GLOB HEADERS 
 	igris/util/*.h	
 	igris/dprint/*.h
@@ -16,7 +18,6 @@ file(GLOB IGRIS_SOURCES
 	igris/event/*.cpp
 	igris/trent/*.cpp
 	igris/datastruct/*.cpp
-	igris/sync/semaphore.c
 	igris/protocols/gstuff.c
 	igris/protocols/gstuff_v1/gstuff.c
 	igris/protocols/gstuff_v1/autorecv.c
@@ -30,15 +31,18 @@ file(GLOB IGRIS_SOURCES
 	igris/osinter/wait.c
 	igris/osinter/wait-linux.cpp
 	igris/osinter/ktimer.c
-	igris/osutil/realtime.c
 	igris/binreader.c
 	igris/block.cpp
 	igris/iterator.cpp
 	igris/series.cpp
-	igris/sclonner.cpp
 	igris/path/*.cpp
 	igris/shell/*.c
 	igris/path/path.cpp
+)
+
+file(GLOB IGRIS_HEADERS 
+	igris/*.h 
+	igris/util/*.h 
 )
 
 file(GLOB IGRIS_SOURCES_PLUS 
@@ -48,6 +52,9 @@ file(GLOB IGRIS_SOURCES_PLUS
 if (UNIX)
 	file(GLOB PLATFORM_SOURCES 
 		igris/osutil/src/posix.cpp
+		igris/osutil/realtime.c
+		igris/osutil/sclonner.cpp
+		igris/sync/semaphore.c	
 	)
 endif()
 
@@ -80,9 +87,26 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 	if (NOT DEFINED WITHOUT_TESTS)
 		add_executable(igris_test ${SOURCES_TEST})
 		target_include_directories(igris_test PRIVATE . tests)
-		target_link_libraries(igris_test rt pthread)
+		#target_link_libraries(igris_test rt pthread)
+		target_link_libraries(igris_test)
 	endif()
+
+	set_target_properties(igris PROPERTIES PUBLIC_HEADER 
+		"${IGRIS_HEADERS}"
+	)
 	
+	if (WIN32)
+		install (TARGETS ${PROJECT_NAME}
+			EXPORT igris
+			LIBRARY DESTINATION /
+	        PUBLIC_HEADER DESTINATION igris)
+
+		install (EXPORT igris
+			NAMESPACE igris::
+			FILE igris-config.cmake
+			DESTINATION lib/cmake/igris)
+	endif()
+
 	if (UNIX AND NOT APPLE)
 		install(TARGETS ${PROJECT_NAME}
 			LIBRARY DESTINATION /usr/lib
