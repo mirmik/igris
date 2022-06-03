@@ -1,6 +1,7 @@
 #include <doctest/doctest.h>
 #include <igris/sync/semaphore.h>
 
+#ifndef WIN32
 TEST_CASE("semaphore")
 {
     sem_t sem;
@@ -21,3 +22,4 @@ TEST_CASE("semaphore")
 
     sem_destroy(&sem);
 }
+#endif

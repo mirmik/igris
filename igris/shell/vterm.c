@@ -39,14 +39,14 @@ void vterm_automate_newdata(struct vterm_automate *vterm, int16_t input_c)
         case 0:
         case 1:
             readline_newline_reset(&vterm->rl);
-            vterm->state = 2;
             if (vterm->echo)
             {
                 vterm->write_callback(vterm->write_privdata,
                                       vterm->prefix_string,
                                       strlen(vterm->prefix_string));
             }
-            __attribute__ ((fallthrough));
+            vterm->state = 2;
+            break;
 
         case 2:
             if (input_c < 0)

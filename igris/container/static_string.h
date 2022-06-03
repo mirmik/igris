@@ -20,6 +20,8 @@ namespace igris
         std::size_t m_size = 0;
 
     public:
+        static_string() = default;
+
         static_string(const char * dat) 
         {
             m_size = strlen(dat);
