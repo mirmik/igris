@@ -9,6 +9,7 @@
 #include <igris/util/numconvert.h>
 
 #include <exception>
+#include <sstream>
 
 using namespace std::literals::string_literals;
 
@@ -446,6 +447,14 @@ namespace igris
 
             if (tab == 0)
                 os.print("\r\n");
+        }
+
+        template <template <class Allocator> class TAlloc = std::allocator>
+        std::string to_string(const igris::trent_basic<TAlloc> &tr)
+        {
+            std::stringstream ss;
+            pretty_print_to(tr, ss);
+            return ss.str();
         }
     }
 }
