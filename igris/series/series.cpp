@@ -9,7 +9,13 @@
 #include <igris/util/bug.h>
 #include <stdexcept>
 
+igris::series::series() : _elemsize(0) {}
 igris::series::series(int elemsize) : _elemsize(elemsize) {}
+
+void igris::series::set_elemsize(size_t size) 
+{
+    _elemsize = size;
+}
 
 void igris::series::reserve(int size) { add_block(size); }
 
@@ -88,6 +94,17 @@ void igris::series::push_csv_string_parse(const std::string &str)
         double data = strtod(lst[i].c_str(), nullptr);
         view[i].assign(data);
     }
+}
+
+int igris::series::push_object(void* data, size_t size) 
+{
+    void *ptr = emplace();
+    memcpy(ptr, data, elemsize());
+    
+    if (size != elemsize()) 
+        return -1;
+    
+    return 0;
 }
 
 igris::series_iterator igris::series::get_iterator(int num)
