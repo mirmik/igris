@@ -72,6 +72,8 @@ namespace igris
 
         int push_object(void* data, size_t size);
         void push_csv_string_parse(const std::string &str);
+        void parse_csv_istream(std::istream& is);
+        void parse_csv_file(const std::string& file);
 
         series_object_view object_view(void *ptr)
         {

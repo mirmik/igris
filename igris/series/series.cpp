@@ -2,12 +2,15 @@
 #include <igris/series/iterator.h>
 #include <igris/series/series.h>
 #include <igris/util/string.h>
-
 #include <igris/math.h>
 #include <igris/util/numconvert.h>
 #include <igris/datastruct/dlist.h>
 #include <igris/util/bug.h>
+
 #include <stdexcept>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 igris::series::series() : _elemsize(0) {}
 igris::series::series(int elemsize) : _elemsize(elemsize) {}
@@ -146,8 +149,40 @@ igris::series_block *igris::series::last_block()
     return dlist_entry(blocks.prev, series_block, lnk);
 }
 
-igris::series_field_annotation *
-igris::series::find_annotation(const std::string &name)
+igris::series_field_annotation* igris::series::find_annotation(
+    const std::string &name)
 {
     return _annotator.find_annotation(name);
+}
+
+void igris::series::parse_csv_istream(std::istream& input) 
+{
+    std::string str;
+
+    // read header
+    std::getline(input, str);
+    auto headers = igris::split(str, ',');
+    
+    // Пока считаем все поля за тип double
+    for (auto & header : headers) 
+    {
+        annotator().add<double>(header);
+    }
+    set_elemsize(headers.size() * sizeof(double));
+
+    while (std::getline(input, str)) 
+    {
+        auto values = igris::split(str, ',');
+        double * data = (double*)emplace();
+        for (size_t i = 0; i < values.size(); ++i) 
+        {
+            data[i] = std::stod(values[i]);
+        }
+    }
+}
+
+void igris::series::parse_csv_file(const std::string& path) 
+{
+    std::fstream file(path);
+    parse_csv_istream(file);
 }
