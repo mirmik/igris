@@ -184,5 +184,9 @@ void igris::series::parse_csv_istream(std::istream& input)
 void igris::series::parse_csv_file(const std::string& path) 
 {
     std::fstream file(path);
+    if (!file) 
+    {
+        throw std::invalid_argument("wrong file path");
+    }
     parse_csv_istream(file);
 }

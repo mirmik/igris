@@ -15,6 +15,7 @@ namespace igris
 {
     class series_iterator;
     class series_block;
+    template <class T> class series_fiber;
 
     class series
     {
@@ -52,7 +53,7 @@ namespace igris
 
         igris::series_field_annotator &annotator();
         igris::series_field_annotation* find_annotation(const std::string &name);
-        auto &annotations() { return _annotator.annotations(); }
+        const auto &annotations() { return _annotator.annotations(); }
 
         void set_block_size_hint(int sz) { block_size_hint = sz; }
 
@@ -83,6 +84,9 @@ namespace igris
         int count_of_blocks() { return dlist_size(&blocks); }
 
         ~series();
+
+        template <class T>
+        series_fiber<T> fiber(igris::series_field_annotation& annot);
     };
 
     template <class T> 
@@ -93,6 +97,7 @@ namespace igris
 }
 
 #include <igris/series/block.h>
+#include <igris/series/fiber.h>
 
 template <class T> T &igris::series::get(int i)
 {
@@ -104,6 +109,12 @@ template <class T> T &igris::series::last()
 {
     assert(last_block()->fini - last_block()->strt > 0);
     return *(T *)(last_block()->last());
+}
+
+template <class T>
+igris::series_fiber<T> igris::series::fiber(igris::series_field_annotation& annot) 
+{
+    return igris::series_fiber<T>(*this, annot);
 }
 
 #endif
