@@ -10,6 +10,7 @@
 #include <string>
 
 #include <igris/trent/json.h>
+#include <igris/trent/json_print.h>
 #include <igris/trent/settings.h>
 
 #include <nos/io/file.h>
