@@ -13,5 +13,5 @@ steps:
 
 - checkout: none
 
-- script: curl.exe http://127.0.0.1:5000/igris_script
+- script: curl.exe http://127.0.0.1:5000/igris_library_updated
   displayName: 'Run test script through local flask server'
