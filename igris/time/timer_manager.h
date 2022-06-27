@@ -70,9 +70,9 @@ namespace igris
     };
 
     template <typename... Args>
-    class timer : public timer_delegate<timer_spec<systime_t>, Args...>
+    class timer : public timer_delegate<timer_spec<int64_t>, Args...>
     {
-        using parent = timer_delegate<timer_spec<systime_t>, Args...>;
+        using parent = timer_delegate<timer_spec<int64_t>, Args...>;
 
     public:
         timer(igris::delegate<void, Args...> dlg, Args &&... args)

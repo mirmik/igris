@@ -20,9 +20,9 @@ static void inc_b(int b)
 
 TEST_CASE("TimerManager") 
 {
-	auto current_time = millis(); 
+	auto current_time = igris::millis(); 
 
-	igris::timer_manager<igris::timer_spec<systime_t>> manager(&millis);
+	igris::timer_manager<igris::timer_spec<int64_t>> manager(&igris::millis);
 	igris::timer<int> tim0(igris::make_delegate(inc_a), 12);
 	igris::timer<int> tim1(igris::make_delegate(inc_b), 14);
 	timptr = &tim1;
