@@ -8,6 +8,7 @@
 #include <inttypes.h>
 #include <memory>
 #include <iterator>
+#include <igris/util/numconvert.h>
 
 namespace std
 {
@@ -243,6 +244,22 @@ namespace std
 	};
 
 	using string = basic_string<>;
+
+	
+	static inline int       stoi( const std::string& str, std::size_t* pos = nullptr, int base = 10 ) 
+	{
+		return igris_atoi32(str.c_str(), base, nullptr);
+	}
+
+	static inline long      stol( const std::string& str, std::size_t* pos = nullptr, int base = 10 )
+	{
+		return igris_atoi32(str.c_str(), base, nullptr);
+	}
+	
+	static inline long long stoll( const std::string& str, std::size_t* pos = nullptr, int base = 10 )
+	{
+		return igris_atoi32(str.c_str(), base, nullptr);
+	}
 }
 
 #endif

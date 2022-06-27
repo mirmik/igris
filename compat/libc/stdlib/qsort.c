@@ -18,7 +18,8 @@ int rand(void);
  * Swap two elements of specified size.
  */
 static inline void swap(void *fst, void *snd, size_t size) {
-	void *temp = alloca(size);
+	//void *temp = alloca(size);
+	char temp[size];
 
 	memcpy(temp, snd, size);
 	memcpy(snd, fst, size);
@@ -48,7 +49,7 @@ void qsort(void *vbase, size_t nmemb, size_t size,
 		return;
 	} else {
 		char *pos = (rand() % nmemb) * size + base;
-		char *key = alloca(size);
+		char key[size];
 		char *i = base, *j = base + (size * (nmemb - 1));
 
 		memcpy(key, pos, size);
