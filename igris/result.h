@@ -84,7 +84,7 @@ namespace igris
                 new (&ths) storedtype(oth);
             }
             static void destructor(storedtype &ths) { ths.~storedtype(); };
-            static void constructor(storedtype &ths){};
+            static void constructor(storedtype &ths){ (void)ths; };
         };
 
         template <typename T> struct tryhelper<T &&>
@@ -95,8 +95,8 @@ namespace igris
             {
                 ths = oth;
             }
-            static void destructor(type &ths){};
-            static void constructor(type &ths){};
+            static void destructor(type &ths){ (void)ths; }
+            static void constructor(type &ths){ (void)ths; }
         };
 
         template <typename T, typename E = error> class result

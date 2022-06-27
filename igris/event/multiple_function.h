@@ -3,7 +3,7 @@
 
 /**
     @file multiple_function.h
-    Делегат для последовательного вызова
+    Аналог multiple_delegate для шаблона std::function
     множественных обработчиков.
 */
 
