@@ -1,7 +1,7 @@
 #ifndef IGRIS_PROTOCOLS_STREAM_H
 #define IGRIS_PROTOCOLS_STREAM_H
 
-#include <string.h>
+#include <cstring>
 
 struct stream_parser_operations
 {

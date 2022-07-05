@@ -1,7 +1,7 @@
 #include <igris/binreader.h>
 #include <igris/path/path.h>
 
-#include <string.h>
+#include <cstring>
 
 std::string igris::path::dirname(const std::string &path)
 {

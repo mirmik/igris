@@ -9,7 +9,7 @@
 #ifndef UTIL_BIT_IMPL_H_
 #define UTIL_BIT_IMPL_H_
 
-#include <assert.h>
+#include <cassert>
 
 #define __bit_lsb_mask(n) ((0x1ul << (n)) - 1) /* n rightmost bits. */
 #define __bit_msb_mask(n) (~(~0x0ul >> (n)))   /* n leftmost bits. */

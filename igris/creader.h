@@ -2,8 +2,8 @@
 #define IGRIS_CREADER_H
 
 #include <igris/compiler.h>
-#include <stdint.h>
-#include <string.h>
+#include <cstdint>
+#include <cstring>
 
 struct creader
 {

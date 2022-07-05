@@ -6,8 +6,8 @@
 #define IGRIS_BINREADER_H
 
 #include <igris/compiler.h>
-#include <stddef.h>
-#include <string.h>
+#include <cstddef>
+#include <cstring>
 
 __BEGIN_DECLS
 

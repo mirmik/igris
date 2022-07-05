@@ -1,7 +1,7 @@
 #ifndef IGRIS_DATASTRUCT_POOL_H
 #define IGRIS_DATASTRUCT_POOL_H
 
-#include <assert.h>
+#include <cassert>
 #include <igris/datastruct/slist.h>
 
 struct pool_head

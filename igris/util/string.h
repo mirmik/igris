@@ -18,7 +18,7 @@ __END_DECLS
 
 #include <cstdint>
 #include <cstring>
-#include <ctype.h>
+#include <cctype>
 #include <igris/util/hexascii.h>
 #include <list>
 #include <string>

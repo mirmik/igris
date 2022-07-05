@@ -5,9 +5,9 @@
 #ifndef IGRIS_BUFFER_H_
 #define IGRIS_BUFFER_H_
 
-#include <stdint.h>
+#include <cstdint>
 #include <stdlib.h>
-#include <string.h>
+#include <cstring>
 
 #include <igris/util/__include_string_view.h>
 #include <string>

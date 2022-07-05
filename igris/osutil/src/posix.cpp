@@ -2,7 +2,7 @@
 #include <signal.h>
 #include <unistd.h>
 
-#include <string.h>
+#include <cstring>
 #include <string>
 
 #include <igris/osutil/fd.h>

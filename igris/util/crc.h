@@ -2,7 +2,6 @@
 #define IGRIS_UTIL_CRC_H
 
 #include <igris/compiler.h>
-#include <stdbool.h>
 #include <stdint.h>
 
 __BEGIN_DECLS

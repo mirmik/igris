@@ -1,7 +1,7 @@
 #ifndef IGRIS_BITSCOPY_H
 #define IGRIS_BITSCOPY_H
 
-#include <stdint.h>
+#include <cstdint>
 
 const int BITS_IN_BYTE = 8;
 

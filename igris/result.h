@@ -7,7 +7,7 @@
 #include <functional>
 #include <utility>
 
-#include <string.h>
+#include <cstring>
 #include <string>
 
 #include <igris/util/bug.h>

@@ -1,7 +1,7 @@
 #ifndef IGRIS_USTIL_GRAYCODE_H
 #define IGRIS_USTIL_GRAYCODE_H
 
-#include <stdint.h>
+#include <cstdint>
 
 static inline uint8_t graycode8(uint8_t code) { return code ^ (code >> 1); }
 static inline uint16_t graycode16(uint16_t code) { return code ^ (code >> 1); }

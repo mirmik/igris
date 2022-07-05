@@ -2,8 +2,8 @@
 #define IGRIS_DATASTRUCT_NAMED_TABLE_H
 
 #include <igris/compiler.h>
-#include <stddef.h>
-#include <string.h>
+#include <cstddef>
+#include <cstring>
 
 struct nametbl_node
 {

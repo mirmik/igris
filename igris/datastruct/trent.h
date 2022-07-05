@@ -12,7 +12,7 @@
 #include <gxx/panic.h>
 
 #include <stdbool.h>
-#include <string.h>
+#include <cstring>
 
 enum TrentType
 {

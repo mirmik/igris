@@ -1,7 +1,7 @@
 #include <igris/sync/syslock.h>
 #include <igris/time/jiffies-systime.h>
 #include <igris/time/systime.h>
-#include <stdint.h>
+#include <cstdint>
 
 #include <asm/systime.h> // for systime_lomax and systime_lopart
 

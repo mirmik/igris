@@ -9,7 +9,7 @@
 #define UTIL_BITMAP_H_
 
 #include <limits.h> /* LONG_BIT */
-#include <string.h> /* memset */
+#include <cstring> /* memset */
 
 #ifndef LONG_BIT
 #define LONG_BIT (sizeof(long) * 8)

@@ -1,5 +1,5 @@
 #include <igris/util/base64.h>
-#include <string.h>
+#include <cstring>
 
 namespace igris
 {
