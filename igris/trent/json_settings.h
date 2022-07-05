@@ -15,6 +15,7 @@
 
 #include <nos/io/file.h>
 
+#include <fcntl.h>
 #include <exception>
 
 namespace igris
