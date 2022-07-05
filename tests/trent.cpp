@@ -1,6 +1,14 @@
 #include <doctest/doctest.h>
 #include <igris/trent/json.h>
+#include <igris/trent/json_print.h>
 #include <cmath>
+
+TEST_CASE("json_test.to_string")
+{
+	igris::trent tr;
+	tr = 13;
+	igris::json::to_string(tr);
+}
 
 TEST_CASE("json_test")
 {

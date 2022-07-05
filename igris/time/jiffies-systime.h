@@ -11,8 +11,6 @@ __BEGIN_DECLS
 void jiffies_increment();
 void systime_set_frequency(uint32_t freq);
 jiffies_t jiffies();
-//uint32_t systime_lomax();
-//uint32_t systime_lopart();
 jiffies_t ms2jiffies(uint32_t ms);
 
 __END_DECLS

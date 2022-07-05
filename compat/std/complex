@@ -61,6 +61,12 @@ namespace std
 	{
 		return std::complex<T>{ r * cos(theta), r * sin(theta) };
 	}
+
+	template< class T > 
+	T arg( const complex<T>& z ) 
+	{
+		return atan2(z.imag(), z.real());
+	}
 	
 }
 

@@ -10,7 +10,7 @@ licant.execute("igris.g.py")
 licant.cli.add_argument("--toolchain")
 opts, args = licant.cli.parse()
 
-if hasattr(licant, 'gcc_toolchain'):
+if hasattr(licant, 'gcc_toolchain'): 
 	toolchain = licant.cxx_make.gcc_toolchain(opts.toolchain)
 else:
 	toolchain = licant.cxx_make.toolchain_gcc(opts.toolchain)
@@ -23,10 +23,10 @@ modules = [
 		"igris.dprint",
 		"igris.protocols.gstuff",
 		"igris.series",
-#		"igris.sclonner"
-	]
+		"igris.sclonner"
+	] 
 
-CCFLAGS = '-fPIC -Werror=all -Werror=extra -pedantic-errors -Wreturn-type -g'
+CCFLAGS = '-fPIC -Werror=all -Werror=extra -pedantic-errors -Wreturn-type -g -Wno-gnu-zero-variadic-macro-arguments'
 CXXFLAGS = CCFLAGS
 LDFLAGS = '-g'
 

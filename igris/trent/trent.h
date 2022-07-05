@@ -292,6 +292,13 @@ namespace igris
             return m_dct.at(std::string(key.data(), key.size()));
         }
 
+        void push_back(const trent_basic &tr)
+        {
+            if (m_type != type::list)
+                init(type::list);
+            m_arr.push_back(tr);
+        }
+
         const trent_basic *_get(const std::string &str) const
         {
             if (is_dict())

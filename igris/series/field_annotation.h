@@ -49,8 +49,10 @@ namespace igris
 
     public:
         series_field_annotation(const std::string &machname,
-                                const std::string &username, int offset,
-                                int size, FieldDataType datatype);
+                                const std::string &username, 
+                                int offset,
+                                int size, 
+                                FieldDataType datatype);
 
         series_field_annotation() = default;
         series_field_annotation(const series_field_annotation &oth) = default;

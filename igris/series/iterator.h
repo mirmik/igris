@@ -43,6 +43,9 @@ namespace igris
         const series_block *block() const;
 
         template <class T> T &get() { return *(T *)pointer(); }
+
+        /// Разметить над объектом шаблон для обращение через поля.
+        template <class T> T &view() { return *(T *)pointer(); }
     };
 }
 

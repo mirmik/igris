@@ -1,8 +1,9 @@
 #include <igris/sync/syslock.h>
 #include <igris/time/jiffies-systime.h>
 #include <igris/time/systime.h>
-
 #include <stdint.h>
+
+#include <asm/systime.h> // for systime_lomax and systime_lopart
 
 uint64_t jiffies_to_millis = 1;
 uint64_t lopart_to_micros = 1;
@@ -38,12 +39,12 @@ void systime_set_frequency(uint32_t freq)
     lopart_to_micros = ((uint32_t)1000 << FREQSHIFT2) / systime_lomax();
 }
 
-void delay(systime_t d)
+void delay(int64_t d)
 {
-    jiffies_t n = millis();
-    jiffies_t f = n + d;
+    auto n = igris::millis();
+    auto f = n + d;
 
-    while (f - millis() > 0)
+    while (f - igris::millis() > 0)
         ;
 }
 
@@ -92,13 +93,13 @@ int jiffies_pair_compare(jiffies_pair_t a, jiffies_pair_t b)
     return 0;
 }
 
-systime_t micros()
+int64_t igris::micros()
 {
     jiffies_pair_t pair = jiffies_pair();
     return jiffies_pair_to_micros(pair);
 }
 
-systime_t millis()
+int64_t igris::millis()
 {
     return (jiffies() * jiffies_to_millis) >> FREQSHIFT;
 }

@@ -127,6 +127,7 @@ licant.module("igris.util", sources=[
 		"igris/util/dstring.c",
 		"igris/util/stub.c",
 		"igris/util/crc.c",
+		"igris/util/base64.cpp",
 		"igris/string/memmem.c",
 		"igris/string/strdup.c",
 		"igris/string/replace_substrings.c",

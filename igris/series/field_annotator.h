@@ -24,9 +24,25 @@ namespace igris
             auto annot = igris::make_series_field_annotation<T>(
                 machname, username, inc.increment<T>());
             _annotations.push_back(annot);
-
             return _annotations[_annotations.size() - 1];
         }
+
+        template <class T>
+        series_field_annotation &add(const std::string &name)
+        {
+            return add<T>(name, name);
+        }
+
+        void add(const std::string &machname,
+                 const std::string &username,
+                 size_t size,
+                 FieldDataType type
+        ) 
+        {
+            _annotations.emplace_back(machname, username, 
+                inc.increment(size), size, type);   
+        }
+        
 
         const auto &annotations() { return _annotations; }
 
