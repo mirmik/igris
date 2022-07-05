@@ -5,7 +5,8 @@
 
 namespace igris {
     namespace json {
-        void pretty_print_to(const trent &tr, std::ostream &os,
+        template <template <class Allocator> class TAlloc = std::allocator>
+        void pretty_print_to(const trent_basic<TAlloc> &tr, std::ostream &os,
                              int tab = 0)
         {
             bool sep = false;
@@ -114,8 +115,7 @@ namespace igris {
                 os << "\r\n";
         }
  
-        template <template <class Allocator> class TAlloc = std::allocator,
-                  class Output>
+        template <template <class Allocator> class TAlloc = std::allocator, class Output>
         void pretty_print_to(const trent_basic<TAlloc> &tr, Output &os,
                              int tab = 0)
         {
