@@ -12,7 +12,7 @@ static void sprint_printchar(void *d, int c)
     *(((struct sprint_char_handler_data *)d)->cursor)++ = c;
 }
 
-int vsprintf(char *s, const char *format, va_list ap)
+static int vsprintf(char *s, const char *format, va_list ap)
 {
     int ret;
 
@@ -24,7 +24,7 @@ int vsprintf(char *s, const char *format, va_list ap)
     return ret;
 }
 
-int sprintf(char *buf, const char *format, ...)
+static int sprintf(char *buf, const char *format, ...)
 {
     int ret;
     va_list args;
@@ -36,7 +36,7 @@ int sprintf(char *buf, const char *format, ...)
     return ret;
 }
 
-int snprintf(char *buf, size_t maxlen, const char *format, ...)
+static int snprintf(char *buf, size_t maxlen, const char *format, ...)
 {
     int ret;
     va_list args;
@@ -48,12 +48,12 @@ int snprintf(char *buf, size_t maxlen, const char *format, ...)
     return ret;
 }
 
-void prflt(char * buf, float fl) 
+static void prflt(char * buf, float fl) 
 {
 	sprintf(buf, "%lf", fl);
 } 
 
-void prdbl(char * buf, double fl) 
+static void prdbl(char * buf, double fl) 
 {
 	sprintf(buf, "%lf", fl);
 } 

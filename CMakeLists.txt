@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.5.1)
 project(igris)
 
+#set(CMAKE_C_COMPILER "C:/Program Files/LLVM/bin/clang++.exe")
+#set(CMAKE_CXX_COMPILER "C:\\Program Files\\LLVM\\bin\\clang++.exe")
+
 message("${CMAKE_INSTALL_INCLUDEDIR}/igris")
 
 file(GLOB HEADERS 
@@ -95,16 +98,20 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 		"${IGRIS_HEADERS}"
 	)
 	
-	if (WIN32)
+	if (WIN32)	
 		install (TARGETS ${PROJECT_NAME}
-			EXPORT igris
-			LIBRARY DESTINATION /
-	        PUBLIC_HEADER DESTINATION igris)
+		EXPORT ${PROJECT_NAME}
+		LIBRARY DESTINATION /)
 
-		install (EXPORT igris
-			NAMESPACE igris::
-			FILE igris-config.cmake
-			DESTINATION lib/cmake/igris)
+		install (EXPORT ${PROJECT_NAME}
+			NAMESPACE ${PROJECT_NAME}::
+			FILE ${PROJECT_NAME}-config.cmake
+			DESTINATION lib/cmake/${PROJECT_NAME})
+
+		install(DIRECTORY ${PROJECT_NAME}
+	    	    DESTINATION "C:/Program Files (x86)/${PROJECT_NAME}/include"
+	    	    PATTERN "*HIDE*" EXCLUDE
+	   	)
 	endif()
 
 	if (UNIX AND NOT APPLE)
