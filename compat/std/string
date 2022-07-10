@@ -248,16 +248,19 @@ namespace std
 	
 	static inline int       stoi( const std::string& str, std::size_t* pos = nullptr, int base = 10 ) 
 	{
+		(void) pos; // TODO
 		return igris_atoi32(str.c_str(), base, nullptr);
 	}
 
 	static inline long      stol( const std::string& str, std::size_t* pos = nullptr, int base = 10 )
 	{
+		(void) pos; // TODO
 		return igris_atoi32(str.c_str(), base, nullptr);
 	}
 	
 	static inline long long stoll( const std::string& str, std::size_t* pos = nullptr, int base = 10 )
 	{
+		(void) pos; // TODO
 		return igris_atoi32(str.c_str(), base, nullptr);
 	}
 }

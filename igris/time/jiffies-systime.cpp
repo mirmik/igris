@@ -103,3 +103,14 @@ int64_t igris::millis()
 {
     return (jiffies() * jiffies_to_millis) >> FREQSHIFT;
 }
+
+void igris::delay(int64_t ms) 
+{
+    auto start = igris::micros();
+    auto interval = ms * 1000;
+
+    while (igris::micros() - start < interval) 
+    {}
+
+    return;
+}

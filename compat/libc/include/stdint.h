@@ -56,33 +56,65 @@ typedef __intptr_t intptr_t;
 
 typedef __uintptr_t uintptr_t;
 
+#ifndef INT8_MIN
+#define INT8_MIN	(- INT8_MAX - 1)
+#endif
 
-/*#define INT8_MIN	(- INT8_MAX - 1)
+#ifndef INT8_MAX
 #define INT8_MAX	0x7F
+#endif
+
+#ifndef UINT8_MAX
 #define UINT8_MAX	0xFF
+#endif
 
+#ifndef INT16_MIN
 #define INT16_MIN	(- INT16_MAX - 1)
+#endif
+
+#ifndef INT16_MAX
 #define INT16_MAX	0x7FFF
+#endif
+
+#ifndef UINT16_MAX
 #define UINT16_MAX	0xFFFF
+#endif
 
+#ifndef INT32_MIN
 #define INT32_MIN	(- INT32_MAX - 1)
+#endif
+
+#ifndef INT32_MAX
 #define INT32_MAX	0x7FFFFFFF
+#endif
+
+#ifndef UINT32_MAX
 #define UINT32_MAX	0xFFFFFFFF
+#endif
 
+#ifndef INT64_MIN
 #define INT64_MIN	(- INT64_MAX - 1)
+#endif
+
+#ifndef INT64_MAX
 #define INT64_MAX	0x7FFFFFFFFFFFFFFF
+#endif
+
+#ifndef UINT64_MAX
 #define UINT64_MAX	0xFFFFFFFFFFFFFFFF
-*/
+#endif
+
+#ifndef INTMAX_MIN
 #define INTMAX_MIN  INT64_MIN
+#endif
+
+#ifndef INTMAX_MAX
 #define INTMAX_MAX  INT64_MAX
+#endif
+
+#ifndef UINTMAX_MAX
 #define UINTMAX_MAX UINT64_MAX
-
-//#define INTMAX_MIN  (-INTMAX_MAX - 1)
-//#define INTMAX_MAX  9223372036854775807LL
-
-//#define UINTMAX_MAX 18446744073709551615ULL
-
-#define INT16_MAX 32767
+#endif
 
 #if !defined __cplusplus || defined __STDC_LIMIT_MACROS
 

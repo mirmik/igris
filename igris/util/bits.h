@@ -2,7 +2,7 @@
 #define IGRIS_UTIL_BITS_H
 
 #include <igris/compiler.h>
-#include <cstdint>
+#include <stdint.h>
 
 #ifdef _MSC_VER
 #include <intrin.h>

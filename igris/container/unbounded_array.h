@@ -96,10 +96,10 @@ namespace igris
         using const_iterator = const T *;
 
         iterator begin() { return m_data; }
-        const iterator end() { return m_data + m_size; }
+        const_iterator end() { return m_data + m_size; }
 
         const_iterator begin() const { return (const_iterator)m_data; }
-        const const_iterator end() const
+        const_iterator end() const
         {
             return (const_iterator)m_data + m_size;
         }

@@ -13,6 +13,7 @@
 //#include <hal/cpu.h>
 
 long int sysconf(int name) {
+	(void) name;
 	/*switch(name) {
 	case _SC_PAGESIZE:
 		return PAGE_SIZE();

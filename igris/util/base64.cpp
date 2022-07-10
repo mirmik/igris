@@ -119,12 +119,14 @@ namespace igris
     std::string base64url_encode(const uint8_t *indata, size_t size)
     {
         std::string ret = base64_encode(indata, size);
-        for (char &c : ret)
+        auto it = ret.begin();
+        auto eit = ret.end();
+        for (;it != eit; ++it)
         {
-            if (c == '+')
-                c = '-';
-            if (c == '/')
-                c = '_';
+            if (*it == '+')
+                *it = '-';
+            if (*it == '/')
+                *it = '_';
         }
         return ret;
     }
@@ -137,12 +139,14 @@ namespace igris
     std::string base64url_decode(const std::string &s)
     {
         std::string ret = base64_encode(s);
-        for (char &c : ret)
+        auto it = ret.begin();
+        auto eit = ret.end();
+        for (;it != eit; ++it)
         {
-            if (c == '-')
-                c = '+';
-            if (c == '_')
-                c = '/';
+            if (*it == '+')
+                *it = '-';
+            if (*it == '/')
+                *it = '_';
         }
         return ret;
     }

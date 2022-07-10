@@ -9,10 +9,9 @@ struct sprint_char_handler_data
     char *cursor;
 };
 
-static int sprint_printchar(void *d, int c)
+static void sprint_printchar(void *d, int c)
 {
     *(((struct sprint_char_handler_data *)d)->cursor)++ = c;
-    return 1;
 }
 
 int vsprintf(char *s, const char *format, va_list ap)
@@ -42,6 +41,7 @@ int sprintf(char *buf, const char *format, ...)
 
 int snprintf(char *buf, size_t maxlen, const char *format, ...)
 {
+    (void) maxlen; //TODO
     int ret;
     va_list args;
 

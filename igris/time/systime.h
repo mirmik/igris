@@ -3,7 +3,7 @@
 #ifndef IGRIS_SYSTIME_H
 #define IGRIS_SYSTIME_H
 
-#include <cstdint>
+#include <stdint.h>
 
 namespace igris 
 {

@@ -127,7 +127,6 @@ licant.module("igris.util", sources=[
 		"igris/util/dstring.c",
 		"igris/util/stub.c",
 		"igris/util/crc.c",
-		"igris/util/base64.cpp",
 		"igris/string/memmem.c",
 		"igris/string/strdup.c",
 		"igris/string/replace_substrings.c",
@@ -147,6 +146,7 @@ licant.module("igris.util", sources=[
 )
 
 licant.module("igris.utilxx", sources=[
+		"igris/util/base64.cpp",
 		"igris/util/string.cpp",
 		"igris/string/replace.cpp",
 		"igris/string/hexascii_string.cpp",		
@@ -199,18 +199,20 @@ licant.module("igris.os_extension", "windows",
 	default = True
 )
 
-licant.module("igris.time", "posix",
-	sources = ["igris/time/time_posix.cpp"],
-	default = True
-)
-
 licant.module("igris.crypt.aes", 
 	sources = ["igris/crypt/aes.c"])
 
-licant.module("igris.time", "jiffies",
-	sources = [
-		"igris/time/jiffies-systime.cpp"
-	]
+licant.module("igris.systime", "jiffies",
+	sources = ["igris/time/jiffies-systime.cpp", "igris/time/systime.cpp"]
+)
+
+licant.module("igris.systime", "posix",
+	sources = ["igris/time/time_posix.cpp", "igris/time/systime.cpp"],
+	default = True
+)
+
+licant.module("igris.time",
+	mdepends = ["igris.systime"]
 )
 
 licant.module("igris.flags.clean",

@@ -1,7 +1,7 @@
 #ifndef IGRIS_JIFFIES_SYSTIME_H
 #define IGRIS_JIFFIES_SYSTIME_H
 
-#include <cstdint>
+#include <stdint.h>
 #include <igris/compiler.h>
 
 typedef int64_t jiffies_t;
