@@ -379,12 +379,12 @@ float64_t igris_atof64(const char *str, char **pend)
         str++;
 
     char *end;
-    unsigned int u = atou32(str, 10, &end);
+    unsigned int u = igris_atou32(str, 10, &end);
 
     str = end;
     if (*str == '.')
     {
-        int64_t d = atou64(++str, 10, &end);
+        int64_t d = igris_atou64(++str, 10, &end);
         if (pend)
             *pend = end;
         double ret = (double)u + ((double)d) / (local_pow(10, end - str));
