@@ -20,6 +20,14 @@ char *u32toa(uint64_t num, char *buf, uint8_t base);
 char *u16toa(uint64_t num, char *buf, uint8_t base);
 char *u8toa(uint64_t num, char *buf, uint8_t base);
 
+char *i64toa(int64_t num, char *buf, uint8_t base);
+char *i32toa(int32_t num, char *buf, uint8_t base);
+ 
+char *f32toa(float32_t f, char *buf, int8_t precision); 
+#ifndef WITHOUT_ATOF64
+char *f64toa(float64_t f, char *buf, int8_t precision);
+#endif
+
 uint32_t igris_atou32(const char *buf, uint8_t base, char **end);
 uint64_t igris_atou64(const char *buf, uint8_t base, char **end);
 int32_t igris_atoi32(const char *buf, uint8_t base, char **end);
