@@ -318,7 +318,7 @@ char *f32toa(float32_t f, char *buf, int8_t precision)
     return buf;
 }
 
-/*static inline double local_pow(int b, int n)
+static inline double local_pow(int b, int n)
 {
     int64_t res = 1;
     while (n--)
@@ -326,9 +326,9 @@ char *f32toa(float32_t f, char *buf, int8_t precision)
         res *= b;
     }
     return res;
-}*/
+}
 
-/*float32_t atof32(const char *str, char **pend)
+float32_t igris_atof32(const char *str, char **pend)
 {
     if (!isdigit(*str) && *str != '-')
     {
@@ -340,12 +340,12 @@ char *f32toa(float32_t f, char *buf, int8_t precision)
         str++;
 
     char *end;
-    unsigned int u = atou32(str, 10, &end);
+    unsigned int u = igris_atou32(str, 10, &end);
 
     str = end;
     if (*str == '.')
     {
-        int64_t d = atou64(++str, 10, &end);
+        int64_t d = igris_atou64(++str, 10, &end);
         if (pend)
             *pend = end;
 
@@ -359,7 +359,7 @@ char *f32toa(float32_t f, char *buf, int8_t precision)
             *pend = end;
         return minus ? -(float)u : (float)u;
     }
-}*/
+}
 
 #ifndef WITHOUT_FLOAT64
 char *f64toa(float64_t f, char *buf, int8_t precision)
@@ -367,7 +367,7 @@ char *f64toa(float64_t f, char *buf, int8_t precision)
     return f32toa(f, buf, precision);
 }
 
-/*float64_t atof64(const char *str, char **pend)
+float64_t igris_atof64(const char *str, char **pend)
 {
     if (!isdigit(*str) && *str != '-')
     {
@@ -398,6 +398,6 @@ char *f64toa(float64_t f, char *buf, int8_t precision)
             *pend = end;
         return minus ? -(double)u : (double)u;
     }
-}*/
+}
 
 #endif
