@@ -114,3 +114,8 @@ void igris::delay(int64_t ms)
 
     return;
 }
+
+int64_t igris::system_time() 
+{
+    return millis();
+}

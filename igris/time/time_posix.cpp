@@ -31,3 +31,8 @@ void igris::delay(int64_t m)
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(m));
 }
+
+int64_t igris::system_time() 
+{
+    return millis();
+}
