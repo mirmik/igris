@@ -1,5 +1,6 @@
 #include "igris/protocols/gstuff.h"
 #include "igris/util/crc.h"
+#include <vector>
 
 int gstuffing(const char *data, size_t size, char *outdata)
 {
@@ -178,4 +179,19 @@ __garbage__:
 __finish__:
     state = 0;
     return sts;
+}
+
+std::vector<uint8_t> gstuffing_v(struct iovec *vec, size_t n)
+{
+    std::vector<uint8_t> ret;
+    size_t sz = 0;
+    for (size_t i = 0; i < n; ++i)
+    {
+        struct iovec *v = vec + i;
+        sz += v->iov_len;
+    }
+    ret.resize(sz * 2 + 2);
+    size_t sz2 = gstuffing_v(vec, n, (char *)&ret[0]);
+    ret.resize(sz2);
+    return ret;
 }

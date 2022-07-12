@@ -9,6 +9,7 @@
 #include <igris/datastruct/sline.h>
 #include <igris/iovec.h>
 #include <stdint.h>
+#include <vector>
 
 #define GSTUFF_START ((char)0xA8)
 #define GSTUFF_STOP ((char)0xB2)
@@ -37,7 +38,10 @@ public:
     gstuff_autorecv() = default;
     gstuff_autorecv(uint8_t *buf, int len);
     void init(uint8_t *buf, int len);
-    void setbuf(uint8_t *buf, int len) { init(buf, len); }
+    void setbuf(uint8_t *buf, int len)
+    {
+        init(buf, len);
+    }
     void reset();
     int newchar(char c);
 };
@@ -51,5 +55,7 @@ public:
  */
 int gstuffing(const char *data, size_t size, char *outdata);
 int gstuffing_v(struct iovec *vec, size_t n, char *outdata);
+int gstuff_byte(char c, char *outdata);
+std::vector<uint8_t> gstuffing_v(struct iovec *vec, size_t n);
 
 #endif
