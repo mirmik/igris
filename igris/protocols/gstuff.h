@@ -42,13 +42,6 @@ public:
     int newchar(char c);
 };
 
-struct gstuff_autosend
-{
-    uint8_t crc;
-    uint8_t * it;
-    uint8_t * eit;
-};
-
 /**
     Собрать пакет gstuff.
     @param data - входной буффер

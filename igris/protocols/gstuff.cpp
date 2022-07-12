@@ -7,16 +7,33 @@ int gstuffing(const char *data, size_t size, char *outdata)
     return gstuffing_v(vec, 1, outdata);
 }
 
+int gstuff_byte(char c, char *outdata)
+{
+    switch (c)
+    {
+    case GSTUFF_START:
+        *outdata++ = GSTUFF_STUB;
+        *outdata++ = GSTUFF_STUB_START;
+        return 2;
+    case GSTUFF_STOP:
+        *outdata++ = GSTUFF_STUB;
+        *outdata++ = GSTUFF_STUB_STOP;
+        return 2;
+    case GSTUFF_STUB:
+        *outdata++ = GSTUFF_STUB;
+        *outdata++ = GSTUFF_STUB_STUB;
+        return 2;
+    default:
+        *outdata++ = c;
+        return 1;
+    }
+}
+
 int gstuffing_v(struct iovec *vec, size_t n, char *outdata)
 {
-    char *outstrt;
-    uint8_t crc;
-
-    crc = 0xFF;
-    outstrt = outdata;
-
+    char *outstrt = outdata;
+    uint8_t crc = 0xFF;
     *outdata++ = GSTUFF_START;
-
     for (size_t j = 0; j < n; ++j)
     {
         size_t size = vec[j].iov_len;
@@ -25,58 +42,18 @@ int gstuffing_v(struct iovec *vec, size_t n, char *outdata)
         {
             char c = *data++;
             igris_strmcrc8(&crc, c);
-
-            switch (c)
-            {
-            case GSTUFF_START:
-                *outdata++ = GSTUFF_STUB;
-                *outdata++ = GSTUFF_STUB_START;
-                break;
-
-            case GSTUFF_STOP:
-                *outdata++ = GSTUFF_STUB;
-                *outdata++ = GSTUFF_STUB_STOP;
-                break;
-
-            case GSTUFF_STUB:
-                *outdata++ = GSTUFF_STUB;
-                *outdata++ = GSTUFF_STUB_STUB;
-                break;
-            default:
-                *outdata++ = c;
-            }
+            outdata += gstuff_byte(c, outdata);
         }
     }
-
-    switch ((char)crc)
-    {
-    case GSTUFF_START:
-        *outdata++ = GSTUFF_STUB;
-        *outdata++ = GSTUFF_STUB_START;
-        break;
-
-    case GSTUFF_STOP:
-        *outdata++ = GSTUFF_STUB;
-        *outdata++ = GSTUFF_STUB_STOP;
-        break;
-
-    case GSTUFF_STUB:
-        *outdata++ = GSTUFF_STUB;
-        *outdata++ = GSTUFF_STUB_STUB;
-        break;
-    default:
-        *outdata++ = crc;
-    }
-
+    outdata += gstuff_byte(crc, outdata);
     *outdata++ = GSTUFF_STOP;
-
     return outdata - outstrt;
 }
 
 void gstuff_autorecv::init(uint8_t *buf, int len)
 {
     this->state = 0;
-    sline_init(&this->line, (char*)buf, len);
+    sline_init(&this->line, (char *)buf, len);
     reset();
 }
 
