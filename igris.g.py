@@ -158,8 +158,12 @@ licant.module("igris.utilxx", sources=[
 
 #################################################################
 
-licant.module("igris.printf_impl",
+licant.module("igris.printf_impl", "impl", default=True,
 	sources=["igris/util/printf_impl.c"]
+)
+
+licant.module("igris.printf_impl", "stub",
+	sources=["igris/util/stubs/printf_stub.c"]
 )
 
 licant.module("igris.syslock", impl="irqs", 
