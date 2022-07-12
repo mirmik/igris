@@ -106,7 +106,7 @@ licant.module("igris.bug", impl="abort", sources=["igris/util/bug_abort.c"], def
 
 licant.module("igris.protocols.gstuff", 
 	sources= [
-		"igris/protocols/gstuff.c",
+		"igris/protocols/gstuff.cpp",
 		"igris/protocols/gstuff_v1/gstuff.c",
 		"igris/protocols/gstuff_v1/autorecv.c"
 	]

@@ -1,7 +1,7 @@
 #include "igris/protocols/gstuff.h"
 #include "igris/util/crc.h"
 
-int gstuffing(const char *data, int size, char *outdata)
+int gstuffing(const char *data, size_t size, char *outdata)
 {
     struct iovec vec[] = {{(void *)data, size}};
     return gstuffing_v(vec, 1, outdata);
@@ -73,48 +73,37 @@ int gstuffing_v(struct iovec *vec, size_t n, char *outdata)
     return outdata - outstrt;
 }
 
-void gstuff_autorecv_init(struct gstuff_autorecv *autom, void *buf, int len)
+void gstuff_autorecv::init(uint8_t *buf, int len)
 {
-    gstuff_autorecv_setbuf(autom, buf, len);
+    this->state = 0;
+    sline_init(&this->line, (char*)buf, len);
+    reset();
 }
 
-void gstuff_autorecv_reset(struct gstuff_autorecv *autom)
+void gstuff_autorecv::reset()
 {
-    autom->crc = 0xff;
-    sline_reset(&autom->line);
+    this->crc = 0xff;
+    sline_reset(&this->line);
 }
 
-void gstuff_autorecv_setbuf(struct gstuff_autorecv *autom, void *buf, int len)
-{
-    autom->state = 0;
-    sline_init(&autom->line, buf, len);
-    gstuff_autorecv_reset(autom);
-}
-
-// TODO: Функция просится под рефакторинг.
-//       goto вполне можно заменить на статусы,
-//       а __stop_handler__ вынести в функцию.
-int gstuff_autorecv_newchar(struct gstuff_autorecv *autom, char c)
+int gstuff_autorecv::newchar(char c)
 {
     int sts;
 
-    switch (autom->state)
+    switch (state)
     {
     case 0:
-        gstuff_autorecv_reset(autom);
-
-        // goto state 1 imediatly;
-        autom->state = 4;
+        reset();
+        state = 4;
         __attribute__((fallthrough));
 
     case 4:
-        // wait start
         switch (c)
         {
         case GSTUFF_START:
             //Приняли стартовый символ. Реинициализация.
-            autom->state = 1;
-            gstuff_autorecv_reset(autom);
+            state = 1;
+            reset();
             goto __continue__;
 
         default:
@@ -126,7 +115,7 @@ int gstuff_autorecv_newchar(struct gstuff_autorecv *autom, char c)
         {
         case GSTUFF_START:
             //Приняли стартовый символ. Реинициализация.
-            gstuff_autorecv_reset(autom);
+            reset();
             goto __force_restart__;
 
         case GSTUFF_STOP:
@@ -135,14 +124,12 @@ int gstuff_autorecv_newchar(struct gstuff_autorecv *autom, char c)
 
         case GSTUFF_STUB:
             //Принят STUFF ждем вторй байт.
-            autom->state = 2;
+            state = 2;
             goto __continue__;
 
         default:
             goto __putchar__;
         }
-
-        // unreachable point
 
     case 2:
         // На прошлой итерации принят STUFF.
@@ -159,7 +146,7 @@ int gstuff_autorecv_newchar(struct gstuff_autorecv *autom, char c)
             c = GSTUFF_STUB;
             break;
         case GSTUFF_START:
-            gstuff_autorecv_reset(autom);
+            reset();
             goto __force_restart__;
         default:
             // Невалидный пакет.
@@ -174,7 +161,7 @@ int gstuff_autorecv_newchar(struct gstuff_autorecv *autom, char c)
     return GSTUFF_ALGORITHM_ERROR;
 
 __stop_handler__:
-    if (autom->crc != 0)
+    if (crc != 0)
     {
         //Принят символ окончания пакета, но crc не пройден.
         sts = GSTUFF_CRC_ERROR;
@@ -184,34 +171,34 @@ __stop_handler__:
     else
     {
         //Корректный приём пакета. Удаляем crc символ
-        sline_backspace(&autom->line, 1);
+        sline_backspace(&line, 1);
         sts = GSTUFF_NEWPACKAGE;
         goto __finish__;
     }
 
 __putchar__:
-    if (!sline_putchar(&autom->line, c))
+    if (!sline_putchar(&line, c))
     {
         sts = GSTUFF_OVERFLOW;
-        autom->state = 0;
+        state = 0;
         goto __finish__;
     }
 
-    igris_strmcrc8(&autom->crc, c);
-    autom->state = 1;
+    igris_strmcrc8(&crc, c);
+    state = 1;
 
     // fallthrow
 __continue__:
     return GSTUFF_CONTINUE;
 
 __force_restart__:
-    autom->state = 1;
+    state = 1;
     return GSTUFF_FORCE_RESTART;
 
 __garbage__:
     return GSTUFF_GARBAGE;
 
 __finish__:
-    autom->state = 0;
+    state = 0;
     return sts;
 }

@@ -27,43 +27,36 @@
 #define GSTUFF_FORCE_RESTART 2
 #define GSTUFF_GARBAGE 3
 
-struct gstuff_autorecv
+class gstuff_autorecv
 {
-    struct sline line;
-    uint8_t crc;
-    uint8_t state;
+    struct sline line = {};
+    uint8_t crc = 0;
+    uint8_t state = 0;
+
+public:
+    gstuff_autorecv() = default;
+    gstuff_autorecv(uint8_t *buf, int len);
+    void init(uint8_t *buf, int len);
+    void setbuf(uint8_t *buf, int len) { init(buf, len); }
+    void reset();
+    int newchar(char c);
 };
 
-__BEGIN_DECLS
+struct gstuff_autosend
+{
+    uint8_t crc;
+    uint8_t * it;
+    uint8_t * eit;
+};
 
 /**
     Собрать пакет gstuff.
-
     @param data - входной буффер
     @param size - длина входного буффер
     @param outdata - выходной буффер (рекомендованная длина 2*size+2)
     @return результирующая длина пакета.
  */
-int gstuffing(const char *data, int size, char *outdata);
+int gstuffing(const char *data, size_t size, char *outdata);
 int gstuffing_v(struct iovec *vec, size_t n, char *outdata);
-
-/**
-    Инициализация автомата.
- */
-void gstuff_autorecv_init(struct gstuff_autorecv *autom, void *buf, int len);
-
-/**
-    Горячая замена приёмного буфера.
- */
-void gstuff_autorecv_setbuf(struct gstuff_autorecv *autom, void *buf, int len);
-
-/**
-    Сброс состояния автомата.
- */
-void gstuff_autorecv_reset(struct gstuff_autorecv *autom);
-
-int gstuff_autorecv_newchar(struct gstuff_autorecv *autom, char c);
-
-__END_DECLS
 
 #endif
