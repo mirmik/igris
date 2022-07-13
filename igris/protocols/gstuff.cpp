@@ -197,3 +197,13 @@ std::vector<uint8_t> gstuffing_v(struct iovec *vec, size_t n)
     ret.resize(sz2);
     return ret;
 }
+
+
+std::vector<uint8_t> gstuffing(igris::buffer buf) 
+{
+    std::vector<uint8_t> ret;
+    ret.resize(buf.size() * 2 + 2);
+    size_t sz2 = gstuffing(buf.data(), buf.size(), (char *)&ret[0]);
+    ret.resize(sz2);
+    return ret;
+}

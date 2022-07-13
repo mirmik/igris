@@ -8,6 +8,7 @@
 #include <igris/compiler.h>
 #include <igris/datastruct/sline.h>
 #include <igris/iovec.h>
+#include <igris/buffer.h>
 #include <stdint.h>
 #include <vector>
 
@@ -44,6 +45,9 @@ public:
     }
     void reset();
     int newchar(char c);
+
+    const char * cstr() { return sline_getline(&line); }
+    size_t size() { return sline_size(&line); }
 };
 
 /**
@@ -56,6 +60,8 @@ public:
 int gstuffing(const char *data, size_t size, char *outdata);
 int gstuffing_v(struct iovec *vec, size_t n, char *outdata);
 int gstuff_byte(char c, char *outdata);
+
 std::vector<uint8_t> gstuffing_v(struct iovec *vec, size_t n);
+std::vector<uint8_t> gstuffing(igris::buffer buf);
 
 #endif
