@@ -2,11 +2,10 @@
  * Little endian
  */
 
-#include <ctype.h>
 #include <stdarg.h>
 #include <stdint.h>
-
 #include <igris/dprint/dprint.h>
+#include <igris/util/ctype.h>
 
 void debug_printbin_uint4(uint8_t b)
 {
@@ -347,7 +346,7 @@ void debug_print_dump(const void *mem, uint16_t len)
                 {
                     debug_putchar(' ');
                 }
-                else if (isprint(*((char *)mem)+j)) /* printable char */
+                else if (igris_isprint(*((char *)mem)+j)) /* printable char */
                 {
                     debug_putchar(0xFF & ((char *)mem)[j]);
                 }

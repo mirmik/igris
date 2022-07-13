@@ -1,7 +1,6 @@
 #include <igris/util/dstring.h>
 #include <igris/util/hexascii.h>
-
-#include <ctype.h>
+#include <igris/util/ctype.h>
 
 int bytes_to_dstring(char *out, const void *data, size_t size)
 {
@@ -12,7 +11,7 @@ int bytes_to_dstring(char *out, const void *data, size_t size)
     for (; it != eit; ++it)
     {
         char c = *it;
-        if (isprint(c))
+        if (igris_isprint(c))
             *dst++ = *it;
 
         else if (*it == '\n')
@@ -41,9 +40,6 @@ int bytes_to_dstring(char *out, const void *data, size_t size)
             *dst++ = 'x';
             *dst++ = hi;
             *dst++ = low;
-            // ret.append("\\x", 2);
-            // ret.push_back(hi);
-            // ret.push_back(low);
         }
     }
     *dst = '\0';

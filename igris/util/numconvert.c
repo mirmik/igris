@@ -1,8 +1,7 @@
 #include <igris/dprint.h>
 #include <igris/util/hexascii.h>
 #include <igris/util/numconvert.h>
-
-#include <ctype.h>
+#include <igris/util/ctype.h>
 #include <math.h>
 #include <string.h>
 
@@ -139,7 +138,7 @@ uint32_t igris_atou32(const char *buf, uint8_t base, char **end)
     char c = *buf;
     uint32_t res = 0;
 
-    while (isxdigit(c))
+    while (igris_isxdigit(c))
     {
         c = *buf++;
         res = res * base + hex2half(c);
@@ -156,7 +155,7 @@ uint64_t igris_atou64(const char *buf, uint8_t base, char **end)
     char c = *buf;
     uint64_t res = 0;
 
-    while (isxdigit(c))
+    while (igris_isxdigit(c))
     {
         c = *buf++;
         res = res * base + hex2half(c);
@@ -330,7 +329,7 @@ static inline double local_pow(int b, int n)
 
 float32_t igris_atof32(const char *str, char **pend)
 {
-    if (!isdigit(*str) && *str != '-')
+    if (!igris_isdigit(*str) && *str != '-')
     {
         return 0;
     }
@@ -369,7 +368,7 @@ char *f64toa(float64_t f, char *buf, int8_t precision)
 
 float64_t igris_atof64(const char *str, char **pend)
 {
-    if (!isdigit(*str) && *str != '-')
+    if (!igris_isdigit(*str) && *str != '-')
     {
         return 0;
     }

@@ -68,12 +68,14 @@ int gstuff_autorecv::newchar(char c)
 {
     int sts;
 
+__start__:
     switch (state)
     {
     case 0:
         reset();
         state = 4;
-        __attribute__((fallthrough));
+        //__attribute__((fallthrough));
+        goto __start__;
 
     case 4:
         switch (c)
