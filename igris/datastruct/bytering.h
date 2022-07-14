@@ -13,8 +13,8 @@ struct bytering_head
 
 __BEGIN_DECLS
 
-static inline void bytering_init(struct bytering_head *r, void *buf,
-                                 unsigned int size)
+static inline void
+bytering_init(struct bytering_head *r, void *buf, unsigned int size)
 {
     r->start = (unsigned char *)buf;
     r->head = (unsigned char *)buf;

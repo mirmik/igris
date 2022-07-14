@@ -1,4 +1,6 @@
 {
-    "cmake.configureOnOpen": true,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "files.associations": {
+        "cstddef": "cpp"
+    }
 }

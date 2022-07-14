@@ -8,8 +8,8 @@
 #ifndef UTIL_BITMAP_H_
 #define UTIL_BITMAP_H_
 
+#include <cstring>  /* memset */
 #include <limits.h> /* LONG_BIT */
-#include <cstring> /* memset */
 
 #ifndef LONG_BIT
 #define LONG_BIT (sizeof(long) * 8)
@@ -55,6 +55,7 @@ static inline void bitmap_clear_all(unsigned long *bitmap, unsigned int nbits)
 
 extern unsigned int bitmap_find_bit(const unsigned long *, unsigned int nbits,
                                     unsigned int start);
+                                    
 extern unsigned int bitmap_find_zero_bit(const unsigned long *,
                                          unsigned int nbits,
                                          unsigned int start);

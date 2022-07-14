@@ -8,3 +8,5 @@ BreakBeforeBraces: Allman
 FixNamespaceComments: false
 AccessModifierOffset: -4
 AllowShortFunctionsOnASingleLine: Empty
+BinPackArguments: false
+BinPackParameters: false
