@@ -71,13 +71,13 @@ namespace igris
             run_list[sch.priority].move_back(sch);
         }
 
-        void stop(schedee &sch)
+        static void stop(schedee &sch)
         {
             igris::syslock_guard lock;
             schedee_list_t::unlink(sch);
         }
 
-        void kill(schedee &sch)
+        void final(schedee &sch)
         {
             igris::syslock_guard lock;
             final_list.move_back(sch);
