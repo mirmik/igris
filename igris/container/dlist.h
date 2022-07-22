@@ -17,7 +17,10 @@ namespace igris
 
         // SUBCLASSES:
         class iterator : public std::iterator<std::bidirectional_iterator_tag,
-                                              type, ptrdiff_t, type *, type &>
+                                              type,
+                                              ptrdiff_t,
+                                              type *,
+                                              type &>
         {
         public:
             using value_type = type;
@@ -39,7 +42,7 @@ namespace igris
                 current = current->next;
                 return i;
             }
-            iterator& operator++()
+            iterator &operator++()
             {
                 current = current->next;
                 return *this;
@@ -50,21 +53,36 @@ namespace igris
                 current = current->prev;
                 return i;
             }
-            iterator& operator--()
+            iterator &operator--()
             {
                 current = current->prev;
                 return *this;
             }
-            bool operator!=(const iterator &b) const { return current != b.current; }
-            bool operator==(const iterator &b) const { return current == b.current; }
+            bool operator!=(const iterator &b) const
+            {
+                return current != b.current;
+            }
+            bool operator==(const iterator &b) const
+            {
+                return current == b.current;
+            }
 
-            type &operator*() { return *member_container(current, member); }
-            type *operator->() { return member_container(current, member); }
+            type &operator*()
+            {
+                return *member_container(current, member);
+            }
+            type *operator->()
+            {
+                return member_container(current, member);
+            }
         };
 
         class reverse_iterator
-            : public std::iterator<std::bidirectional_iterator_tag, type,
-                                   ptrdiff_t, type *, type &>
+            : public std::iterator<std::bidirectional_iterator_tag,
+                                   type,
+                                   ptrdiff_t,
+                                   type *,
+                                   type &>
         {
         private:
             dlist_head *current = nullptr;
@@ -78,7 +96,7 @@ namespace igris
                 current = current->prev;
                 return i;
             }
-            reverse_iterator& operator++()
+            reverse_iterator &operator++()
             {
                 current = current->prev;
                 return *this;
@@ -89,36 +107,70 @@ namespace igris
                 current = current->next;
                 return i;
             }
-            reverse_iterator& operator--()
+            reverse_iterator &operator--()
             {
                 current = current->next;
                 return *this;
             }
-            bool operator!=(const reverse_iterator &b) const 
+            bool operator!=(const reverse_iterator &b) const
             {
                 return current != b.current;
             }
-            bool operator==(const reverse_iterator &b) const 
+            bool operator==(const reverse_iterator &b) const
             {
                 return current == b.current;
             }
 
-            type &operator*() { return *member_container(current, member); }
-            type *operator->() { return member_container(current, member); }
+            type &operator*()
+            {
+                return *member_container(current, member);
+            }
+            type *operator->()
+            {
+                return member_container(current, member);
+            }
         };
 
         // METHODS:
-        dlist() { dlist_init(&list); }
-        ~dlist() { dlist_del(&list); }
+        dlist()
+        {
+            dlist_init(&list);
+        }
+        ~dlist()
+        {
+            dlist_del(&list);
+        }
 
-        bool empty() const { return dlist_empty(&list); }
-        type &first() { return *member_container(list.next, member); }
+        bool empty() const
+        {
+            return dlist_empty(&list);
+        }
+        type &first()
+        {
+            return *member_container(list.next, member);
+        }
+        type &front()
+        {
+            return *member_container(list.next, member);
+        }
 
-        void add_first(type &obj) { dlist_add(&(obj.*member), &list); }
-        void add_last(type &obj) { dlist_add_tail(&(obj.*member), &list); }
+        void add_first(type &obj)
+        {
+            dlist_add(&(obj.*member), &list);
+        }
+        void add_last(type &obj)
+        {
+            dlist_add_tail(&(obj.*member), &list);
+        }
 
-        void move_front(type &obj) { dlist_move_next(&(obj.*member), &list); }
-        void move_back(type &obj) { dlist_move_prev(&(obj.*member), &list); }
+        void move_front(type &obj)
+        {
+            dlist_move_next(&(obj.*member), &list);
+        }
+        void move_back(type &obj)
+        {
+            dlist_move_prev(&(obj.*member), &list);
+        }
         void move_next(type &obj, type &head)
         {
             dlist_move_next(&(obj.*member), &(head.*member));
@@ -137,13 +189,32 @@ namespace igris
             dlist_move_prev(&(obj.*member), head.current);
         }
 
-        void pop(type &obj) { dlist_del(&(obj.*member)); }
-        void pop_front() { dlist_del(&((*begin()).*member)); }
-        void pop_back() { dlist_del(&((*rbegin()).*member)); }
+        void pop(type &obj)
+        {
+            dlist_del(&(obj.*member));
+        }
+        void pop_front()
+        {
+            dlist_del(&((*begin()).*member));
+        }
+        void pop_back()
+        {
+            dlist_del(&((*rbegin()).*member));
+        }
 
-        static void unbind(type &obj) { dlist_del(&(obj.*member)); }
+        static void unbind(type &obj)
+        {
+            dlist_del(&(obj.*member));
+        }
+        static void unlink(type &obj)
+        {
+            dlist_del(&(obj.*member));
+        }
 
-        void del_init(type &obj) { dlist_del_init(&(obj.*member)); }
+        void del_init(type &obj)
+        {
+            dlist_del_init(&(obj.*member));
+        }
 
         void pop_if_linked(type &obj)
         {
@@ -152,7 +223,10 @@ namespace igris
             dlist_del(&(obj.*member));
         };
 
-        void round_left() { move_back(*begin()); }
+        void round_left()
+        {
+            move_back(*begin());
+        }
 
         int size() const
         {
@@ -164,14 +238,32 @@ namespace igris
             return i;
         }
 
-        iterator begin() { return iterator(list.next); }
-        iterator end() { return iterator(&list); }
+        iterator begin()
+        {
+            return iterator(list.next);
+        }
+        iterator end()
+        {
+            return iterator(&list);
+        }
 
-        iterator begin() const { return iterator((dlist_head *)list.next); }
-        iterator end() const { return iterator((dlist_head *)&list); }
+        iterator begin() const
+        {
+            return iterator((dlist_head *)list.next);
+        }
+        iterator end() const
+        {
+            return iterator((dlist_head *)&list);
+        }
 
-        reverse_iterator rbegin() { return reverse_iterator(list.prev); }
-        reverse_iterator rend() { return reverse_iterator(&list); }
+        reverse_iterator rbegin()
+        {
+            return reverse_iterator(list.prev);
+        }
+        reverse_iterator rend()
+        {
+            return reverse_iterator(&list);
+        }
     };
 }
 

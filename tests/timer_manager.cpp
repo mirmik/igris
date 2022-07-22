@@ -5,7 +5,7 @@ igris::timer<int> * timptr;
 static int aaa = 0;
 static int bbb = 0;
 
-static void inc_a(int a) 
+static void inc_a(int a, igris::timer_head* tim) 
 {
 	aaa += a;
 }
@@ -22,8 +22,8 @@ TEST_CASE("TimerManager")
 {
 	auto current_time = igris::millis(); 
 
-	igris::timer_manager<igris::timer_spec<int64_t>> manager(&igris::millis);
-	igris::timer<int> tim0(igris::make_delegate(inc_a), 12);
+	igris::timer_manager manager;
+	igris::timer<int, igris::timer_head*> tim0(igris::make_delegate(inc_a), 12, &tim0);
 	igris::timer<int> tim1(igris::make_delegate(inc_b), 14);
 	timptr = &tim1;
 

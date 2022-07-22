@@ -12,8 +12,9 @@
 
 namespace igris
 {
-    template <class Time_t, class Difftime_t = decltype(std::declval<Time_t>() -
-                                                        std::declval<Time_t>())>
+    template <class Time_t,
+              class Difftime_t =
+                  decltype(std::declval<Time_t>() - std::declval<Time_t>())>
     class timer_spec
     {
     public:
@@ -21,96 +22,99 @@ namespace igris
         using difftime_t = Difftime_t;
     };
 
-    template <typename TimeSpec> class timer_manager;
-
-    template <typename TimeSpec> class timer_head
+    template <typename TimeSpec> class timer_manager_basic;
+    template <typename TimeSpec = timer_spec<int64_t>> class timer_head_basic
     {
         using time_t = typename TimeSpec::time_t;
         using difftime_t = typename TimeSpec::difftime_t;
 
-    public:
-        time_t start=0;
-        difftime_t interval=0;
-
-        time_t finish() { return start + interval; }
-        bool check(time_t curtime) { return curtime - start >= interval; }
-        void set_start(time_t t) { start = t; }
-        void set_interval(difftime_t t) { interval = t; }
-        void shift() { start += interval; }
-        virtual ~timer_head() = default;
-    };
-
-    template <typename TimeSpec>
-    class managed_timer_base : public timer_head<TimeSpec>
-    {
-    public:
+        friend class timer_manager_basic<TimeSpec>;
         dlist_head lnk = DLIST_HEAD_INIT(lnk);
-        timer_manager<TimeSpec> *manager = nullptr;
+        time_t _start = 0;
+        difftime_t _interval = 0;
 
-        bool is_planned() { return lnk.next != &lnk && &lnk != lnk.prev; }
-        void unplan() { dlist_del_init(&lnk); }
-
+    public:
+        bool is_planned()
+        {
+            return lnk.next != &lnk && &lnk != lnk.prev;
+        }
+        void unplan()
+        {
+            dlist_del_init(&lnk);
+        }
         virtual void execute() = 0;
-        virtual ~managed_timer_base() = default;
+        virtual ~timer_head_basic() = default;
+
+        time_t finish() const
+        {
+            return _start + _interval;
+        }
+        bool check(time_t curtime)
+        {
+            return curtime - _start >= _interval;
+        }
+        void set_start(time_t t)
+        {
+            _start = t;
+        }
+        void set_interval(difftime_t t)
+        {
+            _interval = t;
+        }
+        void shift()
+        {
+            _start += _interval;
+        }
     };
 
     template <typename TimeSpec, typename... Args>
-    class timer_delegate : public managed_timer_base<TimeSpec>
+    class timer_basic : public timer_head_basic<TimeSpec>
     {
         igris::delegate<void, Args...> dlg;
         std::tuple<Args...> args;
 
     public:
-        timer_delegate(igris::delegate<void, Args...> dlg, Args &&... args)
+        timer_basic(igris::delegate<void, Args...> dlg, Args &&... args)
             : dlg(dlg), args(std::forward<Args>(args)...)
         {
         }
 
-        void execute() override { std::apply(dlg, args); }
-    };
-
-    template <typename... Args>
-    class timer : public timer_delegate<timer_spec<int64_t>, Args...>
-    {
-        using parent = timer_delegate<timer_spec<int64_t>, Args...>;
-
-    public:
-        timer(igris::delegate<void, Args...> dlg, Args &&... args)
-            : parent(dlg, std::forward<Args>(args)...)
+        void execute() override
         {
+            std::apply(dlg, args);
         }
     };
 
-    template <typename TimeSpec> class timer_manager
+    template <typename TimeSpec> class timer_manager_basic
     {
         using time_t = typename TimeSpec::time_t;
         using difftime_t = typename TimeSpec::difftime_t;
-        using timer = managed_timer_base<TimeSpec>;
 
-        igris::dlist<timer, &timer::lnk> timer_list = {};
-        igris::delegate<time_t> gettime = {};
+        igris::dlist<timer_head_basic<TimeSpec>,
+                     &timer_head_basic<TimeSpec>::lnk>
+            timer_list = {};
 
     public:
-        timer_manager(igris::delegate<time_t> gettime) : gettime(gettime){};
+        timer_manager_basic() = default;
 
-        void plan(timer &tim)
+        void plan(timer_head_basic<TimeSpec> &tim)
         {
-            auto final = tim.finish();
+            auto finish = tim.finish();
 
             system_lock();
             tim.unplan();
 
-            auto it = std::find_if(timer_list.begin(), timer_list.end(),
-                                   [final](auto &tim) {
-                                       auto it_final = tim.start + tim.interval;
-                                       return final - it_final < 0;
-                                   });
+            auto it = std::find_if(
+                timer_list.begin(), timer_list.end(), [&](const auto &tim) {
+                    return finish < tim.finish();
+                });
 
             timer_list.move_prev(tim, it);
             system_unlock();
         }
 
-        void plan(timer &tim, time_t start, difftime_t interval)
+        void
+        plan(timer_head_basic<TimeSpec> &tim, time_t start, difftime_t interval)
         {
             tim.set_start(start);
             tim.set_interval(interval);
@@ -123,14 +127,14 @@ namespace igris
 
             while (!timer_list.empty())
             {
-                timer &tim = timer_list.first();
+                auto &tim = timer_list.first();
                 system_unlock();
 
                 if (tim.check(curtime))
                 {
                     tim.execute();
                     auto linked = tim.is_planned();
-                    if (linked) 
+                    if (linked)
                     {
                         tim.unplan();
                         tim.shift();
@@ -146,13 +150,23 @@ namespace igris
             system_unlock();
         }
 
-        bool empty() const { return timer_list.empty(); }
+        bool empty() const
+        {
+            return timer_list.empty();
+        }
 
         difftime_t minimal_interval(time_t curtime)
         {
             return timer_list.first().finish() - curtime;
         }
     };
+
+    template <typename... Args>
+    using timer = timer_basic<timer_spec<int64_t>, Args...>;
+
+    using timer_head = timer_head_basic<timer_spec<int64_t>>;
+
+    using timer_manager = timer_manager_basic<timer_spec<int64_t>>;
 }
 
 #endif
