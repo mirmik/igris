@@ -14,32 +14,32 @@
 #define CTROBJ_KTIMER_SCHEDEE 3
 #define CTROBJ_KTIMER_DELEGATE 4
 
-struct ctrobj
+class ctrobj
 {
-    struct dlist_head lnk;
-    void *future;
-    uint8_t type;
-};
+public:
+    struct dlist_head lnk = DLIST_HEAD_INIT(lnk);
+    void *future = nullptr;
+    uint8_t type = 0;
 
-#define CTROBJ_DECLARE(name, type)                                             \
-    {                                                                          \
-        DLIST_HEAD_INIT(name.lnk), NULL, type                                  \
+public:
+    ctrobj() = default;
+    ctrobj(uint8_t type) : type(type) {}
+
+    void init(uint8_t type)
+    {
+        this->type = type;
+        dlist_init(&lnk);
     }
 
-__BEGIN_DECLS
+    void deinit()
+    {
+        dlist_del(&lnk);
+    }
 
-static inline void ctrobj_init(struct ctrobj *obj, uint8_t type)
-{
-    obj->type = type;
-    obj->future = NULL;
-    dlist_init(&obj->lnk);
-}
-
-static inline void ctrobj_deinit(struct ctrobj *obj)
-{
-    dlist_del_init(&obj->lnk);
-}
-
-__END_DECLS
+    void *get_future()
+    {
+        return future;
+    }
+};
 
 #endif
