@@ -3,11 +3,15 @@
 #include <sstream>
 #include <string>
 
-namespace igris {
-    namespace json {
+namespace igris
+{
+    namespace json
+    {
         template <template <class Allocator> class TAlloc = std::allocator>
-        void pretty_print_to(const trent_basic<TAlloc> &tr, std::ostream &os,
-                             int tab = 0)
+        void print_to(const trent_basic<TAlloc> &tr,
+                      std::ostream &os,
+                      bool pretty,
+                      int tab)
         {
             bool sep = false;
             bool havedict;
@@ -46,9 +50,14 @@ namespace igris {
                     for (auto &v : tr.unsafe_list_const())
                     {
                         if (sep)
-                            os << ", ";
+                        {
+                            if (pretty)
+                                os << ", ";
+                            else
+                                os.put(',');
+                        }
 
-                        json::pretty_print_to(v, os, tab + 1);
+                        json::print_to(v, os, pretty, tab + 1);
                         sep = true;
                     }
                 else
@@ -58,19 +67,23 @@ namespace igris {
                         if (sep)
                             os.put(',');
 
-                        os << "\r\n";
+                        if (pretty)
+                            os << "\r\n";
 
                         for (int i = 0; i < tab + 1; i++)
                             os.put('\t');
 
-                        json::pretty_print_to(v, os, tab + 1);
+                        json::print_to(v, os, pretty, tab + 1);
                         sep = true;
                     }
 
-                    os << "\r\n";
+                    if (pretty)
+                    {
+                        os << "\r\n";
 
-                    for (int i = 0; i < tab; i++)
-                        os.put('\t');
+                        for (int i = 0; i < tab; i++)
+                            os.put('\t');
+                    }
                 }
 
                 os.put(']');
@@ -84,24 +97,32 @@ namespace igris {
                     if (sep)
                         os.put(',');
 
-                    os.put('\n');
+                    if (pretty)
+                    {
+                        os.put('\n');
 
-                    for (int i = 0; i < tab + 1; i++)
-                        os.put('\t');
+                        for (int i = 0; i < tab + 1; i++)
+                            os.put('\t');
+                    }
 
                     os.put('"');
                     os << p.first;
                     os.put('"');
-                    os.write(": ", 2);
+                    if (pretty)
+                        os.write(": ", 2);
+                    else
+                        os.put(':');
 
-                    json::pretty_print_to(p.second, os, tab + 1);
+                    json::print_to(p.second, os, pretty, tab + 1);
                     sep = true;
                 }
 
-                os.put('\n');
-
-                for (int i = 0; i < tab; i++)
-                    os.put('\t');
+                if (pretty)
+                {
+                    os.put('\n');
+                    for (int i = 0; i < tab; i++)
+                        os.put('\t');
+                }
 
                 os.put('}');
                 break;
@@ -111,13 +132,15 @@ namespace igris {
                 break;
             }
 
-            if (tab == 0)
-                os << "\r\n";
+            if (pretty)
+                if (tab == 0)
+                    os << "\r\n";
         }
- 
-        template <template <class Allocator> class TAlloc = std::allocator, class Output>
-        void pretty_print_to(const trent_basic<TAlloc> &tr, Output &os,
-                             int tab = 0)
+
+        /*template <template <class Allocator> class TAlloc = std::allocator,
+                  class Output>
+        void
+        pretty_print_to(const trent_basic<TAlloc> &tr, Output &os, int tab = 0)
         {
             bool sep = false;
             bool havedict;
@@ -223,13 +246,22 @@ namespace igris {
 
             if (tab == 0)
                 os.print("\r\n");
+        }*/
+
+        template <template <class Allocator> class TAlloc = std::allocator>
+        std::string to_string(const igris::trent_basic<TAlloc> &tr,
+                              bool pretty = false)
+        {
+            std::stringstream ss;
+            print_to(tr, ss, pretty, 0);
+            return ss.str();
         }
 
         template <template <class Allocator> class TAlloc = std::allocator>
-        std::string to_string(const igris::trent_basic<TAlloc> &tr)
+        std::string to_pretty_string(const igris::trent_basic<TAlloc> &tr)
         {
             std::stringstream ss;
-            pretty_print_to(tr, static_cast<std::ostream&>(ss));
+            print_to(tr, ss, true, 0);
             return ss.str();
         }
     }
