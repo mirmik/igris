@@ -25,13 +25,13 @@ __BEGIN_DECLS
 
 static inline void waiter_schedee_init(struct waiter *w)
 {
-    w->ctr.init(CTROBJ_WAITER_SCHEDEE);
+    ctrobj_init(&w->ctr, CTROBJ_WAITER_SCHEDEE);
 }
 
-static inline void
-waiter_delegate_init(struct waiter_delegate *w, void (*func)(void *), void *obj)
+static inline void waiter_delegate_init(struct waiter_delegate *w,
+                                        void (*func)(void *), void *obj)
 {
-    w->ctr.init(CTROBJ_WAITER_DELEGATE);
+    ctrobj_init(&w->ctr, CTROBJ_WAITER_DELEGATE);
     w->func = func;
     w->obj = obj;
 }
