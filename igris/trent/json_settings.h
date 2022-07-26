@@ -9,14 +9,11 @@
 #include <sstream>
 #include <string>
 
+#include <exception>
+#include <fcntl.h>
 #include <igris/trent/json.h>
 #include <igris/trent/json_print.h>
 #include <igris/trent/settings.h>
-
-#include <nos/io/file.h>
-
-#include <fcntl.h>
-#include <exception>
 
 namespace igris
 {
@@ -25,8 +22,14 @@ namespace igris
         std::string pathstr = {};
 
     public:
-        const std::string &path() { return pathstr; }
-        void path(const std::string &str) { pathstr = str; }
+        const std::string &path()
+        {
+            return pathstr;
+        }
+        void path(const std::string &str)
+        {
+            pathstr = str;
+        }
 
         json_settings() = default;
         json_settings(const std::string &str) : pathstr(str){};
@@ -48,11 +51,14 @@ namespace igris
         }
 
     public:
-        void sync() override { load(); }
+        void sync() override
+        {
+            load();
+        }
 
         void save() override
         {
-            nos::file file(pathstr.c_str(), O_WRONLY);
+            std::fstream file(pathstr, std::ios::out);
             json::pretty_print_to(tr, file);
         }
     };
@@ -64,8 +70,14 @@ namespace igris
         std::string pathstr = {};
 
     public:
-        const std::string &path() { return pathstr; }
-        void path(const std::string &str) { pathstr = str; }
+        const std::string &path()
+        {
+            return pathstr;
+        }
+        void path(const std::string &str)
+        {
+            pathstr = str;
+        }
 
         json_syncer() = default;
         json_syncer(const std::string &str) : pathstr(str) {}
@@ -97,14 +109,14 @@ namespace igris
 
         int save() override
         {
-            nos::file file(pathstr.c_str(), O_WRONLY);
+            std::fstream file(pathstr, std::ios::out);
             json::pretty_print_to(tr, file);
             return 0;
         }
 
-        igris::trent &node() override 
-        { 
-            return tr; 
+        igris::trent &node() override
+        {
+            return tr;
         }
     };
 }
