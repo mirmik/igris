@@ -264,5 +264,14 @@ namespace igris
             print_to(tr, ss, true, 0);
             return ss.str();
         }
+
+        template <template <class Allocator> class TAlloc = std::allocator>
+        void pretty_print_to(const trent_basic<TAlloc> &tr,
+                             std::ostream &os,
+                             int tab)
+        {
+            print_to(tr, os, true, tab);
+        }
+
     }
 }
