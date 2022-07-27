@@ -30,8 +30,10 @@ CCFLAGS = '-fPIC -Werror=all -Werror=extra -pedantic-errors -Wreturn-type -g -Wn
 CXXFLAGS = CCFLAGS
 LDFLAGS = '-g'
 
-licant.cxx_library("shared",
-	target="libigris.so",
+licant.cxx_static_and_shared(
+	name="libraries",
+	static_lib="libigris.a",
+	shared_lib="libigris.so",
 	toolchain=toolchain,
 	mdepends = modules + [
 		"igris.syslock", 
@@ -40,29 +42,16 @@ licant.cxx_library("shared",
 	cxx_flags = CXXFLAGS,
 	cc_flags = CCFLAGS,
 	ld_flags = LDFLAGS,
-	shared = True,
 	cxxstd = "c++17",
 	ccstd = "c11",
 	optimize = "-O3"
 )
 
-licant.cxx_library("static",
-	target="libigris.a",
-	toolchain=toolchain,
-	mdepends = modules,
-	cxx_flags = CXXFLAGS,
-	cc_flags = CCFLAGS,
-	cxxstd = "c++17",
-	ccstd = "c11",
-	optimize = "-O3",
-	shared = False
-)
-
 licant.install.install_library(
 	tgt="install",
 	uninstall="uninstall",
-	libtgt="libigris.so",
+	libtgt=["libigris.so", "libigris.a"],
 	hroot="igris",
 	headers="igris")
 
-licant.ex("shared")
+licant.ex("libraries")
