@@ -1,1 +1,1 @@
-./make clean
+./make.py clean
