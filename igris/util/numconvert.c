@@ -138,9 +138,8 @@ uint32_t igris_atou32(const char *buf, uint8_t base, char **end)
     char c = *buf;
     uint32_t res = 0;
 
-    while (igris_isxdigit(c))
+    while (igris_isxdigit(c) && (c = *buf++))
     {
-        c = *buf++;
         res = res * base + hex2half(c);
     }
 
@@ -155,9 +154,8 @@ uint64_t igris_atou64(const char *buf, uint8_t base, char **end)
     char c = *buf;
     uint64_t res = 0;
 
-    while (igris_isxdigit(c))
+    while (igris_isxdigit(c) && (c = *buf++))
     {
-        c = *buf++;
         res = res * base + hex2half(c);
     }
 

@@ -33,4 +33,7 @@ TEST_CASE("numconvert")
 	d = nanf("");
 	f64toa(d, buf, 10);
 	CHECK(strcmp(buf, "nan") == 0);
+
+	CHECK_EQ(10042, igris_atou32("10042", 10, nullptr));
+	CHECK_EQ(10042, igris_atoi32("10042", 10, nullptr));
 }

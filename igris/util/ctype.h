@@ -7,7 +7,7 @@ static inline int igris_isxdigit_helper(int c) {
 	return (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'); }
 
 static inline int igris_isblank(int c) { return c == ' ' || c == '\t'; }
-static inline int igris_isspace(int c) { return c == ' ' || c == '\t' || c == '\r' || c == '\n'; }
+static inline int igris_isspace(int c) { return c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\f' || c == '\v'; }
 static inline int igris_isdigit(int c) { return c >= '0' && c <= '9'; }
 static inline int igris_isxdigit(int c) { return igris_isdigit(c) || igris_isxdigit_helper(c); }
 static inline int igris_isupper(int c) { return c >= 'A' && c <= 'Z'; }
@@ -21,7 +21,9 @@ static inline int igris_isalnum(int c) {
 // TODO
 static inline int igris_isprint(int c) 
 { 
-	return igris_isalpha(c) || igris_isdigit(c); 
+	return igris_isalpha(c) || igris_isdigit(c) || 
+		(c >= ' ' && c <= '~') ||
+		(c >= '\x7f' && c <= '\xff');
 }
 
 static inline int igris_toupper(int c) { return igris_islower(c) ? c + ('A'-'a') : c; }
