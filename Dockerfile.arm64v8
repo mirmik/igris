@@ -1,4 +1,0 @@
-FROM arm64v8/ubuntu
-
-RUN uname -a
-CMD uname -a
