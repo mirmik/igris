@@ -7,6 +7,4 @@ WORKDIR /root/igris
 RUN ./make.py
 RUN sudo ./make.py install
 
-WORKDIR /root/igris/tests
-RUN ./make.py
-RUN ./runtests
+CMD ./runtests

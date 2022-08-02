@@ -47,6 +47,31 @@ licant.cxx_static_and_shared(
 	optimize = "-O3"
 )
 
+licant.cxx_application("runtests",
+	sources = [
+		"tests/*.cpp",
+		"tests/container/*.cpp",
+		"tests/shell/*.cpp",
+		"tests/series/*.cpp",
+		"tests/archive/*.cpp",
+	],
+
+	cxxstd="c++17",
+	ccstd="c11",
+	cxx_flags = "-g -fPIC -Werror=all -Wno-gnu-zero-variadic-macro-arguments -Weffc++",
+	cc_flags = "-g -fPIC -Werror=all -Wno-gnu-zero-variadic-macro-arguments",
+
+	include_paths = ["./tests"],
+	mdepends = [ 
+		"igris",
+		"igris.printf_impl",
+		"igris.series", 
+		("igris.dprint", "user")
+	],
+
+	libs = ["rt", "pthread"]
+)
+
 licant.install.install_library(
 	tgt="install",
 	uninstall="uninstall",
@@ -54,4 +79,6 @@ licant.install.install_library(
 	hroot="igris",
 	headers="igris")
 
-licant.ex("libraries")
+licant.fileset("all", targets=["runtests", "libigris.so", "libigris.a"])
+
+licant.ex("all")

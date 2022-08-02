@@ -73,6 +73,7 @@ bindings/arduino/src
 xxx
 
 build
+tests/build
 *.ninja
 .ninja_*
 

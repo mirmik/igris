@@ -22,8 +22,7 @@ static inline int igris_isalnum(int c) {
 static inline int igris_isprint(int c) 
 { 
 	return igris_isalpha(c) || igris_isdigit(c) || 
-		(c >= ' ' && c <= '~') ||
-		(c >= '\x7f' && c <= '\xff');
+		(c >= ' ' && c <= '~');
 }
 
 static inline int igris_toupper(int c) { return igris_islower(c) ? c + ('A'-'a') : c; }
