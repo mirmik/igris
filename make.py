@@ -55,20 +55,13 @@ licant.cxx_application("runtests",
 		"tests/series/*.cpp",
 		"tests/archive/*.cpp",
 	],
-
+	objects = [ "libigris.a" ],
 	cxxstd="c++17",
 	ccstd="c11",
 	cxx_flags = "-g -fPIC -Werror=all -Wno-gnu-zero-variadic-macro-arguments -Weffc++",
 	cc_flags = "-g -fPIC -Werror=all -Wno-gnu-zero-variadic-macro-arguments",
-
-	include_paths = ["./tests"],
-	mdepends = [ 
-		"igris",
-		"igris.printf_impl",
-		"igris.series", 
-		("igris.dprint", "user")
-	],
-
+	include_paths = ["./tests", "."],
+	mdepends = ["igris.printf_impl"],
 	libs = ["rt", "pthread"]
 )
 
