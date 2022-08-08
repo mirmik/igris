@@ -21,7 +21,7 @@ file(GLOB IGRIS_SOURCES
 	igris/event/*.cpp
 	igris/trent/*.cpp
 	igris/datastruct/*.cpp
-	igris/protocols/gstuff.c
+	igris/protocols/gstuff.cpp
 	igris/protocols/gstuff_v1/gstuff.c
 	igris/protocols/gstuff_v1/autorecv.c
 	igris/sync/syslock_mutex.cpp
@@ -31,7 +31,7 @@ file(GLOB IGRIS_SOURCES
 	igris/string/memmem.c
 	igris/shell/mshell.c
 	igris/time/time_posix.cpp
-	igris/osinter/wait.c
+	igris/osinter/wait.cpp
 	igris/osinter/wait-linux.cpp
 	igris/osinter/ktimer.c
 	igris/binreader.c
@@ -94,9 +94,9 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 		target_link_libraries(igris_test)
 	endif()
 
-	set_target_properties(igris PROPERTIES PUBLIC_HEADER 
-		"${IGRIS_HEADERS}"
-	)
+	#set_target_properties(igris PROPERTIES PUBLIC_HEADER 
+	#	"${IGRIS_HEADERS}"
+	#)
 	
 	if (WIN32)	
 		install (TARGETS ${PROJECT_NAME}
@@ -120,7 +120,7 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 		)
 	
 		install(DIRECTORY ${PROJECT_NAME}
-	    	    DESTINATION /usr/local/include
+	    	    DESTINATION /usr/local/include/
 	    	    PATTERN "*HIDE*" EXCLUDE
 	   	)
 	endif()
