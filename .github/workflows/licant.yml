@@ -38,4 +38,4 @@ jobs:
       run: python3 ./make.py
 
     - name: Test
-      run: runtests
+      run: ./runtests
