@@ -14,12 +14,12 @@
 #include <vector>
 
 #include <igris/buffer.h>
+#include <igris/container/flat_map.h>
 #include <igris/result.h>
+#include <igris/trent/trent_path.h>
 #include <igris/util/bug.h>
 #include <igris/util/ctrdtr.h>
 #include <igris/util/types_extension.h>
-
-#include <igris/trent/trent_path.h>
 
 using namespace igris::result_type;
 
@@ -60,7 +60,10 @@ namespace igris
                 str = std::string("trent:wrong_path: ") + path.to_string();
             }
 
-            const char *what() const noexcept override { return str.c_str(); }
+            const char *what() const noexcept override
+            {
+                return str.c_str();
+            }
         };
 
         class wrong_type : public std::exception
@@ -79,7 +82,10 @@ namespace igris
                       igris::typestr(rt);
             }
 
-            const char *what() const noexcept override { return str.c_str(); }
+            const char *what() const noexcept override
+            {
+                return str.c_str();
+            }
         };
 
         class wrong_index : public std::exception
@@ -96,14 +102,18 @@ namespace igris
                       igris::typestr(t);
             }
 
-            const char *what() const noexcept override { return str.c_str(); }
+            const char *what() const noexcept override
+            {
+                return str.c_str();
+            }
         };
 
         using numer_type = long double;
         using integer_type = int64_t;
         using list_type = std::vector<trent_basic, valloc_t>;
-        using dict_type = std::map<std::string, trent_basic,
-                                   std::less<std::string>, malloc_t>;
+        // using dict_type = std::map<std::string, trent_basic,
+        // std::less<std::string>, malloc_t>;
+        using dict_type = igris::flat_map<std::string, trent_basic>;
         using string_type = std::string;
 
     protected:
@@ -118,7 +128,10 @@ namespace igris
         };
 
     public:
-        const char *typestr() { return igris::typestr(m_type); }
+        const char *typestr()
+        {
+            return igris::typestr(m_type);
+        }
 
         ~trent_basic();
         trent_basic() : m_type(type::nil) {}
@@ -127,7 +140,10 @@ namespace igris
 
         void invalidate();
 
-        template <class T> trent_basic(const T &obj) { init(obj); }
+        template <class T> trent_basic(const T &obj)
+        {
+            init(obj);
+        }
 
     public:
         void init_sint(const int64_t &i)
@@ -150,26 +166,65 @@ namespace igris
         void init(type t);
         void init(const trent_basic &oth);
 
-        void init(const char *ptr) { init_str(ptr, strlen(ptr)); }
-        void init(const std::string &str) { init_str(str.data(), str.size()); }
+        void init(const char *ptr)
+        {
+            init_str(ptr, strlen(ptr));
+        }
+        void init(const std::string &str)
+        {
+            init_str(str.data(), str.size());
+        }
         void init(const igris::buffer &str)
         {
             init_str(str.data(), str.size());
         }
 
-        void init(const int8_t &i) { init_sint(i); }
-        void init(const int16_t &i) { init_sint(i); }
-        void init(const int32_t &i) { init_sint(i); }
-        void init(const int64_t &i) { init_sint(i); }
+        void init(const int8_t &i)
+        {
+            init_sint(i);
+        }
+        void init(const int16_t &i)
+        {
+            init_sint(i);
+        }
+        void init(const int32_t &i)
+        {
+            init_sint(i);
+        }
+        void init(const int64_t &i)
+        {
+            init_sint(i);
+        }
 
-        void init(const uint8_t &i) { init_uint(i); }
-        void init(const uint16_t &i) { init_uint(i); }
-        void init(const uint32_t &i) { init_uint(i); }
-        void init(const uint64_t &i) { init_uint(i); }
+        void init(const uint8_t &i)
+        {
+            init_uint(i);
+        }
+        void init(const uint16_t &i)
+        {
+            init_uint(i);
+        }
+        void init(const uint32_t &i)
+        {
+            init_uint(i);
+        }
+        void init(const uint64_t &i)
+        {
+            init_uint(i);
+        }
 
-        void init(const float &i) { init_flt(i); }
-        void init(const double &i) { init_flt(i); }
-        void init(const long double &i) { init_flt(i); }
+        void init(const float &i)
+        {
+            init_flt(i);
+        }
+        void init(const double &i)
+        {
+            init_flt(i);
+        }
+        void init(const long double &i)
+        {
+            init_flt(i);
+        }
 
         void init(const bool &i)
         {
@@ -560,7 +615,7 @@ namespace igris
         }
         numer_type as_numer_except() const
         {
-                if (is_bool())
+            if (is_bool())
                 return (int)m_bool;
             if (!is_numer())
                 throw std::runtime_error("is't numer");
@@ -575,7 +630,10 @@ namespace igris
             return m_num;
         }
 
-        int64_t as_integer() const { return as_numer(); }
+        int64_t as_integer() const
+        {
+            return as_numer();
+        }
         int64_t as_integer_default(int64_t def) const
         {
             return as_numer_default(def);
@@ -595,7 +653,10 @@ namespace igris
             return m_num;
         }
 
-        bool as_bool() const { return m_bool; }
+        bool as_bool() const
+        {
+            return m_bool;
+        }
         bool as_bool_default(bool def) const
         {
             if (!is_bool())
@@ -620,28 +681,76 @@ namespace igris
         const igris::buffer as_buffer() const;
 
         // integer_type& unsafe_integer_const() { return m_int; }
-        numer_type &unsafe_numer_const() { return m_num; }
-        string_type &unsafe_string_const() { return m_str; }
-        list_type &unsafe_list_const() { return m_arr; }
-        dict_type &unsafe_dict_const() { return m_dct; }
+        numer_type &unsafe_numer_const()
+        {
+            return m_num;
+        }
+        string_type &unsafe_string_const()
+        {
+            return m_str;
+        }
+        list_type &unsafe_list_const()
+        {
+            return m_arr;
+        }
+        dict_type &unsafe_dict_const()
+        {
+            return m_dct;
+        }
 
         //          const integer_type& unsafe_integer_const() const { return
         // m_int;
         //}
-        const numer_type &unsafe_numer_const() const { return m_num; }
-        const string_type &unsafe_string_const() const { return m_str; }
-        const list_type &unsafe_list_const() const { return m_arr; }
-        const dict_type &unsafe_dict_const() const { return m_dct; }
-        const bool &unsafe_bool_const() const { return m_bool; }
+        const numer_type &unsafe_numer_const() const
+        {
+            return m_num;
+        }
+        const string_type &unsafe_string_const() const
+        {
+            return m_str;
+        }
+        const list_type &unsafe_list_const() const
+        {
+            return m_arr;
+        }
+        const dict_type &unsafe_dict_const() const
+        {
+            return m_dct;
+        }
+        const bool &unsafe_bool_const() const
+        {
+            return m_bool;
+        }
 
-        trent_basic::type get_type() const { return m_type; }
+        trent_basic::type get_type() const
+        {
+            return m_type;
+        }
 
-        bool is_nil() const { return m_type == type::nil; }
-        bool is_bool() const { return m_type == type::boolean; }
-        bool is_numer() const { return m_type == type::numer; }
-        bool is_list() const { return m_type == type::list; }
-        bool is_dict() const { return m_type == type::dict; }
-        bool is_string() const { return m_type == type::string; }
+        bool is_nil() const
+        {
+            return m_type == type::nil;
+        }
+        bool is_bool() const
+        {
+            return m_type == type::boolean;
+        }
+        bool is_numer() const
+        {
+            return m_type == type::numer;
+        }
+        bool is_list() const
+        {
+            return m_type == type::list;
+        }
+        bool is_dict() const
+        {
+            return m_type == type::dict;
+        }
+        bool is_string() const
+        {
+            return m_type == type::string;
+        }
 
         template <class O> ssize_t print_to(O &os) const;
 
