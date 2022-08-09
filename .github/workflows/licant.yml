@@ -29,6 +29,7 @@ jobs:
 
     - name: Setup dependencies
       run: |
+        echo {globals()}
         sudo apt-get update && sudo apt-get install -y g++-11 clang-12
         sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/${{matrix.compiler.CXX}} 100
         sudo update-alternatives --install /usr/bin/cc  cc  /usr/bin/${{matrix.compiler.CC}} 100
