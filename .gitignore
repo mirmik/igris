@@ -72,6 +72,7 @@ doxygen/latex
 bindings/arduino/src 
 xxx
 
+runtests
 build
 tests/build
 *.ninja
