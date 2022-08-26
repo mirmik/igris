@@ -17,14 +17,12 @@ MODULES = [
     "igris.bug",
     "igris.dprint",
     "igris.systime",
-    "igris.trent",
     "igris.semaphore",
     "igris.syslock",
     "igris.ctrobj",
     "igris.series",
     "igris.protocols.gstuff",
-    "igris.crypt.aes",
-    #	"igris.os_extension"
+    "igris.crypt.aes"
 ]
 
 if sys.platform == "linux":
@@ -99,7 +97,8 @@ licant.module("igris.dprint", "stub", srcdir="igris/dprint",
 #################################################################
 ########################BUG######################################
 
-licant.module("igris.bug", impl="abort", sources=["igris/util/bug_abort.c"], default=True)
+licant.module("igris.bug", impl="abort", sources=[
+              "igris/util/bug_abort.c"], default=True)
 
 #################################################################
 ########################PROTOCOLS################################
@@ -182,10 +181,6 @@ licant.module("igris.ctrobj", "linux",
               default=True
               )
 
-licant.module("igris.trent",
-              sources=["igris/trent/trent.cpp", "igris/trent/json.cpp"]
-              )
-
 #################################################################
 licant.module("igris.os_extension", "unix",
               sources=[
@@ -207,7 +202,8 @@ licant.module("igris.crypt.aes",
               sources=["igris/crypt/aes.c"])
 
 licant.module("igris.systime", "jiffies",
-              sources=["igris/time/jiffies-systime.cpp", "igris/time/systime.cpp"]
+              sources=["igris/time/jiffies-systime.cpp",
+                       "igris/time/systime.cpp"]
               )
 
 licant.module("igris.systime", "posix",
