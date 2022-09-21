@@ -6,9 +6,8 @@
 #define IGRIS_BUFFER_H_
 
 #include <cstdint>
-#include <stdlib.h>
+#include <cstdlib>
 #include <cstring>
-
 #include <igris/util/__include_string_view.h>
 #include <string>
 
@@ -21,18 +20,39 @@ namespace igris
         size_t sz;
 
     public:
-        const char *data() const { return buf; }
-        char *data() { return buf; }
+        const char *data() const
+        {
+            return buf;
+        }
+        char *data()
+        {
+            return buf;
+        }
 
-        const uint8_t *bytes() const { return (const uint8_t *)buf; }
-        uint8_t *bytes() { return (uint8_t *)buf; }
+        const uint8_t *bytes() const
+        {
+            return (const uint8_t *)buf;
+        }
+        uint8_t *bytes()
+        {
+            return (uint8_t *)buf;
+        }
 
-        size_t size() const { return sz; }
+        size_t size() const
+        {
+            return sz;
+        }
 
-        void data(char *buf) { this->buf = buf; }
-        void size(size_t sz) { this->sz = sz; }
+        void data(char *buf)
+        {
+            this->buf = buf;
+        }
+        void size(size_t sz)
+        {
+            this->sz = sz;
+        }
 
-        buffer& operator=(const buffer& oth) 
+        buffer &operator=(const buffer &oth)
         {
             buf = oth.buf;
             sz = oth.sz;
@@ -61,7 +81,10 @@ namespace igris
         }
 
 #if IGRIS_HAS_STRING
-        explicit operator std::string() { return std::string(buf, sz); }
+        explicit operator std::string()
+        {
+            return std::string(buf, sz);
+        }
 #endif
 
         // methods:
@@ -79,32 +102,65 @@ namespace igris
                     0);
         }
 
-        bool operator==(const char *str) { return strncmp(buf, str, sz) == 0; }
+        bool operator==(const char *str)
+        {
+            return strncmp(buf, str, sz) == 0;
+        }
 
-        bool operator!=(const char *str) { return strncmp(buf, str, sz) != 0; }
+        bool operator!=(const char *str)
+        {
+            return strncmp(buf, str, sz) != 0;
+        }
 
-        char &operator[](size_t num) { return *(buf + num); }
+        char &operator[](size_t num)
+        {
+            return *(buf + num);
+        }
 
-        char operator[](size_t num) const { return *(buf + num); }
+        char operator[](size_t num) const
+        {
+            return *(buf + num);
+        }
 
-        char *operator*() { return buf; }
+        char *operator*()
+        {
+            return buf;
+        }
 
-        size_t operator+() { return sz; }
+        size_t operator+()
+        {
+            return sz;
+        }
 
-        char *begin() { return buf; }
+        char *begin()
+        {
+            return buf;
+        }
 
-        const char *end() { return buf + sz; }
+        const char *end()
+        {
+            return buf + sz;
+        }
 
-        bool empty() { return buf == nullptr; }
+        bool empty()
+        {
+            return buf == nullptr;
+        }
 
-        buffer slice(size_t idx, size_t _sz) { return buffer(buf + idx, _sz); }
+        buffer slice(size_t idx, size_t _sz)
+        {
+            return buffer(buf + idx, _sz);
+        }
 
         template <typename T> static igris::buffer on_object(T &obj)
         {
             return buffer((char *)&obj, sizeof(obj));
         }
 
-        std::string to_string() { return {data(), size()}; }
+        std::string to_string()
+        {
+            return {data(), size()};
+        }
 
         template <class Output> size_t print_to(Output &out) const
         {

@@ -3,6 +3,7 @@
 
 #include <ios>
 #include <iosfwd>
+#include <istream>
 #include <ostream>
 #include <string>
 #include <utility>

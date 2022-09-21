@@ -1,11 +1,12 @@
 #ifndef IGRIS_CONTAINER_STATIC_VECTOR_H
 #define IGRIS_CONTAINER_STATIC_VECTOR_H
 
+#include <algorithm>
+#include <cstring>
+#include <initializer_list>
 #include <new>
 #include <type_traits>
-#include <cstring>
 #include <utility>
-#include <algorithm>
 
 namespace igris
 {
@@ -24,12 +25,12 @@ namespace igris
         std::size_t m_size = 0;
 
     public:
-        static_vector() 
+        static_vector()
         {
             memset(_data, 0, sizeof(_data));
         }
 
-        static_vector(const std::initializer_list<T>& lst) 
+        static_vector(const std::initializer_list<T> &lst)
         {
             m_size = lst.size();
             std::copy(lst.begin(), lst.end(), begin());
@@ -44,12 +45,12 @@ namespace igris
             ++m_size;
         }
 
-        void push_back(const T& obj) 
+        void push_back(const T &obj)
         {
             if (m_size >= N)
                 return;
             new (&_data[m_size]) T(obj);
-            ++m_size;   
+            ++m_size;
         }
 
         T &operator[](std::size_t pos)
@@ -62,18 +63,24 @@ namespace igris
             return *reinterpret_cast<const T *>(&_data[pos]);
         }
 
-        T* data() 
+        T *data()
         {
             return reinterpret_cast<T *>(&_data[0]);
         }
 
-        const T* data() const 
+        const T *data() const
         {
             return reinterpret_cast<const T *>(&_data[0]);
         }
 
-        std::size_t room() const { return N - m_size; }
-        std::size_t size() const { return m_size; }
+        std::size_t room() const
+        {
+            return N - m_size;
+        }
+        std::size_t size() const
+        {
+            return m_size;
+        }
 
         // Delete objects from aligned storage
         ~static_vector()
@@ -84,40 +91,60 @@ namespace igris
             }
         }
 
-        iterator begin() 
-        { 
-            return reinterpret_cast<T *>(&_data[0]); 
+        iterator begin()
+        {
+            return reinterpret_cast<T *>(&_data[0]);
         }
-        
-        const_iterator end() 
-        { 
-            return reinterpret_cast<T *>(&_data[m_size]); 
+
+        const_iterator end()
+        {
+            return reinterpret_cast<T *>(&_data[m_size]);
         }
 
         const_iterator begin() const
-        { 
-            return reinterpret_cast<const T *>(&_data[0]); 
-        }
-        
-        const_iterator end() const
-        { 
-            return reinterpret_cast<const T *>(&_data[m_size]); 
+        {
+            return reinterpret_cast<const T *>(&_data[0]);
         }
 
-        void resize(size_t newsize) 
+        const_iterator end() const
+        {
+            return reinterpret_cast<const T *>(&_data[m_size]);
+        }
+
+        T &back()
+        {
+            return *reinterpret_cast<T *>(&_data[m_size - 1]);
+        }
+
+        const T &back() const
+        {
+            return *reinterpret_cast<const T *>(&_data[m_size - 1]);
+        }
+
+        T &front()
+        {
+            return *reinterpret_cast<T *>(&_data[0]);
+        }
+
+        const T &front() const
+        {
+            return *reinterpret_cast<const T *>(&_data[0]);
+        }
+
+        void resize(size_t newsize)
         {
             if (newsize >= N)
                 newsize = N;
-         
-            for (size_t i = m_size; i < newsize; ++i) 
+
+            for (size_t i = m_size; i < newsize; ++i)
             {
                 new (&_data[i]) T{};
             }
-        
+
             m_size = newsize;
         }
 
-        void clear() 
+        void clear()
         {
             m_size = 0;
         }

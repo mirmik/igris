@@ -9,6 +9,7 @@
 #ifndef PTHREAD_H_
 #define PTHREAD_H_
 
+#if 0
 /*The following types shall be defined as described in <sys/types.h> :
  * ...
  */
@@ -19,36 +20,34 @@
  */
 #include <sched.h>
 
-
-#include <kernel/thread/thread_flags.h>
+#include <kernel/sched/sync/mutexattr.h>
+#include <kernel/task/thread_key_table.h>
 #include <kernel/thread/sync/cond.h>
 #include <kernel/thread/sync/mutex.h>
-#include <kernel/sched/sync/mutexattr.h>
 #include <kernel/thread/sync/rwlock.h>
-#include <kernel/task/thread_key_table.h>
+#include <kernel/thread/thread_flags.h>
 
-#define PTHREAD_MUTEX_INITIALIZER   MUTEX_INIT_STATIC
-#define PTHREAD_RMUTEX_INITIALIZER  RMUTEX_INIT_STATIC
+#define PTHREAD_MUTEX_INITIALIZER MUTEX_INIT_STATIC
+#define PTHREAD_RMUTEX_INITIALIZER RMUTEX_INIT_STATIC
 
-#define PTHREAD_MUTEX_NORMAL        MUTEX_NORMAL
-#define PTHREAD_MUTEX_ERRORCHECK    MUTEX_ERRORCHECK
-#define PTHREAD_MUTEX_RECURSIVE     MUTEX_RECURSIVE
-#define PTHREAD_MUTEX_DEFAULT       MUTEX_DEFAULT
+#define PTHREAD_MUTEX_NORMAL MUTEX_NORMAL
+#define PTHREAD_MUTEX_ERRORCHECK MUTEX_ERRORCHECK
+#define PTHREAD_MUTEX_RECURSIVE MUTEX_RECURSIVE
+#define PTHREAD_MUTEX_DEFAULT MUTEX_DEFAULT
 
-#define PTHREAD_PROCESS_SHARED      PROCESS_SHARED
-#define PTHREAD_PROCESS_PRIVATE     PROCESS_PRIVATE
+#define PTHREAD_PROCESS_SHARED PROCESS_SHARED
+#define PTHREAD_PROCESS_PRIVATE PROCESS_PRIVATE
 
-#define PTHREAD_SCOPE_PROCESS       THREAD_SCOPE_PROCESS
-#define PTHREAD_SCOPE_SYSTEM        THREAD_SCOPE_SYSTEM
+#define PTHREAD_SCOPE_PROCESS THREAD_SCOPE_PROCESS
+#define PTHREAD_SCOPE_SYSTEM THREAD_SCOPE_SYSTEM
 
 
 
 struct thread;
 typedef struct thread *pthread_t;
 
-
-#define PTHREAD_INHERIT_SCHED       THREAD_FLAG_PRIORITY_INHERIT
-#define PTHREAD_CREATE_DETACHED     THREAD_FLAG_DETACHED
+#define PTHREAD_INHERIT_SCHED THREAD_FLAG_PRIORITY_INHERIT
+#define PTHREAD_CREATE_DETACHED THREAD_FLAG_DETACHED
 
 
 
@@ -91,10 +90,10 @@ typedef pthread_mutex_t pthread_once_t;
 
 #define PTHREAD_ONCE_INIT PTHREAD_MUTEX_INITIALIZER
 
-#define PTHREAD_CANCEL_ENABLE       0x0
-#define PTHREAD_CANCEL_DISABLE      0x1
+#define PTHREAD_CANCEL_ENABLE 0x0
+#define PTHREAD_CANCEL_DISABLE 0x1
 
-#define PTHREAD_CANCEL_DEFERRED     0x0
+#define PTHREAD_CANCEL_DEFERRED 0x0
 #define PTHREAD_CANCEL_ASYNCHRONOUS 0x1
 
 
@@ -202,4 +201,5 @@ extern int   pthread_setschedprio(pthread_t, int);
 
 __END_DECLS
 
+#endif
 #endif /* PTHREAD_H_ */

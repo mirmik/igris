@@ -5,8 +5,8 @@
 
 namespace std
 {
-	template <class T, class Alloc = std::allocator<T>>
-	using vector = igris::vector<T, Alloc>;
+    template <class T, class Alloc = std::allocator<T>>
+    using vector = igris::vector<T, Alloc>;
 }
 
 #endif

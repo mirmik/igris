@@ -1,5 +1,5 @@
-#include "igris/protocols/gstuff.h"
-#include "igris/util/crc.h"
+#include <igris/protocols/gstuff.h>
+#include <igris/util/crc.h>
 #include <vector>
 
 int gstuffing(const char *data, size_t size, char *outdata)
@@ -198,8 +198,7 @@ std::vector<uint8_t> gstuffing_v(struct iovec *vec, size_t n)
     return ret;
 }
 
-
-std::vector<uint8_t> gstuffing(igris::buffer buf) 
+std::vector<uint8_t> gstuffing(igris::buffer buf)
 {
     std::vector<uint8_t> ret;
     ret.resize(buf.size() * 2 + 2);

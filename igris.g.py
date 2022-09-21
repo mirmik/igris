@@ -1,4 +1,5 @@
 import licant
+import sys
 
 licant.execute("igris/platform/host/host.g.py")
 
@@ -25,12 +26,6 @@ MODULES = [
     "igris.crypt.aes"
 ]
 
-if sys.platform == "linux":
-    MODULES.append(("igris.os_extension", "unix"))
-
-if sys.platform == "win32":
-    MODULES.append(("igris.os_extension", "windows"))
-
 licant.module("igris",
               sources=[
                   "igris/datastruct/stimer.c",
@@ -48,6 +43,7 @@ licant.module("igris.include", include_paths=["."])
 
 licant.execute("compat/libc/libc.g.py")
 licant.execute("compat/std/std.g.py")
+licant.execute("compat/stubarch/stubarch.g.py")
 licant.execute("compat/posix/posix.g.py")
 licant.execute("compat/newlib-stub/newlib-stub.g.py")
 licant.execute("compat/mem/lin_malloc.g.py")

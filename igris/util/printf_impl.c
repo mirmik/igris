@@ -71,8 +71,11 @@
 #define PRINT_F_PREC_DEFAULT 6 /* default precision for real numbers */
 
 static int print_s(void (*printchar_handler)(void *d, int c),
-                   void *printchar_data, const char *str, int width,
-                   int max_len, unsigned int ops)
+                   void *printchar_data,
+                   const char *str,
+                   int width,
+                   int max_len,
+                   unsigned int ops)
 {
     int pc, len, space_count;
 
@@ -103,8 +106,12 @@ static int print_s(void (*printchar_handler)(void *d, int c),
 }
 
 static int print_i(void (*printchar_handler)(void *d, int c),
-                   void *printchar_data, unsigned long long int u,
-                   int is_signed, int width, int min_len, unsigned int ops,
+                   void *printchar_data,
+                   unsigned long long int u,
+                   int is_signed,
+                   int width,
+                   int min_len,
+                   unsigned int ops,
                    int base)
 {
     char buff[PRINT_I_BUFF_SZ], *str, *end, *prefix;
@@ -192,8 +199,13 @@ static int print_i(void (*printchar_handler)(void *d, int c),
 #endif
 
 static int print_f(void (*printchar_handler)(void *d, int c),
-                   void *printchar_data, long double r, int width,
-                   int precision, unsigned int ops, int base, int with_exp,
+                   void *printchar_data,
+                   long double r,
+                   int width,
+                   int precision,
+                   unsigned int ops,
+                   int base,
+                   int with_exp,
                    int is_shortened)
 {
 
@@ -346,16 +358,23 @@ static int print_f(void (*printchar_handler)(void *d, int c),
 #else
 static int print_f(void (*printchar_handler)(struct printchar_handler_data *d,
                                              int c),
-                   struct printchar_handler_data *printchar_data, double r,
-                   int width, int precision, unsigned int ops, int base,
-                   int with_exp, int is_shortened)
+                   struct printchar_handler_data *printchar_data,
+                   double r,
+                   int width,
+                   int precision,
+                   unsigned int ops,
+                   int base,
+                   int with_exp,
+                   int is_shortened)
 {
     return print_s(printchar_handler, printchar_data, "%f", 0, 0, 0);
 }
 #endif
 
-int __printf(void (*printchar_handler)(void *d, int c), void *printchar_data,
-             const char *format, va_list args)
+int __printf(void (*printchar_handler)(void *d, int c),
+             void *printchar_data,
+             const char *format,
+             va_list args)
 {
     int pc, width, precision;
     unsigned int ops;
@@ -505,8 +524,14 @@ int __printf(void (*printchar_handler)(void *d, int c), void *printchar_data,
                                                         ? va_arg(args,
                                                                  ptrdiff_t)
                                                         : va_arg(args, int);
-            pc += print_i(printchar_handler, printchar_data, tmp.ulli, 1, width,
-                          precision, ops, 10);
+            pc += print_i(printchar_handler,
+                          printchar_data,
+                          tmp.ulli,
+                          1,
+                          width,
+                          precision,
+                          ops,
+                          10);
             break;
         case 'u':
         case 'o':
@@ -526,12 +551,18 @@ int __printf(void (*printchar_handler)(void *d, int c), void *printchar_data,
                                             : ops & OPS_LEN_SIZE
                                                   ? va_arg(args, size_t)
                                                   : ops & OPS_LEN_PTRDIFF
-                                                        ? va_arg(args,
-                                                                 ptrdiff_t)
+                                                        ? (unsigned long long)
+                                                              va_arg(args,
+                                                                     ptrdiff_t)
                                                         : va_arg(args,
                                                                  unsigned int);
-            pc += print_i(printchar_handler, printchar_data, tmp.ulli, 0, width,
-                          precision, ops,
+            pc += print_i(printchar_handler,
+                          printchar_data,
+                          tmp.ulli,
+                          0,
+                          width,
+                          precision,
+                          ops,
                           *format == 'u' ? 10 : (*format == 'o' ? 8 : 16));
             break;
         case 'f':
@@ -544,8 +575,13 @@ int __printf(void (*printchar_handler)(void *d, int c), void *printchar_data,
         case 'A':
             tmp.ld = ops & OPS_LEN_LONGFP ? va_arg(args, long double)
                                           : va_arg(args, double);
-            pc += print_f(printchar_handler, printchar_data, tmp.ld, width,
-                          precision, ops, tolower(*format) == 'a' ? 16 : 10,
+            pc += print_f(printchar_handler,
+                          printchar_data,
+                          tmp.ld,
+                          width,
+                          precision,
+                          ops,
+                          tolower(*format) == 'a' ? 16 : 10,
                           tolower(*format) == 'e' || tolower(*format) == 'a',
                           tolower(*format) == 'g');
             break;
@@ -553,21 +589,33 @@ int __printf(void (*printchar_handler)(void *d, int c), void *printchar_data,
             /* TODO handle (ops & OPS_LEN_LONG) for wint_t */
             tmp.ca[0] = (char)va_arg(args, int);
             tmp.ca[1] = '\0';
-            pc += print_s(printchar_handler, printchar_data, &tmp.ca[0], width,
-                          precision, ops);
+            pc += print_s(printchar_handler,
+                          printchar_data,
+                          &tmp.ca[0],
+                          width,
+                          precision,
+                          ops);
             break;
         case 's':
             /* TODO handle (ops & OPS_LEN_LONG) for wchar_t* */
             tmp.cp = va_arg(args, char *);
-            pc += print_s(printchar_handler, printchar_data,
-                          tmp.cp ? tmp.cp : PRINT_S_NULL_STR, width, precision,
+            pc += print_s(printchar_handler,
+                          printchar_data,
+                          tmp.cp ? tmp.cp : PRINT_S_NULL_STR,
+                          width,
+                          precision,
                           ops);
             break;
         case 'p':
             tmp.vp = va_arg(args, void *);
-            pc += print_i(printchar_handler, printchar_data, (size_t)tmp.vp, 0,
-                          width, sizeof tmp.vp * 2 + 2,
-                          ops | (OPS_FLAG_WITH_SPEC | OPS_FLAG_ZERO_PAD), 16);
+            pc += print_i(printchar_handler,
+                          printchar_data,
+                          (size_t)tmp.vp,
+                          0,
+                          width,
+                          sizeof tmp.vp * 2 + 2,
+                          ops | (OPS_FLAG_WITH_SPEC | OPS_FLAG_ZERO_PAD),
+                          16);
             break;
         case 'n':
             if (ops & OPS_LEN_MIN)

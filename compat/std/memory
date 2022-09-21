@@ -2,6 +2,7 @@
 #define GXX_STD_MEMORY_H
 
 #include <algorithm>
+#include <cstdlib>
 #include <move.h>
 #include <new>
 
@@ -10,6 +11,11 @@ namespace std
     template <typename T> class allocator
     {
     public:
+        using value_type = T;
+        using pointer = T *;
+        using const_pointer = const T *;
+        using reference = T &;
+
         T *allocate(size_t n)
         {
             return (T *)malloc(n * sizeof(T));
@@ -26,19 +32,6 @@ namespace std
 
 namespace std
 {
-    template <typename L> struct lock_guard
-    {
-        L &lock;
-        lock_guard(L &lock) : lock(lock)
-        {
-            lock.lock();
-        }
-        ~lock_guard()
-        {
-            lock.unlock();
-        }
-    };
-
     template <typename T> class unique_ptr
     {
         T *ptr = nullptr;
@@ -106,6 +99,23 @@ namespace std
     {
         return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
     }
+
+    // addresof
+
+    template <typename T> T *addressof(T &arg)
+    {
+        return reinterpret_cast<T *>(
+            &const_cast<char &>(reinterpret_cast<const volatile char &>(arg)));
+    }
+
+    template <class Alloc> struct allocator_traits
+    {
+    public:
+        using allocator_type = Alloc;
+        using value_type = typename Alloc::value_type;
+        using pointer = typename Alloc::pointer;
+        using const_pointer = typename Alloc::const_pointer;
+    };
 }
 
 #endif

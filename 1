@@ -1,0 +1,38 @@
+Traceback (most recent call last):
+  File "./make.py", line 118, in <module>
+    licant.ex("all")
+  File "/usr/local/lib/python3.8/dist-packages/licant-1.12.2-py3.8.egg/licant/cli.py", line 142, in cliexecute
+    __cliexecute(args, default=default, core=core)
+  File "/usr/local/lib/python3.8/dist-packages/licant-1.12.2-py3.8.egg/licant/cli.py", line 85, in __cliexecute
+    return execute_with_default_action(target, [])
+  File "/usr/local/lib/python3.8/dist-packages/licant-1.12.2-py3.8.egg/licant/cli.py", line 73, in execute_with_default_action
+    return target.invoke(target.default_action, args=args, critical=True)
+  File "/usr/local/lib/python3.8/dist-packages/licant-1.12.2-py3.8.egg/licant/core.py", line 387, in invoke
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/licant-1.12.2-py3.8.egg/licant/make.py", line 89, in makefile
+    return self.recurse_update()
+  File "/usr/local/lib/python3.8/dist-packages/licant-1.12.2-py3.8.egg/licant/core.py", line 467, in recurse_update
+    stree.reverse_recurse_invoke(
+  File "/usr/local/lib/python3.8/dist-packages/licant-1.12.2-py3.8.egg/licant/core.py", line 287, in reverse_recurse_invoke
+    return self.reverse_recurse_invoke_single(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/licant-1.12.2-py3.8.egg/licant/core.py", line 187, in reverse_recurse_invoke_single
+    ret = w.invoke(ops)
+  File "/usr/local/lib/python3.8/dist-packages/licant-1.12.2-py3.8.egg/licant/core.py", line 387, in invoke
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/licant-1.12.2-py3.8.egg/licant/core.py", line 460, in update_if_need
+    return self.invoke_function_or_method(self.update)
+  File "/usr/local/lib/python3.8/dist-packages/licant-1.12.2-py3.8.egg/licant/core.py", line 452, in invoke_function_or_method
+    return act()
+  File "/usr/local/lib/python3.8/dist-packages/licant-1.12.2-py3.8.egg/licant/make.py", line 166, in update
+    return self.build(self)
+  File "/usr/local/lib/python3.8/dist-packages/licant-1.12.2-py3.8.egg/licant/make.py", line 63, in __call__
+    return do_execute(target, self.rule, self.msgfield, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/licant-1.12.2-py3.8.egg/licant/make.py", line 44, in do_execute
+    ret = proc.wait()
+  File "/usr/lib/python3.8/subprocess.py", line 1083, in wait
+    return self._wait(timeout=timeout)
+  File "/usr/lib/python3.8/subprocess.py", line 1806, in _wait
+    (pid, sts) = self._try_wait(0)
+  File "/usr/lib/python3.8/subprocess.py", line 1764, in _try_wait
+    (pid, sts) = os.waitpid(self.pid, wait_flags)
+KeyboardInterrupt

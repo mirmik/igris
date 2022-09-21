@@ -1,6 +1,8 @@
 #ifndef IGRIS_STD_IOS_H
 #define IGRIS_STD_IOS_H
 
+#include <string>
+
 namespace std
 {
     class ios_base

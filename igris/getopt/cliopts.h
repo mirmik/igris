@@ -3,7 +3,6 @@
 
 #include <igris/result.h>
 #include <igris/util/ctrdtr.h>
-
 #include <string>
 #include <vector>
 
@@ -100,7 +99,10 @@ namespace igris
         {
             opts.emplace_back(l, s, std::string(def));
         }
-        void add_option(const char *l, char s) { opts.emplace_back(l, s); }
+        void add_option(const char *l, char s)
+        {
+            opts.emplace_back(l, s);
+        }
 
         result<opt *> get_opt(const std::string &name)
         {
@@ -184,8 +186,14 @@ namespace igris
             return r.value()->b;
         }
 
-        std::vector<std::string> get_args() { return args; }
-        const std::vector<std::string> &arguments() { return args; }
+        std::vector<std::string> get_args()
+        {
+            return args;
+        }
+        const std::vector<std::string> &arguments()
+        {
+            return args;
+        }
 
         enum class AutomState
         {

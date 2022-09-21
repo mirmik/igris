@@ -103,7 +103,7 @@ namespace std
                 return node != other.node;
             }
         };
-    };
+    } // namespace detail  
 
     template <class T, class Alloc = std::allocator<detail::list_node<T>>>
     class list

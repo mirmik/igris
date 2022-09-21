@@ -2,6 +2,7 @@
 #define IGRIS_SERIES_H
 
 #include <cassert>
+#include <iostream>
 #include <memory>
 #include <vector>
 
@@ -40,7 +41,10 @@ namespace igris
         }
 
         void set_elemsize(size_t size);
-        size_t elemsize() const { return _elemsize; }
+        size_t elemsize() const
+        {
+            return _elemsize;
+        }
         void reserve(int size);
         void add_block(int size);
         void pop_block();
@@ -52,17 +56,27 @@ namespace igris
         void pop_front();
 
         igris::series_field_annotator &annotator();
-        igris::series_field_annotation* find_annotation(const std::string &name);
-        const auto &annotations() { return _annotator.annotations(); }
+        igris::series_field_annotation *
+        find_annotation(const std::string &name);
+        const auto &annotations()
+        {
+            return _annotator.annotations();
+        }
 
-        void set_block_size_hint(int sz) { block_size_hint = sz; }
+        void set_block_size_hint(int sz)
+        {
+            block_size_hint = sz;
+        }
 
         series_iterator begin();
         series_iterator end();
 
         series_iterator get_iterator(int num);
 
-        template <class T> T *emplace() { return (T *)emplace(); }
+        template <class T> T *emplace()
+        {
+            return (T *)emplace();
+        }
 
         void *emplace();
         series_block *last_block();
@@ -71,26 +85,28 @@ namespace igris
         template <class T> T &last();
         series_iterator last_iterator();
 
-        int push_object(void* data, size_t size);
+        int push_object(void *data, size_t size);
         void push_csv_string_parse(const std::string &str);
-        void parse_csv_istream(std::istream& is);
-        void parse_csv_file(const std::string& file);
+        void parse_csv_istream(std::istream &is);
+        void parse_csv_file(const std::string &file);
 
         series_object_view object_view(void *ptr)
         {
             return series_object_view(ptr, _annotator.annotations());
         }
 
-        int count_of_blocks() { return dlist_size(&blocks); }
+        int count_of_blocks()
+        {
+            return dlist_size(&blocks);
+        }
 
         ~series();
 
         template <class T>
-        series_fiber<T> fiber(igris::series_field_annotation& annot);
+        series_fiber<T> fiber(igris::series_field_annotation &annot);
     };
 
-    template <class T> 
-    series make_series()
+    template <class T> series make_series()
     {
         return igris::series(sizeof(T));
     }
@@ -112,7 +128,8 @@ template <class T> T &igris::series::last()
 }
 
 template <class T>
-igris::series_fiber<T> igris::series::fiber(igris::series_field_annotation& annot) 
+igris::series_fiber<T>
+igris::series::fiber(igris::series_field_annotation &annot)
 {
     return igris::series_fiber<T>(*this, annot);
 }

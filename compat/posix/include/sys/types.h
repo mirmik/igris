@@ -16,16 +16,10 @@ __BEGIN_DECLS
 #include <asm/types.h>
 
 #include <defines/size_t.h>
-
-/** Note also that 'size_t' is a typedef required by the ISO C standard
- (it must be available if <stddef.h> is included). However, 'ssize_t'
- does not exist in the C standard -- the standard 'ptrdiff_t'
- typedef is nearly equivalent.*/
-typedef int ssize_t;
+#include <defines/ssize_t.h>
 
 /** Used for system times in clock ticks or CLOCKS_PER_SEC*/
 #include <defines/clock_t.h>
-
 
 /** Used for time in microseconds.*/
 typedef unsigned long useconds_t;
@@ -44,21 +38,22 @@ typedef int pid_t;
 
 typedef __u32 dev_t;
 
-static inline dev_t makedev(__u32 maj, __u32 min) {
-	return ((dev_t)(((maj & 0xFFFF) << 16) | (min & 0xFFFF)));
+static inline dev_t makedev(__u32 maj, __u32 min)
+{
+    return ((dev_t)(((maj & 0xFFFF) << 16) | (min & 0xFFFF)));
 }
 
-static inline unsigned int major(dev_t dev) {
-	return (unsigned int) ((dev >> 16) & 0xFFFF);
+static inline unsigned int major(dev_t dev)
+{
+    return (unsigned int)((dev >> 16) & 0xFFFF);
 }
 
-static inline unsigned int minor(dev_t dev) {
-	return (unsigned int) (dev & 0xFFFF);
+static inline unsigned int minor(dev_t dev)
+{
+    return (unsigned int)(dev & 0xFFFF);
 }
-
 
 #include <defines/clockid_t.h>
-
 
 typedef unsigned int ino_t;
 
@@ -71,7 +66,7 @@ typedef unsigned short gid_t;
 
 typedef unsigned int blkno_t;
 
-typedef long long off_t;  /*  Used for file sizes. */
+typedef long long off_t; /*  Used for file sizes. */
 
 typedef long long loff_t;
 

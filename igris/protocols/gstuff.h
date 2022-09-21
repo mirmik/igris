@@ -5,11 +5,11 @@
 #ifndef GSTUFF2_H
 #define GSTUFF2_H
 
+#include <cstdint>
+#include <igris/buffer.h>
 #include <igris/compiler.h>
 #include <igris/datastruct/sline.h>
 #include <igris/iovec.h>
-#include <igris/buffer.h>
-#include <stdint.h>
 #include <vector>
 
 #define GSTUFF_START ((char)0xA8)
@@ -46,8 +46,14 @@ public:
     void reset();
     int newchar(char c);
 
-    const char * cstr() { return sline_getline(&line); }
-    size_t size() { return sline_size(&line); }
+    const char *cstr()
+    {
+        return sline_getline(&line);
+    }
+    size_t size()
+    {
+        return sline_size(&line);
+    }
 };
 
 /**

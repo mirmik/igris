@@ -1,6 +1,7 @@
 #ifndef IGRIS_UTIL_AB_CONVERTER_H
 #define IGRIS_UTIL_AB_CONVERTER_H
 
+#include <initializer_list>
 #include <map>
 #include <string>
 
@@ -26,16 +27,28 @@ namespace igris
                 ba[b] = a;
             }
 
-            const B &b(const A &idx) const { return ab.at(idx); }
-            const A &a(const B &idx) const { return ba.at(idx); }
+            const B &b(const A &idx) const
+            {
+                return ab.at(idx);
+            }
+            const A &a(const B &idx) const
+            {
+                return ba.at(idx);
+            }
         };
 
         template <class A, class B>
         class ab_converter<A, B, false> : public ab_converter<A, B, true>
         {
         public:
-            const B &operator[](const A &idx) const { return this->ab.at(idx); }
-            const A &operator[](const B &idx) const { return this->ba.at(idx); }
+            const B &operator[](const A &idx) const
+            {
+                return this->ab.at(idx);
+            }
+            const A &operator[](const B &idx) const
+            {
+                return this->ba.at(idx);
+            }
         };
     }
 

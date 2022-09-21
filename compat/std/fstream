@@ -1,0 +1,26 @@
+#ifndef IGRIS_STD_FSTREAM_H
+#define IGRIS_STD_FSTREAM_H
+
+#include <istream>
+#include <ostream>
+
+namespace std
+{
+    class fstream : public istream, public ostream
+
+    {
+        int _dummy;
+
+    public:
+        fstream() {}
+        fstream(std::string) {}
+        fstream(std::string, int) {}
+
+        operator bool()
+        {
+            return true;
+        }
+    };
+}
+
+#endif

@@ -30,6 +30,7 @@ namespace std
     public:
         virtual int_type overflow(int_type) = 0;
         virtual int xsputn(const CharT *, int) = 0;
+        virtual ~basic_streambuf() {}
 
     public:
         int sputn(const CharT *s, int n)

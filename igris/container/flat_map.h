@@ -28,7 +28,7 @@ namespace igris
         using const_reference = const T &;
 
     private:
-        std::vector<std::pair<Key, T>> storage;
+        std::vector<std::pair<Key, T>> storage = {};
 
     public:
         flat_map() = default;
@@ -36,6 +36,18 @@ namespace igris
         flat_map(flat_map &&) = default;
         flat_map &operator=(const flat_map &) = default;
         flat_map &operator=(flat_map &&) = default;
+
+        flat_map(std::initializer_list<pair> init) : storage(init) {}
+
+        bool operator==(const flat_map &other) const
+        {
+            return storage == other.storage;
+        }
+
+        bool operator!=(const flat_map &other) const
+        {
+            return storage != other.storage;
+        }
 
         iterator begin()
         {
@@ -208,7 +220,7 @@ namespace igris
         {
             auto it =
                 std::find_if(storage.begin(),
-                             storage.end(),
+                             (iterator)storage.end(),
                              [&key](const pair &p) { return p.first == key; });
             if (it != storage.end())
             {
@@ -216,6 +228,26 @@ namespace igris
             }
             storage.push_back(pair(key, T(std::forward<Args>(args)...)));
             return std::make_pair(storage.end() - 1, true);
+        }
+
+        iterator insert(const pair &value)
+        {
+            auto it = std::find_if(
+                storage.begin(),
+                (iterator)storage.end(),
+                [&value](const pair &p) { return p.first == value.first; });
+            if (it != storage.end())
+            {
+                return it;
+            }
+            return storage.insert(
+                std::upper_bound(storage.begin(),
+                                 (iterator)storage.end(),
+                                 value,
+                                 [](const pair &a, const pair &b) {
+                                     return a.first < b.first;
+                                 }),
+                value);
         }
     };
 }
