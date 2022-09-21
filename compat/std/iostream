@@ -1,52 +1,14 @@
 #ifndef IGRIS_COMPAT_STD_IOSTREAM_H
 #define IGRIS_COMPAT_STD_IOSTREAM_H
 
-#include <utility>
-#include <string>
-#include <iosfwd>
 #include <ios>
+#include <iosfwd>
+#include <ostream>
+#include <string>
+#include <utility>
 
-namespace std 
+namespace std
 {
-	class endl_class{};
-	extern endl_class endl;
-
-	template<
-    	class CharT,
-    	class Traits
-	> class basic_ostream : virtual public std::basic_ios<CharT, Traits>
-	{
-	};
-
-	template <class CharT, class Traits>
-	basic_ostream<CharT,Traits>& operator<< (basic_ostream<CharT,Traits> &os, char data) 
-	{
-		os.write(&data, 1);
-		return os;
-	}
-
-	template <class CharT, class Traits>
-	basic_ostream<CharT,Traits>& operator<< (basic_ostream<CharT,Traits> &os, endl_class) 
-	{
-		os.write("\n", 1);
-		return os;
-	}
-
-	template <class CharT, class Traits>
-	basic_ostream<CharT,Traits>& operator<< (basic_ostream<CharT,Traits> &os, const std::string &data) 
-	{
-		os.write(data.c_str(), data.size());
-		return os;
-	}
-
-	template <class CharT, class Traits>
-	basic_ostream<CharT,Traits>& operator<< (basic_ostream<CharT,Traits> &os, const char * data) 
-	{
-		os.write(data, strlen(data));
-		return os;
-	}
 }
-
-
 
 #endif

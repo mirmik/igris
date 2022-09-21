@@ -1,13 +1,20 @@
+#ifndef IGRIS_STD_EXCEPTION_H
+#define IGRIS_STD_EXCEPTION_H
 
-
-namespace std 
+namespace std
 {
-    class exception 
+    class exception
     {
     public:
-        exception(const char* msg) : m_msg(msg) {}
-        const char* what() const { return m_msg; }
+        exception(const char *msg) : m_msg(msg) {}
+        const char *what() const
+        {
+            return m_msg;
+        }
+
     private:
-        const char* m_msg;
+        const char *m_msg;
     };
 }
+
+#endif

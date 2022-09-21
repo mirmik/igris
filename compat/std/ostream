@@ -1,0 +1,73 @@
+#ifndef IGRIS_STD_OSTREAM_H
+#define IGRIS_STD_OSTREAM_H
+
+namespace std
+{
+    class endl_class
+    {
+    };
+    extern endl_class endl;
+
+    template <class CharT, class Traits>
+    class basic_ostream : virtual public std::basic_ios<CharT, Traits>
+    {
+        basic_streambuf<CharT, Traits> *streambuf;
+
+    public:
+        using char_type = CharT;
+        using traits_type = Traits;
+
+        basic_ostream() = default;
+        explicit basic_ostream(std::basic_streambuf<CharT, Traits> *sb)
+        {
+            init(sb);
+        }
+
+        void init(std::basic_streambuf<CharT, Traits> *sb)
+        {
+            streambuf = sb;
+        }
+
+        basic_ostream &operator<<(const CharT *str)
+        {
+            streambuf->sputn(str, strlen(str));
+            return *this;
+        }
+    };
+
+    template <class CharT, class Traits>
+    basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
+                                             char data)
+    {
+        os.write(&data, 1);
+        return os;
+    }
+
+    template <class CharT, class Traits>
+    basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
+                                             endl_class)
+    {
+        os.write("\n", 1);
+        return os;
+    }
+
+    template <class CharT, class Traits>
+    basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
+                                             const std::string &data)
+    {
+        os.write(data.c_str(), data.size());
+        return os;
+    }
+
+    template <class CharT, class Traits>
+    basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
+                                             const char *data)
+    {
+        os.write(data, strlen(data));
+        return os;
+    }
+
+    using ostream = basic_ostream<char, std::char_traits<char>>;
+}
+
+#endif

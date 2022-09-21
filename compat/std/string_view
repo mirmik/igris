@@ -2,39 +2,75 @@
 #define IGRIS_COMPAT_STRING_VIEW_H
 
 #include <cstring>
+#include <iterator>
 
-namespace std 
+namespace std
 {
-	class string_view 
-	{
-		char * _data;
-		size_t _size;
+    class string_view
+    {
+        char *_data;
+        size_t _size;
 
-	public:
-		string_view(char* data) 
-			: _data(data), _size(strlen(data)) {}
+    public:
+        using value_type = char;
+        using size_type = size_t;
+        using difference_type = ptrdiff_t;
+        using pointer = char *;
+        using const_pointer = const char *;
+        using reference = char &;
+        using const_reference = const char &;
+        using iterator = char *;
+        using const_iterator = const char *;
 
-		string_view(const char* data) 
-			: _data((char*)data), _size(strlen(data)) {}
+        static constexpr size_t npos = -1;
 
-		size_t size() const { return _size; }
-		char * data() const { return _data; }
+        string_view(char *data) : _data(data), _size(strlen(data)) {}
 
-		string_view substr(size_t strt, size_t fini) const;
-		size_t find_first_not_of(const char*) const;
-		size_t find_last_not_of(const char*) const;
+        string_view(const char *data) : _data((char *)data), _size(strlen(data))
+        {
+        }
 
-		bool operator == (const string_view& str) const 
-		{
-			if (&str == this)
-				return true;
+        size_t size() const
+        {
+            return _size;
+        }
+        char *data() const
+        {
+            return _data;
+        }
 
-			if (str.size() != _size)
-				return false;
+        string_view substr(size_t strt, size_t fini) const;
+        size_t find_first_not_of(const char *) const;
+        size_t find_last_not_of(const char *) const;
 
-			return strncmp(_data, str.data(), _size) == 0;
-		}
-	};
+        bool operator==(const string_view &str) const
+        {
+            if (&str == this)
+                return true;
+
+            if (str.size() != _size)
+                return false;
+
+            return strncmp(_data, str.data(), _size) == 0;
+        }
+
+        size_type find(char ch, size_type pos = 0) const
+        {
+            const char *ptr = _data + pos;
+            const char *end = _data + _size;
+
+            while (ptr != end)
+            {
+                if (*ptr == ch)
+                {
+                    return ptr - _data;
+                }
+                ++ptr;
+            }
+
+            return npos;
+        }
+    };
 }
 
 #endif

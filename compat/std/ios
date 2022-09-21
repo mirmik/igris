@@ -1,16 +1,16 @@
+#ifndef IGRIS_STD_IOS_H
+#define IGRIS_STD_IOS_H
 
-namespace std 
+namespace std
 {
-	class ios_base 
-	{
+    class ios_base
+    {
+    };
 
-	};
-
-	template<
-	    class CharT,
-	    class Traits = std::char_traits<CharT>
-	> class basic_ios : public std::ios_base 
-	{
-
-	};
+    template <class CharT, class Traits = std::char_traits<CharT>>
+    class basic_ios : public std::ios_base
+    {
+    };
 }
+
+#endif
