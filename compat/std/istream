@@ -14,6 +14,7 @@ namespace std
         {
             return false;
         }
+        virtual ~basic_istream() = default;
     };
 
     using istream = basic_istream<char, char_traits<char>>;

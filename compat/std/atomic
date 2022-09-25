@@ -15,6 +15,16 @@ namespace std
         {
             return val;
         }
+
+        T operator++()
+        {
+            return ++val;
+        }
+
+        T operator++(int)
+        {
+            return val++;
+        }
     };
 
     template <typename T> T load(T &val)
@@ -68,7 +78,6 @@ namespace std
         val ^= xorval;
         return oldval;
     }
-
 }
 
 #endif

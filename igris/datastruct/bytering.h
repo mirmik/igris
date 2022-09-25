@@ -1,5 +1,5 @@
-#ifndef GXX_DATASTRUCT_BYTERING_H
-#define GXX_DATASTRUCT_BYTERING_H
+#ifndef IGRIS_DATASTRUCT_BYTERING_H
+#define IGRIS_DATASTRUCT_BYTERING_H
 
 #include <igris/compiler.h>
 

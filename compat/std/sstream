@@ -20,7 +20,7 @@ namespace std
         using string_type = std::basic_string<CharT, Traits, Allocator>;
 
         basic_ostringstream() : std::basic_ostream<CharT, Traits>() {}
-        basic_ostringstream(string_type &str)
+        basic_ostringstream(const string_type &str)
             : std::basic_ostream<CharT, Traits>(), _str(str)
         {
         }

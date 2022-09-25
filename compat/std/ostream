@@ -21,7 +21,32 @@ namespace std
         using char_type = CharT;
         using traits_type = Traits;
 
-        basic_ostream() = default;
+        basic_ostream()
+        {
+            // this->init(new basic_streambuf<CharT, Traits>());
+        }
+        basic_ostream(basic_ostream &&other)
+        {
+            this->init(other.streambuf);
+            other.streambuf = nullptr;
+        }
+
+        basic_ostream(const basic_ostream &) = delete;
+
+        basic_ostream &operator=(const basic_ostream &other) = delete;
+
+        basic_ostream &operator=(basic_ostream &&other)
+        {
+            this->init(other.streambuf);
+            other.streambuf = nullptr;
+            return *this;
+        }
+
+        ~basic_ostream()
+        {
+            delete streambuf;
+        }
+
         explicit basic_ostream(std::basic_streambuf<CharT, Traits> *sb)
         {
             init(sb);
@@ -149,6 +174,16 @@ namespace std
 
     template <class CharT, class Traits>
     basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
+                                             long double data)
+    {
+        char buf[32];
+        sprintf(buf, "%Lf", data);
+        os.write(buf, strlen(buf));
+        return os;
+    }
+
+    template <class CharT, class Traits>
+    basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
                                              float data)
     {
         char buf[32];
@@ -220,6 +255,73 @@ namespace std
     template <class CharT, class Traits>
     basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
                                              hex_cls data)
+    {
+        return os;
+    }
+
+    template <class CharT, class Traits>
+    basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
+                                             boolalpha_cls data)
+    {
+        return os;
+    }
+
+    template <class CharT, class Traits>
+    basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
+                                             noboolalpha_cls data)
+    {
+        return os;
+    }
+
+    class manipulator
+    {
+        using stream_type = ios_base;
+        using manipulator_func = stream_type &(*)(stream_type &);
+
+    public:
+        manipulator(manipulator_func f) : _f(f) {}
+
+        stream_type &operator()(stream_type &os) const
+        {
+            return _f(os);
+        }
+
+    private:
+        manipulator_func _f;
+    };
+
+    template <class CharT, class Traits>
+    basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
+                                             manipulator &&foo)
+    {
+        foo(os);
+        return os;
+    }
+
+    template <class CharT, class Traits>
+    basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
+                                             uppercase_cls data)
+    {
+        return os;
+    }
+
+    template <class CharT, class Traits>
+    basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
+                                             nouppercase_cls data)
+    {
+        return os;
+    }
+
+    template <class CharT, class Traits>
+    basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
+                                             dec_cls data)
+    {
+        return os;
+    }
+
+    template <class CharT, class Traits>
+    basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
+                                             oct_cls data)
     {
         return os;
     }

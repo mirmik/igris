@@ -966,18 +966,21 @@ namespace std
         return first;
     }
     */
+
+    // iter_swap
+    template <class ForwardIterator1, class ForwardIterator2>
+    void iter_swap(ForwardIterator1 a, ForwardIterator2 b)
+    {
+        typename iterator_traits<ForwardIterator1>::value_type temp = *a;
+        *a = *b;
+        *b = temp;
+    }
+
     template <class RandomAccessIterator>
     void sort(RandomAccessIterator first, RandomAccessIterator last)
     {
         less<typename iterator_traits<RandomAccessIterator>::value_type> c;
         sort(first, last, c);
-    }
-
-    template <class RandomAccessIterator, class Compare>
-    void
-    sort(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
-    {
-        stable_sort(first, last, comp);
     }
 
     template <class RandomAccessIterator>
@@ -1008,6 +1011,13 @@ namespace std
             }
             ++first;
         }
+    }
+
+    template <class RandomAccessIterator, class Compare>
+    void
+    sort(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
+    {
+        stable_sort(first, last, comp);
     }
 
     template <class RandomAccessIterator>

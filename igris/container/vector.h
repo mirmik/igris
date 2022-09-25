@@ -224,7 +224,7 @@ namespace igris
             return m_data - 1;
         }
 
-        template <typename... Args> void emplace_back(Args &&... args)
+        template <typename... Args> void emplace_back(Args &&...args)
         {
             reserve(m_size + 1);
             igris::constructor(m_data + m_size, std::forward<Args>(args)...);
@@ -236,6 +236,12 @@ namespace igris
             reserve(m_size + 1);
             igris::constructor(m_data + m_size, ref);
             m_size++;
+        }
+
+        void pop_back()
+        {
+            igris::destructor(m_data + m_size - 1);
+            m_size--;
         }
 
         bool empty() const
@@ -267,7 +273,7 @@ namespace igris
         }
 
         template <typename... Args>
-        iterator emplace(const_iterator pos, Args &&... args)
+        iterator emplace(const_iterator pos, Args &&...args)
         {
             // TODO insert optimization
             size_t _pos = pos - m_data;
@@ -371,6 +377,12 @@ namespace igris
         const T &front() const
         {
             return m_data[0];
+        }
+
+        bool operator<(const vector &oth) const
+        {
+            return std::lexicographical_compare(
+                begin(), end(), oth.begin(), oth.end());
         }
 
     protected:

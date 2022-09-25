@@ -15,7 +15,7 @@ namespace std
     {
     public:
         fixed_cls() {}
-    } fixed;
+    };
 
     class resetiosflags
     {
@@ -61,7 +61,45 @@ namespace std
     {
     public:
         hex_cls() {}
-    } hex;
+    };
+
+    class dec_cls
+    {
+    public:
+        dec_cls() {}
+    };
+
+    class oct_cls
+    {
+    public:
+        oct_cls() {}
+    };
+
+    class left_cls
+    {
+    public:
+        left_cls() {}
+    };
+
+    class right_cls
+    {
+    public:
+        right_cls() {}
+    };
+
+    class internal_cls
+    {
+    public:
+        internal_cls() {}
+    };
+
+    const hex_cls hex;
+    const dec_cls dec;
+    const oct_cls oct;
+    const left_cls left;
+    const right_cls right;
+    const internal_cls internal;
+    const fixed_cls fixed;
 }
 
 #endif

@@ -48,6 +48,11 @@ namespace std
             return m_size;
         }
 
+        bool empty() const
+        {
+            return m_size == 0;
+        }
+
         basic_string() = default;
 
         basic_string(const basic_string &other) : basic_string()
@@ -386,12 +391,13 @@ namespace std
         return igris_atof32(str.c_str(), nullptr);
     }
 
-    bool operator==(const char *str, const string &str2)
+    static inline bool operator==(const char *str, const string &str2)
     {
         return str2 == str;
     }
 
-    std::string operator+(const std::string &lhs, const std::string &rhs)
+    static inline std::string operator+(const std::string &lhs,
+                                        const std::string &rhs)
     {
         std::string res;
         res.reserve(lhs.size() + rhs.size());
@@ -400,7 +406,7 @@ namespace std
         return res;
     }
 
-    std::string operator+(const std::string &lhs, const char *rhs)
+    static inline std::string operator+(const std::string &lhs, const char *rhs)
     {
         std::string res;
         res.reserve(lhs.size() + strlen(rhs));
@@ -409,7 +415,7 @@ namespace std
         return res;
     }
 
-    std::string operator+(const char *lhs, const std::string &rhs)
+    static inline std::string operator+(const char *lhs, const std::string &rhs)
     {
         std::string res;
         res.reserve(strlen(lhs) + rhs.size());
@@ -425,7 +431,8 @@ namespace std
 #pragma GCC diagnostic ignored "-Wliteral-suffix"
     namespace string_literals
     {
-        std::string operator""s(const char *str, long unsigned int len)
+        static inline std::string operator""s(const char *str,
+                                              long unsigned int len)
         {
             return std::string(str, len);
         }

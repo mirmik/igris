@@ -9,7 +9,7 @@ namespace std
     template <class Key,
               class Compare = std::less<Key>,
               class Allocator = std::allocator<Key>>
-    class set : public flat_set<Allocator>
+    class set : public igris::flat_set<Key, Compare, Allocator>
     {
     public:
         using key_type = Key;

@@ -29,7 +29,7 @@ namespace std
         char dummy[2];
     };
 
-    namespace internal
+    namespace detail
     {
 
         // This class is an implementation detail for is_convertible, and you
@@ -47,15 +47,15 @@ namespace std
             static big_ Test(...);
             static From Create();
         };
-    } // namespace internal
+    } // namespace detail
 
     // Inherits from true_type if From is convertible to To, false_type
     // otherwise.
     template <typename From, typename To>
     struct is_convertible
         : integral_constant<bool,
-                            sizeof(internal::ConvertHelper<From, To>::Test(
-                                internal::ConvertHelper<From, To>::Create())) ==
+                            sizeof(detail::ConvertHelper<From, To>::Test(
+                                detail::ConvertHelper<From, To>::Create())) ==
                                 sizeof(small_)>
     {
     };

@@ -34,6 +34,24 @@ namespace std
     public:
         length_error(const char *msg) : exception(msg) {}
     };
+
+    class bad_alloc : public exception
+    {
+    public:
+        bad_alloc(const char *msg) : exception(msg) {}
+    };
+
+    class bad_cast : public exception
+    {
+    public:
+        bad_cast(const char *msg) : exception(msg) {}
+    };
+
+    class bad_typeid : public exception
+    {
+    public:
+        bad_typeid(const char *msg) : exception(msg) {}
+    };
 }
 
 #endif
