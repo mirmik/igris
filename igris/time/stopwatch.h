@@ -3,44 +3,47 @@
 
 #include <chrono>
 
-class stopwatch
+namespace igris
 {
-    std::chrono::time_point<std::chrono::high_resolution_clock> _start = {};
-    std::chrono::time_point<std::chrono::high_resolution_clock> _stop = {};
-
-public:
-    stopwatch() {}
-
-    void start()
+    class stopwatch
     {
-        _start = std::chrono::high_resolution_clock::now();
-    }
+        std::chrono::time_point<std::chrono::high_resolution_clock> _start = {};
+        std::chrono::time_point<std::chrono::high_resolution_clock> _stop = {};
 
-    void stop()
-    {
-        _stop = std::chrono::high_resolution_clock::now();
-    }
+    public:
+        stopwatch() {}
 
-    double elapsed_ms()
-    {
-        return std::chrono::duration_cast<std::chrono::milliseconds>(_stop -
-                                                                     _start)
-            .count();
-    }
+        void start()
+        {
+            _start = std::chrono::high_resolution_clock::now();
+        }
 
-    double elapsed_us()
-    {
-        return std::chrono::duration_cast<std::chrono::microseconds>(_stop -
-                                                                     _start)
-            .count();
-    }
+        void stop()
+        {
+            _stop = std::chrono::high_resolution_clock::now();
+        }
 
-    double elapsed_ns()
-    {
-        return std::chrono::duration_cast<std::chrono::nanoseconds>(_stop -
-                                                                    _start)
-            .count();
-    }
-};
+        double elapsed_ms()
+        {
+            return std::chrono::duration_cast<std::chrono::milliseconds>(_stop -
+                                                                         _start)
+                .count();
+        }
+
+        double elapsed_us()
+        {
+            return std::chrono::duration_cast<std::chrono::microseconds>(_stop -
+                                                                         _start)
+                .count();
+        }
+
+        double elapsed_ns()
+        {
+            return std::chrono::duration_cast<std::chrono::nanoseconds>(_stop -
+                                                                        _start)
+                .count();
+        }
+    };
+}
 
 #endif

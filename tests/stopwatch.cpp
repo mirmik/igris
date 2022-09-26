@@ -6,7 +6,7 @@
 
 TEST_CASE("stopwatch")
 {
-    stopwatch sw;
+    igris::stopwatch sw;
     sw.start();
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     sw.stop();
