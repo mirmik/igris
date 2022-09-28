@@ -4,6 +4,7 @@
 #include <streambuf>
 #include <string>
 #include <utility>
+#include <ostream>
 
 namespace std
 {

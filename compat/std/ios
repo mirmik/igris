@@ -126,6 +126,8 @@ namespace std
     const uppercase_cls uppercase;
     const nouppercase_cls nouppercase;
 
+    using ios = basic_ios<char, char_traits<char>>;
+
 }
 
 #endif

@@ -20,7 +20,7 @@ namespace std
     class runtime_error : public exception
     {
     public:
-        runtime_error(const char *msg) : exception(msg) {}
+        runtime_error(const std::string &msg) : exception(msg) {}
     };
 
     class invalid_argument : public exception

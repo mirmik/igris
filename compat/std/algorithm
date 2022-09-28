@@ -541,138 +541,166 @@ namespace std
                 *a = *b;
                 *b = temp;
             }*/
-    /*
 
-            template<class InputIterator, class OutputIterator, class
-       UnaryOperation> OutputIterator transform(InputIterator first,
-       InputIterator last, OutputIterator result, UnaryOperation op)
+    template <class InputIterator1,
+              class InputIterator2,
+              class OutputIterator,
+              class UnaryOperation>
+    OutputIterator transform(InputIterator1 first,
+                             InputIterator2 last,
+                             OutputIterator result,
+                             UnaryOperation op)
+    {
+        while (first != last)
+        {
+            *result = op(*first);
+            ++first;
+            ++result;
+        }
+        return result;
+    }
+
+    template <class InputIterator1,
+              class InputIterator2,
+              class InputIterator3,
+              class OutputIterator,
+              class BinaryOperation>
+    OutputIterator transform(InputIterator1 first1,
+                             InputIterator2 last1,
+                             InputIterator3 first2,
+                             OutputIterator result,
+                             BinaryOperation binary_op)
+    {
+        while (first1 != last1)
+        {
+            *result = binary_op(*first1, *first2);
+            ++first1;
+            ++first2;
+            ++result;
+        }
+        return result;
+    }
+
+    template <class ForwardIterator, class T>
+    void replace(ForwardIterator first,
+                 ForwardIterator last,
+                 const T &old_value,
+                 const T &new_value)
+    {
+        while (first != last)
+        {
+            if (*first == old_value)
             {
-                while(first != last){
-                    *result = op(*first);
-                    ++first;
-                    ++result;
-                }
-                return result;
+                *first = new_value;
             }
+            ++first;
+        }
+    }
 
-
-            template<class InputIterator1, class InputIterator2, class
-       OutputIterator, class BinaryOperation> OutputIterator
-       transform(InputIterator1 first1, InputIterator1 last1, InputIterator2
-       first2, OutputIterator result, BinaryOperation binary_op)
+    template <class ForwardIterator, class Predicate, class T>
+    void replace_if(ForwardIterator first,
+                    ForwardIterator last,
+                    Predicate pred,
+                    const T &new_value)
+    {
+        while (first != last)
+        {
+            if (pred(*first))
             {
-                while(first1 != last1){
-                    *result = binary_op(*first1, *first2);
-                    ++first1;
-                    ++first2;
-                    ++result;
-                }
-                return result;
+                *first = new_value;
             }
+            ++first;
+        }
+    }
 
-
-            template<class ForwardIterator, class T>
-            void
-            replace(ForwardIterator first, ForwardIterator last,
-            const T& old_value, const T& new_value)
+    template <class InputIterator, class OutputIterator, class T>
+    OutputIterator replace_copy(InputIterator first,
+                                InputIterator last,
+                                OutputIterator result,
+                                const T &old_value,
+                                const T &new_value)
+    {
+        while (first != last)
+        {
+            if (*first == old_value)
             {
-                while(first != last){
-                    if(*first == old_value){
-                        *first = new_value;
-                    }
-                    ++first;
-                }
+                *result = new_value;
             }
-
-            template<class ForwardIterator, class Predicate, class T>
-            void
-            replace_if(ForwardIterator first, ForwardIterator last,
-            Predicate pred, const T& new_value)
+            else
             {
-                while(first != last){
-                    if( pred(*first) ){
-                        *first = new_value;
-                    }
-                    ++first;
-                }
+                *result = *first;
             }
+            ++first;
+            ++result;
+        }
+        return result;
+    }
 
-
-            template<class InputIterator, class OutputIterator, class T>
-            OutputIterator
-            replace_copy(InputIterator first, InputIterator last,
-            OutputIterator result, const T& old_value, const T& new_value)
+    template <class Iterator, class OutputIterator, class Predicate, class T>
+    OutputIterator replace_copy_if(Iterator first,
+                                   Iterator last,
+                                   OutputIterator result,
+                                   Predicate pred,
+                                   const T &new_value)
+    {
+        while (first != last)
+        {
+            if (pred(*first))
             {
-                while(first != last){
-                    if(*first == old_value){
-                        *result = new_value;
-                        }else{
-                        *result = *first;
-                    }
-                    ++first;
-                    ++result;
-                }
-                return result;
+                *result = new_value;
             }
-
-            template<class Iterator, class OutputIterator, class Predicate,
-       class T> OutputIterator replace_copy_if(Iterator first, Iterator last,
-            OutputIterator result, Predicate pred, const T& new_value)
+            else
             {
-                while(first != last){
-                    if( pred(*first) ){
-                        *result = new_value;
-                        }else{
-                        *result = *first;
-                    }
-                    ++first;
-                    ++result;
-                }
-                return result;
+                *result = *first;
             }
+            ++first;
+            ++result;
+        }
+        return result;
+    }
 
-            template<class ForwardIterator, class T>
-            void
-            fill(ForwardIterator first, ForwardIterator last, const T& value)
-            {
-                while(first != last){
-                    *first = value;
-                    ++first;
-                }
-            }
+    template <class ForwardIterator, class T>
+    void fill(ForwardIterator first, ForwardIterator last, const T &value)
+    {
+        while (first != last)
+        {
+            *first = value;
+            ++first;
+        }
+    }
 
-            template<class OutputIterator, class Size, class T>
-            void
-            fill_n(OutputIterator first, Size n, const T& value)
-            {
-                while(n != 0){
-                    *first = value;
-                    --n;
-                    ++first;
-                }
-            }
+    template <class OutputIterator, class Size, class T>
+    void fill_n(OutputIterator first, Size n, const T &value)
+    {
+        while (n != 0)
+        {
+            *first = value;
+            --n;
+            ++first;
+        }
+    }
 
-            template<class ForwardIterator, class Generator>
-            void
-            generate(ForwardIterator first, ForwardIterator last, Generator gen)
-            {
-                while(first != last){
-                    *first = gen();
-                    ++first;
-                }
-            }
+    template <class ForwardIterator, class Generator>
+    void generate(ForwardIterator first, ForwardIterator last, Generator gen)
+    {
+        while (first != last)
+        {
+            *first = gen();
+            ++first;
+        }
+    }
 
-            template<class OutputIterator, class Size, class Generator>
-            void
-            generate_n(OutputIterator first, Size n, Generator gen)
-            {
-                while(n !=0){
-                    *first = gen();
-                    --n;
-                    ++first;
-                }
-            }
-            */
+    template <class OutputIterator, class Size, class Generator>
+    void generate_n(OutputIterator first, Size n, Generator gen)
+    {
+        while (n != 0)
+        {
+            *first = gen();
+            --n;
+            ++first;
+        }
+    }
+
     template <class ForwardIterator, class T>
     ForwardIterator
     remove(ForwardIterator first, ForwardIterator last, const T &value)

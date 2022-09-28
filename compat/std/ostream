@@ -12,7 +12,7 @@ namespace std
     };
     extern endl_class endl;
 
-    template <class CharT, class Traits>
+    template <class CharT, class Traits = std::char_traits<CharT>>
     class basic_ostream : virtual public std::basic_ios<CharT, Traits>
     {
         basic_streambuf<CharT, Traits> *streambuf = nullptr;

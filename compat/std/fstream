@@ -1,6 +1,7 @@
 #ifndef IGRIS_STD_FSTREAM_H
 #define IGRIS_STD_FSTREAM_H
 
+#include <ios>
 #include <istream>
 #include <ostream>
 
@@ -31,6 +32,41 @@ namespace std
         }
 
         void close() {}
+    };
+
+    class ifstream : virtual public fstream
+    {
+    public:
+        ifstream() {}
+        ifstream(std::string) {}
+        ifstream(std::string, int) {}
+
+        bool fail()
+        {
+            return false;
+        }
+
+        bool good()
+        {
+            return false;
+        }
+
+        bool eof()
+        {
+            return false;
+        }
+
+        int read(char *buf, int sz)
+        {
+            (void)buf;
+            (void)sz;
+            return 0;
+        }
+
+        int gcount()
+        {
+            return 0;
+        }
     };
 }
 

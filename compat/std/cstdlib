@@ -2,6 +2,7 @@
 #define IGRIS_STD_CSTDLIB_H
 
 #include <stdlib.h>
+#include <stddef.h>
 
 namespace std
 {

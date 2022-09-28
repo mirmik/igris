@@ -240,6 +240,23 @@ namespace std
             return 0;
         }
 
+        size_type find(const char *str, size_t pos = 0) const
+        {
+            if (pos >= m_size)
+                return -1;
+            auto len = strlen(str);
+            if (len == 0)
+                return -1;
+            if (len > m_size)
+                return -1;
+            for (size_t i = pos; i < m_size - len; i++)
+            {
+                if (memcmp(m_data + i, str, len) == 0)
+                    return i;
+            }
+            return -1;
+        }
+
         unsigned char changeBuffer(size_t maxStrLen)
         {
             size_t oldcap = m_capacity;
@@ -283,6 +300,16 @@ namespace std
         void push_back(char c)
         {
             append(&c, 1);
+        }
+
+        int compare(const char *str) const
+        {
+            auto len = strlen(str);
+            if (len > m_size)
+                return 1;
+            if (len < m_size)
+                return -1;
+            return memcmp(m_data, str, len);
         }
 
         basic_string &operator+=(char c)

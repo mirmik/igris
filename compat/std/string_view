@@ -3,10 +3,12 @@
 
 #include <cstring>
 #include <iterator>
+#include <string>
 
 namespace std
 {
-    class string_view
+    template <typename CharT, typename Traits = std::char_traits<CharT>>
+    class basic_string_view
     {
         char *_data;
         size_t _size;
@@ -24,34 +26,61 @@ namespace std
 
         static constexpr size_t npos = -1;
 
-        string_view(char *data) : _data(data), _size(strlen(data)) {}
+        basic_string_view(char *data) : _data(data), _size(strlen(data)) {}
 
-        string_view(const char *data) : _data((char *)data), _size(strlen(data))
+        basic_string_view(const char *data)
+            : _data((char *)data), _size(strlen(data))
         {
         }
 
-        size_t size() const
+        basic_string_view substr(size_t strt, size_t fini) const;
+        size_t find_first_not_of(const char *) const;
+        size_t find_last_not_of(const char *) const;
+
+        bool operator==(const basic_string_view &other) const
         {
-            return _size;
+            return _size == other._size &&
+                   memcmp(_data, other._data, _size) == 0;
         }
-        char *data() const
+
+        bool operator!=(const basic_string_view &other) const
+        {
+            return !(*this == other);
+        }
+
+        CharT operator[](size_t pos) const
+        {
+            return _data[pos];
+        }
+
+        const CharT *data() const noexcept
         {
             return _data;
         }
 
-        string_view substr(size_t strt, size_t fini) const;
-        size_t find_first_not_of(const char *) const;
-        size_t find_last_not_of(const char *) const;
-
-        bool operator==(const string_view &str) const
+        const CharT *c_str() const noexcept
         {
-            if (&str == this)
-                return true;
+            return _data;
+        }
 
-            if (str.size() != _size)
-                return false;
+        const CharT *begin() const noexcept
+        {
+            return _data;
+        }
 
-            return strncmp(_data, str.data(), _size) == 0;
+        const CharT *end() const noexcept
+        {
+            return _data + _size;
+        }
+
+        size_t length() const noexcept
+        {
+            return _size;
+        }
+
+        size_t size() const noexcept
+        {
+            return _size;
         }
 
         size_type find(char ch, size_type pos = 0) const
@@ -71,6 +100,8 @@ namespace std
             return npos;
         }
     };
+
+    using string_view = basic_string_view<char>;
 }
 
 #endif

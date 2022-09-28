@@ -8,8 +8,8 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
-#include <igris/util/__include_string_view.h>
 #include <string>
+#include <string_view>
 
 namespace igris
 {
@@ -71,21 +71,17 @@ namespace igris
         buffer(const igris::buffer &str) : buffer(str.data(), str.size()) {}
 
         buffer(const std::string &str) : buffer(str.data(), str.size()) {}
-#if IGRIS_HAS_STRING_VIEW
         buffer(const std::string_view &str) : buffer(str.data(), str.size()) {}
-#endif
 
         template <size_t N>
         inline buffer(const char (&arr)[N]) : buf((char *)arr), sz(N)
         {
         }
 
-#if IGRIS_HAS_STRING
         explicit operator std::string()
         {
             return std::string(buf, sz);
         }
-#endif
 
         // methods:
         bool operator==(const buffer &other) const

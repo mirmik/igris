@@ -27,6 +27,15 @@ namespace std
         // str.clear();
         return input;
     }
+
+    template <class CharT, class Traits>
+    std::basic_istream<CharT, Traits> &
+    operator>>(std::basic_istream<CharT, Traits> &input, std::string &str)
+    {
+        (void)str;
+        // str.clear();
+        return input;
+    }
 }
 
 #endif
