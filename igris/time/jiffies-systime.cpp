@@ -1,7 +1,7 @@
+#include <cstdint>
 #include <igris/sync/syslock.h>
 #include <igris/time/jiffies-systime.h>
 #include <igris/time/systime.h>
-#include <cstdint>
 
 #include <asm/systime.h> // for systime_lomax and systime_lopart
 
@@ -104,18 +104,24 @@ int64_t igris::millis()
     return (jiffies() * jiffies_to_millis) >> FREQSHIFT;
 }
 
-void igris::delay(int64_t ms) 
+void igris::delay(int64_t ms)
 {
     auto start = igris::micros();
     auto interval = ms * 1000;
 
-    while (igris::micros() - start < interval) 
-    {}
+    while (true)
+    {
+        auto timestamp = igris::micros();
+        if (timestamp - start >= interval)
+        {
+            break;
+        }
+    }
 
     return;
 }
 
-int64_t igris::system_time() 
+int64_t igris::system_time()
 {
     return millis();
 }

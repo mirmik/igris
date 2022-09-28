@@ -99,6 +99,8 @@ static inline uint32_t clz(uint32_t value)
 #define bits_assign_bias(a, m, b, s)                                           \
     (bits_assign(a, ((m) << (s)), ((b) << (s))))
 
+#define bits_mask_bias(a, m, s) (bits_mask((a), (m)) >> (s))
+
 // Размножить cllen битов переменной clone в соответствии с шаблоном input.
 // Например:
 // для
@@ -108,8 +110,8 @@ static inline uint32_t clz(uint32_t value)
 //
 // return 0b101000101101:
 //            1  0  1  1
-static inline uint32_t bits_multimap(uint16_t input, uint32_t clone,
-                                     uint8_t cllen)
+static inline uint32_t
+bits_multimap(uint16_t input, uint32_t clone, uint8_t cllen)
 {
     uint32_t ret = 0;
 

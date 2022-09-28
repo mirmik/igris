@@ -15,6 +15,7 @@
 
 __BEGIN_DECLS
 
+int * __error(void);
 int* __errno_location();
 
 __END_DECLS
