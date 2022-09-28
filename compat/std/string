@@ -425,19 +425,18 @@ namespace std
     }
 }
 
-namespace std
+/*namespace std
 {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wliteral-suffix"
     namespace string_literals
     {
-        static inline std::string operator""s(const char *str,
-                                              long unsigned int len)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wliteral-suffix"
+        inline basic_string<char> operator""s(const char *__str, size_t __len)
         {
-            return std::string(str, len);
+            return basic_string<char>{__str, __len};
         }
-    }
 #pragma GCC diagnostic pop
-}
+    }
+}*/
 
 #endif
