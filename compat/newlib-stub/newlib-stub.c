@@ -10,6 +10,11 @@ int _read(int file, char *ptr, size_t len)
     return -1;
 }
 
+int _open()
+{
+    return -1;
+}
+
 int _close()
 {
     return -1;
