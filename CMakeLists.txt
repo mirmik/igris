@@ -56,7 +56,7 @@ if (UNIX)
 	file(GLOB PLATFORM_SOURCES 
 		igris/osutil/src/posix.cpp
 		igris/osutil/realtime.c
-		igris/osutil/sclonner.cpp
+		igris/sclonner.cpp
 		igris/sync/semaphore.c	
 	)
 endif()
