@@ -97,7 +97,7 @@ licant.cxx_application("runtests",
                        ],
                        defines=DEFINES,
                        objects=["libigris.a"],
-                       cxxstd="c++17",
+                       cxxstd="c++20",
                        ccstd="c11",
                        cxx_flags=cxx_flags +
                        "-fmax-errors=1 -g -fPIC -Werror=all -Wno-gnu-zero-variadic-macro-arguments -Weffc++",

@@ -9,7 +9,8 @@
 
 namespace igris
 {
-    template <class T> concept ArrayType = requires(const T &a)
+    template <class T>
+    concept ArrayType = requires(const T &a)
     {
         std::size(a);
         std::begin(a);
@@ -53,7 +54,10 @@ namespace igris
         ndarray &operator=(const ndarray &other) = default;
         ndarray &operator=(ndarray &&other) = default;
 
-        std::vector<Value>& storage() { return _values; }
+        std::vector<Value> &storage()
+        {
+            return _values;
+        }
 
         template <class C> void init(const C &container)
         {
@@ -83,7 +87,10 @@ namespace igris
             init(container);
         }
 
-        size_t dim() { return _shape.size(); }
+        size_t dim() const
+        {
+            return _shape.size();
+        }
 
         size_t plane_size()
         {
@@ -93,12 +100,13 @@ namespace igris
             return acc;
         }
 
-        size_t planed_index(const std::initializer_list<size_t> &indexes)
+        size_t planed_index(const std::initializer_list<size_t> &indexes) const
         {
             return planed_index(indexes.begin(), indexes.size());
         }
 
-        template <class Index> size_t planed_index(const Index *indexes, size_t)
+        template <class Index>
+        size_t planed_index(const Index *indexes, size_t) const
         {
             int acc = 0;
             int step = 1;
@@ -111,7 +119,7 @@ namespace igris
         }
 
         template <class Index>
-        size_t planed_index(const igris::array_view<Index> &indexes)
+        size_t planed_index(const igris::array_view<Index> &indexes) const
         {
             return planed_index(indexes.data(), indexes.size());
         }
@@ -141,12 +149,27 @@ namespace igris
             return _values[planed_index(indexes.data(), indexes.size())];
         }
 
+        template <class Indexes>
+        const Value &operator()(const Indexes &indexes) const
+        {
+            return _values[planed_index(indexes.data(), indexes.size())];
+        }
+
         Value &operator()(const std::initializer_list<size_t> &indexes)
         {
             return _values[planed_index(igris::array_view<size_t>(indexes))];
         }
 
-        const std::vector<size_t> &shape() const { return _shape; }
+        const Value &
+        operator()(const std::initializer_list<size_t> &indexes) const
+        {
+            return _values[planed_index(igris::array_view<size_t>(indexes))];
+        }
+
+        const std::vector<size_t> &shape() const
+        {
+            return _shape;
+        }
 
         void reshape(const igris::array_view<size_t> &indexes)
         {
@@ -219,9 +242,15 @@ namespace igris
             return ret;
         }
 
-        Value &operator[](size_t i) { return _values[i]; }
+        Value &operator[](size_t i)
+        {
+            return _values[i];
+        }
 
-        const Value &operator[](size_t i) const { return _values[i]; }
+        const Value &operator[](size_t i) const
+        {
+            return _values[i];
+        }
 
         bool operator==(const ndarray &oth) const
         {
@@ -253,7 +282,10 @@ namespace igris
             return rets;
         }
 
-        auto begin() { return _values.begin(); }
+        auto begin()
+        {
+            return _values.begin();
+        }
 
     private:
         template <class C> void set_values(const C &val)
