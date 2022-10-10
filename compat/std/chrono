@@ -3,6 +3,7 @@
 
 #include <ratio>
 #include <type_traits>
+#include <igris/util/bug.h>
 
 namespace std 
 {
@@ -119,7 +120,7 @@ namespace std
 
             static constexpr bool is_steady = false;
 
-            static time_point now() noexcept;
+            static time_point now() noexcept { BUG(); }
         };
 
         namespace literals 
