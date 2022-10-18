@@ -1,7 +1,7 @@
 #include <igris/dprint.h>
+#include <igris/util/ctype.h>
 #include <igris/util/hexascii.h>
 #include <igris/util/numconvert.h>
-#include <igris/util/ctype.h>
 #include <math.h>
 #include <string.h>
 
@@ -396,5 +396,24 @@ float64_t igris_atof64(const char *str, char **pend)
         return minus ? -(double)u : (double)u;
     }
 }
+
+char *igris_i64toa(int64_t num, char *buf, uint8_t base)
+{
+    return i64toa(num, buf, base);
+}
+char *igris_i32toa(int32_t num, char *buf, uint8_t base)
+{
+    return i32toa(num, buf, base);
+}
+char *igris_f32toa(float32_t f, char *buf, int8_t precision)
+{
+    return f32toa(f, buf, precision);
+}
+#ifndef WITHOUT_ATOF64
+char *igris_f64toa(float64_t f, char *buf, int8_t precision)
+{
+    return f64toa(f, buf, precision);
+}
+#endif
 
 #endif

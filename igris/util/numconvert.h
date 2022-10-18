@@ -22,8 +22,7 @@ char *u8toa(uint64_t num, char *buf, uint8_t base);
 
 char *i64toa(int64_t num, char *buf, uint8_t base);
 char *i32toa(int32_t num, char *buf, uint8_t base);
- 
-char *f32toa(float32_t f, char *buf, int8_t precision); 
+char *f32toa(float32_t f, char *buf, int8_t precision);
 #ifndef WITHOUT_ATOF64
 char *f64toa(float64_t f, char *buf, int8_t precision);
 #endif
@@ -34,7 +33,14 @@ int32_t igris_atoi32(const char *buf, uint8_t base, char **end);
 int64_t igris_atoi64(const char *buf, uint8_t base, char **end);
 float32_t igris_atof32(const char *str, char **pend);
 #ifndef WITHOUT_ATOF64
-float32_t igris_atof32(const char *str, char **pend);
+float64_t igris_atof64(const char *str, char **pend);
+#endif
+
+char *igris_i64toa(int64_t num, char *buf, uint8_t base);
+char *igris_i32toa(int32_t num, char *buf, uint8_t base);
+char *igris_f32toa(float32_t f, char *buf, int8_t precision);
+#ifndef WITHOUT_ATOF64
+char *igris_f64toa(float64_t f, char *buf, int8_t precision);
 #endif
 
 __END_DECLS
