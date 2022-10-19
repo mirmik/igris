@@ -414,6 +414,11 @@ char *igris_f64toa(float64_t f, char *buf, int8_t precision)
 {
     return f64toa(f, buf, precision);
 }
+#else
+char *igris_f64toa(float32_t f, char *buf, int8_t precision)
+{
+    return f32toa(f, buf, precision);
+}
 #endif
 
 #endif
