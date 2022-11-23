@@ -364,37 +364,85 @@ char *f64toa(float64_t f, char *buf, int8_t precision)
     return f32toa(f, buf, precision);
 }
 
-float64_t igris_atof64(const char *str, char **pend)
+float64_t igris_atof64(const char *nptr, char **endptr)
 {
-    if (!igris_isdigit(*str) && *str != '-')
+    double val = 0.0;
+    int d = 0;
+    int sign = 1;
+
+    if (!nptr)
     {
-        return 0;
+        return 0.0;
     }
 
-    uint8_t minus = *str == '-' ? 1 : 0;
-    if (minus)
-        str++;
-
-    char *end;
-    unsigned int u = igris_atou32(str, 10, &end);
-
-    str = end;
-    if (*str == '.')
+    if (*nptr == '+')
     {
-        int64_t d = igris_atou64(++str, 10, &end);
-        if (pend)
-            *pend = end;
-        double ret = (double)u + ((double)d) / (local_pow(10, end - str));
-
-        return minus ? -ret : ret;
+        nptr++;
+    }
+    else if (*nptr == '-')
+    {
+        nptr++;
+        sign = -1;
     }
 
-    else
+    while (*nptr >= '0' && *nptr <= '9')
     {
-        if (pend)
-            *pend = end;
-        return minus ? -(double)u : (double)u;
+        val = val * 10.0 + (*nptr - '0');
+        nptr++;
     }
+
+    if (*nptr == '.')
+    {
+        nptr++;
+        while (*nptr >= '0' && *nptr <= '9')
+        {
+            val = val * 10.0 + (*nptr - '0');
+            nptr++;
+            d--;
+        }
+    }
+
+    if (*nptr == 'E' || *nptr == 'e')
+    {
+        int e_sign = 1;
+        int e_val = 0;
+
+        nptr++;
+        if (*nptr == '+')
+        {
+            nptr++;
+        }
+        else if (*nptr == '-')
+        {
+            nptr++;
+            sign = -1;
+        }
+
+        while ((*nptr >= '0' && *nptr <= '9'))
+        {
+            e_val = e_val * 10 + (*nptr - '0');
+            nptr++;
+        }
+        d += e_val * e_sign;
+    }
+
+    while (d > 0)
+    {
+        val *= 10.0;
+        d--;
+    }
+    while (d < 0)
+    {
+        val *= 0.1;
+        d++;
+    }
+
+    if (endptr)
+    {
+        *endptr = (char *)nptr;
+    }
+
+    return sign * val;
 }
 
 char *igris_i64toa(int64_t num, char *buf, uint8_t base)
