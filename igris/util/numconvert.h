@@ -41,9 +41,12 @@ char *igris_i32toa(int32_t num, char *buf, uint8_t base);
 char *igris_f32toa(float32_t f, char *buf, int8_t precision);
 #ifndef WITHOUT_ATOF64
 char *igris_f64toa(float64_t f, char *buf, int8_t precision);
-//#else
-// char *igris_f64toa(float32_t f, char *buf, int8_t precision);
+char *igris_ftoa(float64_t f, char *buf, int8_t precision);
+#else
+char *igris_ftoa(float32_t f, char *buf, int8_t precision);
 #endif
+
+double igris_strtod(const char *nptr, char **endptr);
 
 __END_DECLS
 

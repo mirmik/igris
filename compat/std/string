@@ -496,14 +496,14 @@ namespace std
     static inline std::string to_string(float val)
     {
         char buf[64];
-        igris_f64toa(val, buf, 5);
+        igris_ftoa(val, buf, 5);
         return buf;
     }
 
     static inline std::string to_string(double val)
     {
         char buf[64];
-        igris_f64toa(val, buf, 5);
+        igris_ftoa(val, buf, 5);
         return buf;
     }
 }

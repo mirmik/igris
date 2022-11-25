@@ -469,4 +469,24 @@ char *igris_f64toa(float32_t f, char *buf, int8_t precision)
 }
 #endif
 
+#ifndef WITHOUT_ATOF64
+double igris_strtod(const char *nptr, char **endptr)
+{
+    return igris_atof64(nptr, endptr);
+}
+char *igris_ftoa(float64_t f, char *buf, int8_t precision)
+{
+    return igris_f64toa(f, buf, precision);
+}
+#else
+double igris_strtod(const char *nptr, char **endptr)
+{
+    return igris_atof32(nptr, endptr);
+}
+char *igris_ftoa(float64_t f, char *buf, int8_t precision)
+{
+    return igris_f32toa(f, buf, precision);
+}
+#endif
+
 #endif
