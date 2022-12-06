@@ -18,7 +18,6 @@ static void inc_b(int b)
         timptr->unplan();
 }
 
-#warning "TODO: Тесты таймеров падают."
 TEST_CASE("TimerManager")
 {
     auto current_time = igris::millis();
@@ -28,9 +27,9 @@ TEST_CASE("TimerManager")
 
     igris::timer_manager manager;
     igris::timer<int> tim1(igris::make_delegate(inc_b), 14);
-    // igris::timer<int, igris::timer_head *> tim0(
-    //    igris::make_delegate(inc_a), 12, &tim0);
-    /*timptr = &tim1;
+    igris::timer<int, igris::timer_head *> tim0(
+        igris::make_delegate(inc_a), 12, &tim0);
+    timptr = &tim1;
 
     manager.plan(tim0, current_time, 1000);
     manager.plan(tim1, current_time, 2000);
@@ -66,5 +65,4 @@ TEST_CASE("TimerManager")
     manager.exec(current_time + 10001);
     CHECK_EQ(aaa, 12 * 7);
     CHECK_EQ(bbb, 14 * 4);
-    */
 }
