@@ -1,9 +1,10 @@
-#ifndef GXX_STD_ARRAY_H
-#define GXX_STD_ARRAY_H
+#ifndef IGRIS_STD_ARRAY_H
+#define IGRIS_STD_ARRAY_H
 
 #include <memory>
 #include <utility>
 #include <algorithm>
+#include <initializer_list>
 
 namespace std {
 	template <typename T, size_t N> struct array 
@@ -12,7 +13,12 @@ namespace std {
 
 		array() = default;
 		
-		array(const T& oth) 
+		array(const array& oth) 
+		{
+			std::copy(oth.begin(), oth.end(), begin());
+		}
+
+		array(const std::initializer_list<T>& oth) 
 		{
 			std::copy(oth.begin(), oth.end(), begin());
 		}
