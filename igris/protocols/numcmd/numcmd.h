@@ -2,7 +2,7 @@
 #define IGRIS_PROTOCOL_NUMCMD_H
 
 #include <igris/compiler.h>
-#include <cstdint>
+#include <stdint.h>
 
 struct numcmd_record
 {
