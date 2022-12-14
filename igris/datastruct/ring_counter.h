@@ -23,7 +23,7 @@ static inline void ring_counter_fixup(struct ring_counter *rc)
         rc->counter -= rc->size;
 }
 
-static inline int ring_counter_fixup_pos(struct ring_counter *rc, int pos)
+static inline int ring_counter_fixup_pos(const struct ring_counter *rc, int pos)
 {
     while (pos >= rc->size)
         pos -= rc->size;
@@ -44,13 +44,13 @@ static inline void ring_counter_increment(struct ring_counter *rc, int arg)
     ring_counter_fixup(rc);
 }
 
-static inline int ring_counter_get(struct ring_counter *rc)
+static inline int ring_counter_get(const struct ring_counter *rc)
 {
     return rc->counter;
 }
 
 /// Вернуть номер, бывший на i итераций ранее.
-static inline int ring_counter_prev(struct ring_counter *rc, int i)
+static inline int ring_counter_prev(const struct ring_counter *rc, int i)
 {
     int c = rc->counter - i;
 
@@ -60,7 +60,7 @@ static inline int ring_counter_prev(struct ring_counter *rc, int i)
     return c;
 }
 
-static inline int ring_counter_last(struct ring_counter *rc, int no)
+static inline int ring_counter_last(const struct ring_counter *rc, int no)
 {
     return ring_counter_fixup_pos(rc, rc->counter - no);
 }
