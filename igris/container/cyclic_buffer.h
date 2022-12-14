@@ -42,6 +42,11 @@ namespace igris
             return data[ring_counter_prev(&counter, i)];
         }
 
+        const T operator[](int i) const
+        {
+            return data[ring_counter_prev(&counter, i)];
+        }
+
         void resize(size_t size)
         {
             data.resize(size);
