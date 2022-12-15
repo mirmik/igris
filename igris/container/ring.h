@@ -37,6 +37,11 @@ namespace igris
             ring_init(&r, sz+1);
         }
 
+        void reset() 
+        {
+            ring_init(&r, buffer.size());
+        }
+
         bool empty() 
         { 
             return ring_empty(&r); 
