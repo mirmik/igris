@@ -302,6 +302,12 @@ namespace std
             append(&c, 1);
         }
 
+        void pop_back()
+        {
+            if (m_size > 0)
+                m_size--;
+        }
+
         int compare(const char *str) const
         {
             auto len = strlen(str);
