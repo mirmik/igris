@@ -10,10 +10,18 @@ TEST_CASE("igris_test_suite.bits")
     CHECK_EQ(a, 0b101011101011);
 }
 
-TEST_CASE("igris_test_suite.bits")
+TEST_CASE("igris_test_suite.bits2")
 {
     uint32_t a = 0;
     bits_masked_assign_multimap(a, 1 << 1, 2, 4);
     CHECK_EQ(a, 2 << 4);
 }
+
+TEST_CASE("igris_test_suite.bits3")
+{
+    uint32_t a = 0;
+    bits_masked_assign_multimap(a, 1 << 5, 2, 4);
+    CHECK_EQ(a, 2 << (4 * 5));
+}
+
 #endif
