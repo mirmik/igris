@@ -51,7 +51,7 @@ namespace std
         linear_congruential_engine(UIntType state) : state(state) {}
         UIntType operator()()
         {
-            if constexpr (m == 0)
+            if (m == 0)
                 state = a * state + c;
             else
                 state = (a * state + c) % m;
