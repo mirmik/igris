@@ -602,4 +602,6 @@ compose2(const Op1 &fn1, const Op2 &fn2, const Op3 &fn3)
     return binary_compose<Op1, Op2, Op3>(fn1, fn2, fn3);
 }
 
+#include <functional_impl/reference_wrapper.h>
+
 #endif

@@ -3,6 +3,16 @@
 
 namespace std
 {
+    template <class T> T *reference_wrapper_addressof(T &ref)
+    {
+        return &ref;
+    }
+
+    template <class T> T *reference_wrapper_addressof(const T &ref)
+    {
+        return &const_cast<T &>(ref);
+    }
+
     namespace detail
     {
         template <class T> T &FUN(T &t) noexcept
@@ -26,7 +36,8 @@ namespace std
                                                        remove_cvref_t<U>>>())>
         reference_wrapper(U &&u) noexcept(
             noexcept(detail::FUN<T>(std::forward<U>(u))))
-            : _ptr(std::addressof(detail::FUN<T>(std::forward<U>(u))))
+            : _ptr(reference_wrapper_addressof(
+                  detail::FUN<T>(std::forward<U>(u))))
         {
         }
         reference_wrapper(const reference_wrapper &) noexcept = default;
@@ -45,19 +56,19 @@ namespace std
             return *_ptr;
         }
 
-        template <class... ArgTypes>
+        /*template <class... ArgTypes>
         std::invoke_result_t<T &, ArgTypes...>
         operator()(ArgTypes &&... args) const
         {
             return std::invoke(get(), std::forward<ArgTypes>(args)...);
-        }
+        }*/
 
     private:
         T *_ptr;
     };
 
     // deduction guides
-    template <class T> reference_wrapper(T &) -> reference_wrapper<T>;
+    // template <class T> reference_wrapper(T &) -> reference_wrapper<T>;
 }
 
 #endif
