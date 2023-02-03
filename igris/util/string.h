@@ -8,17 +8,22 @@ __BEGIN_DECLS
 
 void *igris_memmem(const void *l, size_t l_len, const void *s, size_t s_len);
 
-void replace_substrings(char *buffer, size_t maxsize, const char *input,
-                        size_t inlen, const char *sub, size_t sublen,
-                        const char *rep, size_t replen);
+void replace_substrings(char *buffer,
+                        size_t maxsize,
+                        const char *input,
+                        size_t inlen,
+                        const char *sub,
+                        size_t sublen,
+                        const char *rep,
+                        size_t replen);
 
 __END_DECLS
 
 #ifdef __cplusplus
 
+#include <cctype>
 #include <cstdint>
 #include <cstring>
-#include <cctype>
 #include <igris/util/hexascii.h>
 #include <list>
 #include <string>
@@ -28,18 +33,23 @@ __END_DECLS
 
 namespace igris
 {
-    std::string replace(const std::string &src, const std::string &oldsub,
+    std::string replace(const std::string &src,
+                        const std::string &oldsub,
                         const std::string &newsub);
 
     std::vector<std::string> split(const igris::buffer &str, char delim = ' ');
     std::vector<std::string> split(const igris::buffer &str,
                                    const char *delims);
+    std::vector<std::string> split_cmdargs(const igris::buffer &str);
 
     std::string join(const std::vector<std::string> &, char delim);
 
     template <class Iter>
-    std::string join(Iter start, Iter end, const char *delim,
-                     const char *prefix, const char *postfix)
+    std::string join(Iter start,
+                     Iter end,
+                     const char *delim,
+                     const char *prefix,
+                     const char *postfix)
     {
         std::string ret;
 

@@ -67,3 +67,34 @@ TEST_CASE("s")
     auto output = igris::trim(input);
     CHECK_EQ(output, "s");
 }
+
+TEST_CASE("string.split_cmdargs.1")
+{
+    std::string input = "Hello abc worabcldabc";
+    auto output = igris::split_cmdargs(input);
+    CHECK_EQ(output.size(), 3);
+    CHECK_EQ(output[0], "Hello");
+    CHECK_EQ(output[1], "abc");
+    CHECK_EQ(output[2], "worabcldabc");
+}
+
+TEST_CASE("string.split_cmdargs.2")
+{
+    std::string input = "Hello abc 'wocasdc fcasdcas rabcldabc'";
+    auto output = igris::split_cmdargs(input);
+    CHECK_EQ(output.size(), 3);
+    CHECK_EQ(output[0], "Hello");
+    CHECK_EQ(output[1], "abc");
+    CHECK_EQ(output[2], "wocasdc fcasdcas rabcldabc");
+}
+
+TEST_CASE("string.split_cmdargs.3")
+{
+    std::string input = "Hello \"casdcasdc scdasdcasd 'casdcasdc ascasdc'\" "
+                        "'wocasdc fcasdcas rabcldabc'";
+    auto output = igris::split_cmdargs(input);
+    CHECK_EQ(output.size(), 3);
+    CHECK_EQ(output[0], "Hello");
+    CHECK_EQ(output[1], "casdcasdc scdasdcasd 'casdcasdc ascasdc'");
+    CHECK_EQ(output[2], "wocasdc fcasdcas rabcldabc");
+}

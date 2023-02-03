@@ -133,3 +133,54 @@ namespace igris
         return dstring(buf.data(), buf.size());
     }
 }
+
+std::vector<std::string> igris::split_cmdargs(const igris::buffer &str)
+{
+    // split string by space, but not in quotes
+
+    std::vector<std::string> outvec;
+
+    if (str.size() == 0)
+        return outvec;
+
+    char *strt;
+    char *ptr = (char *)str.data();
+    char *end = (char *)str.data() + str.size();
+
+    while (true)
+    {
+        // Skip delimiters
+        while (*ptr == ' ' && ptr != end)
+            ptr++;
+
+        if (ptr == end)
+            break;
+
+        if (*ptr == '"' || *ptr == '\'')
+        {
+            char delim = *ptr;
+            ptr++;
+            strt = ptr;
+
+            while (ptr != end && *ptr != delim)
+                ptr++;
+
+            outvec.emplace_back(strt, ptr - strt);
+            if (ptr == end)
+                break;
+
+            ptr++;
+        }
+        else
+        {
+            strt = ptr;
+
+            while (ptr != end && *ptr != ' ')
+                ptr++;
+
+            outvec.emplace_back(strt, ptr - strt);
+        }
+    }
+
+    return outvec;
+}
