@@ -70,10 +70,8 @@ TEST_CASE("sprintf")
     CHECK(strcmp("42", buf) == 0);
 
     test_prflt(buf, 42.250);
-    printf("buf: %s", buf);
     CHECK(strcmp("42.250000", buf) == 0);
 
     test_prdbl(buf, 42.250);
-    printf("buf: %s", buf);
     CHECK(strcmp("42.250000", buf) == 0);
 }
