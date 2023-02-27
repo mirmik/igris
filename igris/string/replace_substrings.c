@@ -1,8 +1,8 @@
 #include <igris/math/defs.h>
 #include <igris/util/string.h>
-#include <string.h>
-
+#include <stddef.h>
 #include <stdio.h>
+#include <string.h>
 
 void replace_substrings(char *buffer,
                         size_t maxsize,

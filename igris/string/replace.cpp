@@ -1,6 +1,6 @@
-#include <igris/util/string.h>
-
+#include <cstddef>
 #include <cstring>
+#include <igris/util/string.h>
 
 std::string igris::replace(const std::string &input,
                            const std::string &sub,

@@ -1,6 +1,7 @@
 #ifndef IGRIS_CREADER_H
 #define IGRIS_CREADER_H
 
+#include <cstddef>
 #include <cstdint>
 #include <cstring>
 #include <igris/compiler.h>

@@ -1,7 +1,6 @@
+#include <cassert>
 #include <igris/series/block.h>
 #include <igris/series/series.h>
-
-#include <cassert>
 
 void *igris::series_block::get(size_t num)
 {
@@ -15,7 +14,6 @@ const void *igris::series_block::get(size_t num) const
 
 void *igris::series_block::last()
 {
-    assert(fini - 1 >= 0);
     assert(fini - 1 < size);
     return (void *)((char *)ptr + (elemsize() * (fini - 1)));
 }

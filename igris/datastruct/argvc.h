@@ -1,6 +1,7 @@
 #ifndef IGRIS_DATASTRUCT_ARGV_H
 #define IGRIS_DATASTRUCT_ARGV_H
 
+#include <stddef.h>
 #include <string.h>
 
 // Вычислить длину первого слова строки.

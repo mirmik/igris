@@ -7,10 +7,22 @@
 
 #include <string>
 
-static int add(int argc, char **argv) { return atoi(argv[1]) + atoi(argv[2]); }
-static int sub(int argc, char **argv) { return atoi(argv[1]) - atoi(argv[2]); }
-static int mul(int argc, char **argv) { return atoi(argv[1]) * atoi(argv[2]); }
-static int div(int argc, char **argv) { return atoi(argv[1]) / atoi(argv[2]); }
+static int add(int argc, char **argv)
+{
+    return atoi(argv[1]) + atoi(argv[2]);
+}
+static int sub(int argc, char **argv)
+{
+    return atoi(argv[1]) - atoi(argv[2]);
+}
+static int mul(int argc, char **argv)
+{
+    return atoi(argv[1]) * atoi(argv[2]);
+}
+static int div(int argc, char **argv)
+{
+    return atoi(argv[1]) / atoi(argv[2]);
+}
 
 struct mshell_command commands_A[] = {
     {"add", add, "Add"}, {"sub", sub, "Sub"}, {NULL, NULL, NULL}};
@@ -22,7 +34,7 @@ struct mshell_command *command_tables[] = {commands_A, commands_B, NULL};
 
 static std::string output;
 
-static void write(void *, const char *data, unsigned int size)
+static void write(void *, const char *data, size_t size)
 {
     output += std::string(data, size);
 }

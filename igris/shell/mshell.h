@@ -19,15 +19,16 @@ __BEGIN_DECLS
 
 int mshell_execute(char *str, const struct mshell_command *cmd, int *retptr);
 
-int mshell_tables_execute(char *str, const struct mshell_command *const *cmd,
+int mshell_tables_execute(char *str,
+                          const struct mshell_command *const *cmd,
                           int *retptr);
 
 void mshell_help(const struct mshell_command *cmd,
-                 void (*write)(void *, const char *, unsigned int),
+                 void (*write)(void *, const char *, size_t),
                  void *privdata);
 
 void mshell_tables_help(const struct mshell_command *const *cmd,
-                        void (*write)(void *, const char *, unsigned int),
+                        void (*write)(void *, const char *, size_t),
                         void *privdata);
 
 __END_DECLS

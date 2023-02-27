@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <igris/shell/mshell.h>
+#include <stddef.h>
 #include <string.h>
 
 #define SSHELL_ARGCMAX 10

@@ -80,7 +80,7 @@ static int print_s(void (*printchar_handler)(void *d, int c),
     int pc, len, space_count;
 
     pc = 0;
-    len = (int)strlen(str);
+    len = strlen(str);
     if (ops & OPS_PREC_IS_GIVEN)
     {
         len = MIN(max_len, len);
@@ -119,15 +119,20 @@ static int print_i(void (*printchar_handler)(void *d, int c),
 
     str = end = &buff[0] + sizeof buff / sizeof buff[0] - 1;
     *end = '\0';
-    prefix = is_signed && ((long long int)u < 0)         ? (u = -((int)u), "-")
-             : is_signed && (ops & OPS_FLAG_WITH_SIGN)   ? "+"
-             : is_signed && (ops & OPS_FLAG_EXTRA_SPACE) ? " "
-             : (base == 8) && (ops & OPS_FLAG_WITH_SPEC) ? "0"
-             : (base == 16) && (ops & OPS_FLAG_WITH_SPEC)
-                 ? ops & OPS_SPEC_UPPER_CASE ? "0X" : "0x"
-                 : "";
+    prefix =
+        is_signed && ((long long int)u < 0)
+            ? (u = -u, "-")
+            : is_signed && (ops & OPS_FLAG_WITH_SIGN)
+                  ? "+"
+                  : is_signed && (ops & OPS_FLAG_EXTRA_SPACE)
+                        ? " "
+                        : (base == 8) && (ops & OPS_FLAG_WITH_SPEC)
+                              ? "0"
+                              : (base == 16) && (ops & OPS_FLAG_WITH_SPEC)
+                                    ? ops & OPS_SPEC_UPPER_CASE ? "0X" : "0x"
+                                    : "";
     pc = 0;
-    prefix_len = (int)strlen(prefix);
+    prefix_len = strlen(prefix);
     letter_base = ops & OPS_SPEC_UPPER_CASE ? 'A' : 'a';
 
     do
@@ -139,11 +144,12 @@ static int print_i(void (*printchar_handler)(void *d, int c),
         u /= base;
     } while (u);
 
-    len = (int)(end - str);
+    len = end - str;
     zero_count =
-        (len < min_len                                               ? min_len
-         : (ops & OPS_FLAG_ZERO_PAD) && !(ops & OPS_FLAG_LEFT_ALIGN) ? width
-                                                                     : 0) -
+        (len < min_len
+             ? min_len
+             : (ops & OPS_FLAG_ZERO_PAD) && !(ops & OPS_FLAG_LEFT_ALIGN) ? width
+                                                                         : 0) -
         len - prefix_len;
     zero_count = MAX(zero_count, 0);
     space_count = width - len - prefix_len - zero_count;
@@ -219,22 +225,23 @@ static int print_f(void (*printchar_handler)(void *d, int c),
 
     postfix = end = str = &buff[0] + sizeof buff / sizeof buff[0] - 1;
     *end = '\0';
-    prefix = signbit(r) ? (r = -r, base == 16)
-                              ? ops & OPS_SPEC_UPPER_CASE ? "-0X" : "-0x"
-                              : "-"
-             : ops & OPS_FLAG_WITH_SIGN
-                 ? base == 16 ? ops & OPS_SPEC_UPPER_CASE ? "+0X" : "+0x" : "+"
-             : ops & OPS_FLAG_EXTRA_SPACE
-                 ? base == 16 ? ops & OPS_SPEC_UPPER_CASE ? " 0X" : " 0x" : " "
-             : base == 16 ? ops & OPS_SPEC_UPPER_CASE ? "0X" : "0x"
-                          : "";
+    prefix =
+        signbit(r)
+            ? (r = -r, base == 16) ? ops & OPS_SPEC_UPPER_CASE ? "-0X" : "-0x"
+                                   : "-"
+            : ops & OPS_FLAG_WITH_SIGN
+                  ? base == 16 ? ops & OPS_SPEC_UPPER_CASE ? "+0X" : "+0x" : "+"
+                  : ops & OPS_FLAG_EXTRA_SPACE
+                        ? base == 16 ? ops & OPS_SPEC_UPPER_CASE ? " 0X" : " 0x"
+                                     : " "
+                        : base == 16 ? ops & OPS_SPEC_UPPER_CASE ? "0X" : "0x"
+                                     : "";
     sign_count = i = pc = 0;
-    prefix_len = (int)strlen(prefix);
+    prefix_len = strlen(prefix);
     letter_base = ops & OPS_SPEC_UPPER_CASE ? 'A' : 'a';
     precision = ops & OPS_PREC_IS_GIVEN
                     ? is_shortened ? MAX(precision, 1) : precision
-                : base == 16 ? 12
-                             : PRINT_F_PREC_DEFAULT;
+                    : base == 16 ? 12 : PRINT_F_PREC_DEFAULT;
 
     fp = MODF(r, &ip);
 
@@ -250,9 +257,8 @@ static int print_f(void (*printchar_handler)(void *d, int c),
             with_exp = 1;
     }
     fp = with_exp ? fp : MODF(r, &ip);
-    precision -= is_shortened ? (int)ceill(LOG10(ip)) + (ip != 0.0L) : 0;
-    for (; (sign_count < precision) && ((int)FMOD(fp, 1.0L) != 0.0L);
-         ++sign_count)
+    precision -= is_shortened ? ceill(LOG10(ip)) + (ip != 0.0L) : 0;
+    for (; (sign_count < precision) && (FMOD(fp, 1.0L) != 0.0L); ++sign_count)
         fp *= base;
     fp = roundl(fp);
 
@@ -266,7 +272,7 @@ static int print_f(void (*printchar_handler)(void *d, int c),
     {
         do
         {
-            ch = (int)FMOD(FABS(ep), base);
+            ch = FMOD(FABS(ep), base);
             if (ch >= 10)
                 ch += letter_base - 10 - '0';
             *--postfix = ch + '0';
@@ -276,15 +282,14 @@ static int print_f(void (*printchar_handler)(void *d, int c),
             *--postfix = '0';
         *--postfix = signbit(ep) ? '-' : '+';
         *--postfix = base == 16 ? ops & OPS_SPEC_UPPER_CASE ? 'P' : 'p'
-                     : ops & OPS_SPEC_UPPER_CASE ? 'E'
-                                                 : 'e';
+                                : ops & OPS_SPEC_UPPER_CASE ? 'E' : 'e';
         str = end = postfix - 1;
         *end = '\0';
     }
 
     for (; i < sign_count; ++i)
     {
-        ch = (int)FMOD(fp, base);
+        ch = FMOD(fp, base);
         if (ch >= 10)
             ch += letter_base - 10 - '0';
         *--str = ch + '0';
@@ -306,8 +311,8 @@ static int print_f(void (*printchar_handler)(void *d, int c),
         MODF(ip / base, &ip);
     } while (ip != 0.0L);
 
-    len = (int)(end - str);
-    postfix_len = (int)strlen(postfix);
+    len = end - str;
+    postfix_len = strlen(postfix);
     zero_left = is_shortened ? 0 : precision - sign_count;
     pad_count = MAX(width - prefix_len - len - zero_left - postfix_len, 0);
 
@@ -493,7 +498,7 @@ int __printf(void (*printchar_handler)(void *d, int c),
         switch (c)
         {
         default:
-            pc += (int)(format - begin) + 1;
+            pc += format - begin + 1;
             do
                 printchar_handler(printchar_data, *begin);
             while (++begin <= format);
@@ -502,14 +507,23 @@ int __printf(void (*printchar_handler)(void *d, int c),
             goto single_print;
         case 'd':
         case 'i':
-            tmp.ulli = ops & OPS_LEN_MIN        ? (signed char)va_arg(args, int)
-                       : ops & OPS_LEN_SHORT    ? (short int)va_arg(args, int)
-                       : ops & OPS_LEN_LONG     ? va_arg(args, long int)
-                       : ops & OPS_LEN_LONGLONG ? va_arg(args, long long int)
-                       : ops & OPS_LEN_MAX      ? va_arg(args, intmax_t)
-                       : ops & OPS_LEN_SIZE     ? va_arg(args, ssize_t)
-                       : ops & OPS_LEN_PTRDIFF  ? va_arg(args, ptrdiff_t)
-                                                : va_arg(args, int);
+            tmp.ulli =
+                ops & OPS_LEN_MIN
+                    ? (signed char)va_arg(args, int)
+                    : ops & OPS_LEN_SHORT
+                          ? (short int)va_arg(args, int)
+                          : ops & OPS_LEN_LONG
+                                ? va_arg(args, long int)
+                                : ops & OPS_LEN_LONGLONG
+                                      ? va_arg(args, long long int)
+                                      : ops & OPS_LEN_MAX
+                                            ? va_arg(args, intmax_t)
+                                            : ops & OPS_LEN_SIZE
+                                                  ? va_arg(args, ssize_t)
+                                                  : ops & OPS_LEN_PTRDIFF
+                                                        ? va_arg(args,
+                                                                 ptrdiff_t)
+                                                        : va_arg(args, int);
             pc += print_i(printchar_handler,
                           printchar_data,
                           tmp.ulli,
@@ -524,16 +538,24 @@ int __printf(void (*printchar_handler)(void *d, int c),
         case 'x':
         case 'X':
             tmp.ulli =
-                ops & OPS_LEN_MIN ? (unsigned char)va_arg(args, unsigned int)
-                : ops & OPS_LEN_SHORT
-                    ? (unsigned short int)va_arg(args, unsigned int)
-                : ops & OPS_LEN_LONG     ? va_arg(args, unsigned long int)
-                : ops & OPS_LEN_LONGLONG ? va_arg(args, unsigned long long int)
-                : ops & OPS_LEN_MAX      ? va_arg(args, uintmax_t)
-                : ops & OPS_LEN_SIZE     ? va_arg(args, size_t)
-                : ops & OPS_LEN_PTRDIFF
-                    ? (unsigned long long)va_arg(args, ptrdiff_t)
-                    : va_arg(args, unsigned int);
+                ops & OPS_LEN_MIN
+                    ? (unsigned char)va_arg(args, unsigned int)
+                    : ops & OPS_LEN_SHORT
+                          ? (unsigned short int)va_arg(args, unsigned int)
+                          : ops & OPS_LEN_LONG
+                                ? va_arg(args, unsigned long int)
+                                : ops & OPS_LEN_LONGLONG
+                                      ? va_arg(args, unsigned long long int)
+                                      : ops & OPS_LEN_MAX
+                                            ? va_arg(args, uintmax_t)
+                                            : ops & OPS_LEN_SIZE
+                                                  ? va_arg(args, size_t)
+                                                  : ops & OPS_LEN_PTRDIFF
+                                                        ? (unsigned long long)
+                                                              va_arg(args,
+                                                                     ptrdiff_t)
+                                                        : va_arg(args,
+                                                                 unsigned int);
             pc += print_i(printchar_handler,
                           printchar_data,
                           tmp.ulli,

@@ -15,9 +15,6 @@ const void *igris::series_iterator::pointer() const
 
 igris::series_iterator &igris::series_iterator::operator++()
 {
-    if (num == -1)
-        return *this;
-
     num++;
     if (num == block()->fini)
     {
@@ -37,19 +34,11 @@ igris::series_iterator igris::series_iterator::operator++(int)
 
 igris::series_iterator &igris::series_iterator::operator--()
 {
-    if (num == -1)
-        return *this;
-
-    auto *parent = block()->parent;
-
     num--;
     if (num == block()->strt - 1)
     {
         block_lnk = block_lnk->prev;
-        if (&parent->blocks != block_lnk)
-            num = 0;
-        else
-            num = -1;
+        num = 0;
     }
     return *this;
 }
@@ -63,17 +52,11 @@ igris::series_iterator igris::series_iterator::operator--(int)
 
 igris::series_block *igris::series_iterator::block()
 {
-    if (num == -1)
-        return nullptr;
-
     return dlist_entry(block_lnk, series_block, lnk);
 }
 
 const igris::series_block *igris::series_iterator::block() const
 {
-    if (num == -1)
-        return nullptr;
-
     return dlist_entry(block_lnk, series_block, lnk);
 }
 

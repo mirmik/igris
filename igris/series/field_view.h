@@ -2,6 +2,7 @@
 #define IGRIS_SERIES_FIELD_VIEW_H
 
 #include <igris/series/field_annotation.h>
+#include <string.h>
 
 namespace igris
 {
