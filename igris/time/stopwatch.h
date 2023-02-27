@@ -25,23 +25,26 @@ namespace igris
 
         double elapsed_ms()
         {
-            return std::chrono::duration_cast<std::chrono::milliseconds>(_stop -
-                                                                         _start)
-                .count();
+            return static_cast<double>(
+                std::chrono::duration_cast<std::chrono::milliseconds>(_stop -
+                                                                      _start)
+                    .count());
         }
 
         double elapsed_us()
         {
-            return std::chrono::duration_cast<std::chrono::microseconds>(_stop -
-                                                                         _start)
-                .count();
+            return static_cast<double>(
+                std::chrono::duration_cast<std::chrono::microseconds>(_stop -
+                                                                      _start)
+                    .count());
         }
 
         double elapsed_ns()
         {
-            return std::chrono::duration_cast<std::chrono::nanoseconds>(_stop -
-                                                                        _start)
-                .count();
+            return static_cast<double>(
+                std::chrono::duration_cast<std::chrono::nanoseconds>(_stop -
+                                                                     _start)
+                    .count());
         }
     };
 }

@@ -4,7 +4,8 @@
 
 #define SSHELL_ARGCMAX 10
 
-int mshell_execute(char *str, const struct mshell_command *cmdtable,
+int mshell_execute(char *str,
+                   const struct mshell_command *cmdtable,
                    int *retptr)
 {
     char *argv[SSHELL_ARGCMAX];
@@ -34,7 +35,8 @@ int mshell_execute(char *str, const struct mshell_command *cmdtable,
     return ENOENT;
 }
 
-int mshell_tables_execute(char *str, const struct mshell_command *const *tables,
+int mshell_tables_execute(char *str,
+                          const struct mshell_command *const *tables,
                           int *retptr)
 {
     char *argv[SSHELL_ARGCMAX];
@@ -70,7 +72,7 @@ int mshell_tables_execute(char *str, const struct mshell_command *const *tables,
 }
 
 void mshell_help(const struct mshell_command *cmdtable,
-                 void (*write)(void *, const char *, unsigned int),
+                 void (*write)(void *, const char *, size_t),
                  void *privdata)
 {
     const struct mshell_command *it = cmdtable;
@@ -88,7 +90,7 @@ void mshell_help(const struct mshell_command *cmdtable,
 }
 
 void mshell_tables_help(const struct mshell_command *const *cmdtables,
-                        void (*write)(void *, const char *, unsigned int),
+                        void (*write)(void *, const char *, size_t),
                         void *privdata)
 {
     const struct mshell_command *const *tit = cmdtables;

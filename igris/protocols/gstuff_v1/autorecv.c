@@ -1,4 +1,5 @@
 #include "autorecv.h"
+#include <igris/compiler.h>
 
 void gstuff_autorecv_reset_v1(struct gstuff_autorecv_v1 *autom)
 {
@@ -6,7 +7,8 @@ void gstuff_autorecv_reset_v1(struct gstuff_autorecv_v1 *autom)
     sline_reset(&autom->line);
 }
 
-void gstuff_autorecv_setbuf_v1(struct gstuff_autorecv_v1 *autom, void *buf,
+void gstuff_autorecv_setbuf_v1(struct gstuff_autorecv_v1 *autom,
+                               void *buf,
                                int len)
 {
     sline_init(&autom->line, buf, len);
@@ -24,8 +26,8 @@ int gstuff_autorecv_newchar_v1(struct gstuff_autorecv_v1 *autom, char c)
 
         // goto state 1 imediatly;
         autom->state = 1;
-        __attribute__((fallthrough));
-        
+        IGRIS_FALLTHROUGH
+
     case 1:
         switch (c)
         {

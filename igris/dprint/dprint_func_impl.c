@@ -2,10 +2,10 @@
  * Little endian
  */
 
-#include <stdarg.h>
-#include <stdint.h>
 #include <igris/dprint/dprint.h>
 #include <igris/util/ctype.h>
+#include <stdarg.h>
+#include <stdint.h>
 
 void debug_printbin_uint4(uint8_t b)
 {
@@ -97,7 +97,10 @@ void debug_printhex_n(uint8_t *arg, int n)
     }
 }
 
-void debug_printhex_char(char arg) { debug_printhex_uint8(arg); }
+void debug_printhex_char(char arg)
+{
+    debug_printhex_uint8(arg);
+}
 
 void debug_printhex_unsigned_char(unsigned char arg)
 {
@@ -120,7 +123,10 @@ void debug_printhex_unsigned_long_long(unsigned long long arg)
     debug_printhex_n((uint8_t *)&arg, sizeof(arg));
 }
 
-void debug_printhex_signed_char(signed char arg) { debug_printhex_uint8(arg); }
+void debug_printhex_signed_char(signed char arg)
+{
+    debug_printhex_uint8(arg);
+}
 void debug_printhex_signed_short(signed short arg)
 {
     debug_printhex_n((uint8_t *)&arg, sizeof(arg));
@@ -235,14 +241,16 @@ static inline unsigned long long __DOUBLE_BITS(double __f)
 
 static inline uint8_t __isnan(double x)
 {
-    return sizeof(x) == 4 ? (__FLOAT_BITS(x) & 0x7fffffff) > 0x7f800000
-                          : (__DOUBLE_BITS(x) & -1ULL >> 1) > 0x7ffULL << 52;
+    return sizeof(x) == 4
+               ? (__FLOAT_BITS((float)x) & 0x7fffffff) > 0x7f800000
+               : (__DOUBLE_BITS(x) & (0ULL - 1ULL) >> 1) > 0x7ffULL << 52;
 }
 
 static inline uint8_t __isinf(double x)
 {
-    return sizeof(x) == 4 ? (__FLOAT_BITS(x) & 0x7fffffff) == 0x7f800000
-                          : (__DOUBLE_BITS(x) & -1ULL >> 1) == 0x7ffULL << 52;
+    return sizeof(x) == 4
+               ? (__FLOAT_BITS((float)x) & 0x7fffffff) == 0x7f800000
+               : (__DOUBLE_BITS(x) & (0ULL - 1ULL) >> 1) == 0x7ffULL << 52;
 }
 
 void debug_printdec_double_prec(double a, int prec)
@@ -285,7 +293,7 @@ void debug_printdec_double_prec(double a, int prec)
 
     o += 0.5;
 
-    debug_printdec_signed_long_long(o);
+    debug_printdec_signed_long_long((long long)o);
 }
 
 void debug_printhex_ptr(const void *v)
@@ -346,7 +354,7 @@ void debug_print_dump(const void *mem, uint16_t len)
                 {
                     debug_putchar(' ');
                 }
-                else if (igris_isprint(*((char *)mem)+j)) /* printable char */
+                else if (igris_isprint(*((char *)mem) + j)) /* printable char */
                 {
                     debug_putchar(0xFF & ((char *)mem)[j]);
                 }
@@ -408,9 +416,18 @@ void debug_printdec_unsigned_long_long(unsigned long long x)
     debug_printdec_uint64(x);
 }
 
-void debug_printdec_uint8(uint8_t x) { debug_printdec_uint64((uint64_t)x); }
-void debug_printdec_uint16(uint16_t x) { debug_printdec_uint64((uint64_t)x); }
-void debug_printdec_uint32(uint32_t x) { debug_printdec_uint64((uint64_t)x); }
+void debug_printdec_uint8(uint8_t x)
+{
+    debug_printdec_uint64((uint64_t)x);
+}
+void debug_printdec_uint16(uint16_t x)
+{
+    debug_printdec_uint64((uint64_t)x);
+}
+void debug_printdec_uint32(uint32_t x)
+{
+    debug_printdec_uint64((uint64_t)x);
+}
 
 void debug_asmlink_test()
 {
@@ -426,10 +443,22 @@ void debug_asmlink_test()
     debug_putchar('5');
 }
 
-uint8_t debug_asmlink_ret8() { return 0xFE; }
-uint16_t debug_asmlink_ret16() { return 0xFEDC; }
-uint32_t debug_asmlink_ret32() { return 0xFEDCBA98; }
-uint64_t debug_asmlink_ret64() { return 0xFEDCBA9876543210; }
+uint8_t debug_asmlink_ret8()
+{
+    return 0xFE;
+}
+uint16_t debug_asmlink_ret16()
+{
+    return 0xFEDC;
+}
+uint32_t debug_asmlink_ret32()
+{
+    return 0xFEDCBA98;
+}
+uint64_t debug_asmlink_ret64()
+{
+    return 0xFEDCBA9876543210;
+}
 
 void debug_asmlink_args8x1(uint8_t a)
 {
@@ -539,7 +568,10 @@ void debug_asmlink_args32x4(uint32_t a, uint32_t b, uint32_t c, uint32_t d)
     debug_putchar(':');
 }
 
-void dprptr(const void *ptr) { debug_printhex_ptr(ptr); }
+void dprptr(const void *ptr)
+{
+    debug_printhex_ptr(ptr);
+}
 
 void dprptrln(const void *ptr)
 {

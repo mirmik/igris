@@ -48,29 +48,32 @@ static int test_sprintf(char *buf, const char *format, ...)
     return ret;
 }*/
 
-static void test_prflt(char * buf, float fl) 
+static void test_prflt(char *buf, float fl)
 {
-	test_sprintf(buf, "%lf", fl);
-} 
+    test_sprintf(buf, "%lf", fl);
+}
 
-static void test_prdbl(char * buf, double fl) 
+static void test_prdbl(char *buf, double fl)
 {
-	test_sprintf(buf, "%lf", fl);
-} 
+    test_sprintf(buf, "%lf", fl);
+}
 
-TEST_CASE("sprintf") 
+#include <stdio.h>
+TEST_CASE("sprintf")
 {
-	char buf[48];
+    char buf[48];
     memset(buf, 0, 48);
-	test_sprintf(buf, "%d", 42);
-	CHECK(strcmp("42", buf) == 0);
+    test_sprintf(buf, "%d", 42);
+    CHECK(strcmp("42", buf) == 0);
 
-	test_sprintf(buf, "%ld", 42);
-	CHECK(strcmp("42", buf) == 0);
+    test_sprintf(buf, "%ld", 42);
+    CHECK(strcmp("42", buf) == 0);
 
-	test_prflt(buf, 42.250);
-	CHECK(strcmp("42.250000", buf) == 0);
+    test_prflt(buf, 42.250);
+    printf("buf: %s", buf);
+    CHECK(strcmp("42.250000", buf) == 0);
 
-	test_prdbl(buf, 42.250);
-	CHECK(strcmp("42.250000", buf) == 0);
+    test_prdbl(buf, 42.250);
+    printf("buf: %s", buf);
+    CHECK(strcmp("42.250000", buf) == 0);
 }

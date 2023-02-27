@@ -62,7 +62,7 @@ __BEGIN_DECLS
 
 static inline void readline_init(struct readline *rl, char *buf, size_t len)
 {
-    sline_init(&rl->line, buf, len);
+    sline_init(&rl->line, buf, (unsigned int)len);
 
     rl->last = 0;
     rl->state = 0;
@@ -71,8 +71,8 @@ static inline void readline_init(struct readline *rl, char *buf, size_t len)
     rl->headhist = 0;
 }
 
-static inline void readline_history_init(struct readline *rl, char *hs,
-                                         int hsize)
+static inline void
+readline_history_init(struct readline *rl, char *hs, int hsize)
 {
     rl->history_space = hs;
     rl->history_size = hsize;
@@ -101,8 +101,8 @@ static inline char *readline_current_history_pointer(struct readline *rl)
     return readline_history_pointer(rl, rl->curhist);
 }
 
-static inline void _readline_push_line_to_history(struct readline *rl,
-                                                  const char *str, size_t len)
+static inline void
+_readline_push_line_to_history(struct readline *rl, const char *str, size_t len)
 {
     char *ptr = rl->history_space + rl->headhist * rl->line.cap;
     memcpy(ptr, str, len);
@@ -134,7 +134,8 @@ static inline void readline_load_history_line(struct readline *rl)
         return;
     }
 
-    unsigned int sz = strlen(readline_current_history_pointer(rl));
+    unsigned int sz =
+        (unsigned int)strlen(readline_current_history_pointer(rl));
 
     memcpy(rl->line.buf, readline_current_history_pointer(rl), sz);
     rl->line.len = rl->line.cursor = sz;
@@ -296,8 +297,8 @@ static inline int readline_putchar(struct readline *rl, char c)
     return retcode;
 }
 
-static inline int readline_linecpy(struct readline *rl, char *line,
-                                   size_t maxlen)
+static inline int
+readline_linecpy(struct readline *rl, char *line, size_t maxlen)
 {
     int len = (int)maxlen - 1 > (int)rl->line.len ? (int)rl->line.len
                                                   : (int)maxlen - 1;

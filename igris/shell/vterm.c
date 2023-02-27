@@ -2,8 +2,10 @@
 #include <igris/defs/vt100.h>
 #include <igris/shell/vterm.h>
 
-void vterm_automate_init(struct vterm_automate *vterm, char *buffer,
-                         unsigned int buffer_size, char *hbuffer,
+void vterm_automate_init(struct vterm_automate *vterm,
+                         char *buffer,
+                         unsigned int buffer_size,
+                         char *hbuffer,
                          unsigned int history_size)
 {
     vterm->state = 0;
@@ -41,9 +43,10 @@ void vterm_automate_newdata(struct vterm_automate *vterm, int16_t input_c)
             readline_newline_reset(&vterm->rl);
             if (vterm->echo)
             {
-                vterm->write_callback(vterm->write_privdata,
-                                      vterm->prefix_string,
-                                      strlen(vterm->prefix_string));
+                vterm->write_callback(
+                    vterm->write_privdata,
+                    vterm->prefix_string,
+                    (unsigned int)strlen(vterm->prefix_string));
             }
             vterm->state = 2;
             break;
@@ -56,7 +59,7 @@ void vterm_automate_newdata(struct vterm_automate *vterm, int16_t input_c)
             }
             else
             {
-                c = input_c;
+                c = (char)input_c;
                 input_c = -1;
                 vterm->state = 3;
             }
@@ -118,7 +121,8 @@ void vterm_automate_newdata(struct vterm_automate *vterm, int16_t input_c)
                     vterm->write_callback(vterm->write_privdata, VT100_LEFT, 3);
 
                     vterm->write_callback(vterm->write_privdata,
-                                          VT100_ERASE_LINE_AFTER_CURSOR, 3);
+                                          VT100_ERASE_LINE_AFTER_CURSOR,
+                                          3);
                 }
                 if (!sline_in_rightpos(&vterm->rl.line))
                 {
@@ -141,8 +145,8 @@ void vterm_automate_newdata(struct vterm_automate *vterm, int16_t input_c)
 
             case READLINE_RIGHT:
                 if (vterm->echo)
-                    vterm->write_callback(vterm->write_privdata, VT100_RIGHT,
-                                          3);
+                    vterm->write_callback(
+                        vterm->write_privdata, VT100_RIGHT, 3);
                 break;
 
             case READLINE_LEFT:
@@ -166,7 +170,8 @@ void vterm_automate_newdata(struct vterm_automate *vterm, int16_t input_c)
                         vterm->write_callback(vterm->write_privdata, buf, ret);
 
                         vterm->write_callback(vterm->write_privdata,
-                                              VT100_ERASE_LINE_AFTER_CURSOR, 3);
+                                              VT100_ERASE_LINE_AFTER_CURSOR,
+                                              3);
                     }
                 }
 
@@ -184,7 +189,8 @@ void vterm_automate_newdata(struct vterm_automate *vterm, int16_t input_c)
                 if (vterm->echo)
                 {
                     vterm->write_callback(vterm->write_privdata,
-                                          VT100_ERASE_LINE_AFTER_CURSOR, 3);
+                                          VT100_ERASE_LINE_AFTER_CURSOR,
+                                          3);
                 }
                 if (!sline_in_rightpos(&vterm->rl.line))
                 {

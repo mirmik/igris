@@ -5,13 +5,13 @@
 
 void debug_putchar(char c)
 {
-    int _ = fwrite(&c, sizeof(char), 1, stdout);
+    size_t _ = fwrite(&c, sizeof(char), 1, stdout);
     (void)_;
 }
 
 void debug_write(const char *c, int i)
 {
-    int _ = fwrite(c, sizeof(char), i, stdout);
+    size_t _ = fwrite(c, sizeof(char), i, stdout);
     (void)_;
 }
 

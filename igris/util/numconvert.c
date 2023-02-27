@@ -5,7 +5,7 @@
 #include <math.h>
 #include <string.h>
 
-char *i64toa(int64_t num, char *buf, uint8_t base)
+char *igris_i64toa(int64_t num, char *buf, uint8_t base)
 {
     char *p = buf;
     char *p1, *p2;
@@ -59,22 +59,22 @@ char *i64toa(int64_t num, char *buf, uint8_t base)
     return p;
 }
 
-char *i32toa(int32_t num, char *buf, uint8_t base)
+char *igris_i32toa(int32_t num, char *buf, uint8_t base)
 {
-    return i64toa(num, buf, base);
+    return igris_i64toa((int64_t)num, buf, base);
 }
 
-char *i16toa(int16_t num, char *buf, uint8_t base)
+char *igris_i16toa(int16_t num, char *buf, uint8_t base)
 {
-    return i64toa(num, buf, base);
+    return igris_i64toa((int64_t)num, buf, base);
 }
 
-char *i8toa(int8_t num, char *buf, uint8_t base)
+char *igris_i8toa(int8_t num, char *buf, uint8_t base)
 {
-    return i64toa(num, buf, base);
+    return igris_i64toa((int64_t)num, buf, base);
 }
 
-char *u64toa(uint64_t num, char *buf, uint8_t base)
+char *igris_u64toa(uint64_t num, char *buf, uint8_t base)
 {
     char *p = buf;
     char *p1, *p2;
@@ -118,19 +118,19 @@ char *u64toa(uint64_t num, char *buf, uint8_t base)
     return p;
 }
 
-char *u32toa(uint64_t num, char *buf, uint8_t base)
+char *igris_u32toa(uint32_t num, char *buf, uint8_t base)
 {
-    return u64toa(num, buf, base);
+    return igris_u64toa((uint64_t)num, buf, base);
 }
 
-char *u16toa(uint64_t num, char *buf, uint8_t base)
+char *igris_u16toa(uint16_t num, char *buf, uint8_t base)
 {
-    return u64toa(num, buf, base);
+    return igris_u64toa((uint64_t)num, buf, base);
 }
 
-char *u8toa(uint64_t num, char *buf, uint8_t base)
+char *igris_u8toa(uint8_t num, char *buf, uint8_t base)
 {
-    return u64toa(num, buf, base);
+    return igris_u64toa((uint64_t)num, buf, base);
 }
 
 uint32_t igris_atou32(const char *buf, uint8_t base, char **end)
@@ -165,6 +165,16 @@ uint64_t igris_atou64(const char *buf, uint8_t base, char **end)
     return res;
 }
 
+uint16_t igris_atou16(const char *buf, uint8_t base, char **end)
+{
+    return igris_atou32(buf, base, end);
+}
+
+uint8_t igris_atou8(const char *buf, uint8_t base, char **end)
+{
+    return igris_atou32(buf, base, end);
+}
+
 int32_t igris_atoi32(const char *buf, uint8_t base, char **end)
 {
     uint8_t minus;
@@ -191,6 +201,16 @@ int64_t igris_atoi64(const char *buf, uint8_t base, char **end)
     return minus ? -u : u;
 }
 
+int16_t igris_atoi16(const char *buf, uint8_t base, char **end)
+{
+    return igris_atoi32(buf, base, end);
+}
+
+int8_t igris_atoi8(const char *buf, uint8_t base, char **end)
+{
+    return igris_atoi32(buf, base, end);
+}
+
 #define MAX_PRECISION (10)
 static const double rounders[MAX_PRECISION + 1] = {
     0.5,          // 0
@@ -206,7 +226,7 @@ static const double rounders[MAX_PRECISION + 1] = {
     0.00000000005 // 10
 };
 
-char *f32toa(float32_t f, char *buf, int8_t precision)
+char *igris_f32toa(float32_t f, char *buf, int8_t precision)
 {
     char *ptr = buf;
     char *p = ptr;
@@ -258,10 +278,10 @@ char *f32toa(float32_t f, char *buf, int8_t precision)
 
     // round value according the precision
     if (precision)
-        f += rounders[precision];
+        f += (float32_t)rounders[precision];
 
     // integer part...
-    intPart = f;
+    intPart = (int32_t)f;
     f -= intPart;
 
     if (!intPart)
@@ -303,7 +323,7 @@ char *f32toa(float32_t f, char *buf, int8_t precision)
         while (precision--)
         {
             f *= 10.0;
-            c = f;
+            c = (char)f;
             *ptr++ = '0' + c;
             f -= c;
         }
@@ -315,7 +335,7 @@ char *f32toa(float32_t f, char *buf, int8_t precision)
     return buf;
 }
 
-static inline double local_pow(int b, int n)
+static inline int64_t local_pow(int b, int n)
 {
     int64_t res = 1;
     while (n--)
@@ -346,7 +366,8 @@ float32_t igris_atof32(const char *str, char **pend)
         if (pend)
             *pend = end;
 
-        float ret = (float)u + ((double)d) / ((double)local_pow(10, end - str));
+        float ret = (float)u + (float)((double)d /
+                                       (double)local_pow(10, (int)(end - str)));
         return minus ? -ret : ret;
     }
 
@@ -359,9 +380,9 @@ float32_t igris_atof32(const char *str, char **pend)
 }
 
 #ifndef WITHOUT_FLOAT64
-char *f64toa(float64_t f, char *buf, int8_t precision)
+char *igris_f64toa(float64_t f, char *buf, int8_t precision)
 {
-    return f32toa(f, buf, precision);
+    return igris_f32toa((float32_t)f, buf, precision);
 }
 
 float64_t igris_atof64(const char *nptr, char **endptr)
@@ -444,30 +465,6 @@ float64_t igris_atof64(const char *nptr, char **endptr)
 
     return sign * val;
 }
-
-char *igris_i64toa(int64_t num, char *buf, uint8_t base)
-{
-    return i64toa(num, buf, base);
-}
-char *igris_i32toa(int32_t num, char *buf, uint8_t base)
-{
-    return i32toa(num, buf, base);
-}
-char *igris_f32toa(float32_t f, char *buf, int8_t precision)
-{
-    return f32toa(f, buf, precision);
-}
-#ifndef WITHOUT_ATOF64
-char *igris_f64toa(float64_t f, char *buf, int8_t precision)
-{
-    return f64toa(f, buf, precision);
-}
-#else
-char *igris_f64toa(float32_t f, char *buf, int8_t precision)
-{
-    return f32toa(f, buf, precision);
-}
-#endif
 
 #ifndef WITHOUT_ATOF64
 double igris_strtod(const char *nptr, char **endptr)

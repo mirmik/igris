@@ -16,11 +16,7 @@ namespace igris
         dlist_head list = DLIST_HEAD_INIT(list);
 
         // SUBCLASSES:
-        class iterator : public std::iterator<std::bidirectional_iterator_tag,
-                                              type,
-                                              ptrdiff_t,
-                                              type *,
-                                              type &>
+        class iterator
         {
         public:
             using value_type = type;

@@ -1,28 +1,31 @@
+#include <igris/datastruct/dlist.h>
+#include <igris/math.h>
 #include <igris/series/block.h>
 #include <igris/series/iterator.h>
 #include <igris/series/series.h>
-#include <igris/util/string.h>
-#include <igris/math.h>
-#include <igris/util/numconvert.h>
-#include <igris/datastruct/dlist.h>
 #include <igris/util/bug.h>
+#include <igris/util/numconvert.h>
+#include <igris/util/string.h>
 
-#include <stdexcept>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 igris::series::series() : _elemsize(0) {}
-igris::series::series(int elemsize) : _elemsize(elemsize) {}
+igris::series::series(size_t elemsize) : _elemsize(elemsize) {}
 
-void igris::series::set_elemsize(size_t size) 
+void igris::series::set_elemsize(size_t size)
 {
     _elemsize = size;
 }
 
-void igris::series::reserve(int size) { add_block(size); }
+void igris::series::reserve(size_t size)
+{
+    add_block(size);
+}
 
-void igris::series::add_block(int size)
+void igris::series::add_block(size_t size)
 {
     void *ptr = allocator.allocate(size * _elemsize);
     memset(ptr, 0, size * _elemsize);
@@ -31,9 +34,9 @@ void igris::series::add_block(int size)
     dlist_add(&block->lnk, &blocks);
 }
 
-int igris::series::right_capacity()
+size_t igris::series::right_capacity()
 {
-    int accum = 0;
+    size_t accum = 0;
 
     igris::series_block *block;
     dlist_for_each_entry(block, &blocks, lnk)
@@ -56,9 +59,9 @@ igris::series::~series()
     }
 }
 
-int igris::series::size()
+size_t igris::series::size()
 {
-    int accum = 0;
+    size_t accum = 0;
 
     igris::series_block *block;
     dlist_for_each_entry(block, &blocks, lnk)
@@ -84,7 +87,10 @@ void *igris::series::emplace()
     return last_block()->emplace();
 }
 
-igris::series_field_annotator &igris::series::annotator() { return _annotator; }
+igris::series_field_annotator &igris::series::annotator()
+{
+    return _annotator;
+}
 
 void igris::series::push_csv_string_parse(const std::string &str)
 {
@@ -99,21 +105,21 @@ void igris::series::push_csv_string_parse(const std::string &str)
     }
 }
 
-int igris::series::push_object(void* data, size_t size) 
+int igris::series::push_object(void *data, size_t size)
 {
     void *ptr = emplace();
     memcpy(ptr, data, elemsize());
-    
-    if (size != elemsize()) 
+
+    if (size != elemsize())
         return -1;
-    
+
     return 0;
 }
 
-igris::series_iterator igris::series::get_iterator(int num)
+igris::series_iterator igris::series::get_iterator(size_t num)
 {
-    int64_t accum = 0;
-    int64_t saccum;
+    size_t accum = 0;
+    size_t saccum;
 
     igris::series_block *block;
     dlist_for_each_entry(block, &blocks, lnk)
@@ -129,7 +135,7 @@ igris::series_iterator igris::series::get_iterator(int num)
     }
 
     return end();
-    //throw std::range_error("series_iterator range error");
+    // throw std::range_error("series_iterator range error");
 }
 
 igris::series_iterator igris::series::begin()
@@ -139,52 +145,56 @@ igris::series_iterator igris::series::begin()
 
 igris::series_iterator igris::series::last_iterator()
 {
-    return {blocks.prev, dlist_last_entry(&blocks, series_block, lnk)->fini-1};
+    return {blocks.prev,
+            dlist_last_entry(&blocks, series_block, lnk)->fini - 1};
 }
 
-igris::series_iterator igris::series::end() { return {&blocks, 0}; }
+igris::series_iterator igris::series::end()
+{
+    return {&blocks, 0};
+}
 
 igris::series_block *igris::series::last_block()
 {
     return dlist_entry(blocks.prev, series_block, lnk);
 }
 
-igris::series_field_annotation* igris::series::find_annotation(
-    const std::string &name)
+igris::series_field_annotation *
+igris::series::find_annotation(const std::string &name)
 {
     return _annotator.find_annotation(name);
 }
 
-void igris::series::parse_csv_istream(std::istream& input) 
+void igris::series::parse_csv_istream(std::istream &input)
 {
     std::string str;
 
     // read header
     std::getline(input, str);
     auto headers = igris::split(str, ',');
-    
+
     // Пока считаем все поля за тип double
-    for (auto & header : headers) 
+    for (auto &header : headers)
     {
         annotator().add<double>(header);
     }
     set_elemsize(headers.size() * sizeof(double));
 
-    while (std::getline(input, str)) 
+    while (std::getline(input, str))
     {
         auto values = igris::split(str, ',');
-        double * data = (double*)emplace();
-        for (size_t i = 0; i < values.size(); ++i) 
+        double *data = (double *)emplace();
+        for (size_t i = 0; i < values.size(); ++i)
         {
             data[i] = std::stod(values[i]);
         }
     }
 }
 
-void igris::series::parse_csv_file(const std::string& path) 
+void igris::series::parse_csv_file(const std::string &path)
 {
     std::fstream file(path);
-    if (!file) 
+    if (!file)
     {
         throw std::invalid_argument("wrong file path");
     }

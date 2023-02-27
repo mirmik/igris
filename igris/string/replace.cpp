@@ -2,7 +2,8 @@
 
 #include <cstring>
 
-std::string igris::replace(const std::string &input, const std::string &sub,
+std::string igris::replace(const std::string &input,
+                           const std::string &sub,
                            const std::string &rep)
 {
     std::string output;
@@ -17,10 +18,10 @@ std::string igris::replace(const std::string &input, const std::string &sub,
     }
 
     char *finded;
-    while ((finded = (char *)igris_memmem(strit, streit - strit, sub.data(),
-                                          sub.size())) != NULL)
+    while ((finded = (char *)igris_memmem(
+                strit, streit - strit, sub.data(), sub.size())) != NULL)
     {
-        int step = finded - strit;
+        ptrdiff_t step = finded - strit;
 
         output.append(strit, step);
         strit += step;

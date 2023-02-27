@@ -41,7 +41,7 @@ TEST_CASE("hexascii")
     CHECK_EQ(hex2half('D'), 13);
     CHECK_EQ(hex2half('E'), 14);
     CHECK_EQ(hex2half('F'), 15);
-    
+
     CHECK_EQ(half2hex(0), '0');
     CHECK_EQ(half2hex(1), '1');
     CHECK_EQ(half2hex(2), '2');

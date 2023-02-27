@@ -9,7 +9,7 @@ TEST_CASE("creader.readline")
 
     struct creader reader;
     const char *token;
-    int len;
+    ptrdiff_t len;
 
     creader_init(&reader, str, strlen(str));
 

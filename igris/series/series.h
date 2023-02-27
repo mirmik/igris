@@ -22,14 +22,14 @@ namespace igris
     {
     public:
         dlist_head blocks = DLIST_HEAD_INIT(blocks);
-        int _elemsize = 0;
-        int block_size_hint = 100;
+        size_t _elemsize = 0;
+        size_t block_size_hint = 100;
         igris::series_field_annotator _annotator = {};
         std::allocator<char> allocator = {};
 
     public:
         series();
-        series(int elemsize);
+        series(size_t elemsize);
         series(const series &) = delete;
         series(series &&oth)
         {
@@ -45,12 +45,12 @@ namespace igris
         {
             return _elemsize;
         }
-        void reserve(int size);
-        void add_block(int size);
+        void reserve(size_t size);
+        void add_block(size_t size);
         void pop_block();
 
-        int size();
-        int right_capacity();
+        size_t size();
+        size_t right_capacity();
 
         void pop_back();
         void pop_front();
@@ -71,7 +71,7 @@ namespace igris
         series_iterator begin();
         series_iterator end();
 
-        series_iterator get_iterator(int num);
+        series_iterator get_iterator(size_t num);
 
         template <class T> T *emplace()
         {
@@ -81,7 +81,7 @@ namespace igris
         void *emplace();
         series_block *last_block();
 
-        template <class T> T &get(int i);
+        template <class T> T &get(size_t i);
         template <class T> T &last();
         series_iterator last_iterator();
 
@@ -115,7 +115,7 @@ namespace igris
 #include <igris/series/block.h>
 #include <igris/series/fiber.h>
 
-template <class T> T &igris::series::get(int i)
+template <class T> T &igris::series::get(size_t i)
 {
     assert(last_block()->fini - last_block()->strt > 0);
     return *(T *)(get_iterator(i).pointer());

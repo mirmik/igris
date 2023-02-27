@@ -31,8 +31,8 @@ namespace igris
     public:
         std::string machname;   // имя поля
         std::string username;   // имя поля
-        int offset;             // смещение в битах
-        int size;               // размер
+        size_t offset;          // смещение в битах
+        size_t size;            // размер
         FieldDataType datatype; // тип
 
         union _u
@@ -49,9 +49,9 @@ namespace igris
 
     public:
         series_field_annotation(const std::string &machname,
-                                const std::string &username, 
-                                int offset,
-                                int size, 
+                                const std::string &username,
+                                size_t offset,
+                                size_t size,
                                 FieldDataType datatype);
 
         series_field_annotation() = default;
@@ -134,11 +134,12 @@ namespace igris
     };
 
     template <class T>
-    series_field_annotation
-    make_series_field_annotation(const std::string &machname,
-                                 const std::string &username, int offset)
+    series_field_annotation make_series_field_annotation(
+        const std::string &machname, const std::string &username, int offset)
     {
-        return series_field_annotation(machname, username, offset,
+        return series_field_annotation(machname,
+                                       username,
+                                       offset,
                                        series_field_annotation_helper<T>::size,
                                        series_field_annotation_helper<T>::type);
     }

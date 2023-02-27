@@ -48,7 +48,7 @@ int gstuffing_v(struct iovec *vec, size_t n, char *outdata)
     }
     outdata += gstuff_byte(crc, outdata);
     *outdata++ = GSTUFF_STOP;
-    return outdata - outstrt;
+    return (int)(outdata - outstrt);
 }
 
 void gstuff_autorecv::init(uint8_t *buf, int len)

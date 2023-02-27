@@ -36,5 +36,5 @@ int gstuffing_v1(char *data, int size, char *outdata)
     *outdata++ = crc;
     *outdata++ = GSTUFF_START_V1;
 
-    return outdata - outstrt;
+    return (int)(outdata - outstrt);
 }

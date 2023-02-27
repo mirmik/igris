@@ -19,10 +19,10 @@ static inline int vt100_left(char *buf, int arg)
 
     buf[0] = '\x1B';
     buf[1] = '[';
-    eptr = i32toa(arg, buf + 2, 10);
+    eptr = igris_i32toa(arg, buf + 2, 10);
     *eptr = 'D';
     *(eptr + 1) = 0;
-    return eptr - buf + 1;
+    return (int)(eptr - buf) + 1;
 }
 
 __END_DECLS

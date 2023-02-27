@@ -4,9 +4,14 @@
 
 #include <stdio.h>
 
-void replace_substrings(char *buffer, size_t maxsize, const char *input,
-                        size_t inlen, const char *sub, size_t sublen,
-                        const char *rep, size_t replen)
+void replace_substrings(char *buffer,
+                        size_t maxsize,
+                        const char *input,
+                        size_t inlen,
+                        const char *sub,
+                        size_t sublen,
+                        const char *rep,
+                        size_t replen)
 {
     const char *strit = input;
     const char *streit = input + inlen;
@@ -14,7 +19,7 @@ void replace_substrings(char *buffer, size_t maxsize, const char *input,
 
     if (sublen == 0)
     {
-        int len = __MIN__(maxsize - 1, inlen);
+        size_t len = __MIN__(maxsize - 1, inlen);
         memcpy(buffer, input, len);
         buffer[len] = 0;
     }
@@ -22,7 +27,7 @@ void replace_substrings(char *buffer, size_t maxsize, const char *input,
     char *finded;
     while ((finded = igris_memmem(strit, streit - strit, sub, sublen)) != NULL)
     {
-        int step = finded - strit;
+        ptrdiff_t step = finded - strit;
 
         memcpy(bufit, strit, step);
         bufit += step;
@@ -33,7 +38,7 @@ void replace_substrings(char *buffer, size_t maxsize, const char *input,
         strit += sublen;
     };
 
-    int lastlen = streit - strit;
+    ptrdiff_t lastlen = streit - strit;
     memcpy(bufit, strit, lastlen);
     *(bufit + lastlen) = 0;
 }

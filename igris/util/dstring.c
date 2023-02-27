@@ -1,6 +1,6 @@
+#include <igris/util/ctype.h>
 #include <igris/util/dstring.h>
 #include <igris/util/hexascii.h>
-#include <igris/util/ctype.h>
 
 int bytes_to_dstring(char *out, const void *data, size_t size)
 {
@@ -44,5 +44,5 @@ int bytes_to_dstring(char *out, const void *data, size_t size)
     }
     *dst = '\0';
 
-    return dst - out;
+    return (int)(dst - out);
 }

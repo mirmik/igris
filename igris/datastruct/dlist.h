@@ -16,8 +16,8 @@
  * under normal circumstances, used to verify that nobody uses
  * non-initialized list entries.
  */
-#define DLIST_POISON1 ((struct dlist_head *)0xDEADC0DE)
-#define DLIST_POISON2 ((struct dlist_head *)0xDEADC9DE)
+#define DLIST_POISON1 ((struct dlist_head *)(uintptr_t)0xDEADC0DE)
+#define DLIST_POISON2 ((struct dlist_head *)(uintptr_t)0xDEADC9DE)
 
 /** Simple doubly linked list implementation.
  *
@@ -63,7 +63,8 @@ static inline void dlist_init(struct dlist_head *head)
  * This is only for internal list manipulation where we know
  * the prev/next entries already!
  */
-static inline void __dlist_add(struct dlist_head *lnk, struct dlist_head *next,
+static inline void __dlist_add(struct dlist_head *lnk,
+                               struct dlist_head *next,
                                struct dlist_head *prev)
 {
     lnk->prev = prev;
@@ -215,16 +216,19 @@ __END_DECLS
 
 #define dlist_for_each_entry(pos, head, member)                                \
     for (pos = dlist_first_entry(head, decltypeof(*pos), member);              \
-         &pos->member != (head); pos = dlist_next_entry(pos, member))
+         &pos->member != (head);                                               \
+         pos = dlist_next_entry(pos, member))
 
 #define dlist_for_each_entry_reverse(pos, head, member)                        \
     for (pos = dlist_last_entry(head, decltypeof(*pos), member);               \
-         &pos->member != (head); pos = dlist_prev_entry(pos, member))
+         &pos->member != (head);                                               \
+         pos = dlist_prev_entry(pos, member))
 
 #define dlist_for_each_entry_safe(pos, n, head, member)                        \
     for (pos = dlist_first_entry(head, decltypeof(*pos), member),              \
         n = dlist_next_entry(pos, member);                                     \
-         &pos->member != (head); pos = n, n = dlist_next_entry(n, member))
+         &pos->member != (head);                                               \
+         pos = n, n = dlist_next_entry(n, member))
 
 __BEGIN_DECLS
 
@@ -294,7 +298,10 @@ static inline void dlist_debug_print(struct dlist_head *head)
     struct dlist_head *it;
 
     dlist_debug_print_node("head: ", head);
-    dlist_for_each(it, head) { dlist_debug_print_node("node: ", it); }
+    dlist_for_each(it, head)
+    {
+        dlist_debug_print_node("node: ", it);
+    }
 }
 
 /// Выясняет количество нодов в кольце за исключением этого.
@@ -303,7 +310,10 @@ static inline int dlist_size(struct dlist_head *head)
     struct dlist_head *it;
     int sz = 0;
 
-    dlist_for_each(it, head) { ++sz; }
+    dlist_for_each(it, head)
+    {
+        ++sz;
+    }
 
     return sz;
 }
@@ -315,7 +325,10 @@ static inline int dlist_size_reversed(struct dlist_head *head)
     struct dlist_head *it;
     int sz = 0;
 
-    dlist_for_each_reverse(it, head) { ++sz; }
+    dlist_for_each_reverse(it, head)
+    {
+        ++sz;
+    }
 
     return sz;
 }

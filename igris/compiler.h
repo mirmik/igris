@@ -6,14 +6,13 @@
 #ifndef IGRIS_UTIL_COMPILER_H
 #define IGRIS_UTIL_COMPILER_H
 
-//#if defined(WIN32) || !defined(__WIN32__)  
+#if _MSC_VER && !__INTEL_COMPILER
+#define IGRIS_DEPRECATED(msg)
+#define IGRIS_FALLTHROUGH
+#else
 #define IGRIS_DEPRECATED(msg) __attribute__((deprecated(msg)))
-#define IGRIS_FALLTHROW __attribute__((fallthrough));
-//#else
-//#define IGRIS_DEPRECATED(msg) 
-//#define IGRIS_FALLTHROW 
-//#endif
-
+#define IGRIS_FALLTHROUGH __attribute__((fallthrough));
+#endif
 
 #ifdef _MSC_VER
 #define __NORETURN

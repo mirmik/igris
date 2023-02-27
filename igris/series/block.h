@@ -15,17 +15,17 @@ namespace igris
     public:
         igris::series *parent;
         void *ptr;
-        int size;
-        int strt = 0;
-        int fini = 0;
+        size_t size;
+        size_t strt = 0;
+        size_t fini = 0;
 
     public:
-        int elemsize() const;
-        void *get(int num);
-        const void *get(int num) const;
+        size_t elemsize() const;
+        void *get(size_t num);
+        const void *get(size_t num) const;
         void *last();
 
-        series_block(igris::series *parent, void *ptr, int size);
+        series_block(igris::series *parent, void *ptr, size_t size);
 
         bool has_place() const;
         void *emplace();

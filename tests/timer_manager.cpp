@@ -21,10 +21,6 @@ static void inc_b(int b)
 TEST_CASE("TimerManager")
 {
     auto current_time = igris::millis();
-    (void)current_time;
-    (void)inc_a;
-    (void)inc_b;
-
     igris::timer_manager manager;
     igris::timer<int> tim1(igris::make_delegate(inc_b), 14);
     igris::timer<int, igris::timer_head *> tim0(

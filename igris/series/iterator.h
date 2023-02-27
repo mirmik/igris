@@ -12,18 +12,21 @@ namespace igris
     {
     public:
         dlist_head *block_lnk;
-        int num;
+        size_t num;
 
     public:
         series_iterator() : block_lnk(nullptr), num(0){};
-        series_iterator(dlist_head *block_lnk, int num);
+        series_iterator(dlist_head *block_lnk, size_t num);
 
         series_iterator(const series_iterator &) = default;
 
-        bool inited() { return block_lnk != nullptr; }
-        series_iterator& operator++();
+        bool inited()
+        {
+            return block_lnk != nullptr;
+        }
+        series_iterator &operator++();
         series_iterator operator++(int);
-        series_iterator& operator--();
+        series_iterator &operator--();
         series_iterator operator--(int);
 
         bool operator!=(const series_iterator &oth) const
@@ -42,10 +45,16 @@ namespace igris
         series_block *block();
         const series_block *block() const;
 
-        template <class T> T &get() { return *(T *)pointer(); }
+        template <class T> T &get()
+        {
+            return *(T *)pointer();
+        }
 
         /// Разметить над объектом шаблон для обращение через поля.
-        template <class T> T &view() { return *(T *)pointer(); }
+        template <class T> T &view()
+        {
+            return *(T *)pointer();
+        }
     };
 }
 

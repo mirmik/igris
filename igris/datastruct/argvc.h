@@ -4,7 +4,7 @@
 #include <string.h>
 
 // Вычислить длину первого слова строки.
-static inline int argvc_length_of_first(const char *str)
+static inline ptrdiff_t argvc_length_of_first(const char *str)
 {
     const char *strt = str;
 
@@ -58,8 +58,8 @@ static inline int argvc_internal_split(char *data, char **argv, int argcmax)
 
 // Безопасный вариант функции argvc_internal_split, дополнительно
 // проверяющий длину строки (может не быть терминирована).
-static inline int argvc_internal_split_n(char *data, int maxlen, char **argv,
-                                         int argcmax)
+static inline int
+argvc_internal_split_n(char *data, int maxlen, char **argv, int argcmax)
 {
     const char *ws = " \r\n\t";
     int argc = 0;

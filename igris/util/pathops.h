@@ -3,10 +3,10 @@
 #ifndef IGRIS_PATHOPS_H
 #define IGRIS_PATHOPS_H
 
+#include <cstring>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <cstring>
 
 #include <igris/util/bug.h>
 
@@ -48,7 +48,7 @@ static inline const char *path_next(const char *path, unsigned int *p_len)
             ++end;
         }
 
-        *p_len = end - path;
+        *p_len = (unsigned int)(end - path);
     }
 
     return path;
@@ -93,7 +93,10 @@ static inline int path_is_double_dot(const char *path)
            (*(path + 2) == '/' || *(path + 2) == '\0');
 }
 
-static inline int path_is_abs(const char *path) { return path[0] == '/'; }
+static inline int path_is_abs(const char *path)
+{
+    return path[0] == '/';
+}
 
 static inline int path_is_simple(const char *path)
 {

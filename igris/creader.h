@@ -1,9 +1,9 @@
 #ifndef IGRIS_CREADER_H
 #define IGRIS_CREADER_H
 
-#include <igris/compiler.h>
 #include <cstdint>
 #include <cstring>
+#include <igris/compiler.h>
 
 struct creader
 {
@@ -15,8 +15,8 @@ struct creader
 
 __BEGIN_DECLS
 
-static inline void creader_init(struct creader *reader, const char *strt,
-                                int size)
+static inline void
+creader_init(struct creader *reader, const char *strt, size_t size)
 {
     reader->strt = reader->cursor = strt;
     reader->fini = strt + size;
@@ -27,19 +27,20 @@ static inline uint8_t creader_end(struct creader *reader)
     return reader->cursor == reader->fini;
 }
 
-static inline uint8_t creader_curpos(struct creader *reader)
+static inline size_t creader_curpos(struct creader *reader)
 {
-    return reader->cursor - reader->strt;
+    return (size_t)(reader->cursor - reader->strt);
 }
 
-static inline uint8_t creader_itpos(struct creader *reader, const char *it)
+static inline size_t creader_itpos(struct creader *reader, const char *it)
 {
-    return it - reader->strt;
+    return (size_t)(it - reader->strt);
 }
 
-static inline int creader_readline(struct creader *reader, const char **token)
+static inline ptrdiff_t creader_readline(struct creader *reader,
+                                         const char **token)
 {
-    int len;
+    ptrdiff_t len;
     const char *it = reader->cursor;
     *token = reader->cursor;
 
