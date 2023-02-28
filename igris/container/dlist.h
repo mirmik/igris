@@ -23,6 +23,7 @@ namespace igris
             using difference_type = ptrdiff_t;
             using pointer = type *;
             using reference = type &;
+            using iterator_category = std::bidirectional_iterator_tag;
 
         public:
             dlist_head *current;
@@ -74,12 +75,14 @@ namespace igris
         };
 
         class reverse_iterator
-            : public std::iterator<std::bidirectional_iterator_tag,
-                                   type,
-                                   ptrdiff_t,
-                                   type *,
-                                   type &>
         {
+        public:
+            using value_type = type;
+            using difference_type = ptrdiff_t;
+            using pointer = type *;
+            using reference = type &;
+            using iterator_category = std::bidirectional_iterator_tag;
+
         private:
             dlist_head *current = nullptr;
 
