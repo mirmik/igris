@@ -17,4 +17,4 @@ pipeline:
       - name: cmake-tests
         run: ctest .
 
-    success_info: "Pipeline: {{libname}}\nCommit: {{commit_hash}}\nMessage: {{commit_message}}\n"
+    success_info: "Pipeline: {{pipeline_name}}\nCommit: {{commit_hash}}\nMessage: {{commit_message}}\n"
