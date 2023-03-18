@@ -18,10 +18,15 @@ namespace igris
             _annotations_dict = {};
 
     public:
-        series_field_annotator() : inc(0)
-        {
-            assert(_annotations.size() == _annotations_dict.size());
-        }
+        series_field_annotator() = default;
+        series_field_annotator(const series_field_annotator &oth) = default;
+        series_field_annotator(series_field_annotator &&oth) = default;
+
+        series_field_annotator &
+        operator=(const series_field_annotator &oth) = default;
+        series_field_annotator &
+        operator=(series_field_annotator &&oth) = default;
+
         series_field_annotator(int offset) : inc(offset)
         {
             assert(_annotations.size() == _annotations_dict.size());
@@ -44,7 +49,8 @@ namespace igris
             auto annot = igris::make_series_field_annotation<T>(
                 machname, username, inc.increment<T>());
             _annotations.push_back(annot);
-            return _annotations[_annotations.size() - 1];
+            _annotations_dict[machname] = &_annotations.back();
+            return _annotations.back();
         }
 
         template <class T> series_field_annotation &add(const std::string &name)
