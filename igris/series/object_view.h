@@ -35,7 +35,7 @@ namespace igris
 
         series_field_view operator[](const std::string &name)
         {
-            printf("series_object_view::operator[] %s", name.c_str());
+            printf("series_object_view::operator[] %s\r\n", name.c_str());
             auto &annotation = *annotation_dict.at(name);
             return series_field_view{(void *)((char *)ptr + annotation.offset),
                                      annotation};
