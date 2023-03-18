@@ -9,21 +9,38 @@ namespace igris
     {
         void *ptr;
         const std::vector<series_field_annotation> &annotations;
+        const std::unordered_map<std::string, series_field_annotation *>
+            &annotation_dict;
 
     public:
         series_object_view(
-            void *ptr, const std::vector<series_field_annotation> &annotations)
-            : ptr(ptr), annotations(annotations)
+            void *ptr,
+            const std::vector<series_field_annotation> &annotations,
+            const std::unordered_map<std::string, series_field_annotation *>
+                &annotation_dict)
+            : ptr(ptr), annotations(annotations),
+              annotation_dict(annotation_dict)
         {
         }
 
         series_field_view operator[](int i)
         {
-            return series_field_view{
-                (void *)((char *)ptr + annotations[i].offset), annotations[i]};
+            auto &annotation = annotations[i];
+            return series_field_view{(void *)((char *)ptr + annotation.offset),
+                                     annotation};
         }
 
-        size_t size() { return annotations.size(); }
+        series_field_view operator[](const std::string &name)
+        {
+            auto &annotation = *annotation_dict.at(name);
+            return series_field_view{(void *)((char *)ptr + annotation.offset),
+                                     annotation};
+        }
+
+        size_t size()
+        {
+            return annotations.size();
+        }
     };
 }
 

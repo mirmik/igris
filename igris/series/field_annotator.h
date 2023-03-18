@@ -12,21 +12,17 @@ namespace igris
     {
         igris::size_incrementor inc = {};
         std::vector<series_field_annotation> _annotations = {};
+        std::unordered_map<std::string, series_field_annotation *> _dict = {};
 
     public:
         series_field_annotator() : inc(0) {}
         series_field_annotator(int offset) : inc(offset) {}
         series_field_annotator(const igris::size_incrementor &oth) : inc(oth) {}
 
-        std::unordered_map<std::string, series_field_annotation *>
+        const std::unordered_map<std::string, series_field_annotation *> &
         annotations_dict()
         {
-            std::unordered_map<std::string, series_field_annotation *> dict;
-            for (auto &a : _annotations)
-            {
-                dict[a.machname] = &a;
-            }
-            return dict;
+            return _dict;
         }
 
         template <class T>
@@ -51,6 +47,7 @@ namespace igris
         {
             _annotations.emplace_back(
                 machname, username, inc.increment(size), size, type);
+            _dict[machname] = &_annotations.back();
         }
 
         const auto &annotations()

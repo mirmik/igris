@@ -90,9 +90,12 @@ namespace igris
         void parse_csv_istream(std::istream &is);
         void parse_csv_file(const std::string &file);
 
+        series_object_view emplace_and_get_view();
+
         series_object_view object_view(void *ptr)
         {
-            return series_object_view(ptr, _annotator.annotations());
+            return series_object_view(
+                ptr, _annotator.annotations(), _annotator.annotations_dict());
         }
 
         int count_of_blocks()
