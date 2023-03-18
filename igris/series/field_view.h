@@ -17,11 +17,11 @@ namespace igris
         {
         }
 
-        series_field_view &operator=(const series_field_view &oth)
+        /*series_field_view &operator=(const series_field_view &oth)
         {
             memcpy(ptr, oth.ptr, annotation.size);
             return *this;
-        }
+        }*/
 
         series_field_view &operator=(double data)
         {
