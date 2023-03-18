@@ -4,6 +4,7 @@
 #include <cassert>
 #include <igris/series/field_annotation.h>
 #include <igris/util/size_incrementor.h>
+#include <map>
 #include <unordered_map>
 #include <vector>
 
@@ -14,8 +15,7 @@ namespace igris
     public:
         igris::size_incrementor inc = {};
         std::vector<series_field_annotation> _annotations = {};
-        std::unordered_map<std::string, series_field_annotation *>
-            _annotations_dict = {};
+        std::map<std::string, series_field_annotation *> _annotations_dict = {};
 
     public:
         series_field_annotator() = default;
@@ -36,7 +36,7 @@ namespace igris
             assert(_annotations.size() == _annotations_dict.size());
         }
 
-        const std::unordered_map<std::string, series_field_annotation *> &
+        const std::map<std::string, series_field_annotation *> &
         annotations_dict()
         {
             return _annotations_dict;

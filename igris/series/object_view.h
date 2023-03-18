@@ -11,14 +11,13 @@ namespace igris
     public:
         void *ptr;
         const std::vector<series_field_annotation> &annotations;
-        const std::unordered_map<std::string, series_field_annotation *>
-            &annotation_dict;
+        const std::map<std::string, series_field_annotation *> &annotation_dict;
 
     public:
         series_object_view(
             void *ptr,
             const std::vector<series_field_annotation> &annotations,
-            const std::unordered_map<std::string, series_field_annotation *>
+            const std::map<std::string, series_field_annotation *>
                 &annotation_dict)
             : ptr(ptr), annotations(annotations),
               annotation_dict(annotation_dict)
