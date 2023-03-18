@@ -108,6 +108,8 @@ void igris::series::push_csv_string_parse(const std::string &str)
 igris::series_object_view igris::series::emplace_and_get_view()
 {
     void *ptr = emplace();
+    assert(_annotator.annotations().size() ==
+           _annotator.annotations_dict().size());
     return series_object_view(
         ptr, _annotator.annotations(), _annotator.annotations_dict());
 }

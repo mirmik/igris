@@ -1,6 +1,7 @@
 #ifndef IGRIS_FIELD_ANNOTATOR_H
 #define IGRIS_FIELD_ANNOTATOR_H
 
+#include <cassert>
 #include <igris/series/field_annotation.h>
 #include <igris/util/size_incrementor.h>
 #include <unordered_map>
@@ -48,6 +49,8 @@ namespace igris
             _annotations.emplace_back(
                 machname, username, inc.increment(size), size, type);
             _dict[machname] = &_annotations.back();
+
+            assert(_annotations.size() == _dict.size());
         }
 
         const auto &annotations()
