@@ -11,28 +11,30 @@ namespace igris
 {
     class series_field_annotator
     {
+    public:
         igris::size_incrementor inc = {};
         std::vector<series_field_annotation> _annotations = {};
-        std::unordered_map<std::string, series_field_annotation *> _dict = {};
+        std::unordered_map<std::string, series_field_annotation *>
+            _annotations_dict = {};
 
     public:
         series_field_annotator() : inc(0)
         {
-            assert(_annotations.size() == _dict.size());
+            assert(_annotations.size() == _annotations_dict.size());
         }
         series_field_annotator(int offset) : inc(offset)
         {
-            assert(_annotations.size() == _dict.size());
+            assert(_annotations.size() == _annotations_dict.size());
         }
         series_field_annotator(const igris::size_incrementor &oth) : inc(oth)
         {
-            assert(_annotations.size() == _dict.size());
+            assert(_annotations.size() == _annotations_dict.size());
         }
 
         const std::unordered_map<std::string, series_field_annotation *> &
         annotations_dict()
         {
-            return _dict;
+            return _annotations_dict;
         }
 
         template <class T>
@@ -57,9 +59,9 @@ namespace igris
         {
             _annotations.emplace_back(
                 machname, username, inc.increment(size), size, type);
-            _dict[machname] = &_annotations.back();
+            _annotations_dict[machname] = &_annotations.back();
 
-            assert(_annotations.size() == _dict.size());
+            assert(_annotations.size() == _annotations_dict.size());
         }
 
         const auto &annotations()
