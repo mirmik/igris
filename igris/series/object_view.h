@@ -34,6 +34,7 @@ namespace igris
 
         series_field_view operator[](const std::string &name)
         {
+            assert(annotation_dict.count(name));
             auto &annotation = *annotation_dict.at(name);
             return series_field_view{(void *)((char *)ptr + annotation.offset),
                                      annotation};
