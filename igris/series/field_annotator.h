@@ -16,9 +16,18 @@ namespace igris
         std::unordered_map<std::string, series_field_annotation *> _dict = {};
 
     public:
-        series_field_annotator() : inc(0) {}
-        series_field_annotator(int offset) : inc(offset) {}
-        series_field_annotator(const igris::size_incrementor &oth) : inc(oth) {}
+        series_field_annotator() : inc(0)
+        {
+            assert(_annotations.size() == _dict.size());
+        }
+        series_field_annotator(int offset) : inc(offset)
+        {
+            assert(_annotations.size() == _dict.size());
+        }
+        series_field_annotator(const igris::size_incrementor &oth) : inc(oth)
+        {
+            assert(_annotations.size() == _dict.size());
+        }
 
         const std::unordered_map<std::string, series_field_annotation *> &
         annotations_dict()
