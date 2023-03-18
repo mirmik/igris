@@ -11,8 +11,8 @@ namespace igris
     class series_iterator
     {
     public:
-        dlist_head *block_lnk;
-        size_t num;
+        dlist_head *block_lnk = nullptr;
+        size_t num = 0;
 
     public:
         series_iterator() : block_lnk(nullptr), num(0){};

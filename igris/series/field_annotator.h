@@ -5,6 +5,7 @@
 #include <igris/series/field_annotation.h>
 #include <igris/util/size_incrementor.h>
 #include <map>
+#include <memory>
 #include <unordered_map>
 #include <vector>
 
@@ -14,8 +15,11 @@ namespace igris
     {
     public:
         igris::size_incrementor inc = {};
-        std::vector<series_field_annotation> _annotations = {};
-        std::map<std::string, series_field_annotation *> _annotations_dict = {};
+        std::shared_ptr<std::vector<series_field_annotation>> _annotations =
+            std::make_shared<std::vector<series_field_annotation>>();
+        std::shared_ptr<std::map<std::string, series_field_annotation>>
+            _annotations_dict = std::make_shared<
+                std::map<std::string, series_field_annotation>>();
 
     public:
         series_field_annotator() = default;
@@ -29,14 +33,14 @@ namespace igris
 
         series_field_annotator(int offset) : inc(offset)
         {
-            assert(_annotations.size() == _annotations_dict.size());
+            assert(_annotations->size() == _annotations_dict->size());
         }
         series_field_annotator(const igris::size_incrementor &oth) : inc(oth)
         {
-            assert(_annotations.size() == _annotations_dict.size());
+            assert(_annotations->size() == _annotations_dict->size());
         }
 
-        const std::map<std::string, series_field_annotation *> &
+        std::shared_ptr<std::map<std::string, series_field_annotation>>
         annotations_dict()
         {
             return _annotations_dict;
@@ -48,9 +52,9 @@ namespace igris
         {
             auto annot = igris::make_series_field_annotation<T>(
                 machname, username, inc.increment<T>());
-            _annotations.push_back(annot);
-            _annotations_dict[machname] = &_annotations.back();
-            return _annotations.back();
+            _annotations->push_back(annot);
+            (*_annotations_dict)[machname] = _annotations->back();
+            return _annotations->back();
         }
 
         template <class T> series_field_annotation &add(const std::string &name)
@@ -58,26 +62,14 @@ namespace igris
             return add<T>(name, name);
         }
 
-        void add(const std::string &machname,
-                 const std::string &username,
-                 size_t size,
-                 FieldDataType type)
-        {
-            _annotations.emplace_back(
-                machname, username, inc.increment(size), size, type);
-            _annotations_dict[machname] = &_annotations.back();
-
-            assert(_annotations.size() == _annotations_dict.size());
-        }
-
-        const auto &annotations()
+        std::shared_ptr<std::vector<series_field_annotation>> annotations()
         {
             return _annotations;
         }
 
         series_field_annotation *find_annotation(const std::string &name)
         {
-            for (auto &obj : _annotations)
+            for (auto &obj : *_annotations)
             {
                 if (name == obj.machname)
                     return &obj;
@@ -88,7 +80,7 @@ namespace igris
 
         series_field_annotation *find(const std::string &name)
         {
-            for (auto &a : _annotations)
+            for (auto &a : *_annotations)
             {
                 if (a.machname == name)
                     return &a;

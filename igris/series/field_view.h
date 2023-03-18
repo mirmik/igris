@@ -8,8 +8,8 @@ namespace igris
 {
     class series_field_view
     {
-        void *ptr;
-        const series_field_annotation &annotation;
+        void *ptr = nullptr;
+        const series_field_annotation &annotation = {};
 
     public:
         series_field_view(void *ptr, const series_field_annotation &annotation)

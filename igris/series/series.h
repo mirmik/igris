@@ -58,7 +58,7 @@ namespace igris
         igris::series_field_annotator &annotator();
         igris::series_field_annotation *
         find_annotation(const std::string &name);
-        const auto &annotations()
+        auto annotations()
         {
             return _annotator.annotations();
         }

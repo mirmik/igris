@@ -5,8 +5,8 @@ namespace igris
 {
     class series_field_iterator
     {
-        data_iterator objiter;
-        field_annotation *annot;
+        data_iterator objiter = {};
+        field_annotation *annot = nullptr;
 
         operator*();
     }

@@ -42,10 +42,10 @@ namespace igris
             {
                 uint8_t scatter : 1; // подсказка, что данные следует отображать
                 // поточечно
-            } f;
+            } f = {};
 
             _u() : flags(0) {}
-        } u;
+        } u = {};
 
     public:
         series_field_annotation(const std::string &machname,

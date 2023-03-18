@@ -13,9 +13,9 @@ namespace igris
         dlist_head lnk = DLIST_HEAD_INIT(lnk);
 
     public:
-        igris::series *parent;
-        void *ptr;
-        size_t size;
+        igris::series *parent = nullptr;
+        void *ptr = nullptr;
+        size_t size = 0;
         size_t strt = 0;
         size_t fini = 0;
 
