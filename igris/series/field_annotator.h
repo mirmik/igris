@@ -3,6 +3,7 @@
 
 #include <igris/series/field_annotation.h>
 #include <igris/util/size_incrementor.h>
+#include <unordered_map>
 #include <vector>
 
 namespace igris
@@ -17,6 +18,17 @@ namespace igris
         series_field_annotator(int offset) : inc(offset) {}
         series_field_annotator(const igris::size_incrementor &oth) : inc(oth) {}
 
+        std::unordered_map<std::string, series_field_annotation *>
+        annotations_dict()
+        {
+            std::unordered_map<std::string, series_field_annotation *> dict;
+            for (auto &a : _annotations)
+            {
+                dict[a.machname] = &a;
+            }
+            return dict;
+        }
+
         template <class T>
         series_field_annotation &add(const std::string &machname,
                                      const std::string &username)
@@ -27,8 +39,7 @@ namespace igris
             return _annotations[_annotations.size() - 1];
         }
 
-        template <class T>
-        series_field_annotation &add(const std::string &name)
+        template <class T> series_field_annotation &add(const std::string &name)
         {
             return add<T>(name, name);
         }
@@ -36,15 +47,16 @@ namespace igris
         void add(const std::string &machname,
                  const std::string &username,
                  size_t size,
-                 FieldDataType type
-        ) 
+                 FieldDataType type)
         {
-            _annotations.emplace_back(machname, username, 
-                inc.increment(size), size, type);   
+            _annotations.emplace_back(
+                machname, username, inc.increment(size), size, type);
         }
-        
 
-        const auto &annotations() { return _annotations; }
+        const auto &annotations()
+        {
+            return _annotations;
+        }
 
         series_field_annotation *find_annotation(const std::string &name)
         {
