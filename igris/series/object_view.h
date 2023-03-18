@@ -7,6 +7,7 @@ namespace igris
 {
     class series_object_view
     {
+    public:
         void *ptr;
         const std::vector<series_field_annotation> &annotations;
         const std::unordered_map<std::string, series_field_annotation *>
