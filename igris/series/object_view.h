@@ -21,6 +21,7 @@ namespace igris
             : ptr(ptr), annotations(annotations),
               annotation_dict(annotation_dict)
         {
+            assert(annotations.size() == annotation_dict.size());
         }
 
         series_field_view operator[](int i)
