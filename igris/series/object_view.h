@@ -25,6 +25,12 @@ namespace igris
         {
         }
 
+        series_object_view() = default;
+        series_object_view(const series_object_view &) = default;
+        series_object_view &operator=(const series_object_view &) = default;
+        series_object_view &operator=(series_object_view &&) = default;
+        series_object_view(series_object_view &&) = default;
+
         series_field_view operator[](int i)
         {
             auto &annotation = (*annotations)[i];

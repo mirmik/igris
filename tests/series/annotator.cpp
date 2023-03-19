@@ -7,6 +7,6 @@ TEST_CASE("field_annotation")
     auto annot0 = annotator.add<bool>("lanspik", "Ланспик");
     auto annot1 = annotator.add<int>("lanspik2", "Ланспик2");
 
-    CHECK_EQ(annotator.annotations().size(),
-             annotator.annotations_dict().size());
+    CHECK_EQ(annotator.annotations()->size(),
+             annotator.annotations_dict()->size());
 }
