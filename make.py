@@ -62,10 +62,10 @@ if opts.igris_std:
         raise Exception("Unknown wordsize")
     DEFINES.extend([f"IGRIS_STUBARCH_WORDSIZE={wordsize}"])
 
-CCFLAGS = '-fPIC -Werror=all -Werror=extra -pedantic-errors -Wreturn-type -g -Wno-gnu-zero-variadic-macro-arguments'
+CCFLAGS = '-fPIC -flto -Werror=all -Werror=extra -pedantic-errors -Wreturn-type -g -Wno-gnu-zero-variadic-macro-arguments'
 CXXFLAGS = cxx_flags + CCFLAGS
 CCFLAGS = c_flags + CCFLAGS
-LDFLAGS = '-g'
+LDFLAGS = '-g -flto'
 
 licant.cxx_static_and_shared(
     name="libraries",
@@ -100,8 +100,9 @@ licant.cxx_application("runtests",
                        cxxstd="c++20",
                        ccstd="c11",
                        cxx_flags=cxx_flags +
-                       "-fmax-errors=1 -g -fPIC -Werror=all -Wno-gnu-zero-variadic-macro-arguments -Weffc++",
-                       cc_flags=c_flags + "-g -fPIC -Werror=all -Wno-gnu-zero-variadic-macro-arguments",
+                       "-flto -fmax-errors=1 -g -fPIC -Werror=all -Wno-gnu-zero-variadic-macro-arguments -Weffc++",
+                       cc_flags=c_flags + "-flto -g -fPIC -Werror=all -Wno-gnu-zero-variadic-macro-arguments",
+                       ld_flags = "-flto -g",
                        include_paths=["./tests", "."],
                        libs=["rt", "pthread"],
                        mdepends=stdmodules
