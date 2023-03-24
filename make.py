@@ -117,3 +117,4 @@ licant.install.install_library(
 licant.fileset("all", targets=["runtests", "libigris.so", "libigris.a"])
 
 licant.ex("all")
+
