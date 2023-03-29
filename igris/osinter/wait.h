@@ -28,8 +28,8 @@ static inline void waiter_schedee_init(struct waiter *w)
     ctrobj_init(&w->ctr, CTROBJ_WAITER_SCHEDEE);
 }
 
-static inline void waiter_delegate_init(struct waiter_delegate *w,
-                                        void (*func)(void *), void *obj)
+static inline void
+waiter_delegate_init(struct waiter_delegate *w, void (*func)(void *), void *obj)
 {
     ctrobj_init(&w->ctr, CTROBJ_WAITER_DELEGATE);
     w->func = func;
@@ -39,9 +39,9 @@ static inline void waiter_delegate_init(struct waiter_delegate *w,
 int wait_current_schedee(struct dlist_head *head, int priority, void **future);
 int unwait_schedee_waiter(struct waiter *w);
 
-int waiter_unwait(struct dlist_head *lnk, void *future);
-void unwait_one(struct dlist_head *head, void *future);
-void unwait_all(struct dlist_head *head, void *future);
+int waiter_unwait(struct dlist_head *lnk, intptr_t future);
+void unwait_one(struct dlist_head *head, intptr_t future);
+void unwait_all(struct dlist_head *head, intptr_t future);
 
 __END_DECLS
 

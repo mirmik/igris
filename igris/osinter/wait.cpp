@@ -7,7 +7,7 @@
 #include <igris/datastruct/ring.h>
 #include <igris/defs/io.h>
 
-int waiter_unwait(struct dlist_head *lnk, void *future)
+int waiter_unwait(struct dlist_head *lnk, intptr_t future)
 {
     struct ctrobj *ctr = mcast_out(lnk, struct ctrobj, lnk);
     ctr->future = future;
@@ -33,7 +33,7 @@ int waiter_unwait(struct dlist_head *lnk, void *future)
     }
 }
 
-void unwait_one(struct dlist_head *head, void *future)
+void unwait_one(struct dlist_head *head, intptr_t future)
 {
     struct dlist_head *it;
 
@@ -52,7 +52,7 @@ void unwait_one(struct dlist_head *head, void *future)
     system_unlock();
 }
 
-void unwait_all(struct dlist_head *head, void *future)
+void unwait_all(struct dlist_head *head, intptr_t future)
 {
     struct dlist_head *it;
 

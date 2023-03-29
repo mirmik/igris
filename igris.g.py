@@ -132,6 +132,7 @@ licant.module("igris.util", sources=[
     "igris/sync/syslock.c",
     "igris/halfer.cpp",
     "igris/osinter/wait.cpp",
+    "igris/osinter/ctrobj.c",
     "igris/sync/waitqueue.c"
 ],
     mdepends=[

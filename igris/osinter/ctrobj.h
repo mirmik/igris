@@ -17,28 +17,21 @@
 struct ctrobj
 {
     struct dlist_head lnk;
-    void *future;
+    intptr_t future;
     uint8_t type;
 };
 
 #define CTROBJ_DECLARE(name, type)                                             \
     {                                                                          \
-        DLIST_HEAD_INIT(name.lnk), NULL, type                                  \
+        DLIST_HEAD_INIT(name.lnk), 0, type                                     \
     }
 
 __BEGIN_DECLS
 
-static inline void ctrobj_init(struct ctrobj *obj, uint8_t type)
-{
-    obj->type = type;
-    obj->future = NULL;
-    dlist_init(&obj->lnk);
-}
-
-static inline void ctrobj_deinit(struct ctrobj *obj)
-{
-    dlist_del_init(&obj->lnk);
-}
+void ctrobj_init(struct ctrobj *obj, uint8_t type);
+void ctrobj_deinit(struct ctrobj *obj);
+intptr_t ctrobj_get_future(struct ctrobj *obj);
+void ctrobj_set_future(struct ctrobj *obj, intptr_t future);
 
 __END_DECLS
 

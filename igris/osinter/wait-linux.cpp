@@ -27,7 +27,7 @@ int wait_current_schedee(struct dlist_head *head, int priority, void **future)
     waiter.event.wait();
     // system_lock_restore(save);
 
-    *future = waiter.w.ctr.future;
+    *future = (void *)waiter.w.ctr.future;
     return 0;
 }
 
