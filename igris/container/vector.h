@@ -337,6 +337,21 @@ namespace igris
         void resize(size_t n)
         {
             reserve(n);
+            size_t oldsize = m_size;
+            if (n > oldsize)
+            {
+                for (size_t i = oldsize; i < n; ++i)
+                {
+                    igris::constructor(m_data + i);
+                }
+            }
+            else
+            {
+                for (size_t i = n; i < oldsize; ++i)
+                {
+                    igris::destructor(m_data + i);
+                }
+            }
             m_size = n;
         }
 
