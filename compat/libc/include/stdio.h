@@ -12,11 +12,11 @@
 #define STDIO_H_
 
 /*va_list As described in <stdarg.h>. */
+#include <asm/types.h>
+#include <igris/types-generic/null.h>
+#include <igris/types-generic/off_t.h>
+#include <igris/types-generic/size_t.h>
 #include <stdarg.h>
-#include <sys/types.h>
-
-#include <defines/null.h>
-#include <defines/size_t.h>
 
 #define EOF (-1)
 
@@ -41,7 +41,7 @@ typedef struct file_struct FILE;
 
 struct stat;
 
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 
 __BEGIN_DECLS
 
@@ -150,7 +150,8 @@ extern FILE *fopen(const char *path, const char *mode);
  *
  * @return FILE *
  */
-extern FILE *funopen(const void *cookie, int (*readfn)(void *, char *, int),
+extern FILE *funopen(const void *cookie,
+                     int (*readfn)(void *, char *, int),
                      int (*writefn)(void *, const char *, int),
                      fpos_t (*seekfn)(void *, fpos_t, int),
                      int (*closefn)(void *));

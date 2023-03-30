@@ -16,10 +16,10 @@
 #ifndef STRING_H_
 #define STRING_H_
 
-#include <defines/null.h>
-#include <defines/size_t.h>
+#include <igris/compiler.h>
+#include <igris/types-generic/null.h>
+#include <igris/types-generic/size_t.h>
 
-#include <sys/cdefs.h>
 __BEGIN_DECLS
 
 /**
@@ -390,7 +390,8 @@ extern size_t strcspn(const char *s, const char *reject);
 extern char *strpbrk(const char *s, const char *accept);
 /**
  * Returns a pointer to a new string which is a duplicate of the string s.
- * Memory for the new string is obtained with malloc, and can be freed with free.
+ * Memory for the new string is obtained with malloc, and can be freed with
+ * free.
  *
  * @param s
  *  C-style null-terminated string.
@@ -410,7 +411,11 @@ extern char *strdup(const char *s);
  * by lasts is ignored. The function strtok_r() returns a pointer to the first
  * character of the first token, writes a null character into s immediately
  * following the returned token, and updates the pointer to which lasts points.
- * In subsequent calls, s is a NULL pointer and lasts will be unchanged from the previous call so that subsequent calls will move through the string s, returning successive tokens until no tokens remain. The separator string sep may be different from call to call. When no token remains in s, a NULL pointer is returned.
+ * In subsequent calls, s is a NULL pointer and lasts will be unchanged from the
+ * previous call so that subsequent calls will move through the string s,
+ * returning successive tokens until no tokens remain. The separator string sep
+ * may be different from call to call. When no token remains in s, a NULL
+ * pointer is returned.
  *
  * @param str
  * @param delim
@@ -476,7 +481,8 @@ extern size_t strnlen(const char *s, size_t maxlen);
  * @param size
  * @return Upon successful completion, the strndup() function shall return a
  * pointer to the newly allocated memory containing the duplicated string.
- * Otherwise, it shall return a null pointer and set errno to indicate the error.
+ * Otherwise, it shall return a null pointer and set errno to indicate the
+ * error.
  */
 extern char *strndup(const char *s, size_t size);
 
