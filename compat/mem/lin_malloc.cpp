@@ -54,7 +54,7 @@
 
 /* May be changed by the user only before the first malloc() call.  */
 
-static igris::syslock lock;
+__attribute__((init_priority(101))) static igris::syslock lock = {};
 
 extern char _heap_start;
 
@@ -62,8 +62,8 @@ extern char _heap_start;
 char *__malloc_heap_start = &_heap_start;
 // char *__malloc_heap_end = &__heap_end;
 
-char *__brkval;
-struct __freelist *__flp;
+char *__brkval = NULL;
+struct __freelist *__flp = NULL;
 
 extern "C" void *malloc(size_t len) __attribute__((used));
 // ATTRIBUTE_CLIB_SECTION

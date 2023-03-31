@@ -333,6 +333,17 @@ static inline int dlist_size_reversed(struct dlist_head *head)
     return sz;
 }
 
+static inline bool dlist_is_correct(struct dlist_head *head)
+{
+    int check = dlist_check(head, 1000);
+    if (check < 0)
+        return false;
+    int rcheck = dlist_check_reversed(head, 1000);
+    if (rcheck < 0)
+        return false;
+    return check == rcheck;
+}
+
 __END_DECLS
 
 #endif
