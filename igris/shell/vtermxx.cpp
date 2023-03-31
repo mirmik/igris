@@ -101,11 +101,10 @@ void igris::vtermxx::newdata(int16_t input_c)
 
             case READLINE_NEWLINE:
                 state = 1;
-
                 if (echo)
                     write_callback("\r\n", 2);
-
                 newline();
+                return_flag = 1;
                 goto __recycle__;
 
             case READLINE_BACKSPACE:

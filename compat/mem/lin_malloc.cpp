@@ -65,11 +65,14 @@ char *__malloc_heap_start = &_heap_start;
 char *__brkval = NULL;
 struct __freelist *__flp = NULL;
 
+extern "C" unsigned int is_interrupt_context();
+
 extern "C" void *malloc(size_t len) __attribute__((used));
 // ATTRIBUTE_CLIB_SECTION
 void *malloc(size_t len)
 {
     std::lock_guard<igris::syslock> lguard(lock);
+    assert(!is_interrupt_context());
 
     struct __freelist *fp1, *fp2, *sfp1, *sfp2;
     char *cp;
