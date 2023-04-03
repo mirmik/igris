@@ -11,9 +11,9 @@
 
 #include <asm/types.h>
 
-#ifndef __WORDSIZE
+/*#ifndef __WORDSIZE
 #error "You must define __WORDSIZE in asm/types.h"
-#endif
+#endif*/
 
 #ifndef __ASSEMBLER__
 

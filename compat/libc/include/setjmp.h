@@ -11,9 +11,7 @@
 #define SETJMP_H_
 
 #include <asm/setjmp.h>
-
-#include <sys/cdefs.h>
-#include <compiler.h>
+#include <igris/compiler.h>
 
 __BEGIN_DECLS
 

@@ -1,5 +1,0 @@
-package embox.compat.posix
-
-module timerfd {
-	source "timerfd.c"
-}

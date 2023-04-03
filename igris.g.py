@@ -44,7 +44,6 @@ licant.module("igris.include", include_paths=["."])
 licant.execute("compat/libc/libc.g.py")
 licant.execute("compat/std/std.g.py")
 licant.execute("compat/stubarch/stubarch.g.py")
-licant.execute("compat/posix/posix.g.py")
 licant.execute("compat/newlib-stub/newlib-stub.g.py")
 licant.execute("compat/mem/lin_malloc.g.py")
 
