@@ -17,7 +17,7 @@ void igris::vtermxx::init(unsigned int buffer_size, unsigned int history_size)
 
 void igris::vtermxx::newline()
 {
-    execute_callback(sline_getline(&rl.line()), sline_size(&rl.line()));
+    execute_callback(rl.line().data(), rl.line().current_size());
     state = 1;
 }
 
@@ -78,16 +78,16 @@ void igris::vtermxx::newdata(int16_t input_c)
                 if (echo)
                     write_callback(&c, 1);
 
-                if (!sline_in_rightpos(&rl.line()))
+                if (!rl.line().in_rightpos())
                 {
                     char buf[16];
 
                     if (echo)
                     {
-                        write_callback(sline_rightpart(&rl.line()),
-                                       sline_rightsize(&rl.line()));
+                        write_callback(rl.line().rightpart(),
+                                       rl.line().rightsize());
 
-                        ret = vt100_left(buf, sline_rightsize(&rl.line()));
+                        ret = vt100_left(buf, rl.line().rightsize());
 
                         write_callback(buf, ret);
                     }
@@ -111,16 +111,16 @@ void igris::vtermxx::newdata(int16_t input_c)
 
                     write_callback(VT100_ERASE_LINE_AFTER_CURSOR, 3);
                 }
-                if (!sline_in_rightpos(&rl.line()))
+                if (!rl.line().in_rightpos())
                 {
                     char buf[16];
 
                     if (echo)
                     {
-                        write_callback(sline_rightpart(&rl.line()),
-                                       sline_rightsize(&rl.line()));
+                        write_callback(rl.line().rightpart(),
+                                       rl.line().rightsize());
 
-                        ret = vt100_left(buf, sline_rightsize(&rl.line()));
+                        ret = vt100_left(buf, rl.line().rightsize());
 
                         write_callback(buf, ret);
                     }
@@ -158,9 +158,10 @@ void igris::vtermxx::newdata(int16_t input_c)
                     }
                 }
 
-                if (rl.line().len)
+                if (rl.line().data())
                     if (echo)
-                        write_callback(rl.line().buf, rl.line().len);
+                        write_callback(rl.line().data(),
+                                       rl.line().current_size());
 
                 break;
             }
@@ -171,16 +172,16 @@ void igris::vtermxx::newdata(int16_t input_c)
                 {
                     write_callback(VT100_ERASE_LINE_AFTER_CURSOR, 3);
                 }
-                if (!sline_in_rightpos(&rl.line()))
+                if (!rl.line().in_rightpos())
                 {
                     char buf[16];
 
                     if (echo)
                     {
-                        write_callback(sline_rightpart(&rl.line()),
-                                       sline_rightsize(&rl.line()));
+                        write_callback(rl.line().rightpart(),
+                                       rl.line().rightsize());
 
-                        ret = vt100_left(buf, sline_rightsize(&rl.line()));
+                        ret = vt100_left(buf, rl.line().rightsize());
 
                         write_callback(buf, ret);
                     }

@@ -13,11 +13,20 @@ namespace igris
         slist_head head;
 
     public:
-        slist() { head.next = &head; }
+        slist()
+        {
+            head.next = &head;
+        }
 
-        bool empty() { return head.next == &head; }
+        bool empty()
+        {
+            return head.next == &head;
+        }
 
-        void add_first(type &obj) { slist_add(&(obj.*member), &head); }
+        void add_first(type &obj)
+        {
+            slist_add(&(obj.*member), &head);
+        }
 
         void move_front(type &obj)
         {
@@ -53,11 +62,23 @@ namespace igris
                 current = current->next;
                 return *this;
             }
-            bool operator!=(const iterator &b) { return current != b.current; }
-            bool operator==(const iterator &b) { return current == b.current; }
+            bool operator!=(const iterator &b)
+            {
+                return current != b.current;
+            }
+            bool operator==(const iterator &b)
+            {
+                return current == b.current;
+            }
 
-            type &operator*() { return *member_container(current, member); }
-            type *operator->() { return member_container(current, member); }
+            type &operator*()
+            {
+                return *member_container(current, member);
+            }
+            type *operator->()
+            {
+                return member_container(current, member);
+            }
         };
 
         class const_iterator
@@ -108,26 +129,24 @@ namespace igris
             }
         };
 
-        iterator begin() { return iterator(head.next); }
-        iterator end() { return iterator(&head); }
-
-        const_iterator begin() const { return const_iterator(head.next); }
-        const_iterator end() const { return const_iterator(&head); }
-    };
-
-    /*template<typename type, slist_head type::* member>
-    struct print_functions<slist<type,member>> {
-        static int print(gxx::io::ostream& o, slist<type,member> const& lst) {
-            o.putchar('[');
-            auto it = lst.begin();
-            auto eit = lst.end();
-            for(; it != eit; ++it) {
-                gxx::print(o, *it);
-                if (it.current -> next != nullptr) o.putchar(',');
-            }
-            o.putchar(']');
+        iterator begin()
+        {
+            return iterator(head.next);
         }
-    };*/
+        iterator end()
+        {
+            return iterator(&head);
+        }
+
+        const_iterator begin() const
+        {
+            return const_iterator(head.next);
+        }
+        const_iterator end() const
+        {
+            return const_iterator(&head);
+        }
+    };
 }
 
 #endif

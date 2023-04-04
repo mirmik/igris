@@ -14,8 +14,8 @@ TODO: Вынести драйвер работы с историей как от
 #ifndef IGRIS_SHELL_READLINE_H
 #define IGRIS_SHELL_READLINE_H
 
+#include <igris/container/sline.h>
 #include <igris/container/unbounded_array.h>
-#include <igris/datastruct/sline.h>
 #include <igris/defs/ascii.h>
 #include <igris/util/bug.h>
 
@@ -44,7 +44,7 @@ namespace igris
 {
     class readline
     {
-        sline _line = {};
+        igris::sline _line = {};
         int _state = 0;
 
         char _last = 0;
@@ -80,14 +80,14 @@ namespace igris
             _headhist = 0;
             _buffer_space.resize(maxsize);
             _history_space.resize(history_deep * maxsize);
-            sline_init(&_line, _buffer_space.data(), maxsize);
+            _line.init(maxsize);
         }
 
         void newline_reset()
         {
             // Когда случается новая линия, сбрасываем буффер ввода и скидываем
             // переключатель строки истории на последнюю строку.
-            sline_reset(&_line);
+            _line.reset();
             _curhist = 0;
         }
 
@@ -100,7 +100,7 @@ namespace igris
         char *history_pointer(int num)
         {
             int idx = (_headhist + history_size() - num) % history_size();
-            return _history_space.data() + idx * _line.cap;
+            return _history_space.data() + idx * _buffer_space.size();
         }
 
         // Вернуть указатель на строку истории, на которую указывает _curhist.
@@ -112,7 +112,8 @@ namespace igris
 
         void _push_line_to_history(const char *str, size_t len)
         {
-            char *ptr = _history_space.data() + _headhist * _line.cap;
+            char *ptr =
+                _history_space.data() + _headhist * _buffer_space.size();
             memcpy(ptr, str, len);
             *(ptr + len) = '\0';
             _headhist = (_headhist + 1) % history_size();
@@ -126,25 +127,24 @@ namespace igris
         // Обновить историю, записав туда новую строку.
         void _push_current_line_to_history()
         {
-            _push_line_to_history(_line.buf, _line.len);
+            _push_line_to_history(_line.data(), _line.current_size());
         }
 
         void load_history_line()
         {
-            _lastsize = _line.len;
+            _lastsize = _line.current_size();
 
             if (_curhist == 0)
             {
-                memset(_line.buf, 0, _line.cap);
-                _line.len = 0;
-                _line.cursor = 0;
+                _line.clear();
+                _line.reset();
                 return;
             }
 
             unsigned int sz = (unsigned int)strlen(current_history_pointer());
 
-            memcpy(_line.buf, current_history_pointer(), sz);
-            _line.len = _line.cursor = sz;
+            memcpy(_line.data(), current_history_pointer(), sz);
+            _line.set_size_and_cursor(sz, sz);
         }
 
         int history_up()
@@ -164,7 +164,7 @@ namespace igris
 
         int is_not_same_as_last()
         {
-            return !sline_equal(&_line, history_pointer(1));
+            return !_line.equal(history_pointer(1));
         }
 
         int history_down()
@@ -202,7 +202,7 @@ namespace igris
                     }
                     else
                     {
-                        if (_history_space.size() && _line.len &&
+                        if (_history_space.size() && _line.current_size() &&
                             is_not_same_as_last())
                         {
                             // Если есть буффер истории и введенная строка не
@@ -217,7 +217,7 @@ namespace igris
                     break;
 
                 case ASCII_BS:
-                    ret = sline_backspace(&_line, 1);
+                    ret = _line.backspace(1);
                     retcode = ret ? READLINE_BACKSPACE : READLINE_NOTHING;
                     break;
 
@@ -227,7 +227,7 @@ namespace igris
                     break;
 
                 default:
-                    sline_putchar(&_line, c);
+                    _line.newdata(c);
                     retcode = READLINE_ECHOCHAR;
                     break;
                 }
@@ -261,17 +261,17 @@ namespace igris
                         retcode = READLINE_UPDATELINE;
                     break;
                 case 0x43: // right
-                    ret = sline_right(&_line);
+                    ret = _line.right();
                     if (ret)
                         retcode = READLINE_RIGHT;
                     break;
                 case 0x44: // left
-                    ret = sline_left(&_line);
+                    ret = _line.left();
                     if (ret)
                         retcode = READLINE_LEFT;
                     break;
                 case 0x33:
-                    ret = sline_delete(&_line, 1);
+                    ret = _line.del(1);
                     if (ret)
                         retcode = READLINE_DELETE;
                     _state = READLINE_STATE_ESCSEQ_MOVE_WAIT_7E;
@@ -307,10 +307,11 @@ namespace igris
 
         int linecpy(char *data, size_t size)
         {
-            int len =
-                (int)size - 1 > (int)_line.len ? (int)_line.len : (int)size - 1;
+            int len = (int)size - 1 > (int)_line.current_size()
+                          ? (int)_line.current_size()
+                          : (int)size - 1;
 
-            memcpy(data, _line.buf, len);
+            memcpy(data, _line.data(), len);
             data[len] = 0;
 
             return len;

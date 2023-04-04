@@ -10,14 +10,14 @@ TEST_CASE("readlinexx")
 
     rl.init(48, 5);
 
-    CHECK(rl.line().len == 0);
+    CHECK(rl.line().current_size() == 0);
 
     rl.newdata('a');
-    CHECK(rl.line().len == 1);
-    CHECK(rl.line().buf[0] == 'a');
+    CHECK(rl.line().current_size() == 1);
+    CHECK(rl.line().data()[0] == 'a');
 
     rl.newdata('b');
-    CHECK(rl.line().len == 2);
-    CHECK(rl.line().buf[0] == 'a');
-    CHECK(rl.line().buf[1] == 'b');
+    CHECK(rl.line().current_size() == 2);
+    CHECK(rl.line().data()[0] == 'a');
+    CHECK(rl.line().data()[1] == 'b');
 }
