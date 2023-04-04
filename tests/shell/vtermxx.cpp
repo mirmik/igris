@@ -4,9 +4,6 @@
 
 #include <string>
 
-static char buffer[48];
-static char history[48 * 5];
-
 static std::string output;
 
 static int a = 0;
@@ -31,7 +28,7 @@ static void write_callback(const char *data, unsigned int size)
 TEST_CASE("vterm")
 {
     igris::vtermxx vterm;
-    vterm.init(buffer, 48, history, 5);
+    vterm.init(48, 5);
 
     vterm.set_write_callback(write_callback);
     vterm.set_execute_callback(execute_callback);

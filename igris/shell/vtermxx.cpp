@@ -2,10 +2,7 @@
 #include <igris/defs/vt100.h>
 #include <igris/shell/vtermxx.h>
 
-void igris::vtermxx::init(char *buffer,
-                          unsigned int buffer_size,
-                          char *hbuffer,
-                          unsigned int history_size)
+void igris::vtermxx::init(unsigned int buffer_size, unsigned int history_size)
 {
     state = 0;
     echo = 1;
@@ -15,13 +12,12 @@ void igris::vtermxx::init(char *buffer,
     execute_callback = NULL;
     signal_callback = NULL;
 
-    readline_init(&rl, buffer, buffer_size);
-    readline_history_init(&rl, hbuffer, history_size);
+    rl.init(buffer_size, history_size);
 }
 
 void igris::vtermxx::newline()
 {
-    execute_callback(sline_getline(&rl.line), sline_size(&rl.line));
+    execute_callback(sline_getline(&rl.line()), sline_size(&rl.line()));
     state = 1;
 }
 
@@ -37,7 +33,7 @@ void igris::vtermxx::newdata(int16_t input_c)
         {
         case 0:
         case 1:
-            readline_newline_reset(&rl);
+            rl.newline_reset();
             if (echo)
             {
                 write_callback(prefix_string,
@@ -73,7 +69,7 @@ void igris::vtermxx::newdata(int16_t input_c)
                 break;
             }
 
-            ret = readline_putchar(&rl, c);
+            ret = rl.newdata(c);
 
             switch (ret)
             {
@@ -82,16 +78,16 @@ void igris::vtermxx::newdata(int16_t input_c)
                 if (echo)
                     write_callback(&c, 1);
 
-                if (!sline_in_rightpos(&rl.line))
+                if (!sline_in_rightpos(&rl.line()))
                 {
                     char buf[16];
 
                     if (echo)
                     {
-                        write_callback(sline_rightpart(&rl.line),
-                                       sline_rightsize(&rl.line));
+                        write_callback(sline_rightpart(&rl.line()),
+                                       sline_rightsize(&rl.line()));
 
-                        ret = vt100_left(buf, sline_rightsize(&rl.line));
+                        ret = vt100_left(buf, sline_rightsize(&rl.line()));
 
                         write_callback(buf, ret);
                     }
@@ -115,16 +111,16 @@ void igris::vtermxx::newdata(int16_t input_c)
 
                     write_callback(VT100_ERASE_LINE_AFTER_CURSOR, 3);
                 }
-                if (!sline_in_rightpos(&rl.line))
+                if (!sline_in_rightpos(&rl.line()))
                 {
                     char buf[16];
 
                     if (echo)
                     {
-                        write_callback(sline_rightpart(&rl.line),
-                                       sline_rightsize(&rl.line));
+                        write_callback(sline_rightpart(&rl.line()),
+                                       sline_rightsize(&rl.line()));
 
-                        ret = vt100_left(buf, sline_rightsize(&rl.line));
+                        ret = vt100_left(buf, sline_rightsize(&rl.line()));
 
                         write_callback(buf, ret);
                     }
@@ -150,11 +146,11 @@ void igris::vtermxx::newdata(int16_t input_c)
             {
                 char buf[16];
 
-                if (rl.lastsize)
+                if (rl.lastsize())
                 {
                     if (echo)
                     {
-                        ret = vt100_left(buf, rl.lastsize);
+                        ret = vt100_left(buf, rl.lastsize());
 
                         write_callback(buf, ret);
 
@@ -162,9 +158,9 @@ void igris::vtermxx::newdata(int16_t input_c)
                     }
                 }
 
-                if (rl.line.len)
+                if (rl.line().len)
                     if (echo)
-                        write_callback(rl.line.buf, rl.line.len);
+                        write_callback(rl.line().buf, rl.line().len);
 
                 break;
             }
@@ -175,16 +171,16 @@ void igris::vtermxx::newdata(int16_t input_c)
                 {
                     write_callback(VT100_ERASE_LINE_AFTER_CURSOR, 3);
                 }
-                if (!sline_in_rightpos(&rl.line))
+                if (!sline_in_rightpos(&rl.line()))
                 {
                     char buf[16];
 
                     if (echo)
                     {
-                        write_callback(sline_rightpart(&rl.line),
-                                       sline_rightsize(&rl.line));
+                        write_callback(sline_rightpart(&rl.line()),
+                                       sline_rightsize(&rl.line()));
 
-                        ret = vt100_left(buf, sline_rightsize(&rl.line));
+                        ret = vt100_left(buf, sline_rightsize(&rl.line()));
 
                         write_callback(buf, ret);
                     }

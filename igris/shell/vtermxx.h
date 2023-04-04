@@ -13,7 +13,7 @@
 
 #include <igris/compiler.h>
 #include <igris/event/delegate.h>
-#include <igris/shell/readline.h>
+#include <igris/shell/readlinexx.h>
 
 #define VTERMXX_INIT_STEP (-1)
 
@@ -28,13 +28,10 @@ namespace igris
         int state = 0;
         uint8_t echo = 1;
         const char *prefix_string = {};
-        struct readline rl = {};
+        igris::readline rl = {};
 
     public:
-        void init(char *buffer,
-                  unsigned int buffer_size,
-                  char *hbuffer,
-                  unsigned int history_size);
+        void init(unsigned int buffer_size, unsigned int history_size);
 
         void newdata(int16_t c);
 

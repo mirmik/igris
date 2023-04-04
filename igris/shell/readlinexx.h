@@ -14,6 +14,7 @@ TODO: Вынести драйвер работы с историей как от
 #ifndef IGRIS_SHELL_READLINE_H
 #define IGRIS_SHELL_READLINE_H
 
+#include <igris/container/unbounded_array.h>
 #include <igris/datastruct/sline.h>
 #include <igris/defs/ascii.h>
 #include <igris/util/bug.h>
@@ -43,42 +44,43 @@ namespace igris
 {
     class readline
     {
-        sline _line;
-        int _state;
+        sline _line = {};
+        int _state = 0;
 
-        char _last;
-        int lastsize;
+        char _last = 0;
+        int _lastsize = 0;
 
-        char *_history_space; // Указатель на буффер истории.
-        uint8_t _history_size; // Количество строк в буффере истории.
+        // char *_history_space; // Указатель на буффер истории.
+        // uint8_t _history_size; // Количество строк в буффере истории.
 
-        uint8_t _headhist; // Индекс в массиве, куда будет перезаписываться
-                           // новая строка истории.
-        uint8_t _curhist; // Индекс выбора строки истории (0-пустая,
-                          // 1-последняя, 2-предпоследняя и т.д.)
+        igris::unbounded_array<char> _history_space = {};
+        igris::unbounded_array<char> _buffer_space = {};
+
+        uint8_t _headhist = 0; // Индекс в массиве, куда будет перезаписываться
+                               // новая строка истории.
+        uint8_t _curhist = 0; // Индекс выбора строки истории (0-пустая,
+                              // 1-последняя, 2-предпоследняя и т.д.)
 
     public:
+        size_t lastsize()
+        {
+            return _lastsize;
+        }
+
         sline &line()
         {
             return _line;
         }
 
-        void init(char *buf, size_t len)
+        void init(size_t maxsize, size_t history_deep)
         {
-            sline_init(&_line, buf, (unsigned int)len);
-
             _last = 0;
             _state = 0;
-            _history_space = NULL;
             _curhist = 0;
             _headhist = 0;
-        }
-
-        void history_init(char *hs, int hsize)
-        {
-            _history_space = hs;
-            _history_size = hsize;
-            memset(hs, 0, _line.cap * hsize);
+            _buffer_space.resize(maxsize);
+            _history_space.resize(history_deep * maxsize);
+            sline_init(&_line, _buffer_space.data(), maxsize);
         }
 
         void newline_reset()
@@ -89,11 +91,16 @@ namespace igris
             _curhist = 0;
         }
 
+        size_t history_size()
+        {
+            return _history_space.size() / _buffer_space.size();
+        }
+
         // Указатель на строку, взятую от последней пришедшей. (1 - последняя)
         char *history_pointer(int num)
         {
-            int idx = (_headhist + _history_size - num) % _history_size;
-            return _history_space + idx * _line.cap;
+            int idx = (_headhist + history_size() - num) % history_size();
+            return _history_space.data() + idx * _line.cap;
         }
 
         // Вернуть указатель на строку истории, на которую указывает _curhist.
@@ -105,10 +112,10 @@ namespace igris
 
         void _push_line_to_history(const char *str, size_t len)
         {
-            char *ptr = _history_space + _headhist * _line.cap;
+            char *ptr = _history_space.data() + _headhist * _line.cap;
             memcpy(ptr, str, len);
             *(ptr + len) = '\0';
-            _headhist = (_headhist + 1) % _history_size;
+            _headhist = (_headhist + 1) % history_size();
         }
 
         void _push_line_to_history(const char *str)
@@ -124,7 +131,7 @@ namespace igris
 
         void load_history_line()
         {
-            lastsize = _line.len;
+            _lastsize = _line.len;
 
             if (_curhist == 0)
             {
@@ -143,10 +150,10 @@ namespace igris
         int history_up()
         {
             // DTRACE();
-            if (_history_space == NULL)
+            if (_history_space.size() == 0)
                 return 0;
 
-            if (_curhist == _history_size)
+            if (_curhist == history_size())
                 return 0;
 
             _curhist++;
@@ -162,7 +169,7 @@ namespace igris
 
         int history_down()
         {
-            if (_history_space == NULL)
+            if (_history_space.size() == 0)
                 return 0;
 
             if (_curhist == 0)
@@ -195,7 +202,7 @@ namespace igris
                     }
                     else
                     {
-                        if (_history_space && _line.len &&
+                        if (_history_space.size() && _line.len &&
                             is_not_same_as_last())
                         {
                             // Если есть буффер истории и введенная строка не

@@ -8,8 +8,7 @@ TEST_CASE("readlinexx")
 {
     igris::readline rl;
 
-    rl.init(buffer, 48);
-    rl.history_init(hbuffer, 5);
+    rl.init(48, 5);
 
     CHECK(rl.line().len == 0);
 
