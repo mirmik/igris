@@ -48,6 +48,12 @@ namespace igris
             return a;
         }
 
+        size_t write(const T *buf, size_t sz)
+        {
+            size_t a = ring_write(&r, buffer.data(), buf, sz);
+            return a;
+        }
+
         bool empty()
         {
             return ring_empty(&r);
