@@ -14,6 +14,7 @@ TODO: Вынести драйвер работы с историей как от
 #ifndef IGRIS_SHELL_READLINE_H
 #define IGRIS_SHELL_READLINE_H
 
+#include <algorithm>
 #include <igris/container/sline.h>
 #include <igris/container/unbounded_array.h>
 #include <igris/defs/ascii.h>
@@ -80,6 +81,8 @@ namespace igris
             _headhist = 0;
             _buffer_space.resize(maxsize);
             _history_space.resize(history_deep * maxsize);
+            std::fill(_buffer_space.begin(), _buffer_space.end(), '\0');
+            std::fill(_history_space.begin(), _history_space.end(), '\0');
             _line.init(maxsize);
         }
 

@@ -17,7 +17,7 @@ void igris::vtermxx::init(unsigned int buffer_size, unsigned int history_size)
 
 void igris::vtermxx::newline()
 {
-    execute_callback(rl.line().data(), rl.line().current_size());
+    execute_callback(rl.line().getline(), rl.line().current_size());
     state = 1;
 }
 

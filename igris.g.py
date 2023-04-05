@@ -129,6 +129,7 @@ licant.module("igris.util", sources=[
     "igris/shell/vterm.c",
     "igris/shell/vtermxx.cpp",
     "igris/sync/syslock.c",
+    "igris/sync/critical_context.c",
     "igris/halfer.cpp",
     "igris/osinter/wait.cpp",
     "igris/osinter/ctrobj.c",

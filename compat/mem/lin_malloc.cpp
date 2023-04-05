@@ -35,6 +35,7 @@
 #include "lin_malloc.h"
 #include <cstddef>
 #include <cstdlib>
+#include <igris/sync/critical_context.h>
 #include <igris/sync/syslock.h>
 #include <memory>
 #include <mutex>
@@ -54,9 +55,9 @@
 
 /* May be changed by the user only before the first malloc() call.  */
 
-__attribute__((init_priority(101))) static igris::syslock lock = {};
-
 extern char _heap_start;
+
+int __allocation_counter = 0;
 
 // size_t __malloc_margin = 32;
 char *__malloc_heap_start = &_heap_start;
@@ -71,8 +72,12 @@ extern "C" void *malloc(size_t len) __attribute__((used));
 // ATTRIBUTE_CLIB_SECTION
 void *malloc(size_t len)
 {
-    std::lock_guard<igris::syslock> lguard(lock);
-    assert(!is_interrupt_context());
+    if (critical_context_level() > 0)
+        abort();
+
+    igris::syslock_guard lguard;
+    __allocation_counter++;
+    assert(__allocation_counter < 100);
 
     struct __freelist *fp1, *fp2, *sfp1, *sfp2;
     char *cp;
@@ -203,14 +208,19 @@ extern "C" void free(void *p) __attribute__((used));
 
 void free(void *p)
 {
-    std::lock_guard<igris::syslock> lguard(lock);
-
-    struct __freelist *fp1, *fp2, *fpnew;
-    char *cp1, *cp2, *cpnew;
-
     /* ISO C says free(NULL) must be a no-op */
     if (p == 0)
         return;
+
+    if (critical_context_level() > 0)
+        abort();
+
+    igris::syslock_guard lguard;
+    __allocation_counter--;
+    assert(__allocation_counter > 0);
+
+    struct __freelist *fp1, *fp2, *fpnew;
+    char *cp1, *cp2, *cpnew;
 
     cpnew = (char *)p;
     cpnew -= sizeof(size_t);
@@ -286,157 +296,3 @@ void free(void *p)
         __brkval = cp2 - sizeof(size_t);
     }
 }
-
-#ifdef MALLOC_TEST
-
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
-
-void *handles[32];
-size_t sizes[32];
-
-void *alloc(size_t s)
-{
-    void *p;
-
-    if ((p = malloc(s)) == 0)
-        return 0;
-    memset(p, 0xd0, s);
-    return p;
-}
-
-void printfreelist(void)
-{
-    struct __freelist *fp1;
-    int i;
-
-    if (!__flp)
-    {
-        printf("no free list\n");
-        return;
-    }
-
-    for (i = 0, fp1 = __flp; fp1; i++, fp1 = fp1->nx)
-    {
-        printf(
-            "entry %d @ %u: size %u, next ", i, (char *)fp1 - mymem, fp1->sz);
-        if (fp1->nx)
-            printf("%u\n", (char *)fp1->nx - mymem);
-        else
-            printf("NULL\n");
-    }
-}
-
-int compare(const void *p1, const void *p2)
-{
-    return *((size_t *)p1) - *((size_t *)p2);
-}
-
-void printalloc(void)
-{
-    int j, k;
-    size_t i;
-    size_t sum, sum2;
-    void *sortedhandles[32];
-    struct __freelist *fp;
-    char *cp;
-
-    for (i = j = k = sum = sum2 = 0; i < sizeof handles / sizeof(void *); i++)
-        if (sizes[i])
-        {
-            j++;
-            sum += sizes[i];
-            if (handles[i])
-            {
-                k++;
-                sum2 += sizes[i];
-            }
-        }
-    printf("brkval: %d, %d request%s => sum %u bytes "
-           "(actually %d reqs => %u bytes)\n",
-           (char *)__brkval - mymem,
-           j,
-           j == 1 ? "" : "s",
-           sum,
-           k,
-           sum2);
-    memcpy(sortedhandles, handles, sizeof sortedhandles);
-    qsort(sortedhandles, 32, sizeof(void *), compare);
-    for (i = j = 0; i < sizeof sortedhandles / sizeof(void *); i++)
-        if ((cp = sortedhandles[i]))
-        {
-            cp -= sizeof(size_t);
-            fp = (struct __freelist *)cp;
-            printf("block %d @ %u: %u bytes\n",
-                   j,
-                   (char *)&fp->nx - mymem,
-                   fp->sz);
-            j++;
-        }
-}
-
-int main(void)
-{
-    int i, j, k, l, m, om, p, f;
-    size_t s;
-
-    srand(time(0) ^ getpid());
-
-    for (k = 0; k < 100; k++)
-    {
-        memset(handles, 0, sizeof handles);
-        memset(sizes, 0, sizeof sizes);
-
-        j = rand() % 16 + 15;
-        l = rand() % 80 + 7;
-
-        for (i = s = 0; i < j && s < 256; i++)
-        {
-            sizes[i] = rand() % l + 1;
-            s += sizes[i];
-        }
-        j = i;
-        for (m = om = 1, p = 1, f = 0; m < 1000; m++)
-        {
-            for (i = s = 0; i < j; i++)
-                if (handles[i])
-                    s++;
-            if (s == (unsigned)j)
-                break;
-
-            if (m / om > 10)
-            {
-                p <<= 1;
-                p |= 1;
-            }
-
-            for (i = 0; i < j; i++)
-                if (rand() & p)
-                {
-                    if (!handles[i] && (handles[i] = alloc(sizes[i])) == 0)
-                        f++;
-                }
-            for (i = 0; i < j; i++)
-                if (rand() & 1)
-                {
-                    free(handles[i]);
-                    handles[i] = 0;
-                }
-        }
-        if (f)
-            printf("%d alloc failure%s total\n", f, f == 1 ? "" : "s");
-        printf("After alloc:\n");
-        printalloc();
-        printfreelist();
-        for (i = 0; i < j; i++)
-            free(handles[i]);
-        printf("After cleanup:\n");
-        printfreelist();
-    }
-
-    return 0;
-}
-
-#endif /* MALLOC_TEST */
