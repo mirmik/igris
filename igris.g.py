@@ -62,7 +62,7 @@ licant.module("igris.series",
               )
 
 licant.module("igris.stdlibs",
-              mdepends=["igris.libc", "igris.std", "igris.posix"])
+              mdepends=["igris.libc", "igris.std"])
 
 ################################################################
 ######################DPRINT####################################
