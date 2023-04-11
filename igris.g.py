@@ -145,6 +145,7 @@ licant.module("igris.util", sources=[
 licant.module("igris.utilxx", sources=[
     "igris/util/base64.cpp",
     "igris/util/string.cpp",
+    "igris/container/dlist.cpp",
     "igris/string/replace.cpp",
     "igris/string/hexascii_string.cpp",
 ],

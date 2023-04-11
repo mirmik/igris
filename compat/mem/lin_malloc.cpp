@@ -217,7 +217,7 @@ void free(void *p)
 
     igris::syslock_guard lguard;
     __allocation_counter--;
-    assert(__allocation_counter > 0);
+    assert(__allocation_counter >= 0);
 
     struct __freelist *fp1, *fp2, *fpnew;
     char *cp1, *cp2, *cpnew;
