@@ -32,6 +32,14 @@ struct dlist_head
     struct dlist_head *next, *prev;
 };
 
+#ifdef __cplusplus
+static_assert(sizeof(struct dlist_head) == 2 * sizeof(void *),
+              "dlist_head size is not 2 * sizeof(void *)");
+#else
+_Static_assert(sizeof(struct dlist_head) == 2 * sizeof(void *),
+               "dlist_head size is not 2 * sizeof(void *)");
+#endif
+
 #define DLIST_HEAD_INIT(name)                                                  \
     {                                                                          \
         &(name), &(name)                                                       \

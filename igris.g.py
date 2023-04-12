@@ -132,8 +132,7 @@ licant.module("igris.util", sources=[
     "igris/sync/critical_context.c",
     "igris/halfer.cpp",
     "igris/osinter/wait.cpp",
-    "igris/osinter/ctrobj.c",
-    "igris/sync/waitqueue.c"
+    "igris/osinter/ctrobj.cpp"
 ],
     mdepends=[
     "igris.protocols.gstuff",
@@ -170,7 +169,7 @@ licant.module("igris.syslock", impl="irqs",
 licant.module("igris.syslock", impl="mutex",
               sources=["igris/sync/syslock_mutex.cpp"], default=True)
 
-licant.module("igris.semaphore", sources=["igris/sync/semaphore.c"])
+licant.module("igris.semaphore", sources=["igris/sync/semaphore.cpp"])
 
 licant.module("igris.protocols.msgtype",
               sources=["igris/protocols/msgtype.cpp"])
