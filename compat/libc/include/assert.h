@@ -2,7 +2,6 @@
 #define ASSERT_H_
 
 #include <igris/dprint/dprint.h>
-#include <igris/util/emergency_halt.h>
 #include <stdlib.h>
 
 #ifndef NDEBUG
