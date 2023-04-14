@@ -3,6 +3,7 @@
 
 #include <igris/dprint/dprint.h>
 #include <igris/util/emergency_halt.h>
+#include <stdlib.h>
 
 #ifndef NDEBUG
 static inline void __assert(const char *message, const char *file, int line)
@@ -11,7 +12,7 @@ static inline void __assert(const char *message, const char *file, int line)
     DPRINT(message);
     DPRINT(file);
     DPRINT(line);
-    emergency_halt();
+    abort();
     while (1)
         ;
 }
