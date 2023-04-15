@@ -22,7 +22,7 @@ typedef struct
     intmax_t rem;
 } imaxdiv_t;
 
-#include <sys/cdefs.h>
+#include <igris/compiler.h>
 __BEGIN_DECLS
 
 /* The following shall be declared as functions and may also be defined as

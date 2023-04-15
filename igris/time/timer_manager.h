@@ -29,18 +29,18 @@ namespace igris
         using difftime_t = typename TimeSpec::difftime_t;
 
         friend class timer_manager_basic<TimeSpec>;
-        dlist_head lnk = DLIST_HEAD_INIT(lnk);
+        dlist_node lnk = {};
         time_t _start = 0;
         difftime_t _interval = 0;
 
     public:
         bool is_planned()
         {
-            return lnk.next != &lnk && &lnk != lnk.prev;
+            return lnk.is_linked();
         }
         void unplan()
         {
-            dlist_del_init(&lnk);
+            lnk.unlink();
         }
         virtual void execute() = 0;
         virtual ~timer_head_basic() = default;
@@ -74,7 +74,7 @@ namespace igris
         std::tuple<Args...> args;
 
     public:
-        timer_basic(igris::delegate<void, Args...> dlg, Args &&... args)
+        timer_basic(igris::delegate<void, Args...> dlg, Args &&...args)
             : dlg(dlg), args(std::forward<Args>(args)...)
         {
         }
@@ -104,10 +104,10 @@ namespace igris
             system_lock();
             tim.unplan();
 
-            auto it = std::find_if(
-                timer_list.begin(), timer_list.end(), [&](const auto &tim) {
-                    return finish < tim.finish();
-                });
+            auto it = std::find_if(timer_list.begin(),
+                                   timer_list.end(),
+                                   [&](const auto &tim)
+                                   { return finish < tim.finish(); });
 
             timer_list.move_prev(tim, it);
             system_unlock();

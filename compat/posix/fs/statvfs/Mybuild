@@ -1,7 +1,0 @@
-package embox.compat.posix.fs
-
-static module statvfs {
-	source "statvfs.c"
-	@IncludeExport(path="sys")
-	source "statvfs.h"
-}

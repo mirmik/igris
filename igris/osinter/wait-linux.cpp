@@ -5,29 +5,27 @@
 
 struct linux_waiter
 {
-    struct waiter w = {};
+    struct waiter w;
     igris::event event = {};
 };
 
-int wait_current_schedee(struct dlist_head *head, int priority, void **future)
+int wait_current_schedee(igris::dlist_base *head, int priority, void **future)
 {
-    struct linux_waiter waiter;
-
-    waiter_schedee_init(&waiter.w);
+    linux_waiter waiter;
 
     system_lock();
 
     if (priority)
-        dlist_move(&waiter.w.ctr.lnk, head);
+        head->move_front(waiter.w.lnk);
     else
-        dlist_move_tail(&waiter.w.ctr.lnk, head);
+        head->move_back(waiter.w.lnk);
     system_unlock();
 
     // auto save = system_lock_save();
     waiter.event.wait();
     // system_lock_restore(save);
 
-    *future = waiter.w.ctr.future;
+    *future = (void *)waiter.w.future;
     return 0;
 }
 

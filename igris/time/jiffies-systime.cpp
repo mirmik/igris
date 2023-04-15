@@ -65,7 +65,7 @@ jiffies_pair_t jiffies_pair()
         res.hi = __jiffies;
         res.lo = systime_lopart();
         system_unlock();
-
+        // pass: unlock for jiffies increment
         system_lock();
         hi2 = __jiffies;
         system_unlock();

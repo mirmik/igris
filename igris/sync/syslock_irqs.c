@@ -9,24 +9,29 @@ static volatile int count = 0;
 void system_lock()
 {
     irqstate_t tmpsave = irqs_save();
-
     if (count == 0)
         save = tmpsave;
-
     ++count;
-    // assert(count == 0);
 }
 
 void system_unlock()
 {
     --count;
-    // assert(count >= 0);
-
     if (count == 0)
         irqs_restore(save);
 }
 
-void syslock_reset() { count = 0; }
+void syslock_reset()
+{
+    count = 0;
+}
 
-int syslock_counter() { return count; }
-void syslock_counter_set(int newcount) { count = newcount; }
+int syslock_counter()
+{
+    return count;
+}
+
+void syslock_counter_set(int newcount)
+{
+    count = newcount;
+}
