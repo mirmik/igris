@@ -5,7 +5,7 @@
 
 struct linux_waiter
 {
-    struct waiter w;
+    waiter w;
     igris::event event = {};
 };
 
@@ -29,9 +29,9 @@ int wait_current_schedee(igris::dlist_base *head, int priority, void **future)
     return 0;
 }
 
-int unwait_schedee_waiter(struct waiter *w)
+int unwait_schedee_waiter(waiter *w)
 {
-    struct linux_waiter *waiter = mcast_out(w, struct linux_waiter, w);
+    linux_waiter *waiter = mcast_out(w, struct linux_waiter, w);
     waiter->event.signal();
 
     return 0;

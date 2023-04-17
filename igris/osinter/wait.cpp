@@ -7,7 +7,7 @@
 
 int waiter_unwait(igris::dlist_node *lnk, intptr_t future)
 {
-    struct waiter *w = mcast_out(lnk, waiter, lnk);
+    waiter *w = mcast_out(lnk, waiter, lnk);
     w->future = future;
     w->func(w->obj);
     return 0;

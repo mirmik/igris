@@ -8,15 +8,8 @@ import sys
 
 licant.execute("igris.g.py")
 
-licant.cli.add_argument("--toolchain")
 licant.cli.add_argument("--igris-std", action="store_true")
 opts, args = licant.cli.parse()
-
-if hasattr(licant, 'gcc_toolchain'):
-    toolchain = licant.cxx_make.gcc_toolchain(opts.toolchain)
-else:
-    toolchain = licant.cxx_make.toolchain_gcc(opts.toolchain)
-
 
 def target(suffix):
     return "libigris.{}".format(suffix)
@@ -71,7 +64,6 @@ licant.cxx_static_and_shared(
     name="libraries",
     static_lib="libigris.a",
     shared_lib="libigris.so",
-    toolchain=toolchain,
     mdepends=stdmodules+modules + [
         "igris.syslock",
         ("igris.ctrobj", "linux"),
