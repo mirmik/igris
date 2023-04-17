@@ -13,7 +13,7 @@ namespace igris
     {
         friend class dlist_base;
 
-    private:
+    public:
         dlist_node *next = nullptr;
         dlist_node *prev = nullptr;
 
