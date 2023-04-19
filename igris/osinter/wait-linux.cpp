@@ -9,9 +9,17 @@ struct linux_waiter
     igris::event event = {};
 };
 
+void __unwait_handler(void *arg)
+{
+    linux_waiter *waiter = (linux_waiter *)arg;
+    waiter->event.signal();
+}
+
 int wait_current_schedee(igris::dlist_base *head, int priority, void **future)
 {
     linux_waiter waiter;
+    waiter.w.func = __unwait_handler;
+    waiter.w.obj = &waiter;
 
     system_lock();
 
