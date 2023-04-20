@@ -14,6 +14,12 @@
 #define IGRIS_FALLTHROUGH __attribute__((fallthrough));
 #endif
 
+#ifndef __AVR__
+#define INIT_PRIORITY(x) __attribute__((init_priority(x)))
+#else
+#define INIT_PRIORITY(x)
+#endif
+
 #ifdef _MSC_VER
 #define __NORETURN
 #define __WEAK
