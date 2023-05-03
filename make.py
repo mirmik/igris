@@ -58,7 +58,7 @@ if opts.igris_std:
 CCFLAGS = '-fPIC -flto -Werror=all -Werror=extra -pedantic-errors -Wreturn-type -g -Wno-gnu-zero-variadic-macro-arguments'
 CXXFLAGS = cxx_flags + CCFLAGS
 CCFLAGS = c_flags + CCFLAGS
-LDFLAGS = '-g -flto'
+LDFLAGS = '-fPIC -g -flto'
 
 licant.cxx_static_and_shared(
     name="libraries",
@@ -92,9 +92,9 @@ licant.cxx_application("runtests",
                        cxxstd="c++20",
                        ccstd="c11",
                        cxx_flags=cxx_flags +
-                       "-flto -fmax-errors=1 -g -fPIC -Werror=all -Wno-gnu-zero-variadic-macro-arguments -Weffc++",
-                       cc_flags=c_flags + "-flto -g -fPIC -Werror=all -Wno-gnu-zero-variadic-macro-arguments",
-                       ld_flags = "-flto -g",
+                       "-fPIC -fmax-errors=1 -g -Werror=all -Wno-gnu-zero-variadic-macro-arguments -Weffc++",
+                       cc_flags=c_flags + "-g -Werror=all -Wno-gnu-zero-variadic-macro-arguments",
+                       ld_flags = "-fPIC -g",
                        include_paths=["./tests", "."],
                        libs=["rt", "pthread"],
                        mdepends=stdmodules

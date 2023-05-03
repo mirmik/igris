@@ -9,8 +9,7 @@
 
 namespace igris
 {
-    template <class T>
-    concept ArrayType = requires(const T &a)
+    template <class T> concept ArrayType = requires(const T &a)
     {
         std::size(a);
         std::begin(a);
@@ -68,6 +67,13 @@ namespace igris
 
             _values.reserve(plane_size());
             set_values(container);
+        }
+
+        ndarray(const std::initializer_list<Value> &container,
+                const std::initializer_list<size_t> &shape)
+        {
+            init(container);
+            reshape(shape);
         }
 
         ndarray(const std::initializer_list<Value> &container)
