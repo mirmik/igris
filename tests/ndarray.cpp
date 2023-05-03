@@ -40,6 +40,8 @@ TEST_CASE("2darray shape constructor")
     igris::ndarray<double> arr({10., 30., 50., 10., 20., 30.}, {2, 3});
     CHECK_EQ(arr.dim(), 2);
     CHECK_EQ(arr.shape(), std::vector<size_t>{2, 3});
+    CHECK_EQ(arr.planed_index({0, 0}), 0);
+    CHECK_EQ(arr({0, 0}), 10);
 }
 
 TEST_CASE("3darray")
