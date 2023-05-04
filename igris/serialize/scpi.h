@@ -21,13 +21,6 @@ namespace igris
             std::string str;
             int num;
             header(const std::string &str, int num) : str(str), num(num) {}
-            size_t print_to(nos::ostream &o) const
-            {
-                if (num == -1)
-                    return nos::print(str);
-                else
-                    return nos::fprint_to(o, "{}{}", str, num);
-            }
         };
 
         std::vector<header> headers;
@@ -76,11 +69,6 @@ namespace igris
             }
             if (reader.next_is('?'))
                 is_question = true;
-        }
-
-        size_t print_to(nos::ostream &o) const
-        {
-            return nos::fprint_to(o, "({}, {})", headers, arguments);
         }
     };
 }

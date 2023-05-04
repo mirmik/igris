@@ -58,6 +58,11 @@ namespace igris
             return _values;
         }
 
+        const std::vector<Value> &storage() const
+        {
+            return _values;
+        }
+
         template <class C> void init(const C &container)
         {
             size_t dim = igris::array_dimension<C, Value>(container);
@@ -67,6 +72,13 @@ namespace igris
 
             _values.reserve(plane_size());
             set_values(container);
+        }
+
+        ndarray(const std::vector<Value> &container,
+                const std::vector<size_t> &shape)
+        {
+            init(container);
+            reshape(shape);
         }
 
         ndarray(const std::initializer_list<Value> &container,
@@ -180,6 +192,12 @@ namespace igris
         void reshape(const igris::array_view<size_t> &indexes)
         {
             _shape = {indexes.data(), indexes.data() + indexes.size()};
+        }
+
+        template <class Indexes> void reshape(const Indexes &indexes)
+        {
+            _shape.resize(indexes.size());
+            std::copy(indexes.begin(), indexes.end(), _shape.begin());
         }
 
         void resize(igris::array_view<size_t> newshape)

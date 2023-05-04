@@ -157,11 +157,6 @@ namespace igris
         {
             return {data(), size()};
         }
-
-        template <class Output> size_t print_to(Output &out) const
-        {
-            return out.write(data(), size());
-        }
     };
 
     namespace buffer_literal
