@@ -11,6 +11,7 @@ licant.execute("igris.g.py")
 licant.cli.add_argument("--igris-std", action="store_true")
 opts, args = licant.cli.parse()
 
+
 def target(suffix):
     return "libigris.{}".format(suffix)
 
@@ -55,7 +56,7 @@ if opts.igris_std:
         raise Exception("Unknown wordsize")
     DEFINES.extend([f"IGRIS_STUBARCH_WORDSIZE={wordsize}"])
 
-CCFLAGS = '-fPIC -flto -Werror=all -Werror=extra -pedantic-errors -Wreturn-type -g -Wno-gnu-zero-variadic-macro-arguments'
+CCFLAGS = '-fPIC -Werror=all -Werror=extra -pedantic-errors -Wreturn-type -g -Wno-gnu-zero-variadic-macro-arguments'
 CXXFLAGS = cxx_flags + CCFLAGS
 CCFLAGS = c_flags + CCFLAGS
 LDFLAGS = '-fPIC -g -flto'
@@ -94,7 +95,7 @@ licant.cxx_application("runtests",
                        cxx_flags=cxx_flags +
                        "-fPIC -fmax-errors=1 -g -Werror=all -Wno-gnu-zero-variadic-macro-arguments -Weffc++",
                        cc_flags=c_flags + "-g -Werror=all -Wno-gnu-zero-variadic-macro-arguments",
-                       ld_flags = "-fPIC -g",
+                       ld_flags="-fPIC -g",
                        include_paths=["./tests", "."],
                        libs=["rt", "pthread"],
                        mdepends=stdmodules
@@ -110,4 +111,3 @@ licant.install.install_library(
 licant.fileset("all", targets=["runtests", "libigris.so", "libigris.a"])
 
 licant.ex("all")
-
