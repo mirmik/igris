@@ -142,10 +142,10 @@ namespace igris
 
         T &operator[](const Key &key)
         {
-            auto it = std::find_if(storage.begin(),
-                                   storage.end(),
-                                   [&key](const value_type &p)
-                                   { return p.first == key; });
+            auto it = std::find_if(
+                storage.begin(), storage.end(), [&key](const value_type &p) {
+                    return p.first == key;
+                });
 
             if (it == storage.end())
             {
@@ -158,10 +158,10 @@ namespace igris
 
         const T &operator[](const Key &key) const
         {
-            auto it = std::find_if(storage.begin(),
-                                   storage.end(),
-                                   [&key](const value_type &p)
-                                   { return p.first == key; });
+            auto it = std::find_if(
+                storage.begin(), storage.end(), [&key](const value_type &p) {
+                    return p.first == key;
+                });
 
             if (it == storage.end())
             {
@@ -173,10 +173,10 @@ namespace igris
 
         T &at(const Key &key)
         {
-            auto it = std::find_if(storage.begin(),
-                                   storage.end(),
-                                   [&key](const value_type &p)
-                                   { return p.first == key; });
+            auto it = std::find_if(
+                storage.begin(), storage.end(), [&key](const value_type &p) {
+                    return p.first == key;
+                });
 
             if (it == storage.end())
             {
@@ -188,10 +188,10 @@ namespace igris
 
         const T &at(const Key &key) const
         {
-            auto it = std::find_if(storage.begin(),
-                                   storage.end(),
-                                   [&key](const value_type &p)
-                                   { return p.first == key; });
+            auto it = std::find_if(
+                storage.begin(), storage.end(), [&key](const value_type &p) {
+                    return p.first == key;
+                });
 
             if (it == storage.end())
             {
@@ -203,40 +203,40 @@ namespace igris
 
         iterator find(const Key &key)
         {
-            return std::find_if(storage.begin(),
-                                storage.end(),
-                                [&key](const value_type &p)
-                                { return p.first == key; });
+            return std::find_if(
+                storage.begin(), storage.end(), [&key](const value_type &p) {
+                    return p.first == key;
+                });
         }
 
         const_iterator find(const Key &key) const
         {
-            return std::find_if(storage.begin(),
-                                storage.end(),
-                                [&key](const value_type &p)
-                                { return p.first == key; });
+            return std::find_if(
+                storage.begin(), storage.end(), [&key](const value_type &p) {
+                    return p.first == key;
+                });
         }
 
         size_type count(const Key &key) const
         {
-            return std::count_if(storage.begin(),
-                                 storage.end(),
-                                 [&key](const value_type &p)
-                                 { return p.first == key; });
+            return std::count_if(
+                storage.begin(), storage.end(), [&key](const value_type &p) {
+                    return p.first == key;
+                });
         }
 
         template <class... Args>
-        std::pair<iterator, bool> emplace(Key key, Args &&...args)
+        std::pair<iterator, bool> emplace(Key key, Args &&... args)
         {
-            auto it = std::find_if(storage.begin(),
-                                   (iterator)storage.end(),
-                                   [&key](const value_type &p)
-                                   { return p.first == key; });
+            auto it = std::find_if(
+                storage.begin(),
+                (iterator)storage.end(),
+                [&key](const value_type &p) { return p.first == key; });
             if (it != storage.end())
             {
                 return std::make_pair(it, false);
             }
-            storage.push_back(pair(key, T(std::forward<Args>(args)...)));
+            storage.push_back(std::pair(key, T(std::forward<Args>(args)...)));
             return std::make_pair(storage.end() - 1, true);
         }
 
@@ -244,8 +244,9 @@ namespace igris
         {
             auto it = std::find_if(storage.begin(),
                                    (iterator)storage.end(),
-                                   [&value](const value_type &p)
-                                   { return p.first == value.first; });
+                                   [&value](const value_type &p) {
+                                       return p.first == value.first;
+                                   });
             if (it != storage.end())
             {
                 return it;
@@ -254,8 +255,9 @@ namespace igris
                 std::upper_bound(storage.begin(),
                                  (iterator)storage.end(),
                                  value,
-                                 [](const value_type &a, const value_type &b)
-                                 { return a.first < b.first; }),
+                                 [](const value_type &a, const value_type &b) {
+                                     return a.first < b.first;
+                                 }),
                 value);
         }
     };
