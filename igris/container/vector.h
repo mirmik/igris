@@ -224,7 +224,7 @@ namespace igris
             return m_data - 1;
         }
 
-        template <typename... Args> void emplace_back(Args &&...args)
+        template <typename... Args> void emplace_back(Args &&... args)
         {
             reserve(m_size + 1);
             igris::constructor(m_data + m_size, std::forward<Args>(args)...);
@@ -273,7 +273,7 @@ namespace igris
         }
 
         template <typename... Args>
-        iterator emplace(const_iterator pos, Args &&...args)
+        iterator emplace(const_iterator pos, Args &&... args)
         {
             // TODO insert optimization
             size_t _pos = pos - m_data;
@@ -358,6 +358,17 @@ namespace igris
         void erase(iterator newend)
         {
             m_size = newend - m_data;
+        }
+
+        void erase(iterator first, iterator last)
+        {
+            size_t sz = last - first;
+            for (size_t i = 0; i < sz; ++i)
+            {
+                igris::destructor(first + i);
+            }
+            std::move(last, end(), first);
+            m_size -= sz;
         }
 
         T &at(size_t num)

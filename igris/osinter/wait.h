@@ -14,7 +14,7 @@ public:
     igris::dlist_node lnk = {};
     int64_t future = 0;
     void (*func)(void *) = nullptr;
-    void *obj = nullptr;
+    uintptr_t obj = 0;
 
 public:
     waiter() = default;
@@ -26,7 +26,7 @@ static inline void
 waiter_delegate_init(waiter *w, void (*func)(void *), void *obj)
 {
     w->func = func;
-    w->obj = obj;
+    w->obj = reinterpret_cast<uintptr_t>(obj);
 }
 
 int wait_current_schedee(igris::dlist_base *head, int priority, void **future);

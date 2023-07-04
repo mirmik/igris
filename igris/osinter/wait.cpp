@@ -10,7 +10,7 @@ int waiter_unwait(igris::dlist_node *lnk, intptr_t future)
     waiter *w = mcast_out(lnk, waiter, lnk);
     w->future = future;
     assert(w->func != nullptr);
-    w->func(w->obj);
+    w->func(reinterpret_cast<void *>(w->obj));
     return 0;
 }
 

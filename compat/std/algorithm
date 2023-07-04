@@ -10,6 +10,42 @@
 
 namespace std
 {
+    template <class I, class E, class P> bool any_of(I first, E last, P pred)
+    {
+        for (; first != last; ++first)
+        {
+            if (pred(*first))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    template <class I, class E, class P> bool all_of(I first, E last, P pred)
+    {
+        for (; first != last; ++first)
+        {
+            if (!pred(*first))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    template <class I, class E, class P> bool none_of(I first, E last, P pred)
+    {
+        for (; first != last; ++first)
+        {
+            if (pred(*first))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     template <class I, class E, class T>
     void fill(I first, E last, const T &value)
     {

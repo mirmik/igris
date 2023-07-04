@@ -129,3 +129,17 @@ TEST_CASE("vector.reserve")
     CHECK_EQ(vec.capacity(), 1000);
     CHECK_EQ(vec.size(), 4);
 }
+
+TEST_CASE("vector.erase")
+{
+    igris::vector<double> vec{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    vec.erase(std::remove_if(
+                  vec.begin(), vec.end(), [](int i) { return i % 2 == 0; }),
+              vec.end());
+
+    CHECK_EQ(vec[0], 1);
+    CHECK_EQ(vec[1], 3);
+    CHECK_EQ(vec[2], 5);
+    CHECK_EQ(vec[3], 7);
+    CHECK_EQ(vec[4], 9);
+}

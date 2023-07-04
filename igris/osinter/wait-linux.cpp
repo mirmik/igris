@@ -5,7 +5,7 @@
 
 struct linux_waiter
 {
-    waiter w;
+    waiter w = {};
     igris::event event = {};
 };
 
@@ -19,7 +19,7 @@ int wait_current_schedee(igris::dlist_base *head, int priority, void **future)
 {
     linux_waiter waiter;
     waiter.w.func = __unwait_handler;
-    waiter.w.obj = &waiter;
+    waiter.w.obj = reinterpret_cast<uintptr_t>(&waiter);
 
     system_lock();
 
