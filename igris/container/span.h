@@ -1,6 +1,7 @@
 #ifndef STD_SPAN_H
 #define STD_SPAN_H
 
+#include <array>
 #include <cstddef>
 
 namespace igris
@@ -13,6 +14,11 @@ namespace igris
     public:
         span() : _data(nullptr), _size(0) {}
         span(T *data, size_t size) : _data(data), _size(size) {}
+        template <size_t N> span(T (&arr)[N]) : _data(arr), _size(N) {}
+        template <size_t N>
+        span(std::array<T, N> &arr) : _data(arr.data()), _size(arr.size())
+        {
+        }
 
         T *data()
         {
