@@ -92,6 +92,70 @@ namespace igris
         {
             _size -= count;
         }
+
+        T *begin()
+        {
+            return _data;
+        }
+
+        T *end()
+        {
+            return _data + _size;
+        }
+
+        const T *begin() const
+        {
+            return _data;
+        }
+
+        const T *end() const
+        {
+            return _data + _size;
+        }
+
+        const T *cbegin() const
+        {
+            return _data;
+        }
+
+        const T *cend() const
+        {
+            return _data + _size;
+        }
+
+        span<T> &operator=(std::nullptr_t null)
+        {
+            _data = null;
+            _size = 0;
+            return *this;
+        }
+
+        span<T> &operator=(const span<T> &other)
+        {
+            _data = other._data;
+            _size = other._size;
+            return *this;
+        }
+
+        T *rbegin()
+        {
+            return _data + _size - 1;
+        }
+
+        T *rend()
+        {
+            return _data - 1;
+        }
+
+        const T *rbegin() const
+        {
+            return _data + _size - 1;
+        }
+
+        const T *rend() const
+        {
+            return _data - 1;
+        }
     };
 }
 

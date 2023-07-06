@@ -15,4 +15,17 @@ TEST_CASE("span")
     CHECK(spn[2] == 3);
     CHECK(spn[3] == 4);
     CHECK(spn[4] == 5);
+
+    auto it = spn.begin();
+    CHECK(*it == 1);
+    ++it;
+    CHECK(*it == 2);
+    ++it;
+    CHECK(*it == 3);
+    ++it;
+    CHECK(*it == 4);
+    ++it;
+    CHECK(*it == 5);
+    ++it;
+    CHECK(it == spn.end());
 }
