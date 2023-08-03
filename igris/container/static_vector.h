@@ -33,34 +33,49 @@ namespace igris
         static_vector(const static_vector &other)
         {
             m_size = other.m_size;
-            std::copy(other.begin(), other.end(), begin());
+            for (std::size_t pos = 0; pos < m_size; ++pos)
+            {
+                new (&_data[pos]) T(other[pos]);
+            }
         }
 
         static_vector(static_vector &&other)
         {
             m_size = other.m_size;
-            std::move(other.begin(), other.end(), begin());
+            for (std::size_t pos = 0; pos < m_size; ++pos)
+            {
+                new (&_data[pos]) T(std::move(other[pos]));
+            }
         }
 
         static_vector &operator=(const static_vector &other)
         {
             m_size = other.m_size;
-            std::copy(other.begin(), other.end(), begin());
+            for (std::size_t pos = 0; pos < m_size; ++pos)
+            {
+                new (&_data[pos]) T(other[pos]);
+            }
             return *this;
         }
 
         static_vector &operator=(static_vector &&other)
         {
             m_size = other.m_size;
-            std::move(other.begin(), other.end(), begin());
+            for (std::size_t pos = 0; pos < m_size; ++pos)
+            {
+                new (&_data[pos]) T(std::move(other[pos]));
+            }
             other.m_size = 0;
             return *this;
         }
 
         static_vector(const std::initializer_list<T> &lst)
         {
-            m_size = lst.size();
-            std::copy(lst.begin(), lst.end(), begin());
+            for (auto &obj : lst)
+            {
+                new (&_data[m_size]) T(obj);
+                ++m_size;
+            }
         }
 
         // Create an object in aligned storage
