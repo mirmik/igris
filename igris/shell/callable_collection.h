@@ -2,59 +2,86 @@
 #define CALLABLE_COLLECTION_H
 
 #include <functional>
+#include <initializer_list>
 #include <string>
 #include <vector>
 
 namespace igris
 {
-    template <class F> class callable_collection
+    template <class F> struct callable_collection_record
     {
-        struct record
-        {
-            std::string key;
-            std::string help;
-            std::function<F> func;
-        };
+        std::string key;
+        std::string help;
+        std::function<F> func;
+    };
 
-        std::vector<record> records = {};
+    template <class F,
+              class Container = std::vector<callable_collection_record<F>>>
+    class callable_collection
+    {
+
+        Container records = {};
 
     public:
-        void add(const std::string &key, const std::string &help, F func)
+        callable_collection() = default;
+        callable_collection(const callable_collection &) = default;
+        callable_collection(callable_collection &&) = default;
+        callable_collection &operator=(const callable_collection &) = default;
+        callable_collection &operator=(callable_collection &&) = default;
+
+        callable_collection(Container &&recs)
         {
-            records.push_back({key, help, func});
+            records = std::move(recs);
         }
 
-        void add(const std::string &key, F func)
+        callable_collection(const Container &recs)
         {
-            records.push_back({key, "", func});
+            records = recs;
         }
 
-        void add(const char *key, const char *help, F func)
+        callable_collection(
+            const std::initializer_list<callable_collection_record<F>> &recs)
         {
-            records.push_back({key, help, func});
+            records = recs;
         }
 
-        void add(const char *key, F func)
+        template <class U>
+        void add(const std::string &key, const std::string &help, U func)
         {
-            records.push_back({key, "", func});
+            records.push_back({key, help, std::function<F>(func)});
         }
 
-        void add(record &&rec)
+        template <class U> void add(const std::string &key, U func)
+        {
+            records.push_back({key, "", std::function<F>(func)});
+        }
+
+        template <class U> void add(const char *key, const char *help, U func)
+        {
+            records.push_back({key, help, std::function<F>(func)});
+        }
+
+        template <class U> void add(const char *key, U func)
+        {
+            records.push_back({key, "", std::function<F>(func)});
+        }
+
+        void add(callable_collection_record<F> &&rec)
         {
             records.push_back(std::move(rec));
         }
 
-        void add(record &rec)
+        void add(callable_collection_record<F> &rec)
         {
             records.push_back(rec);
         }
 
-        void add(std::vector<record> &&recs)
+        void add(Container &&recs)
         {
             records.insert(records.end(), recs.begin(), recs.end());
         }
 
-        void add(std::vector<record> &recs)
+        void add(Container &recs)
         {
             records.insert(records.end(), recs.begin(), recs.end());
         }

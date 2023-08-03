@@ -30,6 +30,33 @@ namespace igris
             memset(_data, 0, sizeof(_data));
         }
 
+        static_vector(const static_vector &other)
+        {
+            m_size = other.m_size;
+            std::copy(other.begin(), other.end(), begin());
+        }
+
+        static_vector(static_vector &&other)
+        {
+            m_size = other.m_size;
+            std::move(other.begin(), other.end(), begin());
+        }
+
+        static_vector &operator=(const static_vector &other)
+        {
+            m_size = other.m_size;
+            std::copy(other.begin(), other.end(), begin());
+            return *this;
+        }
+
+        static_vector &operator=(static_vector &&other)
+        {
+            m_size = other.m_size;
+            std::move(other.begin(), other.end(), begin());
+            other.m_size = 0;
+            return *this;
+        }
+
         static_vector(const std::initializer_list<T> &lst)
         {
             m_size = lst.size();
@@ -89,6 +116,7 @@ namespace igris
             {
                 reinterpret_cast<T *>(&_data[pos])->~T();
             }
+            m_size = 0;
         }
 
         iterator begin()
