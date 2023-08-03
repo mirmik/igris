@@ -2,6 +2,7 @@
 #define CALLABLE_COLLECTION_H
 
 #include <functional>
+#include <igris/container/static_vector.h>
 #include <initializer_list>
 #include <string>
 #include <vector>
@@ -10,36 +11,39 @@ namespace igris
 {
     template <class F> struct callable_collection_record
     {
-        std::string key;
-        std::string help;
+        const char *key;
+        const char *help;
         std::function<F> func;
     };
 
-    template <class F,
-              class Container = std::vector<callable_collection_record<F>>>
-    class callable_collection
+    template <class F, size_t N> class static_callable_collection
     {
+        using Container =
+            igris::static_vector<callable_collection_record<F>, N>;
 
         Container records = {};
 
     public:
-        callable_collection() = default;
-        callable_collection(const callable_collection &) = default;
-        callable_collection(callable_collection &&) = default;
-        callable_collection &operator=(const callable_collection &) = default;
-        callable_collection &operator=(callable_collection &&) = default;
+        static_callable_collection() = default;
+        static_callable_collection(const static_callable_collection &) =
+            default;
+        static_callable_collection(static_callable_collection &&) = default;
+        static_callable_collection &
+        operator=(const static_callable_collection &) = default;
+        static_callable_collection &
+        operator=(static_callable_collection &&) = default;
 
-        callable_collection(Container &&recs)
+        static_callable_collection(Container &&recs)
         {
             records = std::move(recs);
         }
 
-        callable_collection(const Container &recs)
+        static_callable_collection(const Container &recs)
         {
             records = recs;
         }
 
-        callable_collection(
+        static_callable_collection(
             const std::initializer_list<callable_collection_record<F>> &recs)
         {
             records = recs;
@@ -86,12 +90,12 @@ namespace igris
             records.insert(records.end(), recs.begin(), recs.end());
         }
 
-        void add(callable_collection &&recs)
+        void add(static_callable_collection &&recs)
         {
             records.insert(records.end(), recs.begin(), recs.end());
         }
 
-        void add(callable_collection &recs)
+        void add(static_callable_collection &recs)
         {
             records.insert(records.end(), recs.begin(), recs.end());
         }
@@ -113,11 +117,11 @@ namespace igris
             return records.end();
         }
 
-        std::function<F> *find(const std::string &key)
+        std::function<F> *find(const char *key)
         {
             for (auto &rec : records)
             {
-                if (rec.key == key)
+                if (strcmp(rec.key, key) == 0)
                     return &rec.func;
             }
             return nullptr;
