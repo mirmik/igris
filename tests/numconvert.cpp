@@ -41,6 +41,17 @@ TEST_CASE("numconvert")
 
     CHECK_EQ(igris_atof64("56789", NULL), 56789);
     CHECK_EQ(igris_atof64("-56789", NULL), -56789);
+
+    CHECK_EQ(igris_atoi32("1", 10, NULL), 1);
+    CHECK_EQ(igris_atoi64("1", 10, NULL), 1);
+    CHECK_EQ(igris_atou32("1", 10, NULL), 1);
+    CHECK_EQ(igris_atou64("1", 10, NULL), 1);
+    CHECK_EQ(igris_atof32("1", NULL), 1);
+    CHECK_EQ(igris_atof64("1", NULL), 1);
+    CHECK_EQ(igris_atoi32("-1", 10, NULL), -1);
+    CHECK_EQ(igris_atoi64("-1", 10, NULL), -1);
+    CHECK_EQ(igris_atof32("-1", NULL), -1);
+    CHECK_EQ(igris_atof64("-1", NULL), -1);
 }
 
 TEST_CASE("numconvert check all functions")
