@@ -3,7 +3,7 @@
 
 #include <assert.h>
 //#include <igris/util/numconvert.h>
-#include <initializer_list>
+//#include <initializer_list>
 #include <inttypes.h>
 #include <new>
 #include <stdarg.h>
@@ -16,7 +16,7 @@ namespace igris
 {
     using ptrdiff_t = int;
     using size_t = ::size_t;
-    template <class T> using initializer_list = std::initializer_list<T>;
+    // template <class T> using initializer_list = std::initializer_list<T>;
 }
 
 namespace igris
@@ -683,19 +683,19 @@ namespace igris
 
         vector(const Allocator &alloc = Allocator()) : m_alloc(alloc) {}
 
-        vector(const igris::initializer_list<T> &initializers)
-        {
-            reserve(initializers.size());
-            for (auto &a : initializers)
-                push_back(a);
-        }
+        // vector(const igris::initializer_list<T> &initializers)
+        // {
+        //     reserve(initializers.size());
+        //     for (auto &a : initializers)
+        //         push_back(a);
+        // }
 
-        vector(igris::initializer_list<T> &&initializers)
-        {
-            reserve(initializers.size());
-            for (auto &a : initializers)
-                push_back(a);
-        }
+        // vector(igris::initializer_list<T> &&initializers)
+        // {
+        //     reserve(initializers.size());
+        //     for (auto &a : initializers)
+        //         push_back(a);
+        // }
 
         vector(const vector &other) : m_size(other.m_size)
         {
