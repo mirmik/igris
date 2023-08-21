@@ -16,6 +16,7 @@ namespace igris
 {
     using ptrdiff_t = int;
     using size_t = ::size_t;
+    using ssize_t = int32_t;
     // template <class T> using initializer_list = std::initializer_list<T>;
 }
 
