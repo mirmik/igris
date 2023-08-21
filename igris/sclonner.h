@@ -7,6 +7,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 //#include <sys/wait.h>
 #include <algorithm>
 #include <igris/datastruct/argvc.h>
@@ -98,6 +99,46 @@ namespace igris
             return _ipipe;
         }
 
+        void exec(const std::string &name,
+                  const std::vector<char *> &args,
+                  const std::vector<char *> &env)
+        {
+            int sts;
+            int pipes_host_in_child_out[2];
+            int pipes_host_out_child_in[2];
+            pipe(pipes_host_in_child_out);
+            pipe(pipes_host_out_child_in);
+            int pid = fork();
+            if (pid == 0)
+            {
+                close(pipes_host_in_child_out[0]);
+                close(pipes_host_out_child_in[1]);
+                close(STDOUT_FILENO);
+
+                sts = dup2(pipes_host_in_child_out[1], STDOUT_FILENO);
+                char *cmd = strdup(name.c_str());
+                // char *argv[10];
+                //  int argc = argvc_internal_split(cmd, argv, 10);
+                //  argv[argc] = 0;
+
+                sts = execve(cmd, args.data(), env.data());
+                if (sts == -1)
+                {
+                    perror("occasion");
+                }
+
+                exit(0);
+                // unreached
+            }
+
+            close(pipes_host_out_child_in[0]);
+            close(pipes_host_in_child_out[1]);
+
+            set_pid(pid);
+            set_pipe_fds(pipes_host_in_child_out[0],
+                         pipes_host_out_child_in[1]);
+        }
+
         void exec(const char *ccmd)
         {
             int sts;
@@ -118,7 +159,7 @@ namespace igris
                 int argc = argvc_internal_split(cmd, argv, 10);
                 argv[argc] = 0;
 
-                sts = execve(argv[0], argv, NULL);
+                sts = ::execve(argv[0], argv, NULL);
                 if (sts == -1)
                 {
                     perror("occasion");
