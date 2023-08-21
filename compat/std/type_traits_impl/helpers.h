@@ -1,8 +1,0 @@
-#ifndef IGRIS_STD_TYPE_TRAITS_MINIMAL_H
-#define IGRIS_STD_TYPE_TRAITS_MINIMAL_H
-
-namespace std
-{
-}
-
-#

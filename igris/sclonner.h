@@ -1,18 +1,20 @@
 #ifndef IGRIS_CLONNER_H
 #define IGRIS_CLONNER_H
 
+#include <cerrno>
+#include <cstring>
 #include <fcntl.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <cstring>
 //#include <sys/wait.h>
-#include <unistd.h>
 #include <algorithm>
-#include <memory>
-#include <set>
 #include <igris/datastruct/argvc.h>
 #include <igris/event/delegate.h>
+#include <igris/util/numconvert.h>
+#include <memory>
+#include <set>
+#include <unistd.h>
 
 #ifdef __WIN32__
 #include <winsock2.h>
@@ -26,35 +28,124 @@ namespace igris
     class subprocess
     {
     public:
-        int pid = 0;
-        int ipipe = 0;
-        int opipe = 0;
+        int _pid = 0;
+        int _ipipe = 0;
+        int _opipe = 0;
 
         igris::delegate<void> on_close = {};
 
     public:
         subprocess() = default;
+        subprocess(const char *data)
+        {
+            exec(data);
+        }
 
-        void sigchld() { on_close.invoke(); }
+        void sigchld()
+        {
+            on_close.invoke();
+        }
 
-        void set_pid(int pid) { this->pid = pid; }
+        void set_pid(int pid)
+        {
+            this->_pid = pid;
+        }
 
-        void terminate() { kill(pid, SIGTERM); }
+        int pid()
+        {
+            return _pid;
+        }
+
+        void invalidate()
+        {
+            if (_pid != 0)
+            {
+                terminate();
+            }
+
+            _pid = _ipipe = _opipe = 0;
+        }
+
+        void terminate()
+        {
+            ::kill(_pid, SIGTERM);
+        }
+
+        void kill()
+        {
+            ::kill(_pid, SIGKILL);
+        }
 
         void wait()
         {
             int status;
-            waitpid(pid, &status, WCONTINUED);
+            waitpid(_pid, &status, WCONTINUED);
         }
 
         void set_pipe_fds(int ipipe, int opipe)
         {
-            this->ipipe = ipipe;
-            this->opipe = opipe;
+            this->_ipipe = ipipe;
+            this->_opipe = opipe;
         }
 
-        int input_fd() { return ipipe; }
-        int output_fd() { return opipe; }
+        int input_fd()
+        {
+            return _ipipe;
+        }
+
+        int output_fd()
+        {
+            return _opipe;
+        }
+
+        void exec(const char *ccmd)
+        {
+            int sts;
+            int pipes_host_in_child_out[2];
+            int pipes_host_out_child_in[2];
+            pipe(pipes_host_in_child_out);
+            pipe(pipes_host_out_child_in);
+
+            printf("%d, %d, %d, %d\r\n",
+                   pipes_host_in_child_out[0],
+                   pipes_host_in_child_out[1],
+                   pipes_host_out_child_in[0],
+                   pipes_host_out_child_in[1]);
+
+            int pid = fork();
+            if (pid == 0)
+            {
+                close(pipes_host_in_child_out[0]);
+                close(pipes_host_out_child_in[1]);
+                close(STDOUT_FILENO);
+
+                sts = dup2(pipes_host_in_child_out[1], STDOUT_FILENO);
+                char *cmd = strdup(ccmd);
+                char *argv[10];
+                int argc = argvc_internal_split(cmd, argv, 10);
+                argv[argc] = 0;
+
+                fflush(stdout);
+                printf("subprocess DEBUG: start\r\n");
+                sts = execve(argv[0], argv, NULL);
+
+                printf("subprocess DEBUG: finish code:%d\r\n", sts);
+                if (sts == -1)
+                {
+                    perror("occasion");
+                }
+
+                exit(0);
+                // unreached
+            }
+
+            close(pipes_host_out_child_in[0]);
+            close(pipes_host_in_child_out[1]);
+
+            set_pid(pid);
+            set_pipe_fds(pipes_host_in_child_out[0],
+                         pipes_host_out_child_in[1]);
+        }
     };
 
     class sclonner
@@ -64,49 +155,8 @@ namespace igris
     public:
         static std::shared_ptr<subprocess> start_subprocess(const char *ccmd)
         {
-            int pid = fork();
-
-            int pipes_host_in_child_out[2];
-            int pipes_host_out_child_in[2];
-            pipe(pipes_host_in_child_out);
-            pipe(pipes_host_out_child_in);
-
-            if (pid == 0)
-            {
-                close(pipes_host_in_child_out[0]);
-                close(pipes_host_out_child_in[1]);
-
-                char *cmd = strdup(ccmd);
-
-                char *argv[10];
-                int argc = argvc_internal_split(cmd, argv, 10);
-                argv[argc] = 0;
-
-                // close(STDIN_FILENO);
-                // close(STDOUT_FILENO);
-                //                int a = dup2(pipes_host_in_child_out[1],
-                //                STDOUT_FILENO); int b =
-                //                dup2(pipes_host_out_child_in[0],
-                //                STDIN_FILENO); nos::println_to(nos::cerr, a);
-                //                nos::println_to(nos::cerr, b);
-
-                fflush(stdout);
-
-                // close(pipes_host_in_child_out[1]);
-                // close(pipes_host_out_child_in[0]);
-
-                execve(argv[0], argv, NULL);
-            }
-
-            close(pipes_host_out_child_in[0]);
-            close(pipes_host_in_child_out[1]);
-
-            auto child = std::make_shared<subprocess>();
-            child->set_pid(pid);
-            child->set_pipe_fds(pipes_host_in_child_out[0],
-                                pipes_host_out_child_in[1]);
-
-            _childs.insert(child);
+            auto child = std::make_shared<igris::subprocess>(ccmd);
+            _childs.emplace(child);
             return child;
         }
 
@@ -125,22 +175,29 @@ namespace igris
             while ((pid = waitpid(-1, &status, WNOHANG)) != -1)
             {
                 auto it =
-                    std::find_if(_childs.begin(), _childs.end(),
-                                 [pid](auto &a) { return a->pid == pid; });
+                    std::find_if(_childs.begin(),
+                                 _childs.end(),
+                                 [pid](auto &a) { return a->pid() == pid; });
 
                 if (it != _childs.end())
                     (*it)->sigchld();
             }
         }
 
-        static void install_sigchild_trap() { signal(SIGCHLD, sigchild_trap); }
+        static void install_sigchild_trap()
+        {
+            signal(SIGCHLD, sigchild_trap);
+        }
 
         static const std::set<std::shared_ptr<subprocess>> &childs()
         {
             return _childs;
         }
 
-        ~sclonner() { terminate_childs(); }
+        ~sclonner()
+        {
+            terminate_childs();
+        }
     };
 }
 
