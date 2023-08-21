@@ -2,7 +2,7 @@
 #define IGRIS_STD_PORTABLE_H
 
 #include <assert.h>
-#include <igris/util/numconvert.h>
+//#include <igris/util/numconvert.h>
 #include <initializer_list>
 #include <inttypes.h>
 #include <new>
@@ -1473,33 +1473,36 @@ namespace igris
 
     using string = basic_string<>;
 
-    static inline int
-    stoi(const igris::string &str, igris::size_t *pos = nullptr, int base = 10)
-    {
-        (void)pos; // TODO
-        return igris_atoi32(str.c_str(), base, nullptr);
-    }
+    // static inline int
+    // stoi(const igris::string &str, igris::size_t *pos = nullptr, int base =
+    // 10)
+    // {
+    //     (void)pos; // TODO
+    //     return igris_atoi32(str.c_str(), base, nullptr);
+    // }
 
-    static inline long
-    stol(const igris::string &str, igris::size_t *pos = nullptr, int base = 10)
-    {
-        (void)pos; // TODO
-        return igris_atoi32(str.c_str(), base, nullptr);
-    }
+    // static inline long
+    // stol(const igris::string &str, igris::size_t *pos = nullptr, int base =
+    // 10)
+    // {
+    //     (void)pos; // TODO
+    //     return igris_atoi32(str.c_str(), base, nullptr);
+    // }
 
-    static inline long long
-    stoll(const igris::string &str, igris::size_t *pos = nullptr, int base = 10)
-    {
-        (void)pos; // TODO
-        return igris_atoi32(str.c_str(), base, nullptr);
-    }
+    // static inline long long
+    // stoll(const igris::string &str, igris::size_t *pos = nullptr, int base =
+    // 10)
+    // {
+    //     (void)pos; // TODO
+    //     return igris_atoi32(str.c_str(), base, nullptr);
+    // }
 
-    static inline double stod(const igris::string &str,
-                              igris::size_t *pos = nullptr)
-    {
-        (void)pos; // TODO
-        return igris_atof32(str.c_str(), nullptr);
-    }
+    // static inline double stod(const igris::string &str,
+    //                           igris::size_t *pos = nullptr)
+    // {
+    //     (void)pos; // TODO
+    //     return igris_atof32(str.c_str(), nullptr);
+    // }
 
     static inline bool operator==(const char *str, const string &str2)
     {
@@ -1536,61 +1539,61 @@ namespace igris
         return res;
     }
 
-    static inline igris::string to_string(int val)
-    {
-        char buf[64];
-        igris_i64toa(val, buf, 10);
-        return buf;
-    }
+    // static inline igris::string to_string(int val)
+    // {
+    //     char buf[64];
+    //     igris_i64toa(val, buf, 10);
+    //     return buf;
+    // }
 
-    static inline igris::string to_string(long val)
-    {
-        char buf[64];
-        igris_i64toa(val, buf, 10);
-        return buf;
-    }
+    // static inline igris::string to_string(long val)
+    // {
+    //     char buf[64];
+    //     igris_i64toa(val, buf, 10);
+    //     return buf;
+    // }
 
-    static inline igris::string to_string(long long val)
-    {
-        char buf[64];
-        igris_i64toa(val, buf, 10);
-        return buf;
-    }
+    // static inline igris::string to_string(long long val)
+    // {
+    //     char buf[64];
+    //     igris_i64toa(val, buf, 10);
+    //     return buf;
+    // }
 
-    static inline igris::string to_string(unsigned val)
-    {
-        char buf[64];
-        igris_i64toa(val, buf, 10);
-        return buf;
-    }
+    // static inline igris::string to_string(unsigned val)
+    // {
+    //     char buf[64];
+    //     igris_i64toa(val, buf, 10);
+    //     return buf;
+    // }
 
-    static inline igris::string to_string(unsigned long val)
-    {
-        char buf[64];
-        igris_i64toa(val, buf, 10);
-        return buf;
-    }
+    // static inline igris::string to_string(unsigned long val)
+    // {
+    //     char buf[64];
+    //     igris_i64toa(val, buf, 10);
+    //     return buf;
+    // }
 
-    static inline igris::string to_string(unsigned long long val)
-    {
-        char buf[64];
-        igris_i64toa(val, buf, 10);
-        return buf;
-    }
+    // static inline igris::string to_string(unsigned long long val)
+    // {
+    //     char buf[64];
+    //     igris_i64toa(val, buf, 10);
+    //     return buf;
+    // }
 
-    static inline igris::string to_string(float val)
-    {
-        char buf[64];
-        igris_ftoa(val, buf, 5);
-        return buf;
-    }
+    // static inline igris::string to_string(float val)
+    // {
+    //     char buf[64];
+    //     igris_ftoa(val, buf, 5);
+    //     return buf;
+    // }
 
-    static inline igris::string to_string(double val)
-    {
-        char buf[64];
-        igris_ftoa(val, buf, 5);
-        return buf;
-    }
+    // static inline igris::string to_string(double val)
+    // {
+    //     char buf[64];
+    //     igris_ftoa(val, buf, 5);
+    //     return buf;
+    // }
 }
 
 #endif
