@@ -51,7 +51,7 @@ namespace igris
             this->_pid = pid;
         }
 
-        int pid()
+        int pid() const
         {
             return _pid;
         }
