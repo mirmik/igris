@@ -90,12 +90,12 @@ namespace igris
 
         int input_fd()
         {
-            return _ipipe;
+            return _opipe;
         }
 
         int output_fd()
         {
-            return _opipe;
+            return _ipipe;
         }
 
         void exec(const char *ccmd)
@@ -105,13 +105,6 @@ namespace igris
             int pipes_host_out_child_in[2];
             pipe(pipes_host_in_child_out);
             pipe(pipes_host_out_child_in);
-
-            printf("%d, %d, %d, %d\r\n",
-                   pipes_host_in_child_out[0],
-                   pipes_host_in_child_out[1],
-                   pipes_host_out_child_in[0],
-                   pipes_host_out_child_in[1]);
-
             int pid = fork();
             if (pid == 0)
             {
@@ -125,11 +118,7 @@ namespace igris
                 int argc = argvc_internal_split(cmd, argv, 10);
                 argv[argc] = 0;
 
-                fflush(stdout);
-                printf("subprocess DEBUG: start\r\n");
                 sts = execve(argv[0], argv, NULL);
-
-                printf("subprocess DEBUG: finish code:%d\r\n", sts);
                 if (sts == -1)
                 {
                     perror("occasion");
