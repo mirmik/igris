@@ -31,7 +31,7 @@ namespace igris
     using ptrdiff_t = int;
     using size_t = ::size_t;
     using ssize_t = int32_t;
-    // template <class T> using initializer_list = std::initializer_list<T>;
+    // template <class T> using initializer_list = igris::initializer_list<T>;
 }
 
 static inline uint8_t HIHALF(uint8_t byte)
@@ -1425,6 +1425,11 @@ namespace igris
 
         vector(const vector &other) : m_size(other.m_size)
         {
+            if (m_size == 0)
+            {
+                return;
+            }
+
             m_data = m_alloc.allocate(m_size);
             m_capacity = m_size;
             for (auto ip = other.m_data, op = m_data;
@@ -1437,6 +1442,9 @@ namespace igris
 
         template <class I, class O> vector(I first, O last)
         {
+            if (first == last)
+                return;
+
             reserve(igris::distance(first, last));
             for (; first != last; first++)
             {
@@ -1771,6 +1779,7 @@ namespace igris
             size_t oldcapacity = m_capacity;
             auto newbuf = m_alloc.allocate(sz);
             assert((uintptr_t)newbuf % sizeof(uintptr_t) == 0);
+
             m_capacity = sz;
             if (m_data == nullptr)
             {
@@ -1795,13 +1804,17 @@ namespace igris
 
     template <class CharT> class char_traits;
 
-    template <class CharT = char, class Traits = char_traits<CharT>>
+    template <class CharT = char,
+              class Traits = char_traits<CharT>,
+              class Allocator = igris::allocator<char>>
     class basic_string
     {
 
         CharT *m_data = nullptr;
         size_t m_capacity = 0;
         size_t m_size = 0;
+
+        Allocator m_alloc = {};
 
     public:
         using size_type = ::size_t;
@@ -1857,7 +1870,7 @@ namespace igris
         ~basic_string()
         {
             if (m_data)
-                free(m_data);
+                m_alloc.deallocate(m_data, m_capacity);
         };
 
         basic_string &copy(const char *cstr, size_t length)
@@ -1875,10 +1888,11 @@ namespace igris
         void move(basic_string &rhs)
         {
             if (m_data)
-                free(m_data);
+                m_alloc.deallocate(m_data, m_capacity);
             m_data = rhs.m_data;
             m_capacity = rhs.m_capacity;
             m_size = rhs.m_size;
+            m_alloc = rhs.m_alloc;
             rhs.m_data = nullptr;
             rhs.m_capacity = 0;
             rhs.m_size = 0;
@@ -1887,7 +1901,7 @@ namespace igris
         void invalidate(void)
         {
             if (m_data)
-                free(m_data);
+                m_alloc.deallocate(m_data, m_capacity);
             m_data = nullptr;
             m_capacity = m_size = 0;
         }
@@ -2035,15 +2049,15 @@ namespace igris
 
         unsigned char changeBuffer(size_t maxStrLen)
         {
-            // size_t oldcap = m_capacity;
-            char *newbuf = (char *)malloc(maxStrLen);
+            size_t oldcap = m_capacity;
+            char *newbuf = (char *)m_alloc.allocate(maxStrLen);
             char *oldbuf = m_data;
             memcpy(newbuf, oldbuf, m_size);
             if (newbuf)
             {
                 m_data = newbuf;
                 m_capacity = maxStrLen;
-                free(oldbuf);
+                m_alloc.deallocate(oldbuf, oldcap);
                 return 1;
             }
             return 0;
@@ -2317,7 +2331,289 @@ namespace igris
         igris_ftoa(val, buf, 5);
         return buf;
     }
+}
 
+namespace igris
+{
+    template <class T, igris::size_t N> class static_vector
+    {
+    public:
+        using value_type = T;
+        using pointer = T *;
+        using reference = T &;
+        using iterator = T *;
+        using const_iterator = const T *;
+
+    private:
+        // Переместить во внешний буффер.
+        typename igris::aligned_storage<sizeof(T), alignof(T)>::type _data[N];
+        igris::size_t m_size = 0;
+
+    public:
+        static_vector()
+        {
+            memset(_data, 0, sizeof(_data));
+        }
+
+        static_vector(const static_vector &other)
+        {
+            m_size = other.m_size;
+            for (igris::size_t pos = 0; pos < m_size; ++pos)
+            {
+                new (&_data[pos]) T(other[pos]);
+            }
+        }
+
+        static_vector(static_vector &&other)
+        {
+            m_size = other.m_size;
+            for (igris::size_t pos = 0; pos < m_size; ++pos)
+            {
+                new (&_data[pos]) T(igris::move(other[pos]));
+            }
+        }
+
+        static_vector &operator=(const static_vector &other)
+        {
+            m_size = other.m_size;
+            for (igris::size_t pos = 0; pos < m_size; ++pos)
+            {
+                new (&_data[pos]) T(other[pos]);
+            }
+            return *this;
+        }
+
+        static_vector &operator=(static_vector &&other)
+        {
+            m_size = other.m_size;
+            for (igris::size_t pos = 0; pos < m_size; ++pos)
+            {
+                new (&_data[pos]) T(igris::move(other[pos]));
+            }
+            other.m_size = 0;
+            return *this;
+        }
+
+        /*static_vector(const igris::initializer_list<T> &lst)
+        {
+            for (auto &obj : lst)
+            {
+                new (&_data[m_size]) T(obj);
+                ++m_size;
+            }
+        }*/
+
+        // Create an object in aligned storage
+        template <typename... Args> void emplace_back(Args &&...args)
+        {
+            if (m_size >= N)
+                return;
+            new (&_data[m_size]) T(igris::forward<Args>(args)...);
+            ++m_size;
+        }
+
+        void push_back(const T &obj)
+        {
+            if (m_size >= N)
+                return;
+            new (&_data[m_size]) T(obj);
+            ++m_size;
+        }
+
+        T &operator[](igris::size_t pos)
+        {
+            return *reinterpret_cast<T *>(&_data[pos]);
+        }
+
+        const T &operator[](igris::size_t pos) const
+        {
+            return *reinterpret_cast<const T *>(&_data[pos]);
+        }
+
+        T *data()
+        {
+            return reinterpret_cast<T *>(&_data[0]);
+        }
+
+        const T *data() const
+        {
+            return reinterpret_cast<const T *>(&_data[0]);
+        }
+
+        igris::size_t room() const
+        {
+            return N - m_size;
+        }
+        igris::size_t size() const
+        {
+            return m_size;
+        }
+
+        // Delete objects from aligned storage
+        ~static_vector()
+        {
+            for (igris::size_t pos = 0; pos < m_size; ++pos)
+            {
+                reinterpret_cast<T *>(&_data[pos])->~T();
+            }
+            m_size = 0;
+        }
+
+        iterator begin()
+        {
+            return reinterpret_cast<T *>(&_data[0]);
+        }
+
+        const_iterator end()
+        {
+            return reinterpret_cast<T *>(&_data[m_size]);
+        }
+
+        const_iterator begin() const
+        {
+            return reinterpret_cast<const T *>(&_data[0]);
+        }
+
+        const_iterator end() const
+        {
+            return reinterpret_cast<const T *>(&_data[m_size]);
+        }
+
+        T &back()
+        {
+            return *reinterpret_cast<T *>(&_data[m_size - 1]);
+        }
+
+        const T &back() const
+        {
+            return *reinterpret_cast<const T *>(&_data[m_size - 1]);
+        }
+
+        T &front()
+        {
+            return *reinterpret_cast<T *>(&_data[0]);
+        }
+
+        const T &front() const
+        {
+            return *reinterpret_cast<const T *>(&_data[0]);
+        }
+
+        void resize(size_t newsize)
+        {
+            if (newsize >= N)
+                newsize = N;
+
+            for (size_t i = m_size; i < newsize; ++i)
+            {
+                new (&_data[i]) T{};
+            }
+
+            m_size = newsize;
+        }
+
+        void clear()
+        {
+            m_size = 0;
+        }
+    };
+}
+
+namespace igris
+{
+    template <igris::size_t N> class static_string
+    {
+        using pointer = char *;
+        using reference = char &;
+        using iterator = char *;
+        using const_iterator = const char *;
+
+        // Переместить во внешний буффер.
+        mutable char data[N + 1];
+        igris::size_t m_size = 0;
+
+    public:
+        static_string() = default;
+
+        static_string(const char *dat)
+        {
+            m_size = strlen(dat);
+            memcpy(data, dat, m_size);
+        }
+
+        void clear()
+        {
+            m_size = 0;
+        }
+
+        static_string &operator+=(char c)
+        {
+            push_back(c);
+            return *this;
+        }
+
+        char &operator[](igris::size_t pos)
+        {
+            return data[pos];
+        }
+
+        char operator[](igris::size_t pos) const
+        {
+            return data[pos];
+        }
+
+        igris::size_t room()
+        {
+            return N - m_size;
+        }
+        igris::size_t size()
+        {
+            return m_size;
+        }
+
+        // Delete objects from aligned storage
+        ~static_string() = default;
+
+        iterator begin()
+        {
+            return &data[0];
+        }
+        const_iterator end()
+        {
+            return &data[m_size];
+        }
+
+        int find(const char *str, size_t pos = 0) const
+        {
+            if (pos >= m_size)
+                return -1;
+            auto len = strlen(str);
+            if (len == 0)
+                return -1;
+            if (len > m_size)
+                return -1;
+            for (size_t i = pos; i < m_size - len; i++)
+            {
+                if (memcmp(data + i, str, len) == 0)
+                    return i;
+            }
+            return -1;
+        }
+
+        void push_back(char c)
+        {
+            if (m_size >= N)
+                return;
+
+            data[m_size++] = c;
+        }
+
+        const char *c_str() const
+        {
+            data[m_size] = 0;
+            return data;
+        }
+    };
 }
 
 #endif
