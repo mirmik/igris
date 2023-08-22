@@ -2179,7 +2179,7 @@ namespace igris
 
             while (true)
             {
-                while (*ptr == delim)
+                while (ptr != end && *ptr == delim)
                     ptr++;
 
                 if (ptr == end)
