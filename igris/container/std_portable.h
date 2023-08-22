@@ -2,15 +2,29 @@
 #define IGRIS_STD_PORTABLE_H
 
 #include <assert.h>
-//#include <igris/util/numconvert.h>
-//#include <initializer_list>
 #include <inttypes.h>
+#include <math.h>
 #include <new>
 #include <stdarg.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifndef __FLOAT32_T_TYPE
+typedef float float32_t;
+#else
+typedef __float32_t float32_t;
+#endif
+
+#ifndef WITHOUT_FLOAT64
+#ifndef __FLOAT64_T_TYPE
+typedef double float64_t;
+#else
+typedef __float64_t float64_t;
+#endif
+#endif
 
 namespace igris
 {
@@ -20,8 +34,719 @@ namespace igris
     // template <class T> using initializer_list = std::initializer_list<T>;
 }
 
+static inline uint8_t HIHALF(uint8_t byte)
+{
+    return (byte >> 4) & 0x0F;
+}
+static inline uint8_t LOHALF(uint8_t byte)
+{
+    return byte & 0x0F;
+}
+
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+
+#define INT16_HI(arg) *((uint8_t *)&arg + 0)
+#define INT16_LO(arg) *((uint8_t *)&arg + 1)
+
+#define INT32_HHI(arg) *((uint8_t *)&arg + 0)
+#define INT32_HLO(arg) *((uint8_t *)&arg + 1)
+#define INT32_LHI(arg) *((uint8_t *)&arg + 2)
+#define INT32_LLO(arg) *((uint8_t *)&arg + 3)
+
+#define INT64_HHHI(arg) *((uint8_t *)&arg + 0)
+#define INT64_HHLO(arg) *((uint8_t *)&arg + 1)
+#define INT64_HLHI(arg) *((uint8_t *)&arg + 2)
+#define INT64_HLLO(arg) *((uint8_t *)&arg + 3)
+#define INT64_LHHI(arg) *((uint8_t *)&arg + 4)
+#define INT64_LHLO(arg) *((uint8_t *)&arg + 5)
+#define INT64_LLHI(arg) *((uint8_t *)&arg + 6)
+#define INT64_LLLO(arg) *((uint8_t *)&arg + 7)
+
+#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+
+#define INT16_HI(arg) *((uint8_t *)&arg + 1)
+#define INT16_LO(arg) *((uint8_t *)&arg + 0)
+
+#define INT32_HHI(arg) *((uint8_t *)&arg + 3)
+#define INT32_HLO(arg) *((uint8_t *)&arg + 2)
+#define INT32_LHI(arg) *((uint8_t *)&arg + 1)
+#define INT32_LLO(arg) *((uint8_t *)&arg + 0)
+
+#define INT64_HHHI(arg) *((uint8_t *)&arg + 7)
+#define INT64_HHLO(arg) *((uint8_t *)&arg + 6)
+#define INT64_HLHI(arg) *((uint8_t *)&arg + 5)
+#define INT64_HLLO(arg) *((uint8_t *)&arg + 4)
+#define INT64_LHHI(arg) *((uint8_t *)&arg + 3)
+#define INT64_LHLO(arg) *((uint8_t *)&arg + 2)
+#define INT64_LLHI(arg) *((uint8_t *)&arg + 1)
+#define INT64_LLLO(arg) *((uint8_t *)&arg + 0)
+
+#endif
+
+#define UINT16_HI(arg) INT16_HI(arg)
+#define UINT16_LO(arg) INT16_LO(arg)
+
+#define UINT32_HHI(arg) INT32_HHI(arg)
+#define UINT32_HLO(arg) INT32_HLO(arg)
+#define UINT32_LHI(arg) INT32_LHI(arg)
+#define UINT32_LLO(arg) INT32_LLO(arg)
+
+#define UINT64_HHHI(arg) INT64_HHHI(arg)
+#define UINT64_HHLO(arg) INT64_HHLO(arg)
+#define UINT64_HLHI(arg) INT64_HLHI(arg)
+#define UINT64_HLLO(arg) INT64_HLLO(arg)
+#define UINT64_LHHI(arg) INT64_LHHI(arg)
+#define UINT64_LHLO(arg) INT64_LHLO(arg)
+#define UINT64_LLHI(arg) INT64_LLHI(arg)
+#define UINT64_LLLO(arg) INT64_LLLO(arg)
+
 namespace igris
 {
+    static inline uint8_t hex2half(char c)
+    {
+        return (uint8_t)(c <= '9' ? c - '0' : c - 'A' + 10);
+    }
+
+    static inline char half2hex(uint8_t n)
+    {
+        return (char)(n < 10 ? '0' + n : 'A' - 10 + n);
+    }
+
+    static inline uint8_t hex2byte(char hi, char lo)
+    {
+        return (uint8_t)((hex2half(hi) << 4) + hex2half(lo));
+    }
+
+    static inline uint8_t hex_to_uint8(const char *hex)
+    {
+        uint8_t out;
+
+        out = hex2byte(*(hex + 0), *(hex + 1));
+
+        return out;
+    }
+
+    static inline uint16_t hex_to_uint16(const char *hex)
+    {
+        uint16_t out;
+
+        UINT16_HI(out) = hex2byte(*(hex + 0), *(hex + 1));
+        UINT16_LO(out) = hex2byte(*(hex + 2), *(hex + 3));
+
+        return out;
+    }
+
+    static inline uint32_t hex_to_uint32(const char *hex)
+    {
+        uint32_t out;
+
+        UINT32_HHI(out) = hex2byte(*(hex + 0), *(hex + 1));
+        UINT32_HLO(out) = hex2byte(*(hex + 2), *(hex + 3));
+        UINT32_LHI(out) = hex2byte(*(hex + 4), *(hex + 5));
+        UINT32_LLO(out) = hex2byte(*(hex + 6), *(hex + 7));
+
+        return out;
+    }
+
+    static inline uint64_t hex_to_uint64(const char *hex)
+    {
+        uint64_t out;
+
+        UINT64_HHHI(out) = hex2byte(*(hex + 0), *(hex + 1));
+        UINT64_HHLO(out) = hex2byte(*(hex + 2), *(hex + 3));
+        UINT64_HLHI(out) = hex2byte(*(hex + 4), *(hex + 5));
+        UINT64_HLLO(out) = hex2byte(*(hex + 6), *(hex + 7));
+        UINT64_LHHI(out) = hex2byte(*(hex + 8), *(hex + 9));
+        UINT64_LHLO(out) = hex2byte(*(hex + 10), *(hex + 11));
+        UINT64_LLHI(out) = hex2byte(*(hex + 12), *(hex + 13));
+        UINT64_LLLO(out) = hex2byte(*(hex + 14), *(hex + 15));
+
+        return out;
+    }
+
+    static inline void uint8_to_hex(char *hex, uint8_t in)
+    {
+        *hex++ = half2hex(HIHALF(in));
+        *hex++ = half2hex(LOHALF(in));
+    }
+
+    static inline void uint16_to_hex(char *hex, uint16_t in)
+    {
+        *hex++ = half2hex(HIHALF(UINT16_HI(in)));
+        *hex++ = half2hex(LOHALF(UINT16_HI(in)));
+        *hex++ = half2hex(HIHALF(UINT16_LO(in)));
+        *hex++ = half2hex(LOHALF(UINT16_LO(in)));
+    }
+
+    static inline void uint32_to_hex(char *hex, uint32_t in)
+    {
+        *hex++ = half2hex(HIHALF(UINT32_HHI(in)));
+        *hex++ = half2hex(LOHALF(UINT32_HHI(in)));
+        *hex++ = half2hex(HIHALF(UINT32_HLO(in)));
+        *hex++ = half2hex(LOHALF(UINT32_HLO(in)));
+        *hex++ = half2hex(HIHALF(UINT32_LHI(in)));
+        *hex++ = half2hex(LOHALF(UINT32_LHI(in)));
+        *hex++ = half2hex(HIHALF(UINT32_LLO(in)));
+        *hex++ = half2hex(LOHALF(UINT32_LLO(in)));
+    }
+
+    static inline void uint64_to_hex(char *hex, uint64_t in)
+    {
+        *hex++ = half2hex(HIHALF(UINT64_HHHI(in)));
+        *hex++ = half2hex(LOHALF(UINT64_HHHI(in)));
+        *hex++ = half2hex(HIHALF(UINT64_HHLO(in)));
+        *hex++ = half2hex(LOHALF(UINT64_HHLO(in)));
+        *hex++ = half2hex(HIHALF(UINT64_HLHI(in)));
+        *hex++ = half2hex(LOHALF(UINT64_HLHI(in)));
+        *hex++ = half2hex(HIHALF(UINT64_HLLO(in)));
+        *hex++ = half2hex(LOHALF(UINT64_HLLO(in)));
+        *hex++ = half2hex(HIHALF(UINT64_LHHI(in)));
+        *hex++ = half2hex(LOHALF(UINT64_LHHI(in)));
+        *hex++ = half2hex(HIHALF(UINT64_LHLO(in)));
+        *hex++ = half2hex(LOHALF(UINT64_LHLO(in)));
+        *hex++ = half2hex(HIHALF(UINT64_LLHI(in)));
+        *hex++ = half2hex(LOHALF(UINT64_LLHI(in)));
+        *hex++ = half2hex(HIHALF(UINT64_LLLO(in)));
+        *hex++ = half2hex(LOHALF(UINT64_LLLO(in)));
+    }
+
+    static inline int igris_isxdigit_helper(int c)
+    {
+        return (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+    }
+
+    static inline int igris_isblank(int c)
+    {
+        return c == ' ' || c == '\t';
+    }
+    static inline int igris_isspace(int c)
+    {
+        return c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\f' ||
+               c == '\v';
+    }
+    static inline int igris_isdigit(int c)
+    {
+        return c >= '0' && c <= '9';
+    }
+    static inline int igris_isxdigit(int c)
+    {
+        return igris_isdigit(c) || igris_isxdigit_helper(c);
+    }
+    static inline int igris_isupper(int c)
+    {
+        return c >= 'A' && c <= 'Z';
+    }
+    static inline int igris_islower(int c)
+    {
+        return c >= 'a' && c <= 'z';
+    }
+    static inline int igris_isalpha(int c)
+    {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+    }
+    static inline int igris_isalnum(int c)
+    {
+        return igris_isalpha(c) || igris_isdigit(c);
+    }
+
+    // TODO
+    static inline int igris_isprint(int c)
+    {
+        return igris_isalpha(c) || igris_isdigit(c) || (c >= ' ' && c <= '~');
+    }
+
+    static inline int igris_toupper(int c)
+    {
+        return igris_islower(c) ? c + ('A' - 'a') : c;
+    }
+    static inline int igris_tolower(int c)
+    {
+        return igris_isupper(c) ? c + ('a' - 'A') : c;
+    }
+
+    static inline char *igris_i64toa(int64_t num, char *buf, uint8_t base)
+    {
+        char *p = buf;
+        char *p1, *p2;
+        uint64_t ud = 0;
+
+        *buf = '\0'; /* initialize buffer. In the case of an error, this will
+                        already be in the buffer, indicating that the result is
+                        invalid (NULL). */
+        p1 = buf;    /* start of buffer */
+
+        // check base
+        if (base < 2 || base > 36)
+        {
+            return buf;
+        }
+
+        /* If num < 0, put `-' in the head.  */
+        if (num < 0)
+        {
+            *(p++) = '-';
+            p1++;
+            ud = -num;
+        }
+        else
+        {
+            ud = num;
+        }
+
+        /* Divide ud by base until ud == 0.  */
+        int16_t remainder = 0;
+        do
+        {
+            remainder = ud % base;
+            *(p++) = (remainder < 10) ? remainder + '0' : remainder + 'a' - 10;
+        } while (ud /= base);
+
+        /* Terminate buf.  */
+        *p = '\0';
+
+        /* Reverse buffer.  */
+        p2 = p - 1; /* end of buffer */
+        char tmp;
+        while (p1 < p2)
+        {
+            tmp = *p1;
+            *p1 = *p2;
+            *p2 = tmp;
+            p1++;
+            p2--;
+        }
+        return p;
+    }
+    static inline char *igris_i32toa(int32_t num, char *buf, uint8_t base)
+    {
+        return igris_i64toa((int64_t)num, buf, base);
+    }
+    static inline char *igris_i16toa(int16_t num, char *buf, uint8_t base)
+    {
+        return igris_i64toa((int64_t)num, buf, base);
+    }
+    static inline char *igris_i8toa(int8_t num, char *buf, uint8_t base)
+    {
+        return igris_i64toa((int64_t)num, buf, base);
+    }
+
+    static inline char *igris_u64toa(uint64_t num, char *buf, uint8_t base)
+    {
+        char *p = buf;
+        char *p1, *p2;
+        uint64_t ud = 0;
+
+        *buf = '\0'; /* initialize buffer. In the case of an error, this will
+                        already be in the buffer, indicating that the result is
+                        invalid (NULL). */
+        p1 = buf;    /* start of buffer */
+
+        // check base
+        if (base < 2 || base > 36)
+        {
+            return buf;
+        }
+
+        ud = num;
+
+        /* Divide ud by base until ud == 0.  */
+        int16_t remainder = 0;
+        do
+        {
+            remainder = ud % base;
+            *(p++) = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
+        } while (ud /= base);
+
+        /* Terminate buf.  */
+        *p = '\0';
+
+        /* Reverse buffer.  */
+        p2 = p - 1; /* end of buffer */
+        char tmp;
+        while (p1 < p2)
+        {
+            tmp = *p1;
+            *p1 = *p2;
+            *p2 = tmp;
+            p1++;
+            p2--;
+        }
+        return p;
+    }
+
+    static inline char *igris_u32toa(uint32_t num, char *buf, uint8_t base)
+    {
+        return igris_u64toa((uint64_t)num, buf, base);
+    }
+
+    static inline char *igris_u16toa(uint16_t num, char *buf, uint8_t base)
+    {
+        return igris_u64toa((uint64_t)num, buf, base);
+    }
+
+    static inline char *igris_u8toa(uint8_t num, char *buf, uint8_t base)
+    {
+        return igris_u64toa((uint64_t)num, buf, base);
+    }
+
+    static inline uint32_t
+    igris_atou32(const char *buf, uint8_t base, char **end)
+    {
+        uint32_t res = 0;
+
+        for (char c = *buf; ((c = *buf)) && igris_isxdigit(c); buf++)
+        {
+            res = res * base + hex2half(c);
+        }
+
+        if (end)
+            *end = (char *)buf - 1;
+
+        return res;
+    }
+
+    static inline uint64_t
+    igris_atou64(const char *buf, uint8_t base, char **end)
+    {
+        uint64_t res = 0;
+
+        for (char c = *buf; ((c = *buf)) && igris_isxdigit(c); buf++)
+        {
+            res = res * base + hex2half(c);
+        }
+
+        if (end)
+            *end = (char *)buf - 1;
+
+        return res;
+    }
+
+    static inline uint16_t
+    igris_atou16(const char *buf, uint8_t base, char **end)
+    {
+        return igris_atou32(buf, base, end);
+    }
+
+    static inline uint8_t igris_atou8(const char *buf, uint8_t base, char **end)
+    {
+        return igris_atou32(buf, base, end);
+    }
+
+    static inline int32_t
+    igris_atoi32(const char *buf, uint8_t base, char **end)
+    {
+        uint8_t minus;
+        int32_t u;
+
+        minus = *buf == '-';
+        if (minus)
+            ++buf;
+
+        u = igris_atou32(buf, base, end);
+        return minus ? -u : u;
+    }
+
+    static inline int64_t
+    igris_atoi64(const char *buf, uint8_t base, char **end)
+    {
+        uint8_t minus;
+        int64_t u;
+
+        minus = *buf == '-';
+        if (minus)
+            ++buf;
+
+        u = igris_atou64(buf, base, end);
+        return minus ? -u : u;
+    }
+
+    static inline int16_t
+    igris_atoi16(const char *buf, uint8_t base, char **end)
+    {
+        return igris_atoi32(buf, base, end);
+    }
+
+    static inline int8_t igris_atoi8(const char *buf, uint8_t base, char **end)
+    {
+        return igris_atoi32(buf, base, end);
+    }
+
+#define MAX_PRECISION (10)
+    static const double rounders[MAX_PRECISION + 1] = {
+        0.5,          // 0
+        0.05,         // 1
+        0.005,        // 2
+        0.0005,       // 3
+        0.00005,      // 4
+        0.000005,     // 5
+        0.0000005,    // 6
+        0.00000005,   // 7
+        0.000000005,  // 8
+        0.0000000005, // 9
+        0.00000000005 // 10
+    };
+
+    static inline char *igris_f32toa(float32_t f, char *buf, int8_t precision)
+    {
+        char *ptr = buf;
+        char *p = ptr;
+        char *p1;
+        char c;
+        int32_t intPart;
+
+        if (isinf(f))
+        {
+            *buf++ = f > 0 ? '+' : '-';
+            return strcpy(buf, "inf");
+            ;
+        }
+
+        if (isnan(f))
+        {
+            return strcpy(buf, "nan");
+            ;
+        }
+
+        // check precision bounds
+        if (precision > MAX_PRECISION)
+            precision = MAX_PRECISION;
+
+        // sign stuff
+        if (f < 0)
+        {
+            f = -f;
+            *ptr++ = '-';
+        }
+
+        if (precision < 0) // negative precision == automatic precision guess
+        {
+            if (f < 1.0)
+                precision = 6;
+            else if (f < 10.0)
+                precision = 5;
+            else if (f < 100.0)
+                precision = 4;
+            else if (f < 1000.0)
+                precision = 3;
+            else if (f < 10000.0)
+                precision = 2;
+            else if (f < 100000.0)
+                precision = 1;
+            else
+                precision = 0;
+        }
+
+        // round value according the precision
+        if (precision)
+            f += (float32_t)rounders[precision];
+
+        // integer part...
+        intPart = (int32_t)f;
+        f -= intPart;
+
+        if (!intPart)
+            *ptr++ = '0';
+        else
+        {
+            // save start pointer
+            p = ptr;
+
+            // convert (reverse order)
+            while (intPart)
+            {
+                *p++ = '0' + intPart % 10;
+                intPart /= 10;
+            }
+
+            // save end pos
+            p1 = p;
+
+            // reverse result
+            while (p > ptr)
+            {
+                c = *--p;
+                *p = *ptr;
+                *ptr++ = c;
+            }
+
+            // restore end pos
+            ptr = p1;
+        }
+
+        // decimal part
+        if (precision)
+        {
+            // place decimal point
+            *ptr++ = '.';
+
+            // convert
+            while (precision--)
+            {
+                f *= 10.0;
+                c = (char)f;
+                *ptr++ = '0' + c;
+                f -= c;
+            }
+        }
+
+        // terminating zero
+        *ptr = 0;
+
+        return buf;
+    }
+
+    static inline int64_t local_pow(int b, int n)
+    {
+        int64_t res = 1;
+        while (n--)
+        {
+            res *= b;
+        }
+        return res;
+    }
+
+    static inline float32_t igris_atof32(const char *str, char **pend)
+    {
+        if (!igris_isdigit(*str) && *str != '-')
+        {
+            return 0;
+        }
+
+        uint8_t minus = *str == '-' ? 1 : 0;
+        if (minus)
+            str++;
+
+        char *end;
+        unsigned int u = igris_atou32(str, 10, &end);
+
+        str = end;
+        if (*str == '.')
+        {
+            int64_t d = igris_atou64(++str, 10, &end);
+            if (pend)
+                *pend = end;
+
+            float ret =
+                (float)u +
+                (float)((double)d / (double)local_pow(10, (int)(end - str)));
+            return minus ? -ret : ret;
+        }
+
+        else
+        {
+            if (pend)
+                *pend = end;
+            return minus ? -(float)u : (float)u;
+        }
+    }
+
+#ifndef WITHOUT_FLOAT64
+    static inline char *igris_f64toa(float64_t f, char *buf, int8_t precision)
+    {
+        return igris_f32toa((float32_t)f, buf, precision);
+    }
+
+    static inline float64_t igris_atof64(const char *nptr, char **endptr)
+    {
+        double val = 0.0;
+        int d = 0;
+        int sign = 1;
+
+        if (!nptr)
+        {
+            return 0.0;
+        }
+
+        if (*nptr == '+')
+        {
+            nptr++;
+        }
+        else if (*nptr == '-')
+        {
+            nptr++;
+            sign = -1;
+        }
+
+        while (*nptr >= '0' && *nptr <= '9')
+        {
+            val = val * 10.0 + (*nptr - '0');
+            nptr++;
+        }
+
+        if (*nptr == '.')
+        {
+            nptr++;
+            while (*nptr >= '0' && *nptr <= '9')
+            {
+                val = val * 10.0 + (*nptr - '0');
+                nptr++;
+                d--;
+            }
+        }
+
+        if (*nptr == 'E' || *nptr == 'e')
+        {
+            int e_sign = 1;
+            int e_val = 0;
+
+            nptr++;
+            if (*nptr == '+')
+            {
+                nptr++;
+            }
+            else if (*nptr == '-')
+            {
+                nptr++;
+                sign = -1;
+            }
+
+            while ((*nptr >= '0' && *nptr <= '9'))
+            {
+                e_val = e_val * 10 + (*nptr - '0');
+                nptr++;
+            }
+            d += e_val * e_sign;
+        }
+
+        while (d > 0)
+        {
+            val *= 10.0;
+            d--;
+        }
+        while (d < 0)
+        {
+            val *= 0.1;
+            d++;
+        }
+
+        if (endptr)
+        {
+            *endptr = (char *)nptr;
+        }
+
+        return sign * val;
+    }
+
+#ifndef WITHOUT_ATOF64
+    static inline double igris_strtod(const char *nptr, char **endptr)
+    {
+        return igris_atof64(nptr, endptr);
+    }
+    static inline char *igris_ftoa(float64_t f, char *buf, int8_t precision)
+    {
+        return igris_f64toa(f, buf, precision);
+    }
+#else
+    static inline double igris_strtod(const char *nptr, char **endptr)
+    {
+        return igris_atof32(nptr, endptr);
+    }
+    static inline char *igris_ftoa(float64_t f, char *buf, int8_t precision)
+    {
+        return igris_f32toa(f, buf, precision);
+    }
+#endif
+#endif
     // detail::type_identify
     namespace detail
     {
@@ -1474,36 +2199,33 @@ namespace igris
 
     using string = basic_string<>;
 
-    // static inline int
-    // stoi(const igris::string &str, igris::size_t *pos = nullptr, int base =
-    // 10)
-    // {
-    //     (void)pos; // TODO
-    //     return igris_atoi32(str.c_str(), base, nullptr);
-    // }
+    static inline int
+    stoi(const igris::string &str, igris::size_t *pos = nullptr, int base = 10)
+    {
+        (void)pos; // TODO
+        return igris_atoi32(str.c_str(), base, nullptr);
+    }
 
-    // static inline long
-    // stol(const igris::string &str, igris::size_t *pos = nullptr, int base =
-    // 10)
-    // {
-    //     (void)pos; // TODO
-    //     return igris_atoi32(str.c_str(), base, nullptr);
-    // }
+    static inline long
+    stol(const igris::string &str, igris::size_t *pos = nullptr, int base = 10)
+    {
+        (void)pos; // TODO
+        return igris_atoi32(str.c_str(), base, nullptr);
+    }
 
-    // static inline long long
-    // stoll(const igris::string &str, igris::size_t *pos = nullptr, int base =
-    // 10)
-    // {
-    //     (void)pos; // TODO
-    //     return igris_atoi32(str.c_str(), base, nullptr);
-    // }
+    static inline long long
+    stoll(const igris::string &str, igris::size_t *pos = nullptr, int base = 10)
+    {
+        (void)pos; // TODO
+        return igris_atoi32(str.c_str(), base, nullptr);
+    }
 
-    // static inline double stod(const igris::string &str,
-    //                           igris::size_t *pos = nullptr)
-    // {
-    //     (void)pos; // TODO
-    //     return igris_atof32(str.c_str(), nullptr);
-    // }
+    static inline double stod(const igris::string &str,
+                              igris::size_t *pos = nullptr)
+    {
+        (void)pos; // TODO
+        return igris_atof32(str.c_str(), nullptr);
+    }
 
     static inline bool operator==(const char *str, const string &str2)
     {
@@ -1540,61 +2262,62 @@ namespace igris
         return res;
     }
 
-    // static inline igris::string to_string(int val)
-    // {
-    //     char buf[64];
-    //     igris_i64toa(val, buf, 10);
-    //     return buf;
-    // }
+    static inline igris::string to_string(int val)
+    {
+        char buf[64];
+        igris_i64toa(val, buf, 10);
+        return buf;
+    }
 
-    // static inline igris::string to_string(long val)
-    // {
-    //     char buf[64];
-    //     igris_i64toa(val, buf, 10);
-    //     return buf;
-    // }
+    static inline igris::string to_string(long val)
+    {
+        char buf[64];
+        igris_i64toa(val, buf, 10);
+        return buf;
+    }
 
-    // static inline igris::string to_string(long long val)
-    // {
-    //     char buf[64];
-    //     igris_i64toa(val, buf, 10);
-    //     return buf;
-    // }
+    static inline igris::string to_string(long long val)
+    {
+        char buf[64];
+        igris_i64toa(val, buf, 10);
+        return buf;
+    }
 
-    // static inline igris::string to_string(unsigned val)
-    // {
-    //     char buf[64];
-    //     igris_i64toa(val, buf, 10);
-    //     return buf;
-    // }
+    static inline igris::string to_string(unsigned val)
+    {
+        char buf[64];
+        igris_i64toa(val, buf, 10);
+        return buf;
+    }
 
-    // static inline igris::string to_string(unsigned long val)
-    // {
-    //     char buf[64];
-    //     igris_i64toa(val, buf, 10);
-    //     return buf;
-    // }
+    static inline igris::string to_string(unsigned long val)
+    {
+        char buf[64];
+        igris_i64toa(val, buf, 10);
+        return buf;
+    }
 
-    // static inline igris::string to_string(unsigned long long val)
-    // {
-    //     char buf[64];
-    //     igris_i64toa(val, buf, 10);
-    //     return buf;
-    // }
+    static inline igris::string to_string(unsigned long long val)
+    {
+        char buf[64];
+        igris_i64toa(val, buf, 10);
+        return buf;
+    }
 
-    // static inline igris::string to_string(float val)
-    // {
-    //     char buf[64];
-    //     igris_ftoa(val, buf, 5);
-    //     return buf;
-    // }
+    static inline igris::string to_string(float val)
+    {
+        char buf[64];
+        igris_ftoa(val, buf, 5);
+        return buf;
+    }
 
-    // static inline igris::string to_string(double val)
-    // {
-    //     char buf[64];
-    //     igris_ftoa(val, buf, 5);
-    //     return buf;
-    // }
+    static inline igris::string to_string(double val)
+    {
+        char buf[64];
+        igris_ftoa(val, buf, 5);
+        return buf;
+    }
+
 }
 
 #endif

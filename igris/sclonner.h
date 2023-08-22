@@ -4,6 +4,7 @@
 #include <cerrno>
 #include <cstring>
 #include <fcntl.h>
+#include <pty.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -99,27 +100,39 @@ namespace igris
             return _ipipe;
         }
 
+        // void enable_terminal_policy()
+        // {
+        //     ioctl(STDOUT_FILENO, TIOC, )
+        // }
+
         void exec(const std::string &name,
                   const std::vector<char *> &args,
                   const std::vector<char *> &env)
         {
             int sts;
-            int pipes_host_in_child_out[2];
-            int pipes_host_out_child_in[2];
-            pipe(pipes_host_in_child_out);
-            pipe(pipes_host_out_child_in);
-            int pid = fork();
+            // int pipes_host_in_child_out[2];
+            // int pipes_host_out_child_in[2];
+            // pipe2(pipes_host_in_child_out, O_NONBLOCK | O_DIRECT);
+            // pipe2(pipes_host_out_child_in, O_NONBLOCK | O_DIRECT);
+            int fd;
+            int pid = forkpty(&fd, 0, 0, 0);
             if (pid == 0)
             {
-                close(pipes_host_in_child_out[0]);
-                close(pipes_host_out_child_in[1]);
-                close(STDOUT_FILENO);
+                // close(pipes_host_in_child_out[0]);
+                // close(pipes_host_out_child_in[1]);
+                // lose(STDOUT_FILENO);
 
-                sts = dup2(pipes_host_in_child_out[1], STDOUT_FILENO);
+                // sts = dup2(pipes_host_in_child_out[1], STDOUT_FILENO);
                 char *cmd = strdup(name.c_str());
                 // char *argv[10];
                 //  int argc = argvc_internal_split(cmd, argv, 10);
                 //  argv[argc] = 0;
+
+                struct termios settings;
+                tcgetattr(STDOUT_FILENO, &settings);
+                settings.c_oflag &= ~OPOST;
+                settings.c_oflag &= ~ONLCR;
+                tcgetattr(STDOUT_FILENO, &settings);
 
                 sts = execve(cmd, args.data(), env.data());
                 if (sts == -1)
@@ -131,12 +144,11 @@ namespace igris
                 // unreached
             }
 
-            close(pipes_host_out_child_in[0]);
-            close(pipes_host_in_child_out[1]);
+            // close(pipes_host_out_child_in[0]);
+            // close(pipes_host_in_child_out[1]);
 
             set_pid(pid);
-            set_pipe_fds(pipes_host_in_child_out[0],
-                         pipes_host_out_child_in[1]);
+            set_pipe_fds(fd, fd);
         }
 
         void exec(const char *ccmd)

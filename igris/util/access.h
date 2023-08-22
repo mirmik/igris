@@ -3,16 +3,14 @@
 
 #include <stdint.h>
 
-//#ifndef _MSC_VER
-//#include "endian.h"
-//#endif
-
-static inline uint8_t HIHALF(uint8_t byte) { return (byte >> 4) & 0x0F; }
-static inline uint8_t LOHALF(uint8_t byte) { return byte & 0x0F; }
-
-//#ifndef BYTE_ORDER
-//#	define BYTE_ORDER __LITTLE_ENDIAN
-//#endif
+static inline uint8_t HIHALF(uint8_t byte)
+{
+    return (byte >> 4) & 0x0F;
+}
+static inline uint8_t LOHALF(uint8_t byte)
+{
+    return byte & 0x0F;
+}
 
 #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
 
