@@ -2600,6 +2600,34 @@ namespace igris
             return -1;
         }
 
+        template <size_t VSize, size_t SSize>
+        igris::static_vector<static_string<SSize>, VSize> split(char delim)
+        {
+            igris::static_vector<static_string<SSize>, VSize> outvec;
+
+            char *strt;
+            char *ptr = (char *)data();
+            char *end = (char *)data() + size();
+
+            while (true)
+            {
+                while (ptr != end && *ptr == delim)
+                    ptr++;
+
+                if (ptr == end)
+                    break;
+
+                strt = ptr;
+
+                while (ptr != end && *ptr != delim)
+                    ptr++;
+
+                outvec.emplace_back(strt, ptr - strt);
+            }
+
+            return outvec;
+        }
+
         void push_back(char c)
         {
             if (m_size >= N)
