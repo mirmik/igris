@@ -2529,7 +2529,7 @@ namespace igris
         using const_iterator = const char *;
 
         // Переместить во внешний буффер.
-        mutable char data[N + 1];
+        mutable char _data[N + 1];
         igris::size_t m_size = 0;
 
     public:
@@ -2538,7 +2538,12 @@ namespace igris
         static_string(const char *dat)
         {
             m_size = strlen(dat);
-            memcpy(data, dat, m_size);
+            memcpy(_data, dat, m_size);
+        }
+
+        char *data()
+        {
+            return _data;
         }
 
         void clear()
@@ -2554,12 +2559,12 @@ namespace igris
 
         char &operator[](igris::size_t pos)
         {
-            return data[pos];
+            return _data[pos];
         }
 
         char operator[](igris::size_t pos) const
         {
-            return data[pos];
+            return _data[pos];
         }
 
         igris::size_t room()
@@ -2576,11 +2581,11 @@ namespace igris
 
         iterator begin()
         {
-            return &data[0];
+            return &_data[0];
         }
         const_iterator end()
         {
-            return &data[m_size];
+            return &_data[m_size];
         }
 
         int find(const char *str, size_t pos = 0) const
@@ -2594,7 +2599,7 @@ namespace igris
                 return -1;
             for (size_t i = pos; i < m_size - len; i++)
             {
-                if (memcmp(data + i, str, len) == 0)
+                if (memcmp(data() + i, str, len) == 0)
                     return i;
             }
             return -1;
@@ -2606,8 +2611,8 @@ namespace igris
             igris::static_vector<static_string<SSize>, VSize> outvec;
 
             char *strt;
-            char *ptr = (char *)data();
-            char *end = (char *)data() + size();
+            char *ptr = (char *)_data;
+            char *end = (char *)_data + size();
 
             while (true)
             {
@@ -2633,13 +2638,13 @@ namespace igris
             if (m_size >= N)
                 return;
 
-            data[m_size++] = c;
+            _data[m_size++] = c;
         }
 
         const char *c_str() const
         {
-            data[m_size] = 0;
-            return data;
+            _data[m_size] = 0;
+            return _data;
         }
     };
 }
