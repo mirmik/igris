@@ -231,3 +231,10 @@ TEST_CASE("vector -> static_vector")
     CHECK_EQ(svec[0], 4);
     CHECK_EQ(svec[2], 6);
 }
+
+TEST_CASE("static_string stoi")
+{
+    igris::static_string<16> str = "17";
+
+    CHECK_EQ(igris::stoi(str), 17);
+}

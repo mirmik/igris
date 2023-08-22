@@ -2541,6 +2541,12 @@ namespace igris
             memcpy(_data, dat, m_size);
         }
 
+        static_string(const char *dat, size_t sz)
+        {
+            m_size = sz;
+            memcpy(_data, dat, sz);
+        }
+
         char *data()
         {
             return _data;
@@ -2647,6 +2653,42 @@ namespace igris
             return _data;
         }
     };
+
+    template <size_t Sz>
+    static inline int stoi(const igris::static_string<Sz> &str,
+                           igris::size_t *pos = nullptr,
+                           int base = 10)
+    {
+        (void)pos; // TODO
+        return igris_atoi32(str.c_str(), base, nullptr);
+    }
+
+    template <size_t Sz>
+    static inline long stol(const igris::static_string<Sz> &str,
+                            igris::size_t *pos = nullptr,
+                            int base = 10)
+    {
+        (void)pos; // TODO
+        return igris_atoi32(str.c_str(), base, nullptr);
+    }
+
+    template <size_t Sz>
+    static inline long long stoll(const igris::static_string<Sz> &str,
+                                  igris::size_t *pos = nullptr,
+                                  int base = 10)
+    {
+        (void)pos; // TODO
+        return igris_atoi32(str.c_str(), base, nullptr);
+    }
+
+    template <size_t Sz>
+    static inline double stod(const igris::static_string<Sz> &str,
+                              igris::size_t *pos = nullptr)
+    {
+        (void)pos; // TODO
+        return igris_atof32(str.c_str(), nullptr);
+    }
+
 }
 
 #endif
