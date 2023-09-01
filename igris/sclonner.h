@@ -18,6 +18,7 @@
 #include <pty.h>
 #include <set>
 #include <unistd.h>
+#include <vector>
 
 #ifdef __WIN32__
 #include <winsock2.h>
