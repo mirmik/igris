@@ -15,6 +15,7 @@
 #include <igris/event/delegate.h>
 #include <igris/util/numconvert.h>
 #include <memory>
+#include <pty.h>
 #include <set>
 #include <unistd.h>
 
