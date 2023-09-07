@@ -98,13 +98,13 @@ TEST_CASE("ndarray.vectored")
         igris::ndarray<double>{10., 11.}, igris::ndarray<double>{20., 21.}};
 
     auto a = arr1({0});
-    auto b = arr1[0];
+    // auto b = arr1[0];
 
     CHECK_EQ(arr1.dim(), 1);
-    CHECK_EQ(arr1[0].dim(), 1);
-    CHECK_EQ(a, b);
+    CHECK_EQ(arr1({0}).dim(), 1);
+    // CHECK_EQ(a, b);
     CHECK_EQ(a, igris::ndarray<double>{10, 11});
-    CHECK_EQ(b, igris::ndarray<double>{10, 11});
+    // CHECK_EQ(b, igris::ndarray<double>{10, 11});
 }
 
 TEST_CASE("ndarray.get")
