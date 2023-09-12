@@ -380,16 +380,19 @@ namespace igris
 
         T &operator[](size_t num)
         {
+            assert(num < m_size);
             return m_data[num];
         }
 
         const T &operator[](size_t num) const
         {
+            assert(num < m_size);
             return m_data[num];
         }
 
         const T &at(size_t num) const
         {
+            assert(num < m_size);
             if (num >= m_size)
                 throw std::out_of_range("vector::at");
             return m_data[num];
@@ -397,6 +400,7 @@ namespace igris
 
         const T &back() const
         {
+            assert(m_size != 0);
             return m_data[m_size - 1];
         }
 
