@@ -7,15 +7,6 @@
 
 namespace igris
 {
-    // template <class T> class tensor_index_iterator
-    // {
-    //     std::vector<size_t> _idxs;
-
-    // public:
-    //     tensor_index_iterator(tensor<T> *arr) : _idxs(arr->shape().size(), 0)
-    //     {}
-    // };
-
     template <class T> class tensor
     {
         igris::tensor_storage<T> _storage = {};
@@ -115,21 +106,6 @@ namespace igris
 
             return res;
         }
-
-        // tensor_index_iterator<T> begin_indices()
-        // {
-        //     auto s = tensor_index_iterator<T>(
-        //         this, std::vector<size_t>(shape().size(), 0));
-        //     return s;
-        // }
-
-        // tensor_index_iterator<T> end_indices()
-        // {
-        //     auto s = tensor_index_iterator<T>(
-        //         this, std::vector<size_t>(shape().size(), 0));
-        //     s[0] = shape()[0];
-        //     return s;
-        // }
 
         T &at_ordinal(size_t ord)
         {
