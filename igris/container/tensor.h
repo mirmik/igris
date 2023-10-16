@@ -158,6 +158,21 @@ namespace igris
             }
             return res;
         }
+
+        tensor unsqueeze(size_t dim)
+        {
+            std::vector<size_t> shape = _shape;
+            shape.insert(shape.begin() + dim, 1);
+
+            std::vector<size_t> stride = _stride;
+            stride.insert(stride.begin() + dim, 1);
+
+            tensor res;
+            res._storage = _storage.view();
+            res._shape = shape;
+            res._stride = stride;
+            return res;
+        }
     };
 }
 

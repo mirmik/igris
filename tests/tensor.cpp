@@ -90,7 +90,7 @@ TEST_CASE("continguous")
     CHECK_EQ(contiguous.stride()[1], 1);
 }
 
-TEST_CASE("resize")
+TEST_CASE("reshape")
 {
     igris::tensor<double> arr({2, 2});
     arr({0, 0}) = 1;
@@ -114,4 +114,43 @@ TEST_CASE("resize")
     CHECK_EQ(arr({1}), 2);
     CHECK_EQ(arr({2}), 3);
     CHECK_EQ(arr({3}), 4);
+}
+
+TEST_CASE("unsqueeze")
+{
+    igris::tensor<double> arrp({2, 2});
+    arrp({0, 0}) = 1;
+    arrp({0, 1}) = 2;
+    arrp({1, 0}) = 3;
+    arrp({1, 1}) = 4;
+
+    {
+        auto arr = arrp.unsqueeze(0);
+        CHECK_EQ(arr.storage_size(), 4);
+        CHECK_EQ(arr.shape()[0], 1);
+        CHECK_EQ(arr.shape()[1], 2);
+        CHECK_EQ(arr.shape()[2], 2);
+        CHECK_EQ(arr.stride()[0], 1);
+        CHECK_EQ(arr.stride()[1], 2);
+        CHECK_EQ(arr.stride()[2], 1);
+        CHECK_EQ(arr({0, 0, 0}), 1);
+        CHECK_EQ(arr({0, 0, 1}), 2);
+        CHECK_EQ(arr({0, 1, 0}), 3);
+        CHECK_EQ(arr({0, 1, 1}), 4);
+    }
+
+    {
+        auto arr = arrp.unsqueeze(1);
+        CHECK_EQ(arr.storage_size(), 4);
+        CHECK_EQ(arr.shape()[0], 2);
+        CHECK_EQ(arr.shape()[1], 1);
+        CHECK_EQ(arr.shape()[2], 2);
+        CHECK_EQ(arr.stride()[0], 2);
+        CHECK_EQ(arr.stride()[1], 1);
+        CHECK_EQ(arr.stride()[2], 1);
+        CHECK_EQ(arr({0, 0, 0}), 1);
+        CHECK_EQ(arr({0, 0, 1}), 2);
+        CHECK_EQ(arr({1, 0, 0}), 3);
+        CHECK_EQ(arr({1, 0, 1}), 4);
+    }
 }
