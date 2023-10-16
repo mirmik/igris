@@ -192,4 +192,16 @@ TEST_CASE("resize")
         CHECK_EQ(a({1, 1}), 4);
         CHECK_EQ(a({1, 2}), 0);
     }
+
+    {
+        auto a = arr.resize({1, 3});
+        CHECK_EQ(a.storage_size(), 3);
+        CHECK_EQ(a.shape()[0], 1);
+        CHECK_EQ(a.shape()[1], 3);
+        CHECK_EQ(a.stride()[0], 3);
+        CHECK_EQ(a.stride()[1], 1);
+        CHECK_EQ(a({0, 0}), 1);
+        CHECK_EQ(a({0, 1}), 2);
+        CHECK_EQ(a({0, 2}), 0);
+    }
 }
