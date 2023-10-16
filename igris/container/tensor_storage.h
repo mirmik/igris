@@ -157,6 +157,15 @@ namespace igris
             res._size = size;
             return res;
         }
+
+        tensor_storage view()
+        {
+            tensor_storage res;
+            res._view = true;
+            res._data = _data;
+            res._size = _size;
+            return res;
+        }
     };
 }
 

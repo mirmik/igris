@@ -71,6 +71,25 @@ namespace igris
             res._stride.erase(res._stride.begin());
             return res;
         }
+
+        tensor transpose()
+        {
+            tensor res;
+            res._storage = _storage.view();
+            res._shape = reverse_vector(_shape);
+            res._stride = reverse_vector(_stride);
+            return res;
+        }
+
+        static std::vector<size_t> reverse_vector(std::vector<size_t> vec)
+        {
+            std::vector<size_t> res;
+            for (size_t i = 0; i < vec.size(); ++i)
+            {
+                res.push_back(vec[vec.size() - i - 1]);
+            }
+            return res;
+        }
     };
 }
 

@@ -33,3 +33,23 @@ TEST_CASE("marray")
         CHECK_EQ(subarray({1}), 4);
     }
 }
+
+TEST_CASE("transpose")
+{
+    // 1 2
+    // 3 4
+
+    igris::tensor<double> arr;
+    arr.reshape({2, 2});
+    arr({0, 0}) = 1;
+    arr({0, 1}) = 2;
+    arr({1, 0}) = 3;
+    arr({1, 1}) = 4;
+
+    auto transposed = arr.transpose();
+    CHECK_EQ(transposed.storage_size(), 4);
+    CHECK_EQ(transposed({0, 0}), 1);
+    CHECK_EQ(transposed({0, 1}), 3);
+    CHECK_EQ(transposed({1, 0}), 2);
+    CHECK_EQ(transposed({1, 1}), 4);
+}
