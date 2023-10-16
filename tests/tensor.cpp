@@ -89,3 +89,29 @@ TEST_CASE("continguous")
     CHECK_EQ(contiguous.stride()[0], 2);
     CHECK_EQ(contiguous.stride()[1], 1);
 }
+
+TEST_CASE("resize")
+{
+    igris::tensor<double> arr({2, 2});
+    arr({0, 0}) = 1;
+    arr({0, 1}) = 2;
+    arr({1, 0}) = 3;
+    arr({1, 1}) = 4;
+
+    arr = arr.reshape({1, 4});
+    CHECK_EQ(arr.storage_size(), 4);
+    CHECK_EQ(arr.stride()[0], 4);
+    CHECK_EQ(arr.stride()[1], 1);
+    CHECK_EQ(arr({0, 0}), 1);
+    CHECK_EQ(arr({0, 1}), 2);
+    CHECK_EQ(arr({0, 2}), 3);
+    CHECK_EQ(arr({0, 3}), 4);
+
+    arr = arr.reshape({4});
+    CHECK_EQ(arr.storage_size(), 4);
+    CHECK_EQ(arr.stride()[0], 1);
+    CHECK_EQ(arr({0}), 1);
+    CHECK_EQ(arr({1}), 2);
+    CHECK_EQ(arr({2}), 3);
+    CHECK_EQ(arr({3}), 4);
+}

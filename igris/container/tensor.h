@@ -50,7 +50,26 @@ namespace igris
             return _storage[idx];
         }
 
-        void reshape(std::vector<size_t> shape) {}
+        tensor reshape(std::vector<size_t> shape)
+        {
+            if (_storage.is_view())
+            {
+                auto t = contiguous();
+                return t.reshape(shape);
+            }
+
+            tensor res;
+            res._storage = _storage.view();
+            res._shape = shape;
+            res._stride.resize(shape.size());
+            size_t stride = 1;
+            for (size_t i = 0; i < shape.size(); ++i)
+            {
+                res._stride[shape.size() - i - 1] = stride;
+                stride *= shape[shape.size() - i - 1];
+            }
+            return res;
+        }
 
         std::vector<size_t> shape()
         {
