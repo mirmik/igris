@@ -15,6 +15,25 @@ namespace igris
 
     public:
         tensor() = default;
+        tensor(std::vector<size_t> shape)
+        {
+            size_t storage_size = 1;
+            for (size_t i = 0; i < shape.size(); ++i)
+            {
+                storage_size *= shape[i];
+            }
+            _storage = igris::tensor_storage<T>(storage_size);
+            _shape = shape;
+
+            _stride.resize(shape.size());
+            size_t stride = 1;
+            for (size_t i = 0; i < shape.size(); ++i)
+            {
+                _stride[shape.size() - i - 1] = stride;
+                stride *= shape[shape.size() - i - 1];
+            }
+        }
+
         tensor &operator=(const tensor &other) = default;
         tensor &operator=(tensor &&other) = default;
         tensor(const tensor &other) = default;
@@ -31,20 +50,7 @@ namespace igris
             return _storage[idx];
         }
 
-        void reshape(std::vector<size_t> shape)
-        {
-            _shape = shape;
-            _stride.resize(shape.size());
-
-            size_t stride = 1;
-            for (size_t i = 0; i < shape.size(); ++i)
-            {
-                _stride[shape.size() - i - 1] = stride;
-                stride *= shape[shape.size() - i - 1];
-            }
-
-            _storage.resize(stride);
-        }
+        void reshape(std::vector<size_t> shape) {}
 
         std::vector<size_t> shape()
         {
@@ -126,8 +132,7 @@ namespace igris
 
         tensor contiguous()
         {
-            tensor res;
-            res.reshape(shape());
+            tensor res(shape());
             for (size_t i = 0; i < storage_size(); ++i)
             {
                 res._storage[i] = _storage[ordinal_to_storage_index(i)];

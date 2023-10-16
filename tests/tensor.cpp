@@ -3,9 +3,7 @@
 
 TEST_CASE("marray")
 {
-    igris::tensor<double> arr;
-
-    arr.reshape({2, 2});
+    igris::tensor<double> arr({2, 2});
     arr({0, 0}) = 1;
     arr({0, 1}) = 2;
     arr({1, 0}) = 3;
@@ -39,8 +37,7 @@ TEST_CASE("transpose")
     // 1 2
     // 3 4
 
-    igris::tensor<double> arr;
-    arr.reshape({2, 2});
+    igris::tensor<double> arr({2, 2});
     arr({0, 0}) = 1;
     arr({0, 1}) = 2;
     arr({1, 0}) = 3;
@@ -56,8 +53,7 @@ TEST_CASE("transpose")
 
 TEST_CASE("ordinal_to_storage_index")
 {
-    igris::tensor<double> arr;
-    arr.reshape({2, 2});
+    igris::tensor<double> arr({2, 2});
     arr({0, 0}) = 1;
     arr({0, 1}) = 2;
     arr({1, 0}) = 3;
@@ -77,8 +73,7 @@ TEST_CASE("ordinal_to_storage_index")
 
 TEST_CASE("continguous")
 {
-    igris::tensor<double> arr;
-    arr.reshape({2, 2});
+    igris::tensor<double> arr({2, 2});
     arr({0, 0}) = 1;
     arr({0, 1}) = 2;
     arr({1, 0}) = 3;

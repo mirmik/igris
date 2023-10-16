@@ -42,12 +42,12 @@ namespace igris
         tensor_storage() : _data(nullptr), _size(0), _view(false) {}
 
         tensor_storage(size_t sz)
-            : _alloc{}, _data(_alloc._allocate(sz)), _size(sz), _view(false)
+            : _alloc{}, _data(_alloc.allocate(sz)), _size(sz), _view(false)
         {
         }
 
         tensor_storage(const igris::array_view<T> &buf)
-            : _data(_alloc._allocate(buf.size())), _size(buf.size()),
+            : _data(_alloc.allocate(buf.size())), _size(buf.size()),
               _view(false)
         {
 
@@ -55,14 +55,14 @@ namespace igris
         }
 
         tensor_storage(const std::initializer_list<T> &buf)
-            : _data(_alloc._allocate(buf.size())), _size(buf.size()),
+            : _data(_alloc.allocate(buf.size())), _size(buf.size()),
               _view(false)
         {
             std::copy(buf.begin(), buf.end(), _data);
         }
 
         tensor_storage(const tensor_storage &oth)
-            : _data(_alloc._allocate(oth.size())), _size(oth.size()),
+            : _data(_alloc.allocate(oth.size())), _size(oth.size()),
               _view(false)
         {
             auto ptr = _data;
