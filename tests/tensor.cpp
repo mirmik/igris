@@ -153,4 +153,19 @@ TEST_CASE("unsqueeze")
         CHECK_EQ(arr({1, 0, 0}), 3);
         CHECK_EQ(arr({1, 0, 1}), 4);
     }
+
+    {
+        auto arr = arrp.unsqueeze(2);
+        CHECK_EQ(arr.storage_size(), 4);
+        CHECK_EQ(arr.shape()[0], 2);
+        CHECK_EQ(arr.shape()[1], 2);
+        CHECK_EQ(arr.shape()[2], 1);
+        CHECK_EQ(arr.stride()[0], 2);
+        CHECK_EQ(arr.stride()[1], 1);
+        CHECK_EQ(arr.stride()[2], 1);
+        CHECK_EQ(arr({0, 0, 0}), 1);
+        CHECK_EQ(arr({0, 1, 0}), 2);
+        CHECK_EQ(arr({1, 0, 0}), 3);
+        CHECK_EQ(arr({1, 1, 0}), 4);
+    }
 }
