@@ -7,6 +7,69 @@
 
 namespace igris
 {
+    template <class T> class tensor;
+
+    template <class T> class indices_iterator
+    {
+        tensor<T> *_tensor;
+        std::vector<size_t> _idxs;
+
+    public:
+        indices_iterator(tensor<T> *tensor, std::vector<size_t> idxs)
+            : _tensor(tensor), _idxs(idxs)
+        {
+        }
+
+        indices_iterator(const indices_iterator &other) = default;
+        indices_iterator(indices_iterator &&other) = default;
+        indices_iterator &operator=(const indices_iterator &other) = default;
+        indices_iterator &operator=(indices_iterator &&other) = default;
+
+        indices_iterator operator++(int)
+        {
+            auto cur = indices_iterator(_tensor, _idxs);
+            std::vector<size_t> idxs = _idxs;
+            for (size_t i = 0; i < _idxs.size(); ++i)
+            {
+                size_t j = _idxs.size() - i - 1;
+
+                if (idxs[j] + 1 < _tensor->shape()[j])
+                {
+                    idxs[j]++;
+                    _idxs = idxs;
+                    return cur;
+                }
+                else
+                {
+                    idxs[j] = 0;
+                }
+            }
+            _idxs = {};
+            return cur;
+        }
+
+        indices_iterator &operator++()
+        {
+            (*this)++;
+            return *this;
+        }
+
+        std::vector<size_t> operator*()
+        {
+            return _idxs;
+        }
+
+        bool operator==(const indices_iterator &other)
+        {
+            return _idxs == other._idxs && _tensor == other._tensor;
+        }
+
+        bool operator!=(const indices_iterator &other)
+        {
+            return _idxs != other._idxs || _tensor != other._tensor;
+        }
+    };
+
     template <class T> class tensor
     {
         igris::tensor_storage<T> _storage = {};
@@ -23,6 +86,7 @@ namespace igris
                 storage_size *= shape[i];
             }
             _storage = igris::tensor_storage<T>(storage_size);
+            _storage.fill(T());
             _shape = shape;
 
             _stride.resize(shape.size());
@@ -67,6 +131,32 @@ namespace igris
             {
                 res._stride[shape.size() - i - 1] = stride;
                 stride *= shape[shape.size() - i - 1];
+            }
+            return res;
+        }
+
+        indices_iterator<T> indices_iterator_begin()
+        {
+            return indices_iterator<T>(this,
+                                       std::vector<size_t>(_shape.size(), 0));
+        }
+
+        indices_iterator<T> indices_iterator_end()
+        {
+            return indices_iterator<T>(this, std::vector<size_t>());
+        }
+
+        tensor resize(std::vector<size_t> newshape)
+        {
+            tensor res(newshape);
+
+            auto it = indices_iterator_begin();
+            auto end = indices_iterator_end();
+            for (; it != end; ++it)
+            {
+                auto indices = *it;
+                if (res.has_indices(indices))
+                    res(indices) = (*this)(indices);
             }
             return res;
         }
@@ -172,6 +262,19 @@ namespace igris
             res._shape = shape;
             res._stride = stride;
             return res;
+        }
+
+        bool has_indices(std::vector<size_t> idxs)
+        {
+            if (idxs.size() != _shape.size())
+                return false;
+
+            for (size_t i = 0; i < idxs.size(); ++i)
+            {
+                if (idxs[i] >= _shape[i])
+                    return false;
+            }
+            return true;
         }
     };
 }

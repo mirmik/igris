@@ -169,3 +169,27 @@ TEST_CASE("unsqueeze")
         CHECK_EQ(arr({1, 1, 0}), 4);
     }
 }
+
+TEST_CASE("resize")
+{
+    igris::tensor<double> arr({2, 2});
+    arr({0, 0}) = 1;
+    arr({0, 1}) = 2;
+    arr({1, 0}) = 3;
+    arr({1, 1}) = 4;
+
+    {
+        auto a = arr.resize({2, 3});
+        CHECK_EQ(a.storage_size(), 6);
+        CHECK_EQ(a.shape()[0], 2);
+        CHECK_EQ(a.shape()[1], 3);
+        CHECK_EQ(a.stride()[0], 3);
+        CHECK_EQ(a.stride()[1], 1);
+        CHECK_EQ(a({0, 0}), 1);
+        CHECK_EQ(a({0, 1}), 2);
+        CHECK_EQ(a({0, 2}), 0);
+        CHECK_EQ(a({1, 0}), 3);
+        CHECK_EQ(a({1, 1}), 4);
+        CHECK_EQ(a({1, 2}), 0);
+    }
+}

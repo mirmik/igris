@@ -26,6 +26,14 @@ namespace igris
             return _view;
         }
 
+        void fill(const T &val)
+        {
+            for (auto &ref : *this)
+            {
+                ref = val;
+            }
+        }
+
         T *data()
         {
             return _data;
