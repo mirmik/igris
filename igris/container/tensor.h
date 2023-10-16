@@ -7,6 +7,15 @@
 
 namespace igris
 {
+    // template <class T> class tensor_index_iterator
+    // {
+    //     std::vector<size_t> _idxs;
+
+    // public:
+    //     tensor_index_iterator(tensor<T> *arr) : _idxs(arr->shape().size(), 0)
+    //     {}
+    // };
+
     template <class T> class tensor
     {
         igris::tensor_storage<T> _storage = {};
@@ -87,6 +96,65 @@ namespace igris
             for (size_t i = 0; i < vec.size(); ++i)
             {
                 res.push_back(vec[vec.size() - i - 1]);
+            }
+            return res;
+        }
+
+        tensor permute(std::vector<size_t> idxs)
+        {
+            tensor res;
+            res._storage = _storage.view();
+            res._shape.resize(idxs.size());
+            res._stride.resize(idxs.size());
+
+            for (size_t i = 0; i < idxs.size(); ++i)
+            {
+                res._shape[i] = _shape[idxs[i]];
+                res._stride[i] = _stride[idxs[i]];
+            }
+
+            return res;
+        }
+
+        // tensor_index_iterator<T> begin_indices()
+        // {
+        //     auto s = tensor_index_iterator<T>(
+        //         this, std::vector<size_t>(shape().size(), 0));
+        //     return s;
+        // }
+
+        // tensor_index_iterator<T> end_indices()
+        // {
+        //     auto s = tensor_index_iterator<T>(
+        //         this, std::vector<size_t>(shape().size(), 0));
+        //     s[0] = shape()[0];
+        //     return s;
+        // }
+
+        T &at_ordinal(size_t ord)
+        {
+            return _storage[ordinal_to_storage_index(ord)];
+        }
+
+        size_t ordinal_to_storage_index(size_t ord)
+        {
+            size_t idx = 0;
+            for (size_t i = 0; i < _shape.size(); ++i)
+            {
+                size_t j = _shape.size() - i - 1;
+                idx += _stride[j] * (ord % _shape[j]);
+                ord /= _shape[j];
+            }
+            return idx;
+        }
+
+        tensor contiguous()
+        {
+            tensor res;
+            res.reshape(shape());
+            for (size_t i = 0; i < storage_size(); ++i)
+            {
+                res._storage[i] = _storage[ordinal_to_storage_index(i)];
             }
             return res;
         }

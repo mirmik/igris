@@ -53,3 +53,44 @@ TEST_CASE("transpose")
     CHECK_EQ(transposed({1, 0}), 2);
     CHECK_EQ(transposed({1, 1}), 4);
 }
+
+TEST_CASE("ordinal_to_storage_index")
+{
+    igris::tensor<double> arr;
+    arr.reshape({2, 2});
+    arr({0, 0}) = 1;
+    arr({0, 1}) = 2;
+    arr({1, 0}) = 3;
+    arr({1, 1}) = 4;
+
+    CHECK_EQ(arr.ordinal_to_storage_index(0), 0);
+    CHECK_EQ(arr.ordinal_to_storage_index(1), 1);
+    CHECK_EQ(arr.ordinal_to_storage_index(2), 2);
+    CHECK_EQ(arr.ordinal_to_storage_index(3), 3);
+
+    auto transposed = arr.transpose();
+    CHECK_EQ(transposed.ordinal_to_storage_index(0), 0);
+    CHECK_EQ(transposed.ordinal_to_storage_index(1), 2);
+    CHECK_EQ(transposed.ordinal_to_storage_index(2), 1);
+    CHECK_EQ(transposed.ordinal_to_storage_index(3), 3);
+}
+
+TEST_CASE("continguous")
+{
+    igris::tensor<double> arr;
+    arr.reshape({2, 2});
+    arr({0, 0}) = 1;
+    arr({0, 1}) = 2;
+    arr({1, 0}) = 3;
+    arr({1, 1}) = 4;
+
+    auto transposed = arr.transpose();
+    CHECK_EQ(transposed.storage_size(), 4);
+    CHECK_EQ(transposed.stride()[0], 1);
+    CHECK_EQ(transposed.stride()[1], 2);
+
+    auto contiguous = transposed.contiguous();
+    CHECK_EQ(contiguous.storage_size(), 4);
+    CHECK_EQ(contiguous.stride()[0], 2);
+    CHECK_EQ(contiguous.stride()[1], 1);
+}
