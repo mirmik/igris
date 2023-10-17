@@ -2,7 +2,8 @@
 #define IGRIS_MARRAY_H
 
 #include <igris/compiler.h>
-#include <igris/container/tensor_storage.h>
+#include <igris/container/array_view.h>
+#include <igris/container/unbounded_array.h>
 #include <vector>
 
 namespace igris
@@ -72,7 +73,8 @@ namespace igris
 
     template <class T> class tensor
     {
-        igris::tensor_storage<T> _storage = {};
+        std::shared_ptr<igris::unbounded_array<T>> _storage = {};
+        igris::array_view<T> _storview = {};
         std::vector<size_t> _shape = {};
         std::vector<size_t> _stride = {};
 
@@ -80,14 +82,11 @@ namespace igris
         tensor() = default;
         tensor(std::vector<size_t> shape)
         {
-            size_t storage_size = 1;
-            for (size_t i = 0; i < shape.size(); ++i)
-            {
-                storage_size *= shape[i];
-            }
-            _storage = igris::tensor_storage<T>(storage_size);
-            _storage.fill(T());
             _shape = shape;
+            size_t storsize = shape_product();
+            _storage = std::make_shared<igris::unbounded_array<T>>(storsize);
+            _storview = {_storage->data(), _storage->size()};
+            _storage->fill(T());
 
             _stride.resize(shape.size());
             size_t stride = 1;
@@ -103,6 +102,26 @@ namespace igris
         tensor(const tensor &other) = default;
         tensor(tensor &&other) = default;
 
+        igris::unbounded_array<T> storage()
+        {
+            return _storage;
+        }
+
+        igris::array_view<T> storage_view()
+        {
+            return _storview;
+        }
+
+        size_t shape_product()
+        {
+            size_t res = 1;
+            for (size_t i = 0; i < _shape.size(); ++i)
+            {
+                res *= _shape[i];
+            }
+            return res;
+        }
+
         T &operator()(std::vector<size_t> idxs)
         {
             size_t idx = 0;
@@ -111,19 +130,14 @@ namespace igris
                 idx += idxs[i] * _stride[i];
             }
 
-            return _storage[idx];
+            return _storview[idx];
         }
 
         tensor reshape(std::vector<size_t> shape)
         {
-            if (_storage.is_view())
-            {
-                auto t = contiguous();
-                return t.reshape(shape);
-            }
-
             tensor res;
-            res._storage = _storage.view();
+            res._storage = _storage;
+            res._storview = _storview;
             res._shape = shape;
             res._stride.resize(shape.size());
             size_t stride = 1;
@@ -171,11 +185,6 @@ namespace igris
             return _stride;
         }
 
-        size_t storage_size()
-        {
-            return _storage.size();
-        }
-
         bool is_contiguous()
         {
             // tensor is contiguous if it stride array is ordered
@@ -189,16 +198,11 @@ namespace igris
 
         tensor operator[](size_t idx)
         {
-            if (!is_contiguous())
-            {
-                auto t = contiguous();
-                return t[idx];
-            }
-
             tensor res;
             res._shape = _shape;
             res._stride = _stride;
-            res._storage = _storage.subarray(idx * _stride[0], _stride[0]);
+            res._storage = _storage;
+            res._storview = _storview.slice(idx * _stride[0], _stride[0]);
             res._shape.erase(res._shape.begin());
             res._stride.erase(res._stride.begin());
             return res;
@@ -213,7 +217,7 @@ namespace igris
             }
 
             // storage size
-            size_t areasize = storage_size();
+            size_t areasize = _storview.size();
             for (size_t i = 0; i < indexes.size(); ++i)
             {
                 areasize /= _shape[i];
@@ -229,7 +233,8 @@ namespace igris
             tensor res;
             res._shape = _shape;
             res._stride = _stride;
-            res._storage = _storage.subarray(firstidx, areasize);
+            res._storage = _storage;
+            res._storview = _storview.slice(firstidx, areasize);
             res._shape.erase(res._shape.begin(),
                              res._shape.begin() + indexes.size());
             res._stride.erase(res._stride.begin(),
@@ -240,7 +245,8 @@ namespace igris
         tensor transpose()
         {
             tensor res;
-            res._storage = _storage.view();
+            res._storage = _storage;
+            res._storview = _storview;
             res._shape = reverse_vector(_shape);
             res._stride = reverse_vector(_stride);
             return res;
@@ -292,25 +298,26 @@ namespace igris
         tensor contiguous()
         {
             tensor res(shape());
-            for (size_t i = 0; i < storage_size(); ++i)
+            for (size_t i = 0; i < _storview.size(); ++i)
             {
-                res._storage[i] = _storage[ordinal_to_storage_index(i)];
+                res._storview[i] = _storview[ordinal_to_storage_index(i)];
             }
             return res;
         }
 
         tensor unsqueeze(size_t dim)
         {
-            std::vector<size_t> shape = _shape;
-            shape.insert(shape.begin() + dim, 1);
+            std::vector<size_t> newshape = _shape;
+            newshape.insert(newshape.begin() + dim, 1);
 
-            std::vector<size_t> stride = _stride;
-            stride.insert(stride.begin() + dim, 1);
+            std::vector<size_t> newstride = _stride;
+            newstride.insert(newstride.begin() + dim, 1);
 
             tensor res;
-            res._storage = _storage.view();
-            res._shape = shape;
-            res._stride = stride;
+            res._storage = _storage;
+            res._storview = _storview;
+            res._shape = newshape;
+            res._stride = newstride;
             return res;
         }
 

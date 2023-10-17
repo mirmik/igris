@@ -60,6 +60,14 @@ namespace igris
             }
         }
 
+        void fill(const T &val)
+        {
+            for (auto &ref : *this)
+            {
+                ref = val;
+            }
+        }
+
         unbounded_array &operator=(const unbounded_array &oth)
         {
             m_data = alloc.allocate(oth.size());
