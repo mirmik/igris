@@ -9,13 +9,13 @@ TEST_CASE("marray")
     arr({1, 0}) = 3;
     arr({1, 1}) = 4;
 
-    CHECK_EQ(arr.storage_view().size(), 4);
+    CHECK_EQ(arr.shape_product(), 4);
     CHECK_EQ(arr.stride()[0], 2);
     CHECK_EQ(arr.stride()[1], 1);
 
     {
         auto subarray = arr[0];
-        CHECK_EQ(subarray.storage_view().size(), 2);
+        CHECK_EQ(subarray.shape_product(), 2);
         CHECK_EQ(subarray.shape().size(), 1);
         CHECK_EQ(subarray.stride().size(), 1);
         CHECK_EQ(subarray({0}), 1);
@@ -24,7 +24,7 @@ TEST_CASE("marray")
 
     {
         auto subarray = arr[1];
-        CHECK_EQ(subarray.storage_view().size(), 2);
+        CHECK_EQ(subarray.shape_product(), 2);
         CHECK_EQ(subarray.shape().size(), 1);
         CHECK_EQ(subarray.stride().size(), 1);
         CHECK_EQ(subarray({0}), 3);
@@ -44,7 +44,23 @@ TEST_CASE("transpose")
     arr({1, 1}) = 4;
 
     auto transposed = arr.transpose();
-    CHECK_EQ(transposed.storage_view().size(), 4);
+    CHECK_EQ(transposed.shape_product(), 4);
+    CHECK_EQ(transposed({0, 0}), 1);
+    CHECK_EQ(transposed({0, 1}), 3);
+    CHECK_EQ(transposed({1, 0}), 2);
+    CHECK_EQ(transposed({1, 1}), 4);
+}
+
+TEST_CASE("permute")
+{
+    igris::tensor<double> arr({2, 2});
+    arr({0, 0}) = 1;
+    arr({0, 1}) = 2;
+    arr({1, 0}) = 3;
+    arr({1, 1}) = 4;
+
+    auto transposed = arr.permute({1, 0});
+    CHECK_EQ(transposed.shape_product(), 4);
     CHECK_EQ(transposed({0, 0}), 1);
     CHECK_EQ(transposed({0, 1}), 3);
     CHECK_EQ(transposed({1, 0}), 2);
@@ -80,12 +96,12 @@ TEST_CASE("continguous")
     arr({1, 1}) = 4;
 
     auto transposed = arr.transpose();
-    CHECK_EQ(transposed.storage_view().size(), 4);
+    CHECK_EQ(transposed.shape_product(), 4);
     CHECK_EQ(transposed.stride()[0], 1);
     CHECK_EQ(transposed.stride()[1], 2);
 
     auto contiguous = transposed.contiguous();
-    CHECK_EQ(contiguous.storage_view().size(), 4);
+    CHECK_EQ(contiguous.shape_product(), 4);
     CHECK_EQ(contiguous.stride()[0], 2);
     CHECK_EQ(contiguous.stride()[1], 1);
 }
@@ -99,7 +115,7 @@ TEST_CASE("reshape")
     arr({1, 1}) = 4;
 
     arr = arr.reshape({1, 4});
-    CHECK_EQ(arr.storage_view().size(), 4);
+    CHECK_EQ(arr.shape_product(), 4);
     CHECK_EQ(arr.stride()[0], 4);
     CHECK_EQ(arr.stride()[1], 1);
     CHECK_EQ(arr({0, 0}), 1);
@@ -108,7 +124,7 @@ TEST_CASE("reshape")
     CHECK_EQ(arr({0, 3}), 4);
 
     arr = arr.reshape({4});
-    CHECK_EQ(arr.storage_view().size(), 4);
+    CHECK_EQ(arr.shape_product(), 4);
     CHECK_EQ(arr.stride()[0], 1);
     CHECK_EQ(arr({0}), 1);
     CHECK_EQ(arr({1}), 2);
@@ -126,7 +142,7 @@ TEST_CASE("unsqueeze")
 
     {
         auto arr = arrp.unsqueeze(0);
-        CHECK_EQ(arr.storage_view().size(), 4);
+        CHECK_EQ(arr.shape_product(), 4);
         CHECK_EQ(arr.shape()[0], 1);
         CHECK_EQ(arr.shape()[1], 2);
         CHECK_EQ(arr.shape()[2], 2);
@@ -141,7 +157,7 @@ TEST_CASE("unsqueeze")
 
     {
         auto arr = arrp.unsqueeze(1);
-        CHECK_EQ(arr.storage_view().size(), 4);
+        CHECK_EQ(arr.shape_product(), 4);
         CHECK_EQ(arr.shape()[0], 2);
         CHECK_EQ(arr.shape()[1], 1);
         CHECK_EQ(arr.shape()[2], 2);
@@ -156,7 +172,7 @@ TEST_CASE("unsqueeze")
 
     {
         auto arr = arrp.unsqueeze(2);
-        CHECK_EQ(arr.storage_view().size(), 4);
+        CHECK_EQ(arr.shape_product(), 4);
         CHECK_EQ(arr.shape()[0], 2);
         CHECK_EQ(arr.shape()[1], 2);
         CHECK_EQ(arr.shape()[2], 1);
@@ -180,7 +196,7 @@ TEST_CASE("resize")
 
     {
         auto a = arr.resize({2, 3});
-        CHECK_EQ(a.storage_view().size(), 6);
+        CHECK_EQ(a.shape_product(), 6);
         CHECK_EQ(a.shape()[0], 2);
         CHECK_EQ(a.shape()[1], 3);
         CHECK_EQ(a.stride()[0], 3);
@@ -195,7 +211,7 @@ TEST_CASE("resize")
 
     {
         auto a = arr.resize({1, 3});
-        CHECK_EQ(a.storage_view().size(), 3);
+        CHECK_EQ(a.shape_product(), 3);
         CHECK_EQ(a.shape()[0], 1);
         CHECK_EQ(a.shape()[1], 3);
         CHECK_EQ(a.stride()[0], 3);
@@ -221,7 +237,7 @@ TEST_CASE("operator[]")
 
     {
         auto a = arr[0];
-        CHECK_EQ(a.storage_view().size(), 4);
+        CHECK_EQ(a.shape_product(), 4);
         CHECK_EQ(a.shape_product(), 4);
         CHECK_EQ(a.shape()[0], 2);
         CHECK_EQ(a.shape()[1], 2);
@@ -235,7 +251,7 @@ TEST_CASE("operator[]")
 
     {
         auto a = arr[1];
-        CHECK_EQ(a.storage_view().size(), 4);
+        CHECK_EQ(a.shape_product(), 4);
         CHECK_EQ(a.shape_product(), 4);
         CHECK_EQ(a.shape()[0], 2);
         CHECK_EQ(a.shape()[1], 2);
@@ -249,7 +265,7 @@ TEST_CASE("operator[]")
 
     {
         auto a = arr[{0, 0}];
-        CHECK_EQ(a.storage_view().size(), 2);
+        CHECK_EQ(a.shape_product(), 2);
         CHECK_EQ(a.shape_product(), 2);
         CHECK_EQ(a.shape()[0], 2);
         CHECK_EQ(a.stride()[0], 1);
@@ -259,7 +275,7 @@ TEST_CASE("operator[]")
 
     {
         auto a = arr[{0, 1}];
-        CHECK_EQ(a.storage_view().size(), 2);
+        CHECK_EQ(a.shape_product(), 2);
         CHECK_EQ(a.shape_product(), 2);
         CHECK_EQ(a.shape()[0], 2);
         CHECK_EQ(a.stride()[0], 1);
@@ -269,7 +285,7 @@ TEST_CASE("operator[]")
 
     {
         auto a = arr[{1, 0}];
-        CHECK_EQ(a.storage_view().size(), 2);
+        CHECK_EQ(a.shape_product(), 2);
         CHECK_EQ(a.shape_product(), 2);
         CHECK_EQ(a.shape()[0], 2);
         CHECK_EQ(a.stride()[0], 1);
