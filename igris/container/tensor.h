@@ -176,14 +176,64 @@ namespace igris
             return _storage.size();
         }
 
+        bool is_contiguous()
+        {
+            // tensor is contiguous if it stride array is ordered
+            for (size_t i = 0; i < _stride.size() - 1; ++i)
+            {
+                if (_stride[i] < _stride[i + 1])
+                    return false;
+            }
+            return true;
+        }
+
         tensor operator[](size_t idx)
         {
+            if (!is_contiguous())
+            {
+                auto t = contiguous();
+                return t[idx];
+            }
+
             tensor res;
             res._shape = _shape;
             res._stride = _stride;
             res._storage = _storage.subarray(idx * _stride[0], _stride[0]);
             res._shape.erase(res._shape.begin());
             res._stride.erase(res._stride.begin());
+            return res;
+        }
+
+        tensor operator[](std::vector<size_t> indexes)
+        {
+            if (!is_contiguous())
+            {
+                auto t = contiguous();
+                return t[indexes];
+            }
+
+            // storage size
+            size_t areasize = storage_size();
+            for (size_t i = 0; i < indexes.size(); ++i)
+            {
+                areasize /= _shape[i];
+            }
+
+            // first element index
+            size_t firstidx = 0;
+            for (size_t i = 0; i < indexes.size(); ++i)
+            {
+                firstidx += indexes[i] * _stride[i];
+            }
+
+            tensor res;
+            res._shape = _shape;
+            res._stride = _stride;
+            res._storage = _storage.subarray(firstidx, areasize);
+            res._shape.erase(res._shape.begin(),
+                             res._shape.begin() + indexes.size());
+            res._stride.erase(res._stride.begin(),
+                              res._stride.begin() + indexes.size());
             return res;
         }
 

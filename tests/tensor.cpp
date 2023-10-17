@@ -205,3 +205,70 @@ TEST_CASE("resize")
         CHECK_EQ(a({0, 2}), 0);
     }
 }
+
+TEST_CASE("operator[]")
+{
+
+    igris::tensor<double> arr({2, 2, 2});
+    arr({0, 0, 0}) = 1;
+    arr({0, 0, 1}) = 2;
+    arr({0, 1, 0}) = 3;
+    arr({0, 1, 1}) = 4;
+    arr({1, 0, 0}) = 5;
+    arr({1, 0, 1}) = 6;
+    arr({1, 1, 0}) = 7;
+    arr({1, 1, 1}) = 8;
+
+    {
+        auto a = arr[0];
+        CHECK_EQ(a.storage_size(), 4);
+        CHECK_EQ(a.shape()[0], 2);
+        CHECK_EQ(a.shape()[1], 2);
+        CHECK_EQ(a.stride()[0], 2);
+        CHECK_EQ(a.stride()[1], 1);
+        CHECK_EQ(a({0, 0}), 1);
+        CHECK_EQ(a({0, 1}), 2);
+        CHECK_EQ(a({1, 0}), 3);
+        CHECK_EQ(a({1, 1}), 4);
+    }
+
+    {
+        auto a = arr[1];
+        CHECK_EQ(a.storage_size(), 4);
+        CHECK_EQ(a.shape()[0], 2);
+        CHECK_EQ(a.shape()[1], 2);
+        CHECK_EQ(a.stride()[0], 2);
+        CHECK_EQ(a.stride()[1], 1);
+        CHECK_EQ(a({0, 0}), 5);
+        CHECK_EQ(a({0, 1}), 6);
+        CHECK_EQ(a({1, 0}), 7);
+        CHECK_EQ(a({1, 1}), 8);
+    }
+
+    {
+        auto a = arr[{0, 0}];
+        CHECK_EQ(a.storage_size(), 2);
+        CHECK_EQ(a.shape()[0], 2);
+        CHECK_EQ(a.stride()[0], 1);
+        CHECK_EQ(a({0}), 1);
+        CHECK_EQ(a({1}), 2);
+    }
+
+    {
+        auto a = arr[{0, 1}];
+        CHECK_EQ(a.storage_size(), 2);
+        CHECK_EQ(a.shape()[0], 2);
+        CHECK_EQ(a.stride()[0], 1);
+        CHECK_EQ(a({0}), 3);
+        CHECK_EQ(a({1}), 4);
+    }
+
+    {
+        auto a = arr[{1, 0}];
+        CHECK_EQ(a.storage_size(), 2);
+        CHECK_EQ(a.shape()[0], 2);
+        CHECK_EQ(a.stride()[0], 1);
+        CHECK_EQ(a({0}), 5);
+        CHECK_EQ(a({1}), 6);
+    }
+}
