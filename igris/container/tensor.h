@@ -171,17 +171,6 @@ namespace igris
             return res;
         }
 
-        T &operator()(std::vector<size_t> idxs)
-        {
-            size_t idx = 0;
-            for (size_t i = 0; i < idxs.size(); ++i)
-            {
-                idx += idxs[i] * _stride[i];
-            }
-
-            return _storview[idx];
-        }
-
         tensor reshape(std::vector<size_t> shape)
         {
             tensor res;
@@ -359,6 +348,22 @@ namespace igris
                     return false;
             }
             return true;
+        }
+
+        T &operator()(std::vector<size_t> idxs)
+        {
+            return at(idxs);
+        }
+
+        T &at(std::vector<size_t> idxs)
+        {
+            size_t idx = 0;
+            for (size_t i = 0; i < idxs.size(); ++i)
+            {
+                idx += idxs[i] * _stride[i];
+            }
+
+            return _storview[idx];
         }
     };
 }
