@@ -3,11 +3,7 @@
 
 TEST_CASE("marray")
 {
-    igris::tensor<double> arr({2, 2});
-    arr({0, 0}) = 1;
-    arr({0, 1}) = 2;
-    arr({1, 0}) = 3;
-    arr({1, 1}) = 4;
+    igris::tensor<double> arr({1, 2, 3, 4}, {2, 2});
 
     CHECK_EQ(arr.shape_product(), 4);
     CHECK_EQ(arr.stride()[0], 2);
@@ -32,16 +28,16 @@ TEST_CASE("marray")
     }
 }
 
+TEST_CASE("construct from vector")
+{
+    std::vector<double> data = {1, 2, 3, 4};
+    std::vector<size_t> shape = {2, 2};
+    igris::tensor<double> arr(data, shape);
+}
+
 TEST_CASE("transpose")
 {
-    // 1 2
-    // 3 4
-
-    igris::tensor<double> arr({2, 2});
-    arr({0, 0}) = 1;
-    arr({0, 1}) = 2;
-    arr({1, 0}) = 3;
-    arr({1, 1}) = 4;
+    igris::tensor<double> arr({1, 2, 3, 4}, {2, 2});
 
     auto transposed = arr.transpose();
     CHECK_EQ(transposed.shape_product(), 4);
@@ -53,11 +49,7 @@ TEST_CASE("transpose")
 
 TEST_CASE("permute")
 {
-    igris::tensor<double> arr({2, 2});
-    arr({0, 0}) = 1;
-    arr({0, 1}) = 2;
-    arr({1, 0}) = 3;
-    arr({1, 1}) = 4;
+    igris::tensor<double> arr({1, 2, 3, 4}, {2, 2});
 
     auto transposed = arr.permute({1, 0});
     CHECK_EQ(transposed.shape_product(), 4);
@@ -69,11 +61,7 @@ TEST_CASE("permute")
 
 TEST_CASE("ordinal_to_storage_index")
 {
-    igris::tensor<double> arr({2, 2});
-    arr({0, 0}) = 1;
-    arr({0, 1}) = 2;
-    arr({1, 0}) = 3;
-    arr({1, 1}) = 4;
+    igris::tensor<double> arr({1, 2, 3, 4}, {2, 2});
 
     CHECK_EQ(arr.ordinal_to_storage_index(0), 0);
     CHECK_EQ(arr.ordinal_to_storage_index(1), 1);

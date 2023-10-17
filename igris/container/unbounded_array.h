@@ -38,6 +38,11 @@ namespace igris
         {
         }
 
+        unbounded_array(const T *data, size_t sz) : unbounded_array(sz)
+        {
+            std::copy(data, data + sz, m_data);
+        }
+
         unbounded_array(const igris::array_view<T> &buf)
             : m_data(alloc.allocate(buf.size())), m_size(buf.size())
         {

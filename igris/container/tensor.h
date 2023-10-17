@@ -87,14 +87,7 @@ namespace igris
             _storage = std::make_shared<igris::unbounded_array<T>>(storsize);
             _storview = _storage->data();
             _storage->fill(T());
-
-            _stride.resize(shape.size());
-            size_t stride = 1;
-            for (size_t i = 0; i < shape.size(); ++i)
-            {
-                _stride[shape.size() - i - 1] = stride;
-                stride *= shape[shape.size() - i - 1];
-            }
+            _stride = continuougs_stride_for_shape(_shape);
         }
 
         tensor &operator=(const tensor &other) = default;
@@ -109,6 +102,39 @@ namespace igris
             : _storage(_storage), _storview(_storview), _shape(_shape),
               _stride(_stride)
         {
+        }
+
+        tensor(const std::initializer_list<T> &container,
+               const std::initializer_list<size_t> &shape)
+        {
+            _storage = std::make_shared<igris::unbounded_array<T>>(container);
+            _storview = _storage->data();
+            _shape = shape;
+            _stride = continuougs_stride_for_shape(_shape);
+        }
+
+        tensor(const std::vector<T> &container,
+               const std::vector<size_t> &shape)
+        {
+            const T *data = container.data();
+            size_t size = container.size();
+            _storage = std::make_shared<igris::unbounded_array<T>>(data, size);
+            _storview = _storage->data();
+            _shape = shape;
+            _stride = continuougs_stride_for_shape(_shape);
+        }
+
+        static std::vector<size_t>
+        continuougs_stride_for_shape(const std::vector<size_t> &shape)
+        {
+            std::vector<size_t> stride(shape.size());
+            size_t st = 1;
+            for (size_t i = 0; i < shape.size(); ++i)
+            {
+                stride[shape.size() - i - 1] = st;
+                st *= shape[shape.size() - i - 1];
+            }
+            return stride;
         }
 
         tensor copy()
