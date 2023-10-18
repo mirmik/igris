@@ -105,12 +105,18 @@ namespace igris
 
         void invalidate()
         {
+            for (size_t i = 0; i < m_size; ++i)
+            {
+                m_data[i].~T();
+            }
             alloc.deallocate(m_data, m_size);
+            m_data = nullptr;
+            m_size = 0;
         }
 
         ~unbounded_array()
         {
-            alloc.deallocate(m_data, m_size);
+            invalidate();
         }
 
         T &operator[](size_t i)
