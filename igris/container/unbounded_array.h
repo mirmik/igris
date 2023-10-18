@@ -36,6 +36,10 @@ namespace igris
         unbounded_array(size_t sz)
             : alloc{}, m_data(alloc.allocate(sz)), m_size(sz)
         {
+            for (size_t i = 0; i < sz; ++i)
+            {
+                new (m_data + i) T();
+            }
         }
 
         unbounded_array(const T *data, size_t sz) : unbounded_array(sz)
@@ -44,25 +48,18 @@ namespace igris
         }
 
         unbounded_array(const igris::array_view<T> &buf)
-            : m_data(alloc.allocate(buf.size())), m_size(buf.size())
+            : unbounded_array(buf.data(), buf.size())
         {
-            std::copy(buf.begin(), buf.end(), m_data);
         }
 
         unbounded_array(const std::initializer_list<T> &buf)
-            : m_data(alloc.allocate(buf.size())), m_size(buf.size())
+            : unbounded_array(buf.begin(), buf.size())
         {
-            std::copy(buf.begin(), buf.end(), m_data);
         }
 
         unbounded_array(const unbounded_array &oth)
-            : m_data(alloc.allocate(oth.size())), m_size(oth.size())
+            : unbounded_array(oth.data(), oth.size())
         {
-            auto ptr = m_data;
-            for (const auto &ref : oth)
-            {
-                new (ptr++) T(ref);
-            }
         }
 
         void fill(const T &val)
