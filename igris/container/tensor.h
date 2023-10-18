@@ -146,7 +146,12 @@ namespace igris
             return tensor(new_storage, new_storview, _shape, _stride);
         }
 
-        igris::unbounded_array<T> storage()
+        igris::unbounded_array<T> &storage()
+        {
+            return *_storage;
+        }
+
+        const igris::unbounded_array<T> &storage() const
         {
             return *_storage;
         }
