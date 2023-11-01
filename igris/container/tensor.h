@@ -8,71 +8,123 @@
 
 namespace igris
 {
-    template <class T> class tensor;
-
-    template <class T> class indices_iterator
+    template <class T> class grid : public std::vector<std::vector<T>>
     {
-        tensor<T> *_tensor;
-        std::vector<size_t> _idxs;
+    public:
+        using std::vector<std::vector<T>>::operator[];
 
     public:
-        indices_iterator(tensor<T> *tensor, std::vector<size_t> idxs)
-            : _tensor(tensor), _idxs(idxs)
+        grid() = default;
+        grid(const std::vector<std::vector<T>> &other)
+            : std::vector<std::vector<T>>(other)
         {
         }
-
-        indices_iterator(const indices_iterator &other) = default;
-        indices_iterator(indices_iterator &&other) = default;
-        indices_iterator &operator=(const indices_iterator &other) = default;
-        indices_iterator &operator=(indices_iterator &&other) = default;
-
-        indices_iterator operator++(int)
+        grid &operator=(const std::vector<std::vector<T>> &other)
         {
-            auto cur = indices_iterator(_tensor, _idxs);
-            std::vector<size_t> idxs = _idxs;
-            for (size_t i = 0; i < _idxs.size(); ++i)
-            {
-                size_t j = _idxs.size() - i - 1;
-
-                if (idxs[j] + 1 < _tensor->shape()[j])
-                {
-                    idxs[j]++;
-                    _idxs = idxs;
-                    return cur;
-                }
-                else
-                {
-                    idxs[j] = 0;
-                }
-            }
-            _idxs = {};
-            return cur;
-        }
-
-        indices_iterator &operator++()
-        {
-            (*this)++;
+            std::vector<std::vector<T>>::operator=(other);
             return *this;
         }
+        grid(const grid &other) = default;
+        grid &operator=(const grid &other) = default;
+        grid(grid &&other) = default;
+        grid &operator=(grid &&other) = default;
 
-        std::vector<size_t> operator*()
+        std::vector<size_t> shape()
         {
-            return _idxs;
+            std::vector<size_t> res;
+            for (size_t i = 0; i < this->size(); ++i)
+            {
+                res.push_back(this->operator[](i).size());
+            }
+            return res;
         }
 
-        bool operator==(const indices_iterator &other)
+        std::vector<T> operator[](igris::array_view<size_t> idxs)
         {
-            return _idxs == other._idxs && _tensor == other._tensor;
-        }
+            std::vector<T> res;
 
-        bool operator!=(const indices_iterator &other)
-        {
-            return _idxs != other._idxs || _tensor != other._tensor;
+            assert(idxs.size() == this->size());
+
+            for (size_t i = 0; i < idxs.size(); ++i)
+            {
+                auto &lay = this->operator[](i);
+                auto idx = lay[idxs[i]];
+                res.push_back(idx);
+            }
+            return res;
         }
     };
 
     template <class T> class tensor
     {
+
+        class indices_iterator
+        {
+            tensor<T> *_tensor;
+            std::vector<size_t> _idxs;
+
+        public:
+            indices_iterator(tensor<T> *tensor, std::vector<size_t> idxs)
+                : _tensor(tensor), _idxs(idxs)
+            {
+            }
+
+            indices_iterator(const indices_iterator &other) = default;
+            indices_iterator(indices_iterator &&other) = default;
+            indices_iterator &
+            operator=(const indices_iterator &other) = default;
+            indices_iterator &operator=(indices_iterator &&other) = default;
+
+            T &operator*()
+            {
+                return _tensor->at(_idxs);
+            }
+
+            const std::vector<size_t> &indices()
+            {
+                return _idxs;
+            }
+
+            indices_iterator operator++(int)
+            {
+                auto cur = indices_iterator(_tensor, _idxs);
+                std::vector<size_t> idxs = _idxs;
+                for (size_t i = 0; i < _idxs.size(); ++i)
+                {
+                    size_t j = _idxs.size() - i - 1;
+
+                    if (idxs[j] + 1 < _tensor->shape()[j])
+                    {
+                        idxs[j]++;
+                        _idxs = idxs;
+                        return cur;
+                    }
+                    else
+                    {
+                        idxs[j] = 0;
+                    }
+                }
+                _idxs = {};
+                return cur;
+            }
+
+            indices_iterator &operator++()
+            {
+                (*this)++;
+                return *this;
+            }
+
+            bool operator==(const indices_iterator &other)
+            {
+                return _idxs == other._idxs && _tensor == other._tensor;
+            }
+
+            bool operator!=(const indices_iterator &other)
+            {
+                return _idxs != other._idxs || _tensor != other._tensor;
+            }
+        };
+
         std::shared_ptr<igris::unbounded_array<T>> _storage = {};
         T *_storview = {};
         std::vector<size_t> _shape = {};
@@ -192,26 +244,26 @@ namespace igris
             return res;
         }
 
-        indices_iterator<T> indices_iterator_begin()
+        indices_iterator begin()
         {
-            return indices_iterator<T>(this,
-                                       std::vector<size_t>(_shape.size(), 0));
+            return indices_iterator(this,
+                                    std::vector<size_t>(_shape.size(), 0));
         }
 
-        indices_iterator<T> indices_iterator_end()
+        indices_iterator end()
         {
-            return indices_iterator<T>(this, std::vector<size_t>());
+            return indices_iterator(this, std::vector<size_t>());
         }
 
         tensor resize(std::vector<size_t> newshape)
         {
             tensor res(newshape);
 
-            auto it = indices_iterator_begin();
-            auto end = indices_iterator_end();
-            for (; it != end; ++it)
+            auto it = begin();
+            auto eit = end();
+            for (; it != eit; ++it)
             {
-                auto indices = *it;
+                auto indices = it.indices();
                 if (res.has_indices(indices))
                     res(indices) = (*this)(indices);
             }
@@ -369,6 +421,12 @@ namespace igris
             }
 
             return _storview[idx];
+        }
+
+        void clear()
+        {
+            _storage->clear();
+            _shape.clear();
         }
     };
 }

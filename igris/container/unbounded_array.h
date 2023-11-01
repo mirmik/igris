@@ -62,6 +62,11 @@ namespace igris
         {
         }
 
+        void clear()
+        {
+            invalidate();
+        }
+
         void fill(const T &val)
         {
             for (auto &ref : *this)

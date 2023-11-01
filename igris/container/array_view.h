@@ -28,6 +28,14 @@ namespace igris
             _size = lst.size();
         }
 
+        template <class C> array_view(C &c) : _data(c.data()), _size(c.size())
+        {
+        }
+        template <class C>
+        array_view(const C &c) : _data(c.data()), _size(c.size())
+        {
+        }
+
         template <size_t N> array_view(T (&arr)[N]) : _data(arr), _size(N) {}
 
         array_view &operator=(std::nullptr_t null)
