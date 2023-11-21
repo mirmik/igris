@@ -54,7 +54,7 @@ namespace igris
             return a;
         }
 
-        bool empty()
+        __ALWAYS_INLINE inline bool empty()
         {
             return ring_empty(&r);
         }
@@ -65,7 +65,7 @@ namespace igris
             ring_move_head_one(&r);
         }
 
-        template <typename... Args> void emplace(Args &&...args)
+        template <typename... Args> void emplace(Args &&... args)
         {
             new (buffer.data() + r.head) T(std::forward<Args>(args)...);
             ring_move_head_one(&r);
@@ -86,6 +86,7 @@ namespace igris
             ring_move_tail_one(&r);
         }
 
+        __ALWAYS_INLINE
         void move_tail_one()
         {
             ring_move_tail_one(&r);
@@ -116,7 +117,7 @@ namespace igris
             return buffer[index];
         }
 
-        T &tail()
+        __ALWAYS_INLINE inline T &tail()
         {
             return buffer[r.tail];
         }

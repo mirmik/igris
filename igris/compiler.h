@@ -20,6 +20,8 @@
 #define INIT_PRIORITY(x)
 #endif
 
+#define __ALWAYS_INLINE __attribute__((always_inline))
+
 #ifdef _MSC_VER
 #define __NORETURN
 #define __WEAK

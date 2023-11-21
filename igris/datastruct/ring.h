@@ -49,7 +49,10 @@ static inline int ring_fixup_index(struct ring_head *r, int index)
     return index % r->size;
 }
 
-static inline int ring_empty(struct ring_head *r) { return r->head == r->tail; }
+__ALWAYS_INLINE static inline int ring_empty(struct ring_head *r)
+{
+    return r->head == r->tail;
+}
 
 static inline int ring_full(struct ring_head *r)
 {
@@ -118,7 +121,9 @@ static inline int ring_getc(struct ring_head *r, const char *buffer)
     return c;
 }
 
-static inline int ring_read(struct ring_head *r, const char *buffer, char *data,
+static inline int ring_read(struct ring_head *r,
+                            const char *buffer,
+                            char *data,
                             unsigned int size)
 {
     int c;
@@ -134,8 +139,10 @@ static inline int ring_read(struct ring_head *r, const char *buffer, char *data,
     return ret;
 }
 
-static inline int ring_write(struct ring_head *r, char *buffer,
-                             const char *data, unsigned int size)
+static inline int ring_write(struct ring_head *r,
+                             char *buffer,
+                             const char *data,
+                             unsigned int size)
 {
     int ret = 0;
     while (size--)
