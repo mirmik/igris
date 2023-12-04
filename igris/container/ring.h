@@ -8,6 +8,7 @@
 #include <memory>
 #include <new>
 #include <utility>
+#include <vector>
 
 namespace igris
 {
@@ -40,6 +41,28 @@ namespace igris
         void reset()
         {
             ring_init(&r, buffer.size());
+        }
+
+        std::vector<T> get_last(int offset, int count, bool order_from_end)
+        {
+            std::vector<T> vec(count);
+
+            if (order_from_end)
+            {
+                for (int i = 0; i < count; ++i)
+                {
+                    vec[i] = buffer[fixup_index(r.head - offset - i - 1)];
+                }
+            }
+            else
+            {
+                for (int i = 0; i < count; ++i)
+                {
+                    vec[i] = buffer[fixup_index(r.head - count - offset + i)];
+                }
+            }
+
+            return vec;
         }
 
         size_t read(T *buf, size_t sz)
@@ -120,6 +143,12 @@ namespace igris
         __ALWAYS_INLINE inline T &tail()
         {
             return buffer[r.tail];
+        }
+
+        __ALWAYS_INLINE inline T &last()
+        {
+            int idx = fixup_index(r.head - 1);
+            return buffer[idx];
         }
 
         // Determine element index in current ring array.

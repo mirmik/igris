@@ -32,3 +32,33 @@ TEST_CASE("ring")
     aring.pop();
     CHECK_EQ(aring.room(), 12);
 }
+
+TEST_CASE("ring.get_last")
+{
+    igris::ring<int> aring(12);
+
+    aring.push(1);
+    aring.push(2);
+    aring.push(3);
+    aring.push(4);
+    aring.push(5);
+    aring.push(6);
+
+    CHECK_EQ(aring.last(), 6);
+
+    {
+        auto v1 = aring.get_last(0, 3, true);
+        CHECK_EQ(v1[0], 6);
+        CHECK_EQ(v1[1], 5);
+        CHECK_EQ(v1[2], 4);
+        CHECK_EQ(v1, std::vector<int>{6, 5, 4});
+    }
+
+    {
+        auto v2 = aring.get_last(0, 3, false);
+        CHECK_EQ(v2[0], 4);
+        CHECK_EQ(v2[1], 5);
+        CHECK_EQ(v2[2], 6);
+        CHECK_EQ(v2, std::vector<int>{4, 5, 6});
+    }
+}
