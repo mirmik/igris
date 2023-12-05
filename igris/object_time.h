@@ -15,19 +15,32 @@ namespace igris
         void SetReferencePoint(long new_timeline_zero,
                                bool newdirection_is_reversed)
         {
-            auto dist = new_timeline_zero - _timeline_zero;
-            auto broken_dist = _is_reversed ? -dist : dist;
+            long dist = new_timeline_zero - _timeline_zero;
+            long broken_dist = _is_reversed ? -dist : dist;
             _broken_timeline_zero += broken_dist;
             _timeline_zero = new_timeline_zero;
             _is_reversed = newdirection_is_reversed;
         }
 
-        long ToBroken(long nonbroken_timeline_step)
+        long TimelineToBroken(long nonbroken_timeline_step)
         {
-            auto dist = nonbroken_timeline_step - _timeline_zero;
-            auto broken_dist = _is_reversed ? -dist : dist;
-            auto broken = broken_dist + _broken_timeline_zero;
+            long dist = nonbroken_timeline_step - _timeline_zero;
+            long broken_dist = _is_reversed ? -dist : dist;
+            long broken = broken_dist + _broken_timeline_zero;
             return broken;
+        }
+
+        long ToBroken(long s)
+        {
+            return TimelineToBroken(s);
+        }
+
+        long BrokenToTimeline(long broken)
+        {
+            long broken_dist = broken - _broken_timeline_zero;
+            long dist = _is_reversed ? -broken_dist : broken_dist;
+            long nonbroken_timeline_step = _timeline_zero + dist;
+            return nonbroken_timeline_step;
         }
     };
 }
