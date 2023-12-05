@@ -20,4 +20,7 @@ TEST_CASE("object_time")
     CHECK_EQ(objtime.ToBroken(60), 60);
     CHECK_EQ(objtime.ToBroken(50), 70);
     CHECK_EQ(objtime.ToBroken(59), 61);
+
+    objtime.SetReferencePoint(30, false);
+    CHECK_EQ(objtime.ToBroken(40), 100);
 }
