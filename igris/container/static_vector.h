@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <igris/util/ctrdtr.h>
 #include <initializer_list>
 #include <new>
 #include <type_traits>
@@ -46,6 +47,7 @@ namespace igris
             {
                 new (&_data[pos]) T(std::move(other[pos]));
             }
+            other.clear();
         }
 
         static_vector &operator=(const static_vector &other)
@@ -65,8 +67,16 @@ namespace igris
             {
                 new (&_data[pos]) T(std::move(other[pos]));
             }
-            other.m_size = 0;
+            other.clear();
             return *this;
+        }
+
+        template <class It> static_vector(It b, It e)
+        {
+            for (; b != e; ++b)
+            {
+                push_back(*b);
+            }
         }
 
         static_vector(const std::initializer_list<T> &lst)
@@ -139,7 +149,7 @@ namespace igris
             return reinterpret_cast<T *>(&_data[0]);
         }
 
-        const_iterator end()
+        iterator end()
         {
             return reinterpret_cast<T *>(&_data[m_size]);
         }
@@ -172,6 +182,17 @@ namespace igris
         const T &front() const
         {
             return *reinterpret_cast<const T *>(&_data[0]);
+        }
+
+        void erase(iterator first, iterator last)
+        {
+            size_t sz = last - first;
+            for (size_t i = 0; i < sz; ++i)
+            {
+                igris::destructor(first + i);
+            }
+            std::move(last, end(), first);
+            m_size -= sz;
         }
 
         void resize(size_t newsize)
