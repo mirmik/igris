@@ -55,6 +55,8 @@ namespace igris
         void pop_back();
         void pop_front();
 
+        std::vector<std::string> headers();
+
         igris::series_field_annotator &annotator();
         igris::series_field_annotation *
         find_annotation(const std::string &name);
