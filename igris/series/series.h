@@ -65,6 +65,11 @@ namespace igris
             return _annotator.annotations();
         }
 
+        auto &annotations_ref()
+        {
+            return _annotator.annotations_ref();
+        }
+
         void set_block_size_hint(int sz)
         {
             block_size_hint = sz;
