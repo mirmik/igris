@@ -123,6 +123,9 @@ namespace igris
         {
             if (this == &other)
                 return *this;
+
+            invalidate();
+
             m_data = other.m_data;
             m_capacity = other.m_capacity;
             m_size = other.m_size;

@@ -1,4 +1,5 @@
 #include "doctest/doctest.h"
+#include <igris/container/ring.h>
 #include <igris/datastruct/ring.h>
 
 TEST_CASE("ring")
