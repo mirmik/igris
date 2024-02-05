@@ -67,6 +67,11 @@ namespace igris
             return _annotations;
         }
 
+        std::vector<series_field_annotation> &annotations_ref()
+        {
+            return *_annotations;
+        }
+
         series_field_annotation *find_annotation(const std::string &name)
         {
             for (auto &obj : *_annotations)

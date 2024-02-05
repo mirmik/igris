@@ -207,3 +207,13 @@ void igris::series::parse_csv_file(const std::string &path)
     }
     parse_csv_istream(file);
 }
+
+std::vector<std::string> igris::series::headers()
+{
+    std::vector<std::string> result;
+    for (auto &annot : _annotator.annotations_ref())
+    {
+        result.push_back(annot.machname);
+    }
+    return result;
+}
