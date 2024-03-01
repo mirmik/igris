@@ -232,6 +232,10 @@ igris::series igris::series::slice(size_t start, size_t end)
 {
     igris::series result;
     result.set_elemsize(_elemsize);
+    result.reserve(end - start);
+
+    auto &annotator = result.annotator();
+    annotator = _annotator;
 
     igris::series_iterator it = std::next(begin(), start);
     igris::series_iterator eit = std::next(begin(), end);
