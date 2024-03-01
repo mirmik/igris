@@ -34,7 +34,7 @@ void igris::series::add_block(size_t size)
     dlist_add(&block->lnk, &blocks);
 }
 
-size_t igris::series::right_capacity()
+size_t igris::series::right_capacity() const
 {
     size_t accum = 0;
 
@@ -59,7 +59,7 @@ igris::series::~series()
     }
 }
 
-size_t igris::series::size()
+size_t igris::series::size() const
 {
     size_t accum = 0;
 

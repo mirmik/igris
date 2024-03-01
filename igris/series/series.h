@@ -51,8 +51,8 @@ namespace igris
         void add_block(size_t size);
         void pop_block();
 
-        size_t size();
-        size_t right_capacity();
+        size_t size() const;
+        size_t right_capacity() const;
 
         void pop_back();
         void pop_front();
@@ -68,6 +68,11 @@ namespace igris
         }
 
         auto &annotations_ref()
+        {
+            return _annotator.annotations_ref();
+        }
+
+        const auto &annotations_ref() const
         {
             return _annotator.annotations_ref();
         }
