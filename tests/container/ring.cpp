@@ -62,3 +62,10 @@ TEST_CASE("ring.get_last")
         CHECK_EQ(v2, std::vector<int>{4, 5, 6});
     }
 }
+
+TEST_CASE("ring container")
+{
+    igris::ring<std::string> r(6);
+
+    r.push("Lalala");
+}
