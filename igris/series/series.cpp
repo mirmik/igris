@@ -150,6 +150,15 @@ igris::series_iterator igris::series::begin()
     return {blocks.next, dlist_first_entry(&blocks, series_block, lnk)->strt};
 }
 
+igris::series_iterator igris::series::begin() const
+{
+    return const_cast<igris::series *>(this)->begin();
+}
+igris::series_iterator igris::series::end() const
+{
+    return const_cast<igris::series *>(this)->end();
+}
+
 igris::series_iterator igris::series::last_iterator()
 {
     return {blocks.prev,
@@ -208,10 +217,11 @@ void igris::series::parse_csv_file(const std::string &path)
     parse_csv_istream(file);
 }
 
-std::vector<std::string> igris::series::headers()
+std::vector<std::string> igris::series::headers() const
 {
     std::vector<std::string> result;
-    for (auto &annot : _annotator.annotations_ref())
+    for (auto &annot : const_cast<igris::series_field_annotator &>(_annotator)
+                           .annotations_ref())
     {
         result.push_back(annot.machname);
     }

@@ -57,7 +57,7 @@ namespace igris
         void pop_back();
         void pop_front();
 
-        std::vector<std::string> headers();
+        std::vector<std::string> headers() const;
 
         igris::series_field_annotator &annotator();
         igris::series_field_annotation *
@@ -79,6 +79,8 @@ namespace igris
 
         series_iterator begin();
         series_iterator end();
+        series_iterator begin() const;
+        series_iterator end() const;
 
         series_iterator get_iterator(size_t num);
 
