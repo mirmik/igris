@@ -40,6 +40,8 @@ namespace igris
             allocator = std::move(oth.allocator);
         }
 
+        series slice(size_t start, size_t end);
+
         void set_elemsize(size_t size);
         size_t elemsize() const
         {
@@ -83,6 +85,12 @@ namespace igris
         template <class T> T *emplace()
         {
             return (T *)emplace();
+        }
+
+        template <class T> void push_back(const T &obj)
+        {
+            T *ptr = (T *)emplace();
+            *ptr = obj;
         }
 
         void *emplace();

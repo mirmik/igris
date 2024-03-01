@@ -217,3 +217,20 @@ std::vector<std::string> igris::series::headers()
     }
     return result;
 }
+
+igris::series igris::series::slice(size_t start, size_t end)
+{
+    igris::series result;
+    result.set_elemsize(_elemsize);
+
+    igris::series_iterator it = std::next(begin(), start);
+    igris::series_iterator eit = std::next(begin(), end);
+
+    for (; it != eit; ++it)
+    {
+        void *ptr = result.emplace();
+        memcpy(ptr, it.ptr(), _elemsize);
+    }
+
+    return result;
+}
