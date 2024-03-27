@@ -5,7 +5,7 @@
 // Живёт в памяти процесса или его структуре и подключается
 // в очереди ожидания (см. файл wait.h)
 
-#include <igris/datastruct/dlist.h>
+#include <igris/container/dlist.h>
 #include <stdint.h>
 
 #define CTROBJ_SCHEDEE_LIST 0
@@ -16,30 +16,25 @@
 
 struct ctrobj
 {
-    struct dlist_head lnk;
-    void *future;
-    uint8_t type;
-};
+    igris::dlist_node lnk = {};
+    intptr_t future = 0;
+    uint8_t type = 0;
 
-#define CTROBJ_DECLARE(name, type)                                             \
-    {                                                                          \
-        DLIST_HEAD_INIT(name.lnk), NULL, type                                  \
+public:
+    ctrobj(uint8_t type)
+    {
+        this->type = type;
     }
 
-__BEGIN_DECLS
+    void init(uint8_t type)
+    {
+        this->type = type;
+        lnk.unlink();
+    }
+};
 
-static inline void ctrobj_init(struct ctrobj *obj, uint8_t type)
-{
-    obj->type = type;
-    obj->future = NULL;
-    dlist_init(&obj->lnk);
-}
-
-static inline void ctrobj_deinit(struct ctrobj *obj)
-{
-    dlist_del_init(&obj->lnk);
-}
-
-__END_DECLS
+void ctrobj_deinit(struct ctrobj *obj);
+intptr_t ctrobj_get_future(struct ctrobj *obj);
+void ctrobj_set_future(struct ctrobj *obj, intptr_t future);
 
 #endif

@@ -9,8 +9,7 @@
 
 namespace igris
 {
-    template <class T>
-    concept ArrayType = requires(const T &a)
+    template <class T> concept ArrayType = requires(const T &a)
     {
         std::size(a);
         std::begin(a);
@@ -59,6 +58,11 @@ namespace igris
             return _values;
         }
 
+        const std::vector<Value> &storage() const
+        {
+            return _values;
+        }
+
         template <class C> void init(const C &container)
         {
             size_t dim = igris::array_dimension<C, Value>(container);
@@ -68,6 +72,20 @@ namespace igris
 
             _values.reserve(plane_size());
             set_values(container);
+        }
+
+        ndarray(const std::vector<Value> &container,
+                const std::vector<size_t> &shape)
+        {
+            init(container);
+            reshape(shape);
+        }
+
+        ndarray(const std::initializer_list<Value> &container,
+                const std::initializer_list<size_t> &shape)
+        {
+            init(container);
+            reshape(shape);
         }
 
         ndarray(const std::initializer_list<Value> &container)
@@ -176,6 +194,12 @@ namespace igris
             _shape = {indexes.data(), indexes.data() + indexes.size()};
         }
 
+        template <class Indexes> void reshape(const Indexes &indexes)
+        {
+            _shape.resize(indexes.size());
+            std::copy(indexes.begin(), indexes.end(), _shape.begin());
+        }
+
         void resize(igris::array_view<size_t> newshape)
         {
             _shape.resize(newshape.size());
@@ -197,7 +221,7 @@ namespace igris
 
             for (size_t i = 0; i < plane_size(); ++i)
             {
-                ret[i] = (*this)[i] + oth[i];
+                ret._values[i] = _values[i] + oth._values[i];
             }
 
             return ret;
@@ -210,7 +234,7 @@ namespace igris
 
             for (size_t i = 0; i < plane_size(); ++i)
             {
-                ret[i] = (*this)[i] - oth[i];
+                ret._values[i] = _values[i] - oth._values[i];
             }
 
             return ret;
@@ -223,7 +247,7 @@ namespace igris
 
             for (size_t i = 0; i < plane_size(); ++i)
             {
-                ret[i] = (*this)[i] * scalar;
+                ret._values[i] = _values[i] * scalar;
             }
 
             return ret;
@@ -236,13 +260,13 @@ namespace igris
 
             for (size_t i = 0; i < plane_size(); ++i)
             {
-                ret[i] = (*this)[i] / scalar;
+                ret._values[i] = _values[i] / scalar;
             }
 
             return ret;
         }
 
-        Value &operator[](size_t i)
+        /*Value &operator[](size_t i)
         {
             return _values[i];
         }
@@ -250,7 +274,7 @@ namespace igris
         const Value &operator[](size_t i) const
         {
             return _values[i];
-        }
+        }*/
 
         bool operator==(const ndarray &oth) const
         {

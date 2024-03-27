@@ -2,9 +2,9 @@ name: CMake
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -20,37 +20,37 @@ jobs:
 
     strategy:
       matrix:
-        compiler: 
-          - { CXX: g++-11, CC: gcc-11 } 
+        compiler:
+          - { CXX: g++-11, CC: gcc-11 }
           - { CXX: clang++-12, CC: clang-12 }
-      
+
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Setup dependencies
-      run: |
-        sudo apt-get update && sudo apt-get install -y g++-11 clang-12
-        sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/${{matrix.compiler.CXX}} 100
-        sudo update-alternatives --install /usr/bin/cc  cc  /usr/bin/${{matrix.compiler.CC}} 100
+      - name: Setup dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y g++-11 clang-12
+          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/${{matrix.compiler.CXX}} 100
+          sudo update-alternatives --install /usr/bin/cc  cc  /usr/bin/${{matrix.compiler.CC}} 100
 
-    - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: |
-        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      - name: Configure CMake
+        # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+        # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+        run: |
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-    - name: Build
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      - name: Build
+        # Build your program with the given configuration
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-    - name: Test
-      working-directory: ${{github.workspace}}/build
-      # Execute tests defined by the CMake configuration.  
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}}
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        # Execute tests defined by the CMake configuration.
+        # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+        run: ctest  --output-on-failure -C ${{env.BUILD_TYPE}}
 
-    - name: 'Upload Artifact'
-      uses: actions/upload-artifact@v2
-      with:
-        name: libigris.so
-        path: ${{github.workspace}}/build/libigris.so
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v2
+        with:
+          name: libigris.so
+          path: ${{github.workspace}}/build/libigris.so

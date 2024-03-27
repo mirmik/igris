@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <igris/util/ctrdtr.h>
 #include <initializer_list>
 #include <new>
 #include <type_traits>
@@ -30,10 +31,61 @@ namespace igris
             memset(_data, 0, sizeof(_data));
         }
 
+        static_vector(const static_vector &other)
+        {
+            m_size = other.m_size;
+            for (std::size_t pos = 0; pos < m_size; ++pos)
+            {
+                new (&_data[pos]) T(other[pos]);
+            }
+        }
+
+        static_vector(static_vector &&other)
+        {
+            m_size = other.m_size;
+            for (std::size_t pos = 0; pos < m_size; ++pos)
+            {
+                new (&_data[pos]) T(std::move(other[pos]));
+            }
+            other.clear();
+        }
+
+        static_vector &operator=(const static_vector &other)
+        {
+            m_size = other.m_size;
+            for (std::size_t pos = 0; pos < m_size; ++pos)
+            {
+                new (&_data[pos]) T(other[pos]);
+            }
+            return *this;
+        }
+
+        static_vector &operator=(static_vector &&other)
+        {
+            m_size = other.m_size;
+            for (std::size_t pos = 0; pos < m_size; ++pos)
+            {
+                new (&_data[pos]) T(std::move(other[pos]));
+            }
+            other.clear();
+            return *this;
+        }
+
+        template <class It> static_vector(It b, It e)
+        {
+            for (; b != e; ++b)
+            {
+                push_back(*b);
+            }
+        }
+
         static_vector(const std::initializer_list<T> &lst)
         {
-            m_size = lst.size();
-            std::copy(lst.begin(), lst.end(), begin());
+            for (auto &obj : lst)
+            {
+                new (&_data[m_size]) T(obj);
+                ++m_size;
+            }
         }
 
         // Create an object in aligned storage
@@ -89,6 +141,7 @@ namespace igris
             {
                 reinterpret_cast<T *>(&_data[pos])->~T();
             }
+            m_size = 0;
         }
 
         iterator begin()
@@ -96,7 +149,7 @@ namespace igris
             return reinterpret_cast<T *>(&_data[0]);
         }
 
-        const_iterator end()
+        iterator end()
         {
             return reinterpret_cast<T *>(&_data[m_size]);
         }
@@ -129,6 +182,17 @@ namespace igris
         const T &front() const
         {
             return *reinterpret_cast<const T *>(&_data[0]);
+        }
+
+        void erase(iterator first, iterator last)
+        {
+            size_t sz = last - first;
+            for (size_t i = 0; i < sz; ++i)
+            {
+                igris::destructor(first + i);
+            }
+            std::move(last, end(), first);
+            m_size -= sz;
         }
 
         void resize(size_t newsize)

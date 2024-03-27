@@ -32,6 +32,14 @@ struct dlist_head
     struct dlist_head *next, *prev;
 };
 
+#ifdef __cplusplus
+static_assert(sizeof(struct dlist_head) == 2 * sizeof(void *),
+              "dlist_head size is not 2 * sizeof(void *)");
+#else
+_Static_assert(sizeof(struct dlist_head) == 2 * sizeof(void *),
+               "dlist_head size is not 2 * sizeof(void *)");
+#endif
+
 #define DLIST_HEAD_INIT(name)                                                  \
     {                                                                          \
         &(name), &(name)                                                       \
@@ -331,6 +339,17 @@ static inline int dlist_size_reversed(struct dlist_head *head)
     }
 
     return sz;
+}
+
+static inline bool dlist_is_correct(struct dlist_head *head)
+{
+    int check = dlist_check(head, 1000);
+    if (check < 0)
+        return false;
+    int rcheck = dlist_check_reversed(head, 1000);
+    if (rcheck < 0)
+        return false;
+    return check == rcheck;
 }
 
 __END_DECLS

@@ -37,7 +37,7 @@ _Static_assert(sizeof(float64_t) == 8, "float64_t size error");
 #include <BaseTsd.h>
 typedef SSIZE_T ssize_t;
 #else
-#include <sys/types.h>
+#include <asm/types.h>
 #endif
 
 #endif

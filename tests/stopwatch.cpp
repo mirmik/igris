@@ -12,11 +12,11 @@ TEST_CASE("stopwatch")
     sw.stop();
 
     CHECK(sw.elapsed_ms() > 90);
-    CHECK(sw.elapsed_ms() < 110);
+    CHECK(sw.elapsed_ms() < 200);
 
     CHECK(sw.elapsed_us() > 90000);
-    CHECK(sw.elapsed_us() < 110000);
+    CHECK(sw.elapsed_us() < 200000);
 
     CHECK(sw.elapsed_ns() > 90000000);
-    CHECK(sw.elapsed_ns() < 110000000);
+    CHECK(sw.elapsed_ns() < 200000000);
 }

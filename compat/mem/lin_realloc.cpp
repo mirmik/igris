@@ -31,11 +31,12 @@
 /* $Id: realloc.c 2127 2010-06-07 14:49:37Z joerg_wunsch $ */
 
 #include "lin_malloc.h"
+#include <igris/sync/critical_context.h>
 #include <igris/sync/syslock.h>
 #include <memory>
+#include <mutex>
 #include <stdlib.h>
 #include <string.h>
-#include <mutex>
 //#include "sectionname.h"
 //#include "stdlib_private.h"
 
@@ -49,6 +50,9 @@ extern "C" void *realloc(void *ptr, size_t len) __attribute__((used));
 // ATTRIBUTE_CLIB_SECTION
 void *realloc(void *ptr, size_t len)
 {
+    if (critical_context_level() > 0)
+        abort();
+
     std::lock_guard<igris::syslock> lguard(lock);
 
     if (len % __WORDSIZE != 0)

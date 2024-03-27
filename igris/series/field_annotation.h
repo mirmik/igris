@@ -29,11 +29,11 @@ namespace igris
     class series_field_annotation
     {
     public:
-        std::string machname;   // имя поля
-        std::string username;   // имя поля
-        size_t offset;          // смещение в битах
-        size_t size;            // размер
-        FieldDataType datatype; // тип
+        std::string machname = {}; // имя поля
+        std::string username = {}; // имя поля
+        size_t offset = 0;         // смещение в битах
+        size_t size = 0;           // размер
+        FieldDataType datatype = FieldDataType::Undefined; // тип
 
         union _u
         {
@@ -42,10 +42,10 @@ namespace igris
             {
                 uint8_t scatter : 1; // подсказка, что данные следует отображать
                 // поточечно
-            } f;
+            } f = {};
 
             _u() : flags(0) {}
-        } u;
+        } u = {};
 
     public:
         series_field_annotation(const std::string &machname,

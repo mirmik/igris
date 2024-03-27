@@ -44,7 +44,6 @@ licant.module("igris.include", include_paths=["."])
 licant.execute("compat/libc/libc.g.py")
 licant.execute("compat/std/std.g.py")
 licant.execute("compat/stubarch/stubarch.g.py")
-licant.execute("compat/posix/posix.g.py")
 licant.execute("compat/newlib-stub/newlib-stub.g.py")
 licant.execute("compat/mem/lin_malloc.g.py")
 
@@ -63,7 +62,7 @@ licant.module("igris.series",
               )
 
 licant.module("igris.stdlibs",
-              mdepends=["igris.libc", "igris.std", "igris.posix"])
+              mdepends=["igris.libc", "igris.std"])
 
 ################################################################
 ######################DPRINT####################################
@@ -128,10 +127,12 @@ licant.module("igris.util", sources=[
     "igris/shell/mshell.c",
     "igris/shell/rshell.c",
     "igris/shell/vterm.c",
+    "igris/shell/vtermxx.cpp",
     "igris/sync/syslock.c",
+    "igris/sync/critical_context.c",
     "igris/halfer.cpp",
     "igris/osinter/wait.cpp",
-    "igris/sync/waitqueue.c"
+    "igris/osinter/ctrobj.cpp"
 ],
     mdepends=[
     "igris.protocols.gstuff",
@@ -143,6 +144,7 @@ licant.module("igris.util", sources=[
 licant.module("igris.utilxx", sources=[
     "igris/util/base64.cpp",
     "igris/util/string.cpp",
+    "igris/container/dlist.cpp",
     "igris/string/replace.cpp",
     "igris/string/hexascii_string.cpp",
 ],
@@ -167,7 +169,7 @@ licant.module("igris.syslock", impl="irqs",
 licant.module("igris.syslock", impl="mutex",
               sources=["igris/sync/syslock_mutex.cpp"], default=True)
 
-licant.module("igris.semaphore", sources=["igris/sync/semaphore.c"])
+licant.module("igris.semaphore", sources=["igris/sync/semaphore.cpp"])
 
 licant.module("igris.protocols.msgtype",
               sources=["igris/protocols/msgtype.cpp"])

@@ -123,6 +123,9 @@ namespace igris
         {
             if (this == &other)
                 return *this;
+
+            invalidate();
+
             m_data = other.m_data;
             m_capacity = other.m_capacity;
             m_size = other.m_size;
@@ -224,7 +227,7 @@ namespace igris
             return m_data - 1;
         }
 
-        template <typename... Args> void emplace_back(Args &&...args)
+        template <typename... Args> void emplace_back(Args &&... args)
         {
             reserve(m_size + 1);
             igris::constructor(m_data + m_size, std::forward<Args>(args)...);
@@ -273,7 +276,7 @@ namespace igris
         }
 
         template <typename... Args>
-        iterator emplace(const_iterator pos, Args &&...args)
+        iterator emplace(const_iterator pos, Args &&... args)
         {
             // TODO insert optimization
             size_t _pos = pos - m_data;
@@ -337,12 +340,38 @@ namespace igris
         void resize(size_t n)
         {
             reserve(n);
+            size_t oldsize = m_size;
+            if (n > oldsize)
+            {
+                for (size_t i = oldsize; i < n; ++i)
+                {
+                    igris::constructor(m_data + i);
+                }
+            }
+            else
+            {
+                for (size_t i = n; i < oldsize; ++i)
+                {
+                    igris::destructor(m_data + i);
+                }
+            }
             m_size = n;
         }
 
         void erase(iterator newend)
         {
             m_size = newend - m_data;
+        }
+
+        void erase(iterator first, iterator last)
+        {
+            size_t sz = last - first;
+            for (size_t i = 0; i < sz; ++i)
+            {
+                igris::destructor(first + i);
+            }
+            std::move(last, end(), first);
+            m_size -= sz;
         }
 
         T &at(size_t num)
@@ -354,16 +383,19 @@ namespace igris
 
         T &operator[](size_t num)
         {
+            assert(num < m_size);
             return m_data[num];
         }
 
         const T &operator[](size_t num) const
         {
+            assert(num < m_size);
             return m_data[num];
         }
 
         const T &at(size_t num) const
         {
+            assert(num < m_size);
             if (num >= m_size)
                 throw std::out_of_range("vector::at");
             return m_data[num];
@@ -371,6 +403,7 @@ namespace igris
 
         const T &back() const
         {
+            assert(m_size != 0);
             return m_data[m_size - 1];
         }
 

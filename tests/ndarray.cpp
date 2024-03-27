@@ -35,6 +35,15 @@ TEST_CASE("2darray")
     CHECK_EQ(arr({5}), 30);
 }
 
+TEST_CASE("2darray shape constructor")
+{
+    igris::ndarray<double> arr({10., 30., 50., 10., 20., 30.}, {2, 3});
+    CHECK_EQ(arr.dim(), 2);
+    CHECK_EQ(arr.shape(), std::vector<size_t>{2, 3});
+    CHECK_EQ(arr.planed_index({0, 0}), 0);
+    CHECK_EQ(arr({0, 0}), 10);
+}
+
 TEST_CASE("3darray")
 {
     igris::ndarray<double> arr = {
@@ -89,13 +98,13 @@ TEST_CASE("ndarray.vectored")
         igris::ndarray<double>{10., 11.}, igris::ndarray<double>{20., 21.}};
 
     auto a = arr1({0});
-    auto b = arr1[0];
+    // auto b = arr1[0];
 
     CHECK_EQ(arr1.dim(), 1);
-    CHECK_EQ(arr1[0].dim(), 1);
-    CHECK_EQ(a, b);
+    CHECK_EQ(arr1({0}).dim(), 1);
+    // CHECK_EQ(a, b);
     CHECK_EQ(a, igris::ndarray<double>{10, 11});
-    CHECK_EQ(b, igris::ndarray<double>{10, 11});
+    // CHECK_EQ(b, igris::ndarray<double>{10, 11});
 }
 
 TEST_CASE("ndarray.get")

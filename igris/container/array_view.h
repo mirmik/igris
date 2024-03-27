@@ -28,32 +28,80 @@ namespace igris
             _size = lst.size();
         }
 
+        template <class C> array_view(C &c) : _data(c.data()), _size(c.size())
+        {
+        }
+        template <class C>
+        array_view(const C &c) : _data(c.data()), _size(c.size())
+        {
+        }
+
         template <size_t N> array_view(T (&arr)[N]) : _data(arr), _size(N) {}
 
         array_view &operator=(std::nullptr_t null)
         {
-            _data = nullptr;
+            _data = null;
             _size = 0;
             return *this;
         }
 
-        const T *data() const { return _data; }
-        T *data() { return _data; }
+        const T *data() const
+        {
+            return _data;
+        }
 
-        size_t size() const { return _size; }
+        T *data()
+        {
+            return _data;
+        }
 
-        T *begin() { return _data; }
-        T *end() { return _data + _size; }
-        const T *begin() const { return _data; }
-        const T *end() const { return _data + _size; }
+        size_t size() const
+        {
+            return _size;
+        }
 
-        T *rbegin() { return _data + _size - 1; }
-        T *rend() { return _data - 1; }
-        const T *rbegin() const { return _data + _size - 1; }
-        const T *rend() const { return _data - 1; }
+        T *begin()
+        {
+            return _data;
+        }
+        T *end()
+        {
+            return _data + _size;
+        }
+        const T *begin() const
+        {
+            return _data;
+        }
+        const T *end() const
+        {
+            return _data + _size;
+        }
 
-        T &operator[](int i) { return *(_data + i); }
-        const T &operator[](int i) const { return *(_data + i); }
+        T *rbegin()
+        {
+            return _data + _size - 1;
+        }
+        T *rend()
+        {
+            return _data - 1;
+        }
+        const T *rbegin() const
+        {
+            return _data + _size - 1;
+        }
+        const T *rend() const
+        {
+            return _data - 1;
+        }
+
+        T &operator[](int i)
+        {
+            return *(_data + i);
+        }
+        const T &operator[](int i) const
+        {
+            return *(_data + i);
+        }
 
         array_view slice(int start, int size)
         {

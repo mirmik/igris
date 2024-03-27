@@ -1,3 +1,5 @@
+#include <igris/container/dlist.h>
+#include <igris/osinter/wait.h>
 #include <igris/sync/semaphore.h>
 
 #if !__has_include(<semaphore.h>)
@@ -25,7 +27,8 @@ int sem_wait(struct semaphore *sem)
         }
 
         system_unlock();
-        sts = wait_current_schedee(&sem->wait_list, 0, &_);
+        sts = wait_current_schedee(
+            reinterpret_cast<igris::dlist_base *>(&sem->wait_list), 0, &_);
         if (sts)
             return sts;
         system_lock();
@@ -55,7 +58,7 @@ int sem_post(struct semaphore *sem)
 
     ++sem->count;
     if (!dlist_empty(&sem->wait_list))
-        unwait_one(&sem->wait_list, 0);
+        unwait_one(reinterpret_cast<igris::dlist_base *>(&sem->wait_list), 0);
 
     system_unlock();
     return 0;

@@ -8,13 +8,25 @@ namespace igris
 {
     class series_field_view
     {
-        void *ptr;
-        const series_field_annotation &annotation;
+        void *ptr = nullptr;
+        const series_field_annotation &annotation = {};
 
     public:
         series_field_view(void *ptr, const series_field_annotation &annotation)
             : ptr(ptr), annotation(annotation)
         {
+        }
+
+        /*series_field_view &operator=(const series_field_view &oth)
+        {
+            memcpy(ptr, oth.ptr, annotation.size);
+            return *this;
+        }*/
+
+        series_field_view &operator=(double data)
+        {
+            assign(data);
+            return *this;
         }
 
         void assign(double data)

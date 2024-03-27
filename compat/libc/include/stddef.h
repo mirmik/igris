@@ -12,20 +12,15 @@
 #define STDDEF_H_
 
 //#if __GNUC__ < 4 || defined(__CDT_PARSER__)
-# define offsetof(type, member) \
-	((size_t) &((type *) 0x0)->member)
+#define offsetof(type, member) ((size_t) & ((type *)0x0)->member)
 //#else
-//# define offsetof(type, member) 
+//# define offsetof(type, member)
 //	__builtin_offsetof(type, member)
 //#endif
 
-#include <defines/null.h>
-
-#include <defines/size_t.h>
-
-#include <defines/wchar_t.h>
-
-#include <defines/ptrdiff_t.h>
-
+#include <igris/types-generic/null.h>
+#include <igris/types-generic/ptrdiff_t.h>
+#include <igris/types-generic/size_t.h>
+#include <igris/types-generic/wchar_t.h>
 
 #endif /* STDDEF_H_ */

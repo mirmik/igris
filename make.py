@@ -8,14 +8,8 @@ import sys
 
 licant.execute("igris.g.py")
 
-licant.cli.add_argument("--toolchain")
 licant.cli.add_argument("--igris-std", action="store_true")
 opts, args = licant.cli.parse()
-
-if hasattr(licant, 'gcc_toolchain'):
-    toolchain = licant.cxx_make.gcc_toolchain(opts.toolchain)
-else:
-    toolchain = licant.cxx_make.toolchain_gcc(opts.toolchain)
 
 
 def target(suffix):
@@ -65,13 +59,12 @@ if opts.igris_std:
 CCFLAGS = '-fPIC -Werror=all -Werror=extra -pedantic-errors -Wreturn-type -g -Wno-gnu-zero-variadic-macro-arguments'
 CXXFLAGS = cxx_flags + CCFLAGS
 CCFLAGS = c_flags + CCFLAGS
-LDFLAGS = '-g'
+LDFLAGS = '-fPIC -g -flto'
 
 licant.cxx_static_and_shared(
     name="libraries",
     static_lib="libigris.a",
     shared_lib="libigris.so",
-    toolchain=toolchain,
     mdepends=stdmodules+modules + [
         "igris.syslock",
         ("igris.ctrobj", "linux"),
@@ -100,8 +93,9 @@ licant.cxx_application("runtests",
                        cxxstd="c++20",
                        ccstd="c11",
                        cxx_flags=cxx_flags +
-                       "-fmax-errors=1 -g -fPIC -Werror=all -Wno-gnu-zero-variadic-macro-arguments -Weffc++",
-                       cc_flags=c_flags + "-g -fPIC -Werror=all -Wno-gnu-zero-variadic-macro-arguments",
+                       "-fPIC -fmax-errors=1 -g -Werror=all -Wno-gnu-zero-variadic-macro-arguments -Weffc++",
+                       cc_flags=c_flags + "-g -Werror=all -Wno-gnu-zero-variadic-macro-arguments",
+                       ld_flags="-fPIC -g",
                        include_paths=["./tests", "."],
                        libs=["rt", "pthread"],
                        mdepends=stdmodules
