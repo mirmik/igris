@@ -35,6 +35,14 @@ namespace igris {
             sem.post();
             return val;
         }
+
+        size_t size() 
+        {
+            sem.wait();
+            size_t sz = queue.size();
+            sem.post();
+            return sz;
+        }
     };
 
 }
