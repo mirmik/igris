@@ -10,7 +10,7 @@ namespace igris {
     class safe_queue 
     {
         std::queue<T> queue = {};
-        igris::semaphore sem = {};
+        igris::semaphore sem = {1};
 
 
         public:

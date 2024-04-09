@@ -53,7 +53,7 @@ namespace igris
         sem_t sem = {};
 
     public:
-        semaphore(int val = 0) { sem_init(&sem, 0, val); }
+        semaphore(int val = 1) { sem_init(&sem, 0, val); }
         semaphore(const semaphore&) = delete;
         semaphore(semaphore&&) = delete;
 
