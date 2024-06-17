@@ -26,6 +26,7 @@ file(GLOB IGRIS_SOURCES
 	igris/protocols/gstuff_v1/gstuff.c
 	igris/protocols/gstuff_v1/autorecv.c
 	igris/sync/syslock_mutex.cpp
+	igris/sync/semaphore.cpp
 	igris/string/replace_substrings.c
 	igris/string/replace.cpp
 	igris/string/hexascii_string.cpp
@@ -92,7 +93,8 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 		add_executable(igris_test ${SOURCES_TEST})
 		target_include_directories(igris_test PRIVATE . tests)
 		#target_link_libraries(igris_test rt pthread)
-		target_link_libraries(igris_test)
+		target_link_libraries(igris_test pthread)
+		#target_link_libraries(igris_test)
 	endif()
 
 	#set_target_properties(igris PROPERTIES PUBLIC_HEADER 

@@ -42,4 +42,29 @@ int sem_destroy(struct semaphore *sem);
 __END_DECLS
 
 #endif
+
+
+
+#ifdef __cplusplus
+namespace igris 
+{
+    class semaphore 
+    {
+        sem_t sem = {};
+
+    public:
+        semaphore(int val = 1) { sem_init(&sem, 0, val); }
+        semaphore(const semaphore&) = delete;
+        semaphore(semaphore&&) = delete;
+
+        ~semaphore() { sem_destroy(&sem); }
+
+        void post() { sem_post(&sem); }
+        void wait() { sem_wait(&sem); }
+        void trywait() { sem_trywait(&sem); }
+        int getvalue() { int val; sem_getvalue(&sem, &val); return val; }
+    };
+}
+#endif
+
 #endif
