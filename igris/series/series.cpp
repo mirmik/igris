@@ -34,7 +34,7 @@ void igris::series::add_block(size_t size)
     dlist_add(&block->lnk, &blocks);
 }
 
-size_t igris::series::right_capacity()
+size_t igris::series::right_capacity() const
 {
     size_t accum = 0;
 
@@ -59,7 +59,7 @@ igris::series::~series()
     }
 }
 
-size_t igris::series::size()
+size_t igris::series::size() const
 {
     size_t accum = 0;
 
@@ -150,6 +150,15 @@ igris::series_iterator igris::series::begin()
     return {blocks.next, dlist_first_entry(&blocks, series_block, lnk)->strt};
 }
 
+igris::series_iterator igris::series::begin() const
+{
+    return const_cast<igris::series *>(this)->begin();
+}
+igris::series_iterator igris::series::end() const
+{
+    return const_cast<igris::series *>(this)->end();
+}
+
 igris::series_iterator igris::series::last_iterator()
 {
     return {blocks.prev,
@@ -206,4 +215,36 @@ void igris::series::parse_csv_file(const std::string &path)
         throw std::invalid_argument("wrong file path");
     }
     parse_csv_istream(file);
+}
+
+std::vector<std::string> igris::series::headers() const
+{
+    std::vector<std::string> result;
+    for (auto &annot : const_cast<igris::series_field_annotator &>(_annotator)
+                           .annotations_ref())
+    {
+        result.push_back(annot.machname);
+    }
+    return result;
+}
+
+igris::series igris::series::slice(size_t start, size_t end)
+{
+    igris::series result;
+    result.set_elemsize(_elemsize);
+    result.reserve(end - start);
+
+    auto &annotator = result.annotator();
+    annotator = _annotator;
+
+    igris::series_iterator it = std::next(begin(), start);
+    igris::series_iterator eit = std::next(begin(), end);
+
+    for (; it != eit; ++it)
+    {
+        void *ptr = result.emplace();
+        memcpy(ptr, it.ptr(), _elemsize);
+    }
+
+    return result;
 }

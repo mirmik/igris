@@ -1,6 +1,11 @@
 #include <doctest/doctest.h>
 #include <igris/container/std_portable.h>
 
+TEST_CASE("string10")
+{
+    igris::string str("hello lalala jjj");
+}
+
 TEST_CASE("string2")
 {
     igris::string str("hello lalala jjj");
@@ -11,10 +16,38 @@ TEST_CASE("string2")
 
     str.append(" kkk");
     spl = str.split(' ');
+    CHECK_EQ(spl.size(), 4);
     CHECK_EQ(spl[0], "hello");
     CHECK_EQ(spl[1], "lalala");
     CHECK_EQ(spl[2], "jjj");
     CHECK_EQ(spl[3], "kkk");
+}
+
+TEST_CASE("vector_of_strings")
+{
+    igris::vector<igris::string> vec;
+    igris::vector<igris::string> vec2;
+
+    vec.push_back("lalala");
+    vec.emplace_back("lalala");
+    vec.emplace_back("lalala");
+    vec.emplace_back("lalala");
+    vec.emplace_back("lalala");
+    vec.emplace_back("lalala");
+    vec.emplace_back("lalala");
+    vec.emplace_back("lalala");
+    vec.emplace_back("lalala");
+    vec.emplace_back("lalala");
+
+    vec[1].append("kakakaka");
+    vec[1].append("kakakaka");
+    vec[1].append("kakakaka");
+    vec[1].append("kakakaka");
+    auto a = vec[1].split('a');
+    a = vec[1].split('a');
+
+    vec2 = vec;
+    vec2 = vec;
 }
 
 TEST_CASE("vector")

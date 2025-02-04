@@ -1279,7 +1279,7 @@ namespace igris
     }
 
     template <typename T, typename... Args>
-    void constructor(T *ptr, Args &&...args)
+    void constructor(T *ptr, Args &&... args)
     {
         new ((void *)ptr) T(igris::forward<Args>(args)...);
     }
@@ -1425,7 +1425,8 @@ namespace igris
 
         vector(const vector &other) : m_size(other.m_size)
         {
-            if (m_size == 0)
+            m_size = other.m_size;
+            if (other.m_size == 0)
             {
                 return;
             }
@@ -1453,9 +1454,10 @@ namespace igris
         }
 
         vector(vector &&other)
-            : m_data(other.m_data), m_capacity(other.m_capacity),
-              m_size(other.m_size)
         {
+            m_data = other.m_data;
+            m_size = other.m_size;
+            m_capacity = other.m_capacity;
             other.m_data = nullptr;
             other.m_capacity = 0;
             other.m_size = 0;
@@ -1468,8 +1470,8 @@ namespace igris
 
             invalidate();
 
-            m_data = m_alloc.allocate(m_size);
             m_size = other.m_size;
+            m_data = m_alloc.allocate(m_size);
             m_capacity = m_size;
             for (auto ip = other.m_data, op = m_data;
                  ip != other.m_data + other.m_size;
@@ -1485,6 +1487,9 @@ namespace igris
         {
             if (this == &other)
                 return *this;
+
+            invalidate();
+
             m_data = other.m_data;
             m_capacity = other.m_capacity;
             m_size = other.m_size;
@@ -1528,8 +1533,7 @@ namespace igris
             if (m_data)
             {
                 igris::array_destructor(begin(), end());
-                if (m_data)
-                    m_alloc.deallocate(m_data, m_capacity);
+                m_alloc.deallocate(m_data, m_capacity);
             }
             m_data = nullptr;
             m_size = 0;
@@ -1586,7 +1590,7 @@ namespace igris
             return m_data - 1;
         }
 
-        template <typename... Args> void emplace_back(Args &&...args)
+        template <typename... Args> void emplace_back(Args &&... args)
         {
             reserve(m_size + 1);
             igris::constructor(m_data + m_size, igris::forward<Args>(args)...);
@@ -1635,7 +1639,7 @@ namespace igris
         }
 
         template <typename... Args>
-        iterator emplace(const_iterator pos, Args &&...args)
+        iterator emplace(const_iterator pos, Args &&... args)
         {
             // TODO insert optimization
             size_t _pos = pos - m_data;
@@ -1777,6 +1781,9 @@ namespace igris
         unsigned char changeBuffer(size_t sz)
         {
             size_t oldcapacity = m_capacity;
+            assert(sz > oldcapacity);
+            assert(sz > 0);
+
             auto newbuf = m_alloc.allocate(sz);
             assert((uintptr_t)newbuf % sizeof(uintptr_t) == 0);
 
@@ -2066,7 +2073,7 @@ namespace igris
         unsigned char append(const char *cstr, size_t length)
         {
             size_t newlen = m_size + length;
-            if (!cstr)
+            if (cstr == nullptr)
                 return 0;
             if (length == 0)
                 return 1;
@@ -2185,6 +2192,7 @@ namespace igris
 
         igris::vector<basic_string> split(char delim)
         {
+            c_str();
             igris::vector<basic_string> outvec;
 
             char *strt;
@@ -2404,7 +2412,7 @@ namespace igris
         }*/
 
         // Create an object in aligned storage
-        template <typename... Args> void emplace_back(Args &&...args)
+        template <typename... Args> void emplace_back(Args &&... args)
         {
             if (m_size >= N)
                 return;

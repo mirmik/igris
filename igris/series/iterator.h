@@ -50,6 +50,11 @@ namespace igris
             return *(T *)pointer();
         }
 
+        void *ptr()
+        {
+            return pointer();
+        }
+
         /// Разметить над объектом шаблон для обращение через поля.
         template <class T> T &view()
         {

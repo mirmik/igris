@@ -40,6 +40,8 @@ namespace igris
             allocator = std::move(oth.allocator);
         }
 
+        series slice(size_t start, size_t end);
+
         void set_elemsize(size_t size);
         size_t elemsize() const
         {
@@ -49,11 +51,13 @@ namespace igris
         void add_block(size_t size);
         void pop_block();
 
-        size_t size();
-        size_t right_capacity();
+        size_t size() const;
+        size_t right_capacity() const;
 
         void pop_back();
         void pop_front();
+
+        std::vector<std::string> headers() const;
 
         igris::series_field_annotator &annotator();
         igris::series_field_annotation *
@@ -63,6 +67,16 @@ namespace igris
             return _annotator.annotations();
         }
 
+        auto &annotations_ref()
+        {
+            return _annotator.annotations_ref();
+        }
+
+        const auto &annotations_ref() const
+        {
+            return _annotator.annotations_ref();
+        }
+
         void set_block_size_hint(int sz)
         {
             block_size_hint = sz;
@@ -70,12 +84,20 @@ namespace igris
 
         series_iterator begin();
         series_iterator end();
+        series_iterator begin() const;
+        series_iterator end() const;
 
         series_iterator get_iterator(size_t num);
 
         template <class T> T *emplace()
         {
             return (T *)emplace();
+        }
+
+        template <class T> void push_back(const T &obj)
+        {
+            T *ptr = (T *)emplace();
+            *ptr = obj;
         }
 
         void *emplace();
