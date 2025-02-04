@@ -33,7 +33,7 @@ _Static_assert(sizeof(float64_t) == 8, "float64_t size error");
 #endif
 #endif*/
 
-#if defined(_MSC_VER) || defined(__MINGW32__)
+#if defined(_MSC_VER)
 #include <BaseTsd.h>
 typedef SSIZE_T ssize_t;
 #else

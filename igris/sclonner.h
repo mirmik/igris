@@ -107,6 +107,31 @@ namespace igris
         //     ioctl(STDOUT_FILENO, TIOC, )
         // }
 
+        void close()
+        {
+            ::close(_ipipe);
+            ::close(_opipe);
+        }
+
+        
+        void exec(const std::string &name,
+                  const std::vector<std::string> &args,
+                  const std::vector<std::string> &env)
+        {
+            std::vector<char *> cargs;
+            std::vector<char *> cenv;
+
+            for (auto &arg : args)
+                cargs.push_back(const_cast<char *>(arg.c_str()));
+            cargs.push_back(nullptr);
+
+            for (auto &env : env)
+                cenv.push_back(const_cast<char *>(env.c_str()));
+            cenv.push_back(nullptr);
+
+            exec(name, cargs, cenv);
+        }
+
         void exec(const std::string &name,
                   const std::vector<char *> &args,
                   const std::vector<char *> &env)
@@ -163,9 +188,9 @@ namespace igris
             int pid = fork();
             if (pid == 0)
             {
-                close(pipes_host_in_child_out[0]);
-                close(pipes_host_out_child_in[1]);
-                close(STDOUT_FILENO);
+                ::close(pipes_host_in_child_out[0]);
+                ::close(pipes_host_out_child_in[1]);
+                ::close(STDOUT_FILENO);
 
                 sts = dup2(pipes_host_in_child_out[1], STDOUT_FILENO);
                 char *cmd = strdup(ccmd);
@@ -183,8 +208,8 @@ namespace igris
                 // unreached
             }
 
-            close(pipes_host_out_child_in[0]);
-            close(pipes_host_in_child_out[1]);
+            ::close(pipes_host_out_child_in[0]);
+            ::close(pipes_host_in_child_out[1]);
 
             set_pid(pid);
             set_pipe_fds(pipes_host_in_child_out[0],

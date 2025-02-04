@@ -2,6 +2,7 @@
 #define IGRIS_UTIL_BASE64_H
 
 #include <string>
+#include <cstdint>
 
 namespace igris
 {
