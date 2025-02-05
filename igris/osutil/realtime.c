@@ -2,7 +2,7 @@
 #include <igris/osutil/realtime.h>
 #include <pthread.h>
 
-int this_thread_set_realtime_priority()
+int this_thread_set_realtime_priority(void)
 {
 #ifndef __WIN32__
     int ret;
