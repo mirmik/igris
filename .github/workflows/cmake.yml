@@ -52,5 +52,5 @@ jobs:
       - name: "Upload Artifact"
         uses: actions/upload-artifact@v4
         with:
-          name: libigris.so
+          name: libigris-${{ strategy.job-index }}.so
           path: ${{github.workspace}}/build/libigris.so
