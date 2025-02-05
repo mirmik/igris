@@ -114,12 +114,12 @@ namespace igris
                 return *this;
             }
 
-            bool operator==(const indices_iterator &other)
+            bool operator==(const indices_iterator &other) const
             {
                 return _idxs == other._idxs && _tensor == other._tensor;
             }
 
-            bool operator!=(const indices_iterator &other)
+            bool operator!=(const indices_iterator &other) const
             {
                 return _idxs != other._idxs || _tensor != other._tensor;
             }

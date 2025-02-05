@@ -56,6 +56,13 @@
         "numbers": "c",
         "ranges": "c",
         "cinttypes": "c",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "condition_variable": "cpp",
+        "csignal": "cpp",
+        "fstream": "cpp",
+        "map": "cpp",
+        "mutex": "cpp",
+        "set": "cpp",
+        "thread": "cpp"
     }
 }
