@@ -6,7 +6,7 @@
 __BEGIN_DECLS
 
 int thread_set_realtime_priority(int id);
-int this_thread_set_realtime_priority();
+int this_thread_set_realtime_priority(void);
 
 __END_DECLS
 
