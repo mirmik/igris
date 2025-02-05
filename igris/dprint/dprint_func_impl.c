@@ -429,7 +429,7 @@ void debug_printdec_uint32(uint32_t x)
     debug_printdec_uint64((uint64_t)x);
 }
 
-void debug_asmlink_test()
+void debug_asmlink_test(void)
 {
     debug_putchar('A');
     debug_putchar('B');
