@@ -8,7 +8,7 @@ namespace igris
         long _timeline_zero = 0;
         long _broken_timeline_zero = 0;
         // long _non_finished_offset = 0;
-        long _finished_offset = 0;
+        // long _finished_offset = 0;
         bool _is_reversed = false;
 
     public:
