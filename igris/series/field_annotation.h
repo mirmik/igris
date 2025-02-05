@@ -1,6 +1,7 @@
 #ifndef IGRIS_series_field_annotation_H
 #define IGRIS_series_field_annotation_H
 
+#include <cstdint>
 #include <string>
 
 namespace igris
