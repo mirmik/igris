@@ -11,7 +11,7 @@
 
 __BEGIN_DECLS
 
-__NORETURN void bug_impl();
+__NORETURN void bug_impl(void);
 
 __END_DECLS
 
