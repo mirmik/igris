@@ -17,19 +17,19 @@ extern volatile unsigned char __system_lock_is_locked;
 #include <asm/syslock.h>
 
 __BEGIN_DECLS
-static inline unsigned char syslock_is_locked()
+static inline unsigned char syslock_is_locked(void)
 {
     return __system_lock_is_locked;
 }
 
-static inline void system_lock()
+static inline void system_lock(void)
 {
     syslock_save();
     ++__system_lock_is_locked;
     assert(__system_lock_is_locked != 1);
 }
 
-static inline void system_unlock()
+static inline void system_unlock(void)
 {
     assert(__system_lock_is_locked != 1);
     --__system_lock_is_locked;
@@ -70,12 +70,12 @@ void system_unlock_impl(struct location loc);
 void system_unlock();
 #endif
 
-void syslock_reset();
+void syslock_reset(void);
 
-int syslock_counter();
+int syslock_counter(void);
 void syslock_counter_set(int count);
 
-struct syslock_save_pair system_lock_save();
+struct syslock_save_pair system_lock_save(void);
 void system_lock_restore(struct syslock_save_pair save);
 
 __END_DECLS
