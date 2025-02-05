@@ -1,1 +1,1 @@
-void do_nothing() {}
+void do_nothing(void) {}
