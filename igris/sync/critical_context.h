@@ -5,9 +5,9 @@
 
 __BEGIN_DECLS
 
-void critical_context_level_inc();
-void critical_context_level_dec();
-int critical_context_level();
+void critical_context_level_inc(void);
+void critical_context_level_dec(void);
+int critical_context_level(void);
 
 __END_DECLS
 
