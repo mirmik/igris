@@ -56,7 +56,7 @@ void system_lock_impl(struct location loc);
         system_lock_impl(loc);                                                 \
     };
 #else
-void system_lock();
+void system_lock(void);
 #endif
 
 #if IGRIS_SYSLOCK_DEBUG
@@ -67,7 +67,7 @@ void system_unlock_impl(struct location loc);
         system_unlock_impl(loc);                                               \
     };
 #else
-void system_unlock();
+void system_unlock(void);
 #endif
 
 void syslock_reset(void);
