@@ -1,6 +1,7 @@
 #ifndef IGRIS_SERIES_ITERATOR_H
 #define IGRIS_SERIES_ITERATOR_H
 
+#include <cstdint>
 #include <igris/datastruct/dlist.h>
 #include <iterator>
 
