@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <igris/datastruct/dlist.h>
 #include <iterator>
+#include <cstddef>
+#include <cstdint>
 
 namespace igris
 {
