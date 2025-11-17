@@ -40,15 +40,27 @@
 //#include "sectionname.h"
 //#include "stdlib_private.h"
 
+#ifndef LIN_MALLOC_MALLOC
+#define LIN_MALLOC_MALLOC malloc
+#endif
+
+#ifndef LIN_MALLOC_FREE
+#define LIN_MALLOC_FREE free
+#endif
+
+#ifndef LIN_MALLOC_REALLOC
+#define LIN_MALLOC_REALLOC realloc
+#endif
+
 extern char *__brkval;
 extern struct __freelist *__flp;
 
 static igris::syslock lock;
 
-extern "C" void *realloc(void *ptr, size_t len) __attribute__((used));
+extern "C" void *LIN_MALLOC_REALLOC(void *ptr, size_t len) __attribute__((used));
 
 // ATTRIBUTE_CLIB_SECTION
-void *realloc(void *ptr, size_t len)
+void *LIN_MALLOC_REALLOC(void *ptr, size_t len)
 {
     if (critical_context_level() > 0)
         abort();
@@ -65,7 +77,7 @@ void *realloc(void *ptr, size_t len)
 
     /* Trivial case, required by C standard. */
     if (ptr == 0)
-        return malloc(len);
+        return LIN_MALLOC_MALLOC(len);
 
     cp1 = (char *)ptr;
     cp1 -= sizeof(size_t);
@@ -93,7 +105,7 @@ void *realloc(void *ptr, size_t len)
         fp2 = (struct __freelist *)cp;
         fp2->sz = fp1->sz - len - sizeof(size_t);
         fp1->sz = len;
-        free(&(fp2->nx));
+        LIN_MALLOC_FREE(&(fp2->nx));
         return ptr;
     }
 
@@ -163,9 +175,9 @@ void *realloc(void *ptr, size_t len)
      * Call malloc() for a new chunk, then copy over the data, and
      * release the old region.
      */
-    if ((memp = malloc(len)) == 0)
+    if ((memp = LIN_MALLOC_MALLOC(len)) == 0)
         return 0;
     memcpy(memp, ptr, fp1->sz);
-    free(ptr);
+    LIN_MALLOC_FREE(ptr);
     return memp;
 }

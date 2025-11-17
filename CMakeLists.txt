@@ -23,11 +23,12 @@ file(GLOB IGRIS_SOURCES
 	igris/trent/*.cpp
 	igris/datastruct/*.cpp
 	igris/protocols/gstuff.cpp
-	igris/protocols/gstuff_v1/gstuff.c
-	igris/protocols/gstuff_v1/autorecv.c
-	igris/sync/syslock_mutex.cpp
-	igris/sync/semaphore.cpp
-	igris/string/replace_substrings.c
+        igris/protocols/gstuff_v1/gstuff.c
+        igris/protocols/gstuff_v1/autorecv.c
+        igris/sync/syslock_mutex.cpp
+        igris/sync/semaphore.cpp
+        igris/sync/critical_context.c
+        igris/string/replace_substrings.c
 	igris/string/replace.cpp
 	igris/string/hexascii_string.cpp
 	igris/string/memmem.c
