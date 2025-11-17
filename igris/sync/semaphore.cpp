@@ -1,17 +1,17 @@
+#include <errno.h>
+
 #include <igris/container/dlist.h>
 #include <igris/osinter/wait.h>
 #include <igris/sync/semaphore.h>
 
-#if !__has_include(<semaphore.h>)
-
-void sem_init(struct semaphore *sem, int shared, int val)
+void igris_sem_init(struct igris_semaphore *sem, int shared, int val)
 {
     (void)shared;
     sem->count = val;
     dlist_init(&sem->wait_list);
 }
 
-int sem_wait(struct semaphore *sem)
+int igris_sem_wait(struct igris_semaphore *sem)
 {
     int sts;
     void *_;
@@ -36,7 +36,7 @@ int sem_wait(struct semaphore *sem)
     return 0;
 }
 
-int sem_trywait(struct semaphore *sem)
+int igris_sem_trywait(struct igris_semaphore *sem)
 {
     int status = -1;
 
@@ -52,7 +52,7 @@ int sem_trywait(struct semaphore *sem)
     return status;
 }
 
-int sem_post(struct semaphore *sem)
+int igris_sem_post(struct igris_semaphore *sem)
 {
     system_lock();
 
@@ -64,7 +64,7 @@ int sem_post(struct semaphore *sem)
     return 0;
 }
 
-int sem_getvalue(struct semaphore *sem, int *val)
+int igris_sem_getvalue(struct igris_semaphore *sem, int *val)
 {
     system_lock();
     *val = sem->count;
@@ -72,4 +72,15 @@ int sem_getvalue(struct semaphore *sem, int *val)
     return 0;
 }
 
-#endif
+int igris_sem_destroy(struct igris_semaphore *sem)
+{
+    int busy;
+
+    system_lock();
+    busy = !dlist_empty(&sem->wait_list);
+    dlist_init(&sem->wait_list);
+    sem->count = 0;
+    system_unlock();
+
+    return busy ? -EBUSY : 0;
+}
