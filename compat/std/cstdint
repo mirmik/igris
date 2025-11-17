@@ -1,9 +1,10 @@
 #ifndef IGRIS_STD_CSTDINT_H
 #define IGRIS_STD_CSTDINT_H
+#include "igris_std_namespace.h"
 
 #include <stdint.h>
 
-namespace std
+namespace igris_std
 {
     using ::int16_t;
     using ::int32_t;

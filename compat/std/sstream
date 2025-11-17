@@ -1,28 +1,29 @@
 #ifndef IGRIS_STD_SSTREAM_H
 #define IGRIS_STD_SSTREAM_H
+#include "igris_std_namespace.h"
 
 #include <iostream>
 #include <string>
 
-namespace std
+namespace igris_std
 {
     template <class CharT,
-              class Traits = std::char_traits<CharT>,
-              class Allocator = std::allocator<CharT>>
-    class basic_stringstream : virtual public std::basic_ostream<CharT, Traits>,
-                               virtual public std::basic_istream<CharT, Traits>
+              class Traits = igris_std::char_traits<CharT>,
+              class Allocator = igris_std::allocator<CharT>>
+    class basic_stringstream : virtual public igris_std::basic_ostream<CharT, Traits>,
+                               virtual public igris_std::basic_istream<CharT, Traits>
     {
-        std::basic_string<CharT, Traits, Allocator> _str;
+        igris_std::basic_string<CharT, Traits, Allocator> _str;
 
     public:
         using char_type = CharT;
         using traits_type = Traits;
         using allocator_type = Allocator;
-        using string_type = std::basic_string<CharT, Traits, Allocator>;
+        using string_type = igris_std::basic_string<CharT, Traits, Allocator>;
 
-        basic_stringstream() : std::basic_ostream<CharT, Traits>() {}
+        basic_stringstream() : igris_std::basic_ostream<CharT, Traits>() {}
         basic_stringstream(const string_type &str)
-            : std::basic_ostream<CharT, Traits>(), _str(str)
+            : igris_std::basic_ostream<CharT, Traits>(), _str(str)
         {
         }
 

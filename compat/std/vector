@@ -1,11 +1,12 @@
 #ifndef IGRIS_STD_VECTOR_H
 #define IGRIS_STD_VECTOR_H
+#include "igris_std_namespace.h"
 
 #include <igris/container/vector.h>
 
-namespace std
+namespace igris_std
 {
-    template <class T, class Alloc = std::allocator<T>>
+    template <class T, class Alloc = igris_std::allocator<T>>
     using vector = igris::vector<T, Alloc>;
 }
 

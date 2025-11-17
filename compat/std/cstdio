@@ -1,11 +1,12 @@
 #ifndef IGRIS_STD_CSTDIO_H
 #define IGRIS_STD_CSTDIO_H
+#include "igris_std_namespace.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-namespace std
+namespace igris_std
 {
     using FILE = ::FILE;
     using fpos_t = ::fpos_t;

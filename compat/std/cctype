@@ -1,5 +1,6 @@
 #ifndef CCTYPE
 #define CCTYPE
+#include "igris_std_namespace.h"
 
 #include <ctype.h>
 

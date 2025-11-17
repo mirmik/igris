@@ -1,11 +1,12 @@
 #ifndef IGRIS_STD_FSTREAM_H
 #define IGRIS_STD_FSTREAM_H
+#include "igris_std_namespace.h"
 
 #include <ios>
 #include <istream>
 #include <ostream>
 
-namespace std
+namespace igris_std
 {
     class fstream : virtual public istream, virtual public ostream
 
@@ -14,8 +15,8 @@ namespace std
 
     public:
         fstream() {}
-        fstream(std::string) {}
-        fstream(std::string, int) {}
+        fstream(igris_std::string) {}
+        fstream(igris_std::string, int) {}
 
         ~fstream() {}
         operator bool()
@@ -23,8 +24,8 @@ namespace std
             return true;
         }
 
-        void open(std::string) {}
-        void open(std::string, int) {}
+        void open(igris_std::string) {}
+        void open(igris_std::string, int) {}
 
         bool is_open()
         {
@@ -38,8 +39,8 @@ namespace std
     {
     public:
         ifstream() {}
-        ifstream(std::string) {}
-        ifstream(std::string, int) {}
+        ifstream(igris_std::string) {}
+        ifstream(igris_std::string, int) {}
 
         bool fail()
         {

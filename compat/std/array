@@ -1,12 +1,13 @@
 #ifndef IGRIS_STD_ARRAY_H
 #define IGRIS_STD_ARRAY_H
+#include "igris_std_namespace.h"
 
 #include <algorithm>
 #include <initializer_list>
 #include <memory>
 #include <utility>
 
-namespace std
+namespace igris_std
 {
     template <typename T, size_t N> struct array
     {
@@ -16,12 +17,12 @@ namespace std
 
         array(const array &oth)
         {
-            std::copy(oth.begin(), oth.end(), begin());
+            igris_std::copy(oth.begin(), oth.end(), begin());
         }
 
-        array(const std::initializer_list<T> &oth)
+        array(const igris_std::initializer_list<T> &oth)
         {
-            std::copy(oth.begin(), oth.end(), begin());
+            igris_std::copy(oth.begin(), oth.end(), begin());
         }
 
         T &operator[](size_t i)
@@ -66,27 +67,27 @@ namespace std
 
         void fill(const T &val)
         {
-            std::fill(begin(), end(), val);
+            igris_std::fill(begin(), end(), val);
         }
 
         void swap(array &oth)
         {
-            std::swap_ranges(begin(), end(), oth.begin());
+            igris_std::swap_ranges(begin(), end(), oth.begin());
         }
 
         void swap(T &oth)
         {
-            std::swap_ranges(begin(), end(), &oth);
+            igris_std::swap_ranges(begin(), end(), &oth);
         }
 
         void swap(T *oth)
         {
-            std::swap_ranges(begin(), end(), oth);
+            igris_std::swap_ranges(begin(), end(), oth);
         }
 
         void swap(T *oth, size_t n)
         {
-            std::swap_ranges(begin(), end(), oth);
+            igris_std::swap_ranges(begin(), end(), oth);
         }
     };
 }

@@ -1,12 +1,13 @@
 #ifndef IGRIS_STD_STREAMBUF_H
 #define IGRIS_STD_STREAMBUF_H
+#include "igris_std_namespace.h"
 
 #include <string>
 #include <utility>
 
-namespace std
+namespace igris_std
 {
-    template <class CharT, class Traits = std::char_traits<CharT>>
+    template <class CharT, class Traits = igris_std::char_traits<CharT>>
     class basic_streambuf
     {
         using int_type = int;

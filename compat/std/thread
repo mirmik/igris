@@ -1,9 +1,10 @@
 #ifndef IGRIS_STD_THREAD_H
 #define IGRIS_STD_THREAD_H
+#include "igris_std_namespace.h"
 
 #include <chrono>
 
-namespace std
+namespace igris_std
 {
     class thread
     {
@@ -20,7 +21,7 @@ namespace std
     public:
         static void yield() {}
 
-        static void sleep_for(std::chrono::milliseconds) {}
+        static void sleep_for(igris_std::chrono::milliseconds) {}
     };
 }
 
