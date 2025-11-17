@@ -1,9 +1,10 @@
 #ifndef std_ITERATOR_BASE_TYPES_H
 #define std_ITERATOR_BASE_TYPES_H
+#include "igris_std_namespace.h"
 
 #include <stddef.h>
 
-namespace std
+namespace igris_std
 {
     ///  Marking input iterators.
     struct input_iterator_tag

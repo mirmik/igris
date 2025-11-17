@@ -1,9 +1,10 @@
 #ifndef GXX_STD_CSTDDEF_H
 #define GXX_STD_CSTDDEF_H
+#include "igris_std_namespace.h"
 
 #include <stddef.h>
 
-namespace std
+namespace igris_std
 {
     using size_t = ::size_t;
     using nullptr_t = decltype(nullptr);

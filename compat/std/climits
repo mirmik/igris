@@ -1,4 +1,5 @@
 #ifndef IGRIS_STD_CLIMITS_H
 #define IGRIS_STD_CLIMITS_H
+#include "igris_std_namespace.h"
 
 #endif

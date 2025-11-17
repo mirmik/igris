@@ -1,5 +1,6 @@
 #ifndef GENOS_ALGORITHM_H
 #define GENOS_ALGORITHM_H
+#include "igris_std_namespace.h"
 
 #include <functional>
 #include <iterator_base_funcs.h>
@@ -8,7 +9,7 @@
 #undef min
 #undef max
 
-namespace std
+namespace igris_std
 {
     template <class I, class E, class P> bool any_of(I first, E last, P pred)
     {
@@ -226,21 +227,21 @@ namespace std
         return first;
     }
 
-    template <class ForwardIt, class T, class Compare = std::less<T>>
+    template <class ForwardIt, class T, class Compare = igris_std::less<T>>
     ForwardIt lower_bound(ForwardIt first,
                           ForwardIt last,
                           const T &value,
                           Compare comp = Compare())
     {
         ForwardIt it;
-        typename std::iterator_traits<ForwardIt>::difference_type count, step;
-        count = std::distance(first, last);
+        typename igris_std::iterator_traits<ForwardIt>::difference_type count, step;
+        count = igris_std::distance(first, last);
 
         while (count > 0)
         {
             it = first;
             step = count / 2;
-            std::advance(it, step);
+            igris_std::advance(it, step);
             if (comp(*it, value))
             {
                 first = ++it;
@@ -255,21 +256,21 @@ namespace std
     template <class ForwardIt1,
               class ForwardIt2,
               class T,
-              class Compare = std::less<T>>
+              class Compare = igris_std::less<T>>
     ForwardIt1 upper_bound(ForwardIt1 first,
                            ForwardIt2 last,
                            const T &value,
                            Compare comp = Compare())
     {
         ForwardIt1 it;
-        typename std::iterator_traits<ForwardIt1>::difference_type count, step;
-        count = std::distance(first, last);
+        typename igris_std::iterator_traits<ForwardIt1>::difference_type count, step;
+        count = igris_std::distance(first, last);
 
         while (count > 0)
         {
             it = first;
             step = count / 2;
-            std::advance(it, step);
+            igris_std::advance(it, step);
             if (!comp(value, *it))
             {
                 first = ++it;
@@ -282,11 +283,11 @@ namespace std
     }
 
     template <class ForwardIt, class T, class Compare>
-    std::pair<ForwardIt, ForwardIt>
+    igris_std::pair<ForwardIt, ForwardIt>
     equal_range(ForwardIt first, ForwardIt last, const T &value, Compare comp)
     {
-        return std::make_pair(std::lower_bound(first, last, value, comp),
-                              std::upper_bound(first, last, value, comp));
+        return igris_std::make_pair(igris_std::lower_bound(first, last, value, comp),
+                              igris_std::upper_bound(first, last, value, comp));
     }
 
     template <class InputIterator, class T>
@@ -476,7 +477,7 @@ namespace std
     }
 
     template <class InputIterator, class OutputIterator>
-    std::pair<InputIterator, OutputIterator> save_copy(InputIterator first,
+    igris_std::pair<InputIterator, OutputIterator> save_copy(InputIterator first,
                                                        InputIterator last,
                                                        OutputIterator dfirst,
                                                        OutputIterator dlast)
@@ -496,7 +497,7 @@ namespace std
     {
         while (first != last)
         {
-            *result = std::move(*first);
+            *result = igris_std::move(*first);
             ++first;
             ++result;
         }
@@ -504,7 +505,7 @@ namespace std
     }
 
     template <class InputIterator, class OutputIterator>
-    std::pair<InputIterator, OutputIterator>
+    igris_std::pair<InputIterator, OutputIterator>
     save_move(InputIterator first,
               InputIterator last,
               OutputIterator result,
@@ -512,11 +513,11 @@ namespace std
     {
         while (first != last && result != result_last)
         {
-            *result = std::move(*first);
+            *result = igris_std::move(*first);
             ++first;
             ++result;
         }
-        return std::make_pair(first, result);
+        return igris_std::make_pair(first, result);
     }
 
     template <class BidirectionalIterator1, class BidirectionalIterator2>
@@ -542,16 +543,16 @@ namespace std
         {
             --result;
             --last;
-            *result = std::move(*last);
+            *result = igris_std::move(*last);
         }
         return result;
     }
 
     template <class T> void swap(T &a, T &b)
     {
-        T temp(std::move(a));
-        a = std::move(b);
-        b = std::move(temp);
+        T temp(igris_std::move(a));
+        a = igris_std::move(b);
+        b = igris_std::move(temp);
     }
 
     template <class ForwardIterator1, class ForwardIterator2>

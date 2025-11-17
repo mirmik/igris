@@ -1,35 +1,36 @@
 #ifndef IGRIS_STD_TYPE_TRAITS_DECAY_H
 #define IGRIS_STD_TYPE_TRAITS_DECAY_H
+#include "igris_std_namespace.h"
 
 #include <type_traits_impl/is.h>
 #include <type_traits_impl/standalone.h>
 
-namespace std
+namespace igris_std
 {
     namespace details
     {
         template <typename Base>
-        std::true_type is_base_of_test_func(const volatile Base *);
+        igris_std::true_type is_base_of_test_func(const volatile Base *);
         template <typename Base>
-        std::false_type is_base_of_test_func(const volatile void *);
+        igris_std::false_type is_base_of_test_func(const volatile void *);
         template <typename Base, typename Derived>
         using pre_is_base_of =
-            decltype(is_base_of_test_func<Base>(std::declval<Derived *>()));
+            decltype(is_base_of_test_func<Base>(igris_std::declval<Derived *>()));
 
         // with <experimental/type_traits>:
         // template <typename Base, typename Derived>
         // using pre_is_base_of2 =
-        // std::experimental::detected_or_t<std::true_type,
+        // igris_std::experimental::detected_or_t<igris_std::true_type,
         // pre_is_base_of, Base, Derived>;
         template <typename Base, typename Derived, typename = void>
-        struct pre_is_base_of2 : public std::true_type
+        struct pre_is_base_of2 : public igris_std::true_type
         {
         };
-        // note std::void_t is a C++17 feature
+        // note igris_std::void_t is a C++17 feature
         template <typename Base, typename Derived>
         struct pre_is_base_of2<Base,
                                Derived,
-                               std::void_t<pre_is_base_of<Base, Derived>>>
+                               igris_std::void_t<pre_is_base_of<Base, Derived>>>
             : public pre_is_base_of<Base, Derived>
         {
         };
@@ -37,25 +38,25 @@ namespace std
 
     template <typename Base, typename Derived>
     struct is_base_of
-        : public std::conditional_t<std::is_class<Base>::value &&
-                                        std::is_class<Derived>::value,
+        : public igris_std::conditional_t<igris_std::is_class<Base>::value &&
+                                        igris_std::is_class<Derived>::value,
                                     details::pre_is_base_of2<Base, Derived>,
-                                    std::false_type>
+                                    igris_std::false_type>
     {
     };
 
     template <class T> struct decay
     {
     private:
-        typedef typename std::remove_reference<T>::type U;
+        typedef typename igris_std::remove_reference<T>::type U;
 
     public:
-        typedef typename std::conditional<
-            std::is_array<U>::value,
-            typename std::remove_extent<U>::type *,
-            typename std::conditional<std::is_function<U>::value,
-                                      typename std::add_pointer<U>::type,
-                                      typename std::remove_cv<U>::type>::type>::
+        typedef typename igris_std::conditional<
+            igris_std::is_array<U>::value,
+            typename igris_std::remove_extent<U>::type *,
+            typename igris_std::conditional<igris_std::is_function<U>::value,
+                                      typename igris_std::add_pointer<U>::type,
+                                      typename igris_std::remove_cv<U>::type>::type>::
             type type;
     };
 }

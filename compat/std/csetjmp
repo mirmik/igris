@@ -1,9 +1,10 @@
 #ifndef IGRIS_CSETJMP_H
 #define IGRIS_CSETJMP_H
+#include "igris_std_namespace.h"
 
 #include <setjmp.h>
 
-namespace std
+namespace igris_std
 {
     using ::jmp_buf;
     using ::longjmp;
