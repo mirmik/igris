@@ -514,6 +514,19 @@ namespace igris_std
         igris_ftoa(val, buf, 5);
         return buf;
     }
+
+    template <> struct hash<string>
+    {
+        size_t operator()(const string &value) const noexcept
+        {
+            size_t result = 0;
+            for (char c : value)
+            {
+                result = result * 131 + static_cast<unsigned char>(c);
+            }
+            return result;
+        }
+    };
 }
 
 /*namespace igris_std

@@ -2,8 +2,10 @@
 #define GXX_STD_HEADER_FUNCTIONAL
 #include "igris_std_namespace.h"
 
+#include <cstddef>
+
+#include "type_traits_impl/is.h"
 #include "utility_impl/minimal.h"
-// prevent reorder
 #include "type_traits_impl/result.h"
 
 namespace igris_std
@@ -462,7 +464,48 @@ namespace igris_std
         return mem_fun1_ref_t<S, T, A>(f);
     }
 
-    template <class Key> struct hash;
+    namespace detail
+    {
+        template <class Key, bool IsIntegral, bool IsPointer> struct hash_impl
+        {
+            static size_t apply(const Key &)
+            {
+                static_assert(sizeof(Key) == 0,
+                              "igris_std::hash is not specialized for this type");
+                return 0;
+            }
+        };
+
+        template <class Key>
+        struct hash_impl<Key, true, false>
+        {
+            static size_t apply(const Key &value) noexcept
+            {
+                size_t x = static_cast<size_t>(value);
+                x ^= (x >> 20) ^ (x >> 12);
+                return x ^ (x >> 7) ^ (x >> 4);
+            }
+        };
+
+        template <class Key>
+        struct hash_impl<Key, false, true>
+        {
+            static size_t apply(const Key &value) noexcept
+            {
+                return reinterpret_cast<size_t>(value);
+            }
+        };
+    } // namespace detail
+
+    template <class Key> struct hash
+    {
+        size_t operator()(const Key &value) const noexcept
+        {
+            return detail::hash_impl<Key,
+                                     igris_std::is_integral<Key>::value,
+                                     igris_std::is_pointer<Key>::value>::apply(value);
+        }
+    };
 
     template <class F, class... Args>
     constexpr auto invoke(F &&f, Args &&... args)

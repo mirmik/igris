@@ -2,7 +2,7 @@
 #define GXX_STD_MEMORY_H
 #include "igris_std_namespace.h"
 
-#include <algorithm>
+#include "algorithm"
 #include <cstdlib>
 #include "move.h"
 #include <new>
@@ -91,7 +91,7 @@ namespace igris_std
 
         void swap(unique_ptr &other)
         {
-            std::swap(ptr, other.ptr);
+            igris_std::swap(ptr, other.ptr);
         }
     };
     // make unique
