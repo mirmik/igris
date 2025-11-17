@@ -42,6 +42,14 @@
 //#include "sectionname.h"
 //#include "stdlib_private.h"
 
+#ifndef LIN_MALLOC_MALLOC
+#define LIN_MALLOC_MALLOC malloc
+#endif
+
+#ifndef LIN_MALLOC_FREE
+#define LIN_MALLOC_FREE free
+#endif
+
 /*
  * Exported interface:
  *
@@ -68,9 +76,9 @@ struct __freelist *__flp = NULL;
 
 extern "C" unsigned int is_interrupt_context();
 
-extern "C" void *malloc(size_t len) __attribute__((used));
+extern "C" void *LIN_MALLOC_MALLOC(size_t len) __attribute__((used));
 // ATTRIBUTE_CLIB_SECTION
-void *malloc(size_t len)
+void *LIN_MALLOC_MALLOC(size_t len)
 {
     if (critical_context_level() > 0)
         abort();
@@ -204,9 +212,9 @@ void *malloc(size_t len)
 }
 
 // ATTRIBUTE_CLIB_SECTION
-extern "C" void free(void *p) __attribute__((used));
+extern "C" void LIN_MALLOC_FREE(void *p) __attribute__((used));
 
-void free(void *p)
+void LIN_MALLOC_FREE(void *p)
 {
     /* ISO C says free(NULL) must be a no-op */
     if (p == 0)
