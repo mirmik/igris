@@ -2,7 +2,7 @@
 #define GXX_STD_MEMORY_H
 #include "igris_std_namespace.h"
 
-#include <algorithm>
+#include "algorithm"
 #include <cstdlib>
 #include "move.h"
 #include <new>

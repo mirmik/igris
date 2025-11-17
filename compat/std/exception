@@ -3,6 +3,7 @@
 #include "igris_std_namespace.h"
 
 #include <string>
+#include "string"
 
 namespace igris_std
 {
