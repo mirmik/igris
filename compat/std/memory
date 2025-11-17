@@ -91,7 +91,7 @@ namespace igris_std
 
         void swap(unique_ptr &other)
         {
-            igris_std::swap(ptr, other.ptr);
+            std::swap(ptr, other.ptr);
         }
     };
     // make unique
