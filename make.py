@@ -55,6 +55,7 @@ if opts.igris_std:
     else:
         raise Exception("Unknown wordsize")
     DEFINES.extend([f"IGRIS_STUBARCH_WORDSIZE={wordsize}"])
+    DEFINES.append("IGRIS_COMPAT_STD_TO_STD")
 
 CCFLAGS = '-fPIC -Werror=all -Werror=extra -pedantic-errors -Wreturn-type -g -Wno-gnu-zero-variadic-macro-arguments'
 CXXFLAGS = cxx_flags + CCFLAGS

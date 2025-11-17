@@ -63,12 +63,13 @@ if (UNIX)
 	)
 endif()
 
-file(GLOB SOURCES_TEST 
-	${IGRIS_SOURCES}
-	tests/*.cpp
-	container/*.cpp
-	shell/*.cpp
-	series/*.cpp
+file(GLOB SOURCES_TEST
+        ${IGRIS_SOURCES}
+        tests/*.cpp
+        tests/igris_std/*.cpp
+        container/*.cpp
+        shell/*.cpp
+        series/*.cpp
 )
 
 if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
@@ -86,12 +87,12 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS")
 	endif()
 	
-	add_library(igris SHARED ${IGRIS_SOURCES} ${PLATFORM_SOURCES} igris/dprint/dprint_stdout.c)
-	target_include_directories(igris PRIVATE .)
+        add_library(igris SHARED ${IGRIS_SOURCES} ${PLATFORM_SOURCES} igris/dprint/dprint_stdout.c)
+        target_include_directories(igris PRIVATE .)
 	
 	if (NOT DEFINED WITHOUT_TESTS)
-		add_executable(igris_test ${SOURCES_TEST})
-		target_include_directories(igris_test PRIVATE . tests)
+                add_executable(igris_test ${SOURCES_TEST})
+                target_include_directories(igris_test PRIVATE . tests)
 		#target_link_libraries(igris_test rt pthread)
 		target_link_libraries(igris_test pthread)
 		#target_link_libraries(igris_test)

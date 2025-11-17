@@ -1,10 +1,11 @@
 #ifndef IGRIS_STD_ISTREAM_H
 #define IGRIS_STD_ISTREAM_H
+#include "igris_std_namespace.h"
 
 #include <ios>
 #include <string>
 
-namespace std
+namespace igris_std
 {
 
     template <class CharT, class Traits> class basic_istream
@@ -20,8 +21,8 @@ namespace std
     using istream = basic_istream<char, char_traits<char>>;
 
     template <class CharT, class Traits>
-    std::basic_istream<CharT, Traits> &
-    getline(std::basic_istream<CharT, Traits> &input, std::string &str)
+    igris_std::basic_istream<CharT, Traits> &
+    getline(igris_std::basic_istream<CharT, Traits> &input, igris_std::string &str)
     {
         (void)str;
         // str.clear();
@@ -29,8 +30,8 @@ namespace std
     }
 
     template <class CharT, class Traits>
-    std::basic_istream<CharT, Traits> &
-    operator>>(std::basic_istream<CharT, Traits> &input, std::string &str)
+    igris_std::basic_istream<CharT, Traits> &
+    operator>>(igris_std::basic_istream<CharT, Traits> &input, igris_std::string &str)
     {
         (void)str;
         // str.clear();

@@ -1,9 +1,10 @@
 #ifndef IGRIS_STD_STDEXCEPT_H
 #define IGRIS_STD_STDEXCEPT_H
+#include "igris_std_namespace.h"
 
 #include <exception>
 
-namespace std
+namespace igris_std
 {
     class out_of_range : public exception
     {
@@ -20,7 +21,7 @@ namespace std
     class runtime_error : public exception
     {
     public:
-        runtime_error(const std::string &msg) : exception(msg) {}
+        runtime_error(const igris_std::string &msg) : exception(msg) {}
     };
 
     class invalid_argument : public exception

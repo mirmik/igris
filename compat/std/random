@@ -1,7 +1,8 @@
 #ifndef IGRIS_STD_RANDOM_H
 #define IGRIS_STD_RANDOM_H
+#include "igris_std_namespace.h"
 
-namespace std
+namespace igris_std
 {
     template <class T> class uniform_int_distribution
     {

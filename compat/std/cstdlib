@@ -1,10 +1,11 @@
 #ifndef IGRIS_STD_CSTDLIB_H
 #define IGRIS_STD_CSTDLIB_H
+#include "igris_std_namespace.h"
 
 #include <stdlib.h>
 #include <stddef.h>
 
-namespace std
+namespace igris_std
 {
     using ::abort;
     using ::atexit;

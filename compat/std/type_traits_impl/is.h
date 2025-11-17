@@ -1,10 +1,11 @@
 #ifndef IGRIS_STD_TYPE_TRAITS_IS_H
 #define IGRIS_STD_TYPE_TRAITS_IS_H
+#include "../igris_std_namespace.h"
 
 #include <cstddef>
-#include <type_traits_impl/standalone.h>
+#include "standalone.h"
 
-namespace std
+namespace igris_std
 {
     template <typename> struct __is_void_helper : public false_type
     {
@@ -181,7 +182,7 @@ namespace std
     {
     };
 
-    template <typename _Tp, std::size_t _Size>
+    template <typename _Tp, igris_std::size_t _Size>
     struct is_array<_Tp[_Size]> : public true_type
     {
     };
@@ -415,7 +416,7 @@ namespace std
     };
 
     template <>
-    struct __is_null_pointer_helper<std::nullptr_t> : public true_type
+    struct __is_null_pointer_helper<igris_std::nullptr_t> : public true_type
     {
     };
 

@@ -1,9 +1,10 @@
 #ifndef IGRIS_COMPAT_STD_CSTDLIB_H
 #define IGRIS_COMPAT_STD_CSTDLIB_H
+#include "igris_std_namespace.h"
 
 #include <string.h>
 
-namespace std
+namespace igris_std
 {
     inline int strcmp(const char *s1, const char *s2)
     {

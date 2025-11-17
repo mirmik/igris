@@ -1,92 +1,128 @@
 #ifndef IGRIS_STD_ARRAY_H
 #define IGRIS_STD_ARRAY_H
+#include "igris_std_namespace.h"
 
-#include <algorithm>
-#include <initializer_list>
-#include <memory>
-#include <utility>
+#include <cstddef>
 
-namespace std
+#include "algorithm"
+#include "initializer_list"
+#include "utility"
+
+namespace igris_std
 {
     template <typename T, size_t N> struct array
     {
-        T arr[N];
+        using value_type = T;
+        using size_type = size_t;
+        using difference_type = ptrdiff_t;
+        using reference = value_type &;
+        using const_reference = const value_type &;
+        using pointer = value_type *;
+        using const_pointer = const value_type *;
+        using iterator = pointer;
+        using const_iterator = const_pointer;
+
+        value_type arr[N];
 
         array() = default;
 
         array(const array &oth)
         {
-            std::copy(oth.begin(), oth.end(), begin());
+            igris_std::copy(oth.begin(), oth.end(), begin());
         }
 
-        array(const std::initializer_list<T> &oth)
+        array(const igris_std::initializer_list<T> &oth)
         {
-            std::copy(oth.begin(), oth.end(), begin());
+            igris_std::copy(oth.begin(), oth.end(), begin());
         }
 
-        T &operator[](size_t i)
+        reference operator[](size_type i)
         {
             return arr[i];
         }
-        const T &operator[](size_t i) const
+        const_reference operator[](size_type i) const
         {
             return arr[i];
         }
 
-        T *begin()
+        reference front()
+        {
+            return arr[0];
+        }
+
+        const_reference front() const
+        {
+            return arr[0];
+        }
+
+        reference back()
+        {
+            return arr[N - 1];
+        }
+
+        const_reference back() const
+        {
+            return arr[N - 1];
+        }
+
+        pointer begin()
         {
             return arr;
         }
-        const T *begin() const
+        const_iterator begin() const
         {
             return arr;
         }
-        T *end()
+        const_iterator cbegin() const
+        {
+            return arr;
+        }
+        pointer end()
         {
             return arr + N;
         }
-        const T *end() const
+        const_iterator end() const
         {
             return arr + N;
         }
 
-        T *data()
+        const_iterator cend() const
+        {
+            return arr + N;
+        }
+
+        pointer data()
         {
             return arr;
         }
-        const T *data() const
+        const_pointer data() const
         {
             return arr;
         }
 
-        size_t size() const
+        constexpr size_type size() const
         {
             return N;
         }
 
+        constexpr size_type max_size() const
+        {
+            return N;
+        }
+
+        constexpr bool empty() const
+        {
+            return N == 0;
+        }
+
         void fill(const T &val)
         {
-            std::fill(begin(), end(), val);
+            igris_std::fill(begin(), end(), val);
         }
 
         void swap(array &oth)
         {
-            std::swap_ranges(begin(), end(), oth.begin());
-        }
-
-        void swap(T &oth)
-        {
-            std::swap_ranges(begin(), end(), &oth);
-        }
-
-        void swap(T *oth)
-        {
-            std::swap_ranges(begin(), end(), oth);
-        }
-
-        void swap(T *oth, size_t n)
-        {
-            std::swap_ranges(begin(), end(), oth);
+            igris_std::swap_ranges(begin(), end(), oth.begin());
         }
     };
 }

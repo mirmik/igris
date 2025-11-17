@@ -1,11 +1,12 @@
 #ifndef GXX_STD_HEADER_FUNCTIONAL
 #define GXX_STD_HEADER_FUNCTIONAL
+#include "igris_std_namespace.h"
 
-#include <utility_impl/minimal.h>
+#include "utility_impl/minimal.h"
 // prevent reorder
-#include <type_traits_impl/result.h>
+#include "type_traits_impl/result.h"
 
-namespace std
+namespace igris_std
 {
 
     template <class Arg, class Result> struct unary_function;
@@ -466,7 +467,7 @@ namespace std
     template <class F, class... Args>
     constexpr auto invoke(F &&f, Args &&... args)
     {
-        return std::forward<F>(f)(std::forward<Args>(args)...);
+        return igris_std::forward<F>(f)(igris_std::forward<Args>(args)...);
     }
 
     class function_base
@@ -482,7 +483,7 @@ namespace std
     {
     public:
         function() : m_invoker(nullptr) {}
-        function(std::nullptr_t) : m_invoker(nullptr) {}
+        function(igris_std::nullptr_t) : m_invoker(nullptr) {}
         template <class F> function(F f) : m_invoker(new invoker<F>(f)) {}
         function(const function &other) : m_invoker(other.m_invoker->clone()) {}
         function(function &&other) : m_invoker(other.m_invoker)
@@ -552,7 +553,7 @@ namespace std
 // are *NOT* part of the C++ standard, however
 
 template <class Op1, class Op2>
-class unary_compose : public std::unary_function<typename Op2::argument_type,
+class unary_compose : public igris_std::unary_function<typename Op2::argument_type,
                                                  typename Op1::result_type>
 {
 protected:
@@ -575,7 +576,7 @@ inline unary_compose<Op1, Op2> compose1(const Op1 &fn1, const Op2 &fn2)
 }
 
 template <class Op1, class Op2, class Op3>
-class binary_compose : public std::unary_function<typename Op2::argument_type,
+class binary_compose : public igris_std::unary_function<typename Op2::argument_type,
                                                   typename Op1::result_type>
 {
 protected:
@@ -602,6 +603,6 @@ compose2(const Op1 &fn1, const Op2 &fn2, const Op3 &fn3)
     return binary_compose<Op1, Op2, Op3>(fn1, fn2, fn3);
 }
 
-#include <functional_impl/reference_wrapper.h>
+#include "functional_impl/reference_wrapper.h"
 
 #endif

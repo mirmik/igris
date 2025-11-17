@@ -1,18 +1,19 @@
 #ifndef GXX_STD_TYPE_TRAITS_H
 #define GXX_STD_TYPE_TRAITS_H
+#include "igris_std_namespace.h"
 
 #include <cstddef>
 #include <functional>
 
-#include <utility_impl/minimal.h>
+#include "utility_impl/minimal.h"
 
-#include <type_traits_impl/is_constructible.h>
-#include <type_traits_impl/minimal.h>
-#include <type_traits_impl/result.h>
+#include "type_traits_impl/is_constructible.h"
+#include "type_traits_impl/minimal.h"
+#include "type_traits_impl/result.h"
 
-#include <move.h>
+#include "move.h"
 
-namespace std
+namespace igris_std
 {
     // primary template (used for zero types)
     template <class...> struct common_type
@@ -30,7 +31,7 @@ namespace std
 
         template <class T1, class T2>
         using conditional_result_t =
-            decltype(false ? std::declval<T1>() : std::declval<T2>());
+            decltype(false ? igris_std::declval<T1>() : igris_std::declval<T2>());
 
         template <class, class, class = void> struct decay_conditional_result
         {
@@ -39,7 +40,7 @@ namespace std
         struct decay_conditional_result<T1,
                                         T2,
                                         void_t<conditional_result_t<T1, T2>>>
-            : std::decay<conditional_result_t<T1, T2>>
+            : igris_std::decay<conditional_result_t<T1, T2>>
         {
         };
 
@@ -63,12 +64,12 @@ namespace std
     //////// two types
     template <class T1, class T2>
     struct common_type<T1, T2>
-        : std::conditional<
-              std::is_same<T1, typename std::decay<T1>::type>::value &&
-                  std::is_same<T2, typename std::decay<T2>::type>::value,
+        : igris_std::conditional<
+              igris_std::is_same<T1, typename igris_std::decay<T1>::type>::value &&
+                  igris_std::is_same<T2, typename igris_std::decay<T2>::type>::value,
               detail::common_type_2_impl<T1, T2>,
-              common_type<typename std::decay<T1>::type,
-                          typename std::decay<T2>::type>>::type
+              common_type<typename igris_std::decay<T1>::type,
+                          typename igris_std::decay<T2>::type>>::type
     {
     };
 

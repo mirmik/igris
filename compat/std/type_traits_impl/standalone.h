@@ -1,10 +1,12 @@
 #ifndef IGRIS_STD_TYPE_TRAITS_STANDALONE_H
 #define IGRIS_STD_TYPE_TRAITS_STANDALONE_H
+#include "../igris_std_namespace.h"
 
 #include <cstdint>
 #include <cstdlib>
+#include "../cstddef"
 
-namespace std
+namespace igris_std
 {
     // detail::type_identify
     namespace detail
@@ -12,13 +14,13 @@ namespace std
         template <class T> struct type_identity
         {
             using type = T;
-        }; // or use std::type_identity (since C++20)
+        }; // or use igris_std::type_identity (since C++20)
     }
 
-    // std::void_t
+    // igris_std::void_t
     template <class...> using void_t = void;
 
-    // std::conditional
+    // igris_std::conditional
     template <bool B, class T, class F> struct conditional
     {
         typedef T type;
@@ -32,7 +34,7 @@ namespace std
     template <bool B, class T, class F>
     using conditional_t = typename conditional<B, T, F>::type;
 
-    // std::enable_if
+    // igris_std::enable_if
     template <bool B, class T = void> struct enable_if
     {
     };
@@ -45,7 +47,7 @@ namespace std
     template <bool B, class T = void>
     using enable_if_t = typename enable_if<B, T>::type;
 
-    // std::integral_contant
+    // igris_std::integral_contant
     template <class T, T v> struct integral_constant
     {
         static constexpr T value = v;
@@ -61,21 +63,21 @@ namespace std
         }
     };
 
-    using true_type = std::integral_constant<bool, true>;
-    using false_type = std::integral_constant<bool, false>;
+    using true_type = igris_std::integral_constant<bool, true>;
+    using false_type = igris_std::integral_constant<bool, false>;
 
-    // std::is_same
-    template <class T, class U> struct is_same : std::false_type
+    // igris_std::is_same
+    template <class T, class U> struct is_same : igris_std::false_type
     {
     };
 
-    template <class T> struct is_same<T, T> : std::true_type
+    template <class T> struct is_same<T, T> : igris_std::true_type
     {
     };
 
     template <class T, class U> constexpr bool is_same_v = is_same<T, U>::value;
 
-    // std::remove_***
+    // igris_std::remove_***
     template <class T> struct remove_const
     {
         typedef T type;
@@ -96,8 +98,8 @@ namespace std
 
     template <class T> struct remove_cv
     {
-        typedef typename std::remove_volatile<
-            typename std::remove_const<T>::type>::type type;
+        typedef typename igris_std::remove_volatile<
+            typename igris_std::remove_const<T>::type>::type type;
     };
 
     template <class T> using remove_cv_t = typename remove_cv<T>::type;
@@ -125,7 +127,7 @@ namespace std
 
     template <class T> struct remove_cvref
     {
-        typedef std::remove_cv_t<std::remove_reference_t<T>> type;
+        typedef igris_std::remove_cv_t<igris_std::remove_reference_t<T>> type;
     };
 
     template <class T> using remove_cvref_t = typename remove_cvref<T>::type;
@@ -140,19 +142,19 @@ namespace std
         typedef T type;
     };
 
-    template <class T, std::size_t N> struct remove_extent<T[N]>
+    template <class T, igris_std::size_t N> struct remove_extent<T[N]>
     {
         typedef T type;
     };
 
     template <class T> using remove_extent_t = typename remove_extent<T>::type;
 
-    // std::add_pointer
+    // igris_std::add_pointer
     namespace detail
     {
         template <class T>
         auto try_add_pointer(int)
-            -> type_identity<typename std::remove_reference<T>::type *>;
+            -> type_identity<typename igris_std::remove_reference<T>::type *>;
         template <class T> auto try_add_pointer(...) -> type_identity<T>;
     } // namespace detail
 
@@ -161,7 +163,7 @@ namespace std
     {
     };
 
-    // std::add_rvalue_reference
+    // igris_std::add_rvalue_reference
     namespace detail
     {
         template <class T>
@@ -235,7 +237,7 @@ namespace std
     {
     };
 
-    template <std::size_t Len, std::size_t Align = sizeof(int)>
+    template <igris_std::size_t Len, igris_std::size_t Align = sizeof(int)>
     struct aligned_storage
     {
         struct type

@@ -1,20 +1,21 @@
 #ifndef IGRIS_STD_UTILITY_MINIMAL_H
 #define IGRIS_STD_UTILITY_MINIMAL_H
+#include "../igris_std_namespace.h"
 
-#include <type_traits_impl/standalone.h>
+#include "../type_traits_impl/standalone.h"
 
-namespace std
+namespace igris_std
 {
-    // std::declval
+    // igris_std::declval
     template <class T>
-    typename std::add_rvalue_reference<T>::type declval() noexcept;
+    typename igris_std::add_rvalue_reference<T>::type declval() noexcept;
 
-    // std::forward
+    // igris_std::forward
     template <class T>
-    constexpr T &&forward(typename std::remove_reference<T>::type &t) noexcept;
+    constexpr T &&forward(typename igris_std::remove_reference<T>::type &t) noexcept;
 
     template <class T>
-    constexpr T &&forward(typename std::remove_reference<T>::type &&t) noexcept;
+    constexpr T &&forward(typename igris_std::remove_reference<T>::type &&t) noexcept;
 }
 
 #endif
