@@ -64,9 +64,9 @@ namespace igris
         {
             igris_sem_wait(&sem);
         }
-        void trywait()
+        int trywait()
         {
-            igris_sem_trywait(&sem);
+            return igris_sem_trywait(&sem);
         }
         int getvalue()
         {

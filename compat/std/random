@@ -1,6 +1,7 @@
 #ifndef IGRIS_STD_RANDOM_H
 #define IGRIS_STD_RANDOM_H
 #include "igris_std_namespace.h"
+#include <cstdlib>
 
 namespace igris_std
 {
@@ -13,7 +14,20 @@ namespace igris_std
         uniform_int_distribution(T a, T b) : a(a), b(b) {}
         T operator()()
         {
-            return a + rand() % (b - a);
+            T lo = a;
+            T hi = b;
+            if (hi < lo)
+            {
+                T tmp = lo;
+                lo = hi;
+                hi = tmp;
+            }
+
+            const T span = hi - lo + 1;
+            if (span <= 0)
+                return lo;
+
+            return lo + static_cast<T>(::rand() % span);
         }
     };
 
@@ -26,7 +40,17 @@ namespace igris_std
         uniform_real_distribution(T a, T b) : a(a), b(b) {}
         T operator()()
         {
-            return a + (b - a) * (rand() / (T)RAND_MAX);
+            T lo = a;
+            T hi = b;
+            if (hi < lo)
+            {
+                T tmp = lo;
+                lo = hi;
+                hi = tmp;
+            }
+            return lo +
+                   (hi - lo) *
+                       (static_cast<T>(::rand()) / static_cast<T>(RAND_MAX));
         }
     };
 
@@ -39,7 +63,9 @@ namespace igris_std
         normal_distribution(T a, T b) : a(a), b(b) {}
         T operator()()
         {
-            return a + (b - a) * (rand() / (T)RAND_MAX);
+            return a +
+                   (b - a) *
+                       (static_cast<T>(::rand()) / static_cast<T>(RAND_MAX));
         }
     };
 
