@@ -1,8 +1,8 @@
 #ifndef IGRIS_STD_FUNCTIONAL_MINIMAL_H
 #define IGRIS_STD_FUNCTIONAL_MINIMAL_H
-#include "../igris_std_namespace.h"
+#include "../igris_std_config.hpp"
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
 
 }

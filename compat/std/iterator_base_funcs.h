@@ -1,10 +1,10 @@
 #ifndef std_ITERATOR_BASE_FUNCS_H
 #define std_ITERATOR_BASE_FUNCS_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include "iterator_base_types.h"
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
     template <typename _InputIterator>
     inline typename iterator_traits<_InputIterator>::difference_type __distance(
@@ -46,8 +46,8 @@ namespace igris_std
     inline typename iterator_traits<_InputIterator>::difference_type
     distance(_InputIterator __first, _InputIterator __last)
     {
-        return igris_std::__distance(
-            __first, __last, igris_std::__iterator_category(__first));
+        return IGRIS_STD_NS::__distance(
+            __first, __last, IGRIS_STD_NS::__iterator_category(__first));
     }
 
     template <typename _InputIterator, typename _Distance>
@@ -97,7 +97,7 @@ namespace igris_std
     inline void advance(_InputIterator &__i, _Distance __n)
     {
         typename iterator_traits<_InputIterator>::difference_type __d = __n;
-        igris_std::__advance(__i, __d, igris_std::__iterator_category(__i));
+        IGRIS_STD_NS::__advance(__i, __d, IGRIS_STD_NS::__iterator_category(__i));
     }
 
     template <typename _ForwardIterator>
@@ -105,7 +105,7 @@ namespace igris_std
     next(_ForwardIterator __x,
          typename iterator_traits<_ForwardIterator>::difference_type __n = 1)
     {
-        igris_std::advance(__x, __n);
+        IGRIS_STD_NS::advance(__x, __n);
         return __x;
     }
 
@@ -115,7 +115,7 @@ namespace igris_std
          typename iterator_traits<_BidirectionalIterator>::difference_type __n =
              1)
     {
-        igris_std::advance(__x, -__n);
+        IGRIS_STD_NS::advance(__x, -__n);
         return __x;
     }
 

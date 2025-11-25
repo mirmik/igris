@@ -1,11 +1,11 @@
 #ifndef STD_SHARED_PTR_H
 #define STD_SHARED_PTR_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include <memory>
 #include <utility>
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
 
     template <class T> class shared_ptr
@@ -127,9 +127,9 @@ namespace igris_std
     template <class T, class... Args> shared_ptr<T> make_shared(Args &&... args)
     {
         shared_ptr<T> ptr;
-        auto *zip = igris_std::allocator<typename shared_ptr<T>::auximpl_integrated>()
+        auto *zip = IGRIS_STD_NS::allocator<typename shared_ptr<T>::auximpl_integrated>()
                         .allocate(1);
-        new (&zip->obj) T(igris_std::forward<Args>(args)...);
+        new (&zip->obj) T(IGRIS_STD_NS::forward<Args>(args)...);
         ptr->pa = zip;
         ptr->pa = &zip->obj;
         return ptr;

@@ -1,14 +1,14 @@
 #ifndef IGRIS_COMPAT_STRING_VIEW_H
 #define IGRIS_COMPAT_STRING_VIEW_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include <cstring>
 #include <iterator>
 #include <string>
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
-    template <typename CharT, typename Traits = igris_std::char_traits<CharT>>
+    template <typename CharT, typename Traits = IGRIS_STD_NS::char_traits<CharT>>
     class basic_string_view
     {
         char *_data;
@@ -41,7 +41,7 @@ namespace igris_std
         {
         }
 
-        basic_string_view(const igris_std::string &str)
+        basic_string_view(const IGRIS_STD_NS::string &str)
             : _data((char *)str.data()), _size(str.size())
         {
         }

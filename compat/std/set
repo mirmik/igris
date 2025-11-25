@@ -1,15 +1,15 @@
 #ifndef IGRIS_STD_SET_H
 #define IGRIS_STD_SET_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include <igris/container/flat_set.h>
 #include <memory>
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
     template <class Key,
-              class Compare = igris_std::less<Key>,
-              class Allocator = igris_std::allocator<Key>>
+              class Compare = IGRIS_STD_NS::less<Key>,
+              class Allocator = IGRIS_STD_NS::allocator<Key>>
     class set : public igris::flat_set<Key, Compare, Allocator>
     {
     public:
@@ -20,14 +20,14 @@ namespace igris_std
         using allocator_type = Allocator;
         using reference = value_type &;
         using const_reference = const value_type &;
-        using pointer = typename igris_std::allocator_traits<Allocator>::pointer;
+        using pointer = typename IGRIS_STD_NS::allocator_traits<Allocator>::pointer;
         using const_pointer =
-            typename igris_std::allocator_traits<Allocator>::const_pointer;
+            typename IGRIS_STD_NS::allocator_traits<Allocator>::const_pointer;
         using iterator = pointer;
         using const_iterator = const_pointer;
         using reverse_iterator = pointer;
         using const_reverse_iterator = const_pointer;
-        using difference_type = igris_std::ptrdiff_t;
+        using difference_type = IGRIS_STD_NS::ptrdiff_t;
     };
 }
 

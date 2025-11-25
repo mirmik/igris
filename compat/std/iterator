@@ -1,13 +1,13 @@
 #ifndef IGRIS_STD_ITERATOR_H
 #define IGRIS_STD_ITERATOR_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include <cstddef>
 #include "iterator_base_funcs.h"
 #include "iterator_base_types.h"
 #include <memory>
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
     template <class T, int N> constexpr T *begin(T (&a)[N])
     {
@@ -37,11 +37,11 @@ namespace igris_std
 
     template <class T> constexpr auto cbegin(const T &a)
     {
-        return igris_std::begin(a);
+        return IGRIS_STD_NS::begin(a);
     }
     template <class T> constexpr auto cend(const T &a)
     {
-        return igris_std::end(a);
+        return IGRIS_STD_NS::end(a);
     }
 
     namespace detail
@@ -66,14 +66,14 @@ namespace igris_std
         Container *container;
 
     public:
-        using iterator_category = igris_std::output_iterator_tag;
+        using iterator_category = IGRIS_STD_NS::output_iterator_tag;
         using value_type = void;
         using difference_type = void;
         using pointer = void;
         using reference = void;
 
         explicit back_insert_iterator(Container &x)
-            : container(igris_std::addressof(x))
+            : container(IGRIS_STD_NS::addressof(x))
         {
         }
 
@@ -89,9 +89,9 @@ namespace igris_std
     };
 
     template <class Container>
-    igris_std::back_insert_iterator<Container> back_inserter(Container &c)
+    IGRIS_STD_NS::back_insert_iterator<Container> back_inserter(Container &c)
     {
-        return igris_std::back_insert_iterator<Container>(c);
+        return IGRIS_STD_NS::back_insert_iterator<Container>(c);
     }
 
     template <class C> constexpr auto size(const C &c) -> decltype(c.size())
@@ -106,8 +106,8 @@ namespace igris_std
         return static_cast<R>(c.size());
     }
 
-    template <class T, igris_std::size_t N>
-    constexpr igris_std::size_t size(const T (&array)[N]) noexcept
+    template <class T, IGRIS_STD_NS::size_t N>
+    constexpr IGRIS_STD_NS::size_t size(const T (&array)[N]) noexcept
     {
         (void)array;
         return N;
@@ -115,7 +115,7 @@ namespace igris_std
 
     template <class T, int N>
     constexpr auto ssize(const T (&array)[N]) noexcept
-        -> decltype(igris_std::size_t() - igris_std::size_t())
+        -> decltype(IGRIS_STD_NS::size_t() - IGRIS_STD_NS::size_t())
     {
         return N;
     }

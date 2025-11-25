@@ -1,6 +1,6 @@
 #ifndef GXX_STD_TYPE_TRAITS_H
 #define GXX_STD_TYPE_TRAITS_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include <cstddef>
 #include <functional>
@@ -13,7 +13,7 @@
 
 #include "move.h"
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
     // primary template (used for zero types)
     template <class...> struct common_type
@@ -31,7 +31,7 @@ namespace igris_std
 
         template <class T1, class T2>
         using conditional_result_t =
-            decltype(false ? igris_std::declval<T1>() : igris_std::declval<T2>());
+            decltype(false ? IGRIS_STD_NS::declval<T1>() : IGRIS_STD_NS::declval<T2>());
 
         template <class, class, class = void> struct decay_conditional_result
         {
@@ -40,7 +40,7 @@ namespace igris_std
         struct decay_conditional_result<T1,
                                         T2,
                                         void_t<conditional_result_t<T1, T2>>>
-            : igris_std::decay<conditional_result_t<T1, T2>>
+            : IGRIS_STD_NS::decay<conditional_result_t<T1, T2>>
         {
         };
 
@@ -64,12 +64,12 @@ namespace igris_std
     //////// two types
     template <class T1, class T2>
     struct common_type<T1, T2>
-        : igris_std::conditional<
-              igris_std::is_same<T1, typename igris_std::decay<T1>::type>::value &&
-                  igris_std::is_same<T2, typename igris_std::decay<T2>::type>::value,
+        : IGRIS_STD_NS::conditional<
+              IGRIS_STD_NS::is_same<T1, typename IGRIS_STD_NS::decay<T1>::type>::value &&
+                  IGRIS_STD_NS::is_same<T2, typename IGRIS_STD_NS::decay<T2>::type>::value,
               detail::common_type_2_impl<T1, T2>,
-              common_type<typename igris_std::decay<T1>::type,
-                          typename igris_std::decay<T2>::type>>::type
+              common_type<typename IGRIS_STD_NS::decay<T1>::type,
+                          typename IGRIS_STD_NS::decay<T2>::type>>::type
     {
     };
 

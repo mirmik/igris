@@ -1,13 +1,13 @@
 #ifndef GXX_STD_MEMORY_H
 #define GXX_STD_MEMORY_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include "algorithm"
 #include <cstdlib>
 #include "move.h"
 #include <new>
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
     template <typename T> class allocator
     {
@@ -31,7 +31,7 @@ namespace igris_std
 
 #include "shared.h"
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
     template <typename T> class unique_ptr
     {
@@ -91,14 +91,14 @@ namespace igris_std
 
         void swap(unique_ptr &other)
         {
-            igris_std::swap(ptr, other.ptr);
+            IGRIS_STD_NS::swap(ptr, other.ptr);
         }
     };
     // make unique
     template <typename T, typename... Args>
-    igris_std::unique_ptr<T> make_unique(Args &&... args)
+    IGRIS_STD_NS::unique_ptr<T> make_unique(Args &&... args)
     {
-        return igris_std::unique_ptr<T>(new T(igris_std::forward<Args>(args)...));
+        return IGRIS_STD_NS::unique_ptr<T>(new T(IGRIS_STD_NS::forward<Args>(args)...));
     }
 
     // addresof

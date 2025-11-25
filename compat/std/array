@@ -1,6 +1,6 @@
 #ifndef IGRIS_STD_ARRAY_H
 #define IGRIS_STD_ARRAY_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include <cstddef>
 
@@ -8,7 +8,7 @@
 #include "initializer_list"
 #include "utility"
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
     template <typename T, size_t N> struct array
     {
@@ -28,12 +28,12 @@ namespace igris_std
 
         array(const array &oth)
         {
-            igris_std::copy(oth.begin(), oth.end(), begin());
+            IGRIS_STD_NS::copy(oth.begin(), oth.end(), begin());
         }
 
-        array(const igris_std::initializer_list<T> &oth)
+        array(const IGRIS_STD_NS::initializer_list<T> &oth)
         {
-            igris_std::copy(oth.begin(), oth.end(), begin());
+            IGRIS_STD_NS::copy(oth.begin(), oth.end(), begin());
         }
 
         reference operator[](size_type i)
@@ -117,12 +117,12 @@ namespace igris_std
 
         void fill(const T &val)
         {
-            igris_std::fill(begin(), end(), val);
+            IGRIS_STD_NS::fill(begin(), end(), val);
         }
 
         void swap(array &oth)
         {
-            igris_std::swap_ranges(begin(), end(), oth.begin());
+            IGRIS_STD_NS::swap_ranges(begin(), end(), oth.begin());
         }
     };
 }

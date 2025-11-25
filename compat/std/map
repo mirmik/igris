@@ -1,21 +1,21 @@
 #ifndef IGRIS_STD_MAP_H
 #define IGRIS_STD_MAP_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include <functional>
 #include <igris/container/flat_map.h>
 #include <memory>
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
     template <typename K,
               typename V,
-              class Compare = igris_std::less<K>,
-              class Allocator = igris_std::allocator<igris_std::pair<K, V>>>
+              class Compare = IGRIS_STD_NS::less<K>,
+              class Allocator = IGRIS_STD_NS::allocator<IGRIS_STD_NS::pair<K, V>>>
     class map : public igris::flat_map<K, V>
     {
     public:
-        map(igris_std::initializer_list<igris_std::pair<K, V>> init)
+        map(IGRIS_STD_NS::initializer_list<IGRIS_STD_NS::pair<K, V>> init)
             : igris::flat_map<K, V>(init)
         {
         }

@@ -1,14 +1,14 @@
 #ifndef GXX_STD_MOVE_H
 #define GXX_STD_MOVE_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include <type_traits>
 #include "type_traits_impl/standalone.h"
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
     template <class T>
-    constexpr typename igris_std::remove_reference<T>::type &&move(T &&t)
+    constexpr typename IGRIS_STD_NS::remove_reference<T>::type &&move(T &&t)
     {
         return static_cast<typename remove_reference<T>::type &&>(t);
     }

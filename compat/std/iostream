@@ -1,6 +1,6 @@
 #ifndef IGRIS_COMPAT_STD_IOSTREAM_H
 #define IGRIS_COMPAT_STD_IOSTREAM_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include <ios>
 #include <iosfwd>
@@ -9,12 +9,12 @@
 #include <string>
 #include <utility>
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
-    extern igris_std::ostream cout;
-    extern igris_std::ostream cerr;
-    extern igris_std::ostream clog;
-    extern igris_std::istream cin;
+    extern IGRIS_STD_NS::ostream cout;
+    extern IGRIS_STD_NS::ostream cerr;
+    extern IGRIS_STD_NS::ostream clog;
+    extern IGRIS_STD_NS::istream cin;
 }
 
 #endif

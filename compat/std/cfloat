@@ -1,2 +1,2 @@
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 #include <float.h>

@@ -1,11 +1,11 @@
 #ifndef IGRIS_TYPE_TRAITS_IMPL_IS_CONSTRUCTIBLE_H
 #define IGRIS_TYPE_TRAITS_IMPL_IS_CONSTRUCTIBLE_H
-#include "../igris_std_namespace.h"
+#include "../igris_std_config.hpp"
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
 
-    /******* igris_std::is_constructible replacement ******/
+    /******* IGRIS_STD_NS::is_constructible replacement ******/
     template <typename T,
               typename AT_1 = void,
               typename AT_2 = void,
@@ -20,20 +20,20 @@ namespace igris_std
                   typename C_AT_3,
                   typename C_AT_4>
         static bool
-        test(typename igris_std::enable_if<
+        test(typename IGRIS_STD_NS::enable_if<
              sizeof(C_T) ==
              sizeof(C_T(
                  static_cast<C_AT_1>(
                      *static_cast<
-                         typename igris_std::remove_reference<C_AT_1>::type *>(NULL)),
+                         typename IGRIS_STD_NS::remove_reference<C_AT_1>::type *>(NULL)),
                  static_cast<C_AT_2>(
                      *static_cast<
-                         typename igris_std::remove_reference<C_AT_2>::type *>(NULL)),
+                         typename IGRIS_STD_NS::remove_reference<C_AT_2>::type *>(NULL)),
                  static_cast<C_AT_3>(
                      *static_cast<
-                         typename igris_std::remove_reference<C_AT_3>::type *>(NULL)),
+                         typename IGRIS_STD_NS::remove_reference<C_AT_3>::type *>(NULL)),
                  static_cast<C_AT_4>(
-                     *static_cast<typename igris_std::remove_reference<C_AT_4>::type
+                     *static_cast<typename IGRIS_STD_NS::remove_reference<C_AT_4>::type
                                       *>(NULL))))>::type *);
 
         template <typename, typename, typename, typename, typename>
@@ -53,17 +53,17 @@ namespace igris_std
                   typename C_AT_2,
                   typename C_AT_3>
         static bool
-        test(typename igris_std::enable_if<
+        test(typename IGRIS_STD_NS::enable_if<
              sizeof(C_T) ==
              sizeof(C_T(
                  static_cast<C_AT_1>(
                      *static_cast<
-                         typename igris_std::remove_reference<C_AT_1>::type *>(NULL)),
+                         typename IGRIS_STD_NS::remove_reference<C_AT_1>::type *>(NULL)),
                  static_cast<C_AT_2>(
                      *static_cast<
-                         typename igris_std::remove_reference<C_AT_2>::type *>(NULL)),
+                         typename IGRIS_STD_NS::remove_reference<C_AT_2>::type *>(NULL)),
                  static_cast<C_AT_3>(
-                     *static_cast<typename igris_std::remove_reference<C_AT_3>::type
+                     *static_cast<typename IGRIS_STD_NS::remove_reference<C_AT_3>::type
                                       *>(NULL))))>::type *);
 
         template <typename, typename, typename, typename> static int test(...);
@@ -79,13 +79,13 @@ namespace igris_std
     private:
         template <typename C_T, typename C_AT_1, typename C_AT_2>
         static bool
-        test(typename igris_std::enable_if<
+        test(typename IGRIS_STD_NS::enable_if<
              sizeof(C_T) ==
              sizeof(C_T(static_cast<C_AT_1>(
-                            *static_cast<typename igris_std::remove_reference<
+                            *static_cast<typename IGRIS_STD_NS::remove_reference<
                                 C_AT_1>::type *>(NULL)),
                         static_cast<C_AT_2>(
-                            *static_cast<typename igris_std::remove_reference<
+                            *static_cast<typename IGRIS_STD_NS::remove_reference<
                                 C_AT_2>::type *>(NULL))))>::type *);
 
         template <typename, typename, typename> static int test(...);
@@ -101,10 +101,10 @@ namespace igris_std
     private:
         template <typename C_T, typename C_AT_1>
         static bool
-        test(typename igris_std::enable_if<
+        test(typename IGRIS_STD_NS::enable_if<
              sizeof(C_T) ==
              sizeof(C_T(static_cast<C_AT_1>(
-                 *static_cast<typename igris_std::remove_reference<C_AT_1>::type *>(
+                 *static_cast<typename IGRIS_STD_NS::remove_reference<C_AT_1>::type *>(
                      NULL))))>::type *);
 
         template <typename, typename> static int test(...);
@@ -120,7 +120,7 @@ namespace igris_std
 
         template <typename C_T>
         static bool
-        test(typename igris_std::enable_if<sizeof(C_T) ==
+        test(typename IGRIS_STD_NS::enable_if<sizeof(C_T) ==
                                      sizeof(testFun(C_T()))>::type *);
 
         template <typename> static int test(...);

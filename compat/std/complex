@@ -1,10 +1,10 @@
 #ifndef IGRIS_STD_COMPLEX_H
 #define IGRIS_STD_COMPLEX_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include <cmath>
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
     template <class T> class complex
     {
@@ -15,35 +15,35 @@ namespace igris_std
         complex(T r) : re(r) {}
         complex() : re(0), im(0) {}
 
-        igris_std::complex<T> operator*(const igris_std::complex<T> &b)
+        IGRIS_STD_NS::complex<T> operator*(const IGRIS_STD_NS::complex<T> &b)
         {
             return {re * b.re - im * b.im, re * b.im + im * b.re};
         }
 
-        igris_std::complex<T> &operator*=(const igris_std::complex<T> &b)
+        IGRIS_STD_NS::complex<T> &operator*=(const IGRIS_STD_NS::complex<T> &b)
         {
             *this = *this * b;
             return *this;
         }
 
-        igris_std::complex<T> operator+(const igris_std::complex<T> &b)
+        IGRIS_STD_NS::complex<T> operator+(const IGRIS_STD_NS::complex<T> &b)
         {
             return {re + b.re, im + b.im};
         }
 
-        igris_std::complex<T> operator-(const igris_std::complex<T> &b)
+        IGRIS_STD_NS::complex<T> operator-(const IGRIS_STD_NS::complex<T> &b)
         {
             return {re - b.re, im - b.im};
         }
 
-        igris_std::complex<T> &operator*=(T b)
+        IGRIS_STD_NS::complex<T> &operator*=(T b)
         {
             re *= b;
             im *= b;
             return *this;
         }
 
-        igris_std::complex<T> &operator/=(T b)
+        IGRIS_STD_NS::complex<T> &operator/=(T b)
         {
             re /= b;
             im /= b;
@@ -51,14 +51,14 @@ namespace igris_std
         }
     };
 
-    template <class T> constexpr igris_std::complex<T> conj(const igris_std::complex<T> &z)
+    template <class T> constexpr IGRIS_STD_NS::complex<T> conj(const IGRIS_STD_NS::complex<T> &z)
     {
-        return igris_std::complex<T>{z.real(), -z.imag()};
+        return IGRIS_STD_NS::complex<T>{z.real(), -z.imag()};
     }
 
     template <class T> complex<T> polar(const T &r, const T &theta = T())
     {
-        return igris_std::complex<T>{r * cos(theta), r * sin(theta)};
+        return IGRIS_STD_NS::complex<T>{r * cos(theta), r * sin(theta)};
     }
 
     template <class T> T arg(const complex<T> &z)

@@ -1,6 +1,6 @@
 #ifndef IGRIS_STD_LIST_H
 #define IGRIS_STD_LIST_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include <cstddef>
 
@@ -12,7 +12,7 @@
 #include "type_traits"
 #include "utility"
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
     namespace detail
     {
@@ -27,7 +27,7 @@ namespace igris_std
 
             template <class... Args>
             explicit list_node(Args &&... args)
-                : data(igris_std::forward<Args>(args)...)
+                : data(IGRIS_STD_NS::forward<Args>(args)...)
             {
             }
 
@@ -53,17 +53,17 @@ namespace igris_std
         template <class T, bool IsConst> class list_iterator
         {
             using node_type = list_node<T>;
-            using pointer = typename igris_std::conditional<IsConst,
+            using pointer = typename IGRIS_STD_NS::conditional<IsConst,
                                                             const T *,
                                                             T *>::type;
-            using reference = typename igris_std::conditional<IsConst,
+            using reference = typename IGRIS_STD_NS::conditional<IsConst,
                                                               const T &,
                                                               T &>::type;
 
             igris::dlist_node *link = nullptr;
 
         public:
-            using iterator_category = igris_std::bidirectional_iterator_tag;
+            using iterator_category = IGRIS_STD_NS::bidirectional_iterator_tag;
             using value_type = T;
             using difference_type = ptrdiff_t;
             using pointer_type = pointer;
@@ -73,7 +73,7 @@ namespace igris_std
             explicit list_iterator(igris::dlist_node *node) : link(node) {}
 
             template <bool B = IsConst,
-                      typename igris_std::enable_if<B, int>::type = 0>
+                      typename IGRIS_STD_NS::enable_if<B, int>::type = 0>
             list_iterator(const list_iterator<T, false> &other)
                 : link(other.base())
             {
@@ -138,7 +138,7 @@ namespace igris_std
         };
     } // namespace detail
 
-    template <class T, class Alloc = igris_std::allocator<detail::list_node<T>>>
+    template <class T, class Alloc = IGRIS_STD_NS::allocator<detail::list_node<T>>>
     class list
     {
     public:
@@ -217,7 +217,7 @@ namespace igris_std
 
         void push_back(T &&data)
         {
-            insert_internal(end(), igris_std::move(data));
+            insert_internal(end(), IGRIS_STD_NS::move(data));
         }
 
         reference back()
@@ -248,7 +248,7 @@ namespace igris_std
 
         void push_front(T &&data)
         {
-            insert_internal(begin(), igris_std::move(data));
+            insert_internal(begin(), IGRIS_STD_NS::move(data));
         }
 
         reference front()
@@ -273,7 +273,7 @@ namespace igris_std
 
         iterator insert(const_iterator pos, T &&value)
         {
-            return insert_internal(pos, igris_std::move(value));
+            return insert_internal(pos, IGRIS_STD_NS::move(value));
         }
 
         iterator erase(const_iterator pos)
@@ -300,7 +300,7 @@ namespace igris_std
         template <class U> iterator insert_internal(const_iterator pos, U &&value)
         {
             node_type *node = alloc.allocate(1);
-            igris::constructor(node, igris_std::forward<U>(value));
+            igris::constructor(node, IGRIS_STD_NS::forward<U>(value));
             nodes.move_prev(*node, pos.base());
             ++m_size;
             return iterator(node->get_head());

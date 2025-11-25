@@ -1,12 +1,11 @@
-#ifndef IGRIS_COMPAT_STD_NAMESPACE_H
-#define IGRIS_COMPAT_STD_NAMESPACE_H
+#pragma once
 
+#include "igris_std_config.hpp"
+
+#ifdef IGRIS_STD_AS_STD
+// Позволяем старому коду с именем igris_std продолжить работать,
+// даже если реализация подключена напрямую в std.
+namespace igris_std = std;
+#else
 namespace igris_std {}
-
-#ifdef IGRIS_COMPAT_STD_TO_STD
-namespace std {
-    using namespace igris_std;
-}
-#endif
-
 #endif

@@ -1,55 +1,55 @@
 #ifndef IGRIS_STD_RATIO_H
 #define IGRIS_STD_RATIO_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include <cstdint>
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
-    template <igris_std::intmax_t Num, igris_std::intmax_t Denom = 1> class ratio
+    template <IGRIS_STD_NS::intmax_t Num, IGRIS_STD_NS::intmax_t Denom = 1> class ratio
     {
     public:
-        static constexpr igris_std::intmax_t num = Num;
-        static constexpr igris_std::intmax_t den = Denom;
+        static constexpr IGRIS_STD_NS::intmax_t num = Num;
+        static constexpr IGRIS_STD_NS::intmax_t den = Denom;
     };
 
-    using atto = igris_std::ratio<1, 1000000000000000000>;
-    using femto = igris_std::ratio<1, 1000000000000000>;
-    using pico = igris_std::ratio<1, 1000000000000>;
-    using nano = igris_std::ratio<1, 1000000000>;
-    using micro = igris_std::ratio<1, 1000000>;
-    using milli = igris_std::ratio<1, 1000>;
-    using centi = igris_std::ratio<1, 100>;
-    using deci = igris_std::ratio<1, 10>;
-    using deca = igris_std::ratio<10, 1>;
-    using hecto = igris_std::ratio<100, 1>;
-    using kilo = igris_std::ratio<1000, 1>;
-    using mega = igris_std::ratio<1000000, 1>;
-    using giga = igris_std::ratio<1000000000, 1>;
-    using tera = igris_std::ratio<1000000000000, 1>;
-    using peta = igris_std::ratio<1000000000000000, 1>;
-    using exa = igris_std::ratio<1000000000000000000, 1>;
+    using atto = IGRIS_STD_NS::ratio<1, 1000000000000000000>;
+    using femto = IGRIS_STD_NS::ratio<1, 1000000000000000>;
+    using pico = IGRIS_STD_NS::ratio<1, 1000000000000>;
+    using nano = IGRIS_STD_NS::ratio<1, 1000000000>;
+    using micro = IGRIS_STD_NS::ratio<1, 1000000>;
+    using milli = IGRIS_STD_NS::ratio<1, 1000>;
+    using centi = IGRIS_STD_NS::ratio<1, 100>;
+    using deci = IGRIS_STD_NS::ratio<1, 10>;
+    using deca = IGRIS_STD_NS::ratio<10, 1>;
+    using hecto = IGRIS_STD_NS::ratio<100, 1>;
+    using kilo = IGRIS_STD_NS::ratio<1000, 1>;
+    using mega = IGRIS_STD_NS::ratio<1000000, 1>;
+    using giga = IGRIS_STD_NS::ratio<1000000000, 1>;
+    using tera = IGRIS_STD_NS::ratio<1000000000000, 1>;
+    using peta = IGRIS_STD_NS::ratio<1000000000000000, 1>;
+    using exa = IGRIS_STD_NS::ratio<1000000000000000000, 1>;
 
     template <class R1, class R2> struct ratio_add
     {
-        using type = igris_std::ratio<R1::num * R2::den + R2::num * R1::den,
+        using type = IGRIS_STD_NS::ratio<R1::num * R2::den + R2::num * R1::den,
                                 R1::den * R2::den>;
     };
 
     template <class R1, class R2> struct ratio_subtract
     {
-        using type = igris_std::ratio<R1::num * R2::den - R2::num * R1::den,
+        using type = IGRIS_STD_NS::ratio<R1::num * R2::den - R2::num * R1::den,
                                 R1::den * R2::den>;
     };
 
     template <class R1, class R2> struct ratio_multiply
     {
-        using type = igris_std::ratio<R1::num * R2::num, R1::den * R2::den>;
+        using type = IGRIS_STD_NS::ratio<R1::num * R2::num, R1::den * R2::den>;
     };
 
     template <class R1, class R2> struct ratio_divide
     {
-        using type = igris_std::ratio<R1::num * R2::den, R1::den * R2::num>;
+        using type = IGRIS_STD_NS::ratio<R1::num * R2::den, R1::den * R2::num>;
     };
 }
 

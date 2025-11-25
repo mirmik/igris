@@ -1,16 +1,16 @@
 #ifndef IGRIS_STD_CHRONO_H
 #define IGRIS_STD_CHRONO_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include <igris/util/bug.h>
 #include <ratio>
 #include <type_traits>
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
     namespace chrono
     {
-        template <class Rep, class Period = igris_std::ratio<1>> class duration
+        template <class Rep, class Period = IGRIS_STD_NS::ratio<1>> class duration
         {
             Rep ticks;
 
@@ -42,7 +42,7 @@ namespace igris_std
             using ToPeriod = typename ToDuration::period;
             using FromPeriod = typename duration<Rep, Period>::period;
             using ratio =
-                typename igris_std::ratio_divide<FromPeriod, ToPeriod>::type;
+                typename IGRIS_STD_NS::ratio_divide<FromPeriod, ToPeriod>::type;
             return ToDuration(
                 static_cast<ToRep>(d.count() * ratio::num / ratio::den));
         }
@@ -59,7 +59,7 @@ namespace igris_std
         constexpr bool operator==(const duration<Rep1, Period1> &lhs,
                                   const duration<Rep2, Period2> &rhs)
         {
-            using ratio = typename igris_std::ratio_divide<Period1, Period2>::type;
+            using ratio = typename IGRIS_STD_NS::ratio_divide<Period1, Period2>::type;
             return lhs.count() * ratio::num == rhs.count() * ratio::den;
         }
 
@@ -75,7 +75,7 @@ namespace igris_std
         constexpr auto operator+(const duration<Rep1, Period1> &lhs,
                                  const duration<Rep2, Period2> &rhs)
         {
-            using ratio = typename igris_std::ratio_divide<Period1, Period2>::type;
+            using ratio = typename IGRIS_STD_NS::ratio_divide<Period1, Period2>::type;
             return duration<Rep1, Period1>(
                 lhs.count() + rhs.count() * ratio::num / ratio::den);
         }
@@ -114,7 +114,7 @@ namespace igris_std
                                  const time_point<Clock, Duration2> &rhs)
         {
             using ratio =
-                typename igris_std::ratio_divide<typename Duration1::period,
+                typename IGRIS_STD_NS::ratio_divide<typename Duration1::period,
                                            typename Duration2::period>::type;
             return duration<typename Duration1::rep,
                             typename Duration1::period>(
@@ -122,22 +122,22 @@ namespace igris_std
                 rhs.time_since_epoch().count() * ratio::num / ratio::den);
         }
 
-        using nanoseconds = duration<long long, igris_std::nano>;
-        using microseconds = duration<long long, igris_std::micro>;
-        using milliseconds = duration<long long, igris_std::milli>;
+        using nanoseconds = duration<long long, IGRIS_STD_NS::nano>;
+        using microseconds = duration<long long, IGRIS_STD_NS::micro>;
+        using milliseconds = duration<long long, IGRIS_STD_NS::milli>;
         using seconds = duration<long long>;
-        using minutes = duration<long long, igris_std::ratio<60>>;
-        using hours = duration<long long, igris_std::ratio<3600>>;
-        using days = duration<long long, igris_std::ratio<86400>>;
-        using weeks = duration<long long, igris_std::ratio<604800>>;
+        using minutes = duration<long long, IGRIS_STD_NS::ratio<60>>;
+        using hours = duration<long long, IGRIS_STD_NS::ratio<3600>>;
+        using days = duration<long long, IGRIS_STD_NS::ratio<86400>>;
+        using weeks = duration<long long, IGRIS_STD_NS::ratio<604800>>;
 
         class system_clock
         {
         public:
-            using duration = igris_std::chrono::milliseconds;
+            using duration = IGRIS_STD_NS::chrono::milliseconds;
             using rep = duration::rep;
             using period = duration::period;
-            using time_point = igris_std::chrono::time_point<system_clock>;
+            using time_point = IGRIS_STD_NS::chrono::time_point<system_clock>;
 
             static constexpr bool is_steady = false;
 
@@ -194,7 +194,7 @@ namespace igris_std
         }
     }
 
-    namespace chrono_literals = igris_std::chrono::literals;
+    namespace chrono_literals = IGRIS_STD_NS::chrono::literals;
 }
 
 #endif

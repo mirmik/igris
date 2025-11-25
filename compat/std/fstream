@@ -1,13 +1,13 @@
 #ifndef IGRIS_STD_FSTREAM_H
 #define IGRIS_STD_FSTREAM_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include "ios"
 #include "istream"
 #include "ostream"
 #include "string"
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
     class fstream : virtual public istream, virtual public ostream
 
@@ -16,8 +16,8 @@ namespace igris_std
 
     public:
         fstream() = default;
-        explicit fstream(const igris_std::string &path) { open(path); }
-        fstream(const igris_std::string &path, int)
+        explicit fstream(const IGRIS_STD_NS::string &path) { open(path); }
+        fstream(const IGRIS_STD_NS::string &path, int)
         {
             open(path);
         }
@@ -28,11 +28,11 @@ namespace igris_std
             return is_open();
         }
 
-        void open(const igris_std::string &)
+        void open(const IGRIS_STD_NS::string &)
         {
             m_open = true;
         }
-        void open(const igris_std::string &, int)
+        void open(const IGRIS_STD_NS::string &, int)
         {
             m_open = true;
         }
@@ -54,8 +54,8 @@ namespace igris_std
 
     public:
         ifstream() = default;
-        explicit ifstream(const igris_std::string &path) { open(path); }
-        ifstream(const igris_std::string &path, int)
+        explicit ifstream(const IGRIS_STD_NS::string &path) { open(path); }
+        ifstream(const IGRIS_STD_NS::string &path, int)
         {
             open(path);
         }

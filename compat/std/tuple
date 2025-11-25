@@ -1,11 +1,11 @@
 #ifndef IGRIS_TUPLE_H
 #define IGRIS_TUPLE_H
-#include "igris_std_namespace.h"
+#include "igris_std_config.hpp"
 
 #include <type_traits>
 #include <utility>
 
-namespace igris_std
+namespace IGRIS_STD_NS
 {
     template <class... Args> struct tuple;
 
@@ -29,7 +29,7 @@ namespace igris_std
     public:
         template <class U0, class U1>
         tuple(U0 &&u0, U1 &&u1)
-            : a0(igris_std::forward<U0>(u0)), a1(igris_std::forward<U1>(u1))
+            : a0(IGRIS_STD_NS::forward<U0>(u0)), a1(IGRIS_STD_NS::forward<U1>(u1))
         {
         }
     };
@@ -43,8 +43,8 @@ namespace igris_std
     public:
         template <class U0, class U1, class U2>
         tuple(U0 &&u0, U1 &&u1, U2 &&u2)
-            : a0(igris_std::forward<U0>(u0)), a1(igris_std::forward<U1>(u1)),
-              a2(igris_std::forward<U2>(u2))
+            : a0(IGRIS_STD_NS::forward<U0>(u0)), a1(IGRIS_STD_NS::forward<U1>(u1)),
+              a2(IGRIS_STD_NS::forward<U2>(u2))
         {
         }
     };
@@ -246,19 +246,19 @@ namespace igris_std
         constexpr static size_t value = sizeof...(Args);
     };
 
-    template <class... Args> size_t tuple_size_v(const igris_std::tuple<Args...> &)
+    template <class... Args> size_t tuple_size_v(const IGRIS_STD_NS::tuple<Args...> &)
     {
         return tuple_size<Args...>::value;
     }
 
     namespace detail
     {
-        template <class F, class Tuple, igris_std::size_t... I>
+        template <class F, class Tuple, IGRIS_STD_NS::size_t... I>
         constexpr decltype(auto)
-        apply_impl(F &&f, Tuple &&t, igris_std::index_sequence<I...>)
+        apply_impl(F &&f, Tuple &&t, IGRIS_STD_NS::index_sequence<I...>)
         {
-            return igris_std::invoke(igris_std::forward<F>(f),
-                               igris_std::get<I>(igris_std::forward<Tuple>(t))...);
+            return IGRIS_STD_NS::invoke(IGRIS_STD_NS::forward<F>(f),
+                               IGRIS_STD_NS::get<I>(IGRIS_STD_NS::forward<Tuple>(t))...);
         }
     } // namespace detail
 
@@ -266,53 +266,53 @@ namespace igris_std
     constexpr decltype(auto) apply(F &&f, Tuple &&t)
     {
         return detail::apply_impl(
-            igris_std::forward<F>(f),
-            igris_std::forward<Tuple>(t),
-            igris_std::make_index_sequence<
-                igris_std::tuple_size<igris_std::remove_reference_t<Tuple>>::value>{});
+            IGRIS_STD_NS::forward<F>(f),
+            IGRIS_STD_NS::forward<Tuple>(t),
+            IGRIS_STD_NS::make_index_sequence<
+                IGRIS_STD_NS::tuple_size<IGRIS_STD_NS::remove_reference_t<Tuple>>::value>{});
     }
 
-    template <igris_std::size_t _Int, class _Tp> class tuple_element;
+    template <IGRIS_STD_NS::size_t _Int, class _Tp> class tuple_element;
 
-    // Various functions which give igris_std::pair a tuple-like interface.
+    // Various functions which give IGRIS_STD_NS::pair a tuple-like interface.
 
     template <class _Tp1, class _Tp2>
-    struct tuple_size<igris_std::pair<_Tp1, _Tp2>>
-        : public integral_constant<igris_std::size_t, 2>
+    struct tuple_size<IGRIS_STD_NS::pair<_Tp1, _Tp2>>
+        : public integral_constant<IGRIS_STD_NS::size_t, 2>
     {
     };
 
-    /// Partial specialization for igris_std::pair
+    /// Partial specialization for IGRIS_STD_NS::pair
     template <class _Tp1, class _Tp2>
-    struct tuple_element<0, igris_std::pair<_Tp1, _Tp2>>
+    struct tuple_element<0, IGRIS_STD_NS::pair<_Tp1, _Tp2>>
     {
         typedef _Tp1 type;
     };
 
-    /// Partial specialization for igris_std::pair
+    /// Partial specialization for IGRIS_STD_NS::pair
     template <class _Tp1, class _Tp2>
-    struct tuple_element<1, igris_std::pair<_Tp1, _Tp2>>
+    struct tuple_element<1, IGRIS_STD_NS::pair<_Tp1, _Tp2>>
     {
         typedef _Tp2 type;
     };
 
-    template <igris_std::size_t _Int, class _Tp1, class _Tp2>
-    constexpr typename tuple_element<_Int, igris_std::pair<_Tp1, _Tp2>>::type &
-    get(igris_std::pair<_Tp1, _Tp2> &__in) noexcept
+    template <IGRIS_STD_NS::size_t _Int, class _Tp1, class _Tp2>
+    constexpr typename tuple_element<_Int, IGRIS_STD_NS::pair<_Tp1, _Tp2>>::type &
+    get(IGRIS_STD_NS::pair<_Tp1, _Tp2> &__in) noexcept
     {
         return __pair_get<_Int>::__get(__in);
     }
 
-    template <igris_std::size_t _Int, class _Tp1, class _Tp2>
-    constexpr typename tuple_element<_Int, igris_std::pair<_Tp1, _Tp2>>::type &&
-    get(igris_std::pair<_Tp1, _Tp2> &&__in) noexcept
+    template <IGRIS_STD_NS::size_t _Int, class _Tp1, class _Tp2>
+    constexpr typename tuple_element<_Int, IGRIS_STD_NS::pair<_Tp1, _Tp2>>::type &&
+    get(IGRIS_STD_NS::pair<_Tp1, _Tp2> &&__in) noexcept
     {
-        return __pair_get<_Int>::__move_get(igris_std::move(__in));
+        return __pair_get<_Int>::__move_get(IGRIS_STD_NS::move(__in));
     }
 
-    template <igris_std::size_t _Int, class _Tp1, class _Tp2>
-    constexpr const typename tuple_element<_Int, igris_std::pair<_Tp1, _Tp2>>::type &
-    get(const igris_std::pair<_Tp1, _Tp2> &__in) noexcept
+    template <IGRIS_STD_NS::size_t _Int, class _Tp1, class _Tp2>
+    constexpr const typename tuple_element<_Int, IGRIS_STD_NS::pair<_Tp1, _Tp2>>::type &
+    get(const IGRIS_STD_NS::pair<_Tp1, _Tp2> &__in) noexcept
     {
         return __pair_get<_Int>::__const_get(__in);
     }
