@@ -79,5 +79,3 @@ tests/build
 .ninja_*
 
 jjj
-
-artifacts.tar.gz
