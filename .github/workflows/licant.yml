@@ -2,9 +2,9 @@ name: Licant
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -20,22 +20,22 @@ jobs:
 
     strategy:
       matrix:
-        compiler: 
-          - { CXX: g++-11, CC: gcc-11 } 
-          - { CXX: clang++-12, CC: clang-12 }
-      
+        compiler:
+          - { CXX: g++, CC: gcc }
+          - { CXX: clang++, CC: clang }
+
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Setup dependencies
-      run: |
-        sudo apt-get update && sudo apt-get install -y g++-11 clang-12
-        sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/${{matrix.compiler.CXX}} 100
-        sudo update-alternatives --install /usr/bin/cc  cc  /usr/bin/${{matrix.compiler.CC}} 100
-        sudo python3 -m pip install licant
+      - name: Setup dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y g++ clang
+          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/${{matrix.compiler.CXX}} 100
+          sudo update-alternatives --install /usr/bin/cc  cc  /usr/bin/${{matrix.compiler.CC}} 100
+          sudo python3 -m pip install licant
 
-    - name: Build
-      run: python3 ./make.py
+      - name: Build
+        run: python3 ./make.py
 
-    - name: Test
-      run: ./runtests
+      - name: Test
+        run: ./runtests

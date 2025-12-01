@@ -1,9 +1,10 @@
 #ifndef IGRIS_STD_CTIME_H
 #define IGRIS_STD_CTIME_H
+#include "igris_std_config.hpp"
 
 #include <time.h>
 
-namespace std
+namespace IGRIS_STD_NS
 {
     using ::asctime;
     using ::clock;

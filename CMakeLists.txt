@@ -19,11 +19,13 @@ file(GLOB IGRIS_SOURCES CONFIGURE_DEPENDS
 	igris/trent/*.cpp
 	igris/datastruct/*.cpp
 	igris/protocols/gstuff.cpp
-	igris/protocols/gstuff_v1/gstuff.c
-	igris/protocols/gstuff_v1/autorecv.c
+    igris/protocols/gstuff_v1/gstuff.c
+    igris/protocols/gstuff_v1/autorecv.c
 	igris/sync/syslock_mutex.cpp
+	igris/sync/mutex.cpp
 	igris/sync/semaphore.cpp
-	igris/string/replace_substrings.c
+	igris/sync/critical_context.c
+    igris/string/replace_substrings.c
 	igris/string/replace.cpp
 	igris/string/hexascii_string.cpp
 	igris/string/memmem.c
@@ -60,12 +62,18 @@ if (UNIX)
 endif()
 
 file(GLOB SOURCES_TEST CONFIGURE_DEPENDS
-	${IGRIS_SOURCES}
-	tests/*.cpp
-	container/*.cpp
-	shell/*.cpp
-	series/*.cpp
+        ${IGRIS_SOURCES}
+        tests/*.cpp
+        tests/igris_std/*.cpp
+        container/*.cpp
+        shell/*.cpp
+        series/*.cpp
 )
+list(REMOVE_ITEM SOURCES_TEST
+    ${CMAKE_CURRENT_SOURCE_DIR}/igris/osinter/wait-linux.cpp)
+list(APPEND SOURCES_TEST
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/support/test_wait.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/support/cooperative_threads_test.cpp)
 
 if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 
@@ -82,12 +90,13 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS")
 	endif()
 	
-	add_library(igris SHARED ${IGRIS_SOURCES} ${PLATFORM_SOURCES} igris/dprint/dprint_stdout.c)
-	target_include_directories(igris PRIVATE .)
+        add_library(igris SHARED ${IGRIS_SOURCES} ${PLATFORM_SOURCES} igris/dprint/dprint_stdout.c)
+        target_include_directories(igris PRIVATE .)
 	
 	if (NOT DEFINED WITHOUT_TESTS)
-		add_executable(igris_test ${SOURCES_TEST})
-		target_include_directories(igris_test PRIVATE . tests)
+                add_executable(igris_test ${SOURCES_TEST})
+                target_include_directories(igris_test PRIVATE . tests)
+                target_compile_definitions(igris_test PRIVATE IGRIS_FORCE_INTERNAL_SEMAPHORE=1)
 		#target_link_libraries(igris_test rt pthread)
 		target_link_libraries(igris_test pthread)
 		#target_link_libraries(igris_test)

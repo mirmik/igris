@@ -1,6 +1,7 @@
 #ifndef GENOS_STRING_H
 #define GENOS_STRING_H
-
+#include "igris_std_config.hpp"
+#include "memory"
 #include <assert.h>
 #include <igris/util/numconvert.h>
 #include <inttypes.h>
@@ -10,13 +11,13 @@
 #include <stdio.h>
 #include <string.h>
 
-namespace std
+namespace IGRIS_STD_NS
 {
     template <class CharT> class char_traits;
 
     template <class CharT = char,
               class Traits = char_traits<CharT>,
-              class Allocator = std::allocator<char>>
+              class Allocator = IGRIS_STD_NS::allocator<char>>
     class basic_string
     {
 
@@ -396,29 +397,32 @@ namespace std
 
     using string = basic_string<>;
 
-    static inline int
-    stoi(const std::string &str, std::size_t *pos = nullptr, int base = 10)
+    static inline int stoi(const IGRIS_STD_NS::string &str,
+                           IGRIS_STD_NS::size_t *pos = nullptr,
+                           int base = 10)
     {
         (void)pos; // TODO
         return igris_atoi32(str.c_str(), base, nullptr);
     }
 
-    static inline long
-    stol(const std::string &str, std::size_t *pos = nullptr, int base = 10)
+    static inline long stol(const IGRIS_STD_NS::string &str,
+                            IGRIS_STD_NS::size_t *pos = nullptr,
+                            int base = 10)
     {
         (void)pos; // TODO
         return igris_atoi32(str.c_str(), base, nullptr);
     }
 
-    static inline long long
-    stoll(const std::string &str, std::size_t *pos = nullptr, int base = 10)
+    static inline long long stoll(const IGRIS_STD_NS::string &str,
+                                  IGRIS_STD_NS::size_t *pos = nullptr,
+                                  int base = 10)
     {
         (void)pos; // TODO
         return igris_atoi32(str.c_str(), base, nullptr);
     }
 
-    static inline double stod(const std::string &str,
-                              std::size_t *pos = nullptr)
+    static inline double stod(const IGRIS_STD_NS::string &str,
+                              IGRIS_STD_NS::size_t *pos = nullptr)
     {
         (void)pos; // TODO
         return igris_atof32(str.c_str(), nullptr);
@@ -429,92 +433,107 @@ namespace std
         return str2 == str;
     }
 
-    static inline std::string operator+(const std::string &lhs,
-                                        const std::string &rhs)
+    static inline IGRIS_STD_NS::string
+    operator+(const IGRIS_STD_NS::string &lhs, const IGRIS_STD_NS::string &rhs)
     {
-        std::string res;
+        IGRIS_STD_NS::string res;
         res.reserve(lhs.size() + rhs.size());
         res.append(lhs);
         res.append(rhs);
         return res;
     }
 
-    static inline std::string operator+(const std::string &lhs, const char *rhs)
+    static inline IGRIS_STD_NS::string
+    operator+(const IGRIS_STD_NS::string &lhs, const char *rhs)
     {
-        std::string res;
+        IGRIS_STD_NS::string res;
         res.reserve(lhs.size() + strlen(rhs));
         res.append(lhs);
         res.append(rhs);
         return res;
     }
 
-    static inline std::string operator+(const char *lhs, const std::string &rhs)
+    static inline IGRIS_STD_NS::string
+    operator+(const char *lhs, const IGRIS_STD_NS::string &rhs)
     {
-        std::string res;
+        IGRIS_STD_NS::string res;
         res.reserve(strlen(lhs) + rhs.size());
         res.append(lhs);
         res.append(rhs);
         return res;
     }
 
-    static inline std::string to_string(int val)
+    static inline IGRIS_STD_NS::string to_string(int val)
     {
         char buf[64];
         igris_i64toa(val, buf, 10);
         return buf;
     }
 
-    static inline std::string to_string(long val)
+    static inline IGRIS_STD_NS::string to_string(long val)
     {
         char buf[64];
         igris_i64toa(val, buf, 10);
         return buf;
     }
 
-    static inline std::string to_string(long long val)
+    static inline IGRIS_STD_NS::string to_string(long long val)
     {
         char buf[64];
         igris_i64toa(val, buf, 10);
         return buf;
     }
 
-    static inline std::string to_string(unsigned val)
+    static inline IGRIS_STD_NS::string to_string(unsigned val)
     {
         char buf[64];
         igris_i64toa(val, buf, 10);
         return buf;
     }
 
-    static inline std::string to_string(unsigned long val)
+    static inline IGRIS_STD_NS::string to_string(unsigned long val)
     {
         char buf[64];
         igris_i64toa(val, buf, 10);
         return buf;
     }
 
-    static inline std::string to_string(unsigned long long val)
+    static inline IGRIS_STD_NS::string to_string(unsigned long long val)
     {
         char buf[64];
         igris_i64toa(val, buf, 10);
         return buf;
     }
 
-    static inline std::string to_string(float val)
+    static inline IGRIS_STD_NS::string to_string(float val)
     {
         char buf[64];
         igris_ftoa(val, buf, 5);
         return buf;
     }
 
-    static inline std::string to_string(double val)
+    static inline IGRIS_STD_NS::string to_string(double val)
     {
         char buf[64];
         igris_ftoa(val, buf, 5);
         return buf;
     }
+
+    template <> struct hash<string>
+    {
+        size_t operator()(const string &value) const noexcept
+        {
+            size_t result = 0;
+            for (char c : value)
+            {
+                result = result * 131 + static_cast<unsigned char>(c);
+            }
+            return result;
+        }
+    };
 }
 
-/*namespace std
+/*namespace IGRIS_STD_NS
 {
     namespace string_literals
     {

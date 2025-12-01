@@ -1,5 +1,6 @@
 #ifndef GXX_STD_NEW_H
 #define GXX_STD_NEW_H
+#include "igris_std_config.hpp"
 
 #include <inttypes.h>
 #include <stdlib.h>

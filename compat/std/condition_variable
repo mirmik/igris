@@ -1,9 +1,10 @@
 #ifndef IGRIS_STD_CONDITION_VARIABLE_H
 #define IGRIS_STD_CONDITION_VARIABLE_H
+#include "igris_std_config.hpp"
 
 #include <mutex>
 
-namespace std
+namespace IGRIS_STD_NS
 {
     class condition_variable
     {

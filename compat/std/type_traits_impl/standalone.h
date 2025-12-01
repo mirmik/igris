@@ -1,10 +1,12 @@
 #ifndef IGRIS_STD_TYPE_TRAITS_STANDALONE_H
 #define IGRIS_STD_TYPE_TRAITS_STANDALONE_H
+#include "../igris_std_config.hpp"
 
 #include <cstdint>
 #include <cstdlib>
+#include "../cstddef"
 
-namespace std
+namespace IGRIS_STD_NS
 {
     // detail::type_identify
     namespace detail
@@ -12,13 +14,13 @@ namespace std
         template <class T> struct type_identity
         {
             using type = T;
-        }; // or use std::type_identity (since C++20)
+        }; // or use IGRIS_STD_NS::type_identity (since C++20)
     }
 
-    // std::void_t
+    // IGRIS_STD_NS::void_t
     template <class...> using void_t = void;
 
-    // std::conditional
+    // IGRIS_STD_NS::conditional
     template <bool B, class T, class F> struct conditional
     {
         typedef T type;
@@ -32,7 +34,7 @@ namespace std
     template <bool B, class T, class F>
     using conditional_t = typename conditional<B, T, F>::type;
 
-    // std::enable_if
+    // IGRIS_STD_NS::enable_if
     template <bool B, class T = void> struct enable_if
     {
     };
@@ -45,7 +47,7 @@ namespace std
     template <bool B, class T = void>
     using enable_if_t = typename enable_if<B, T>::type;
 
-    // std::integral_contant
+    // IGRIS_STD_NS::integral_contant
     template <class T, T v> struct integral_constant
     {
         static constexpr T value = v;
@@ -61,21 +63,21 @@ namespace std
         }
     };
 
-    using true_type = std::integral_constant<bool, true>;
-    using false_type = std::integral_constant<bool, false>;
+    using true_type = IGRIS_STD_NS::integral_constant<bool, true>;
+    using false_type = IGRIS_STD_NS::integral_constant<bool, false>;
 
-    // std::is_same
-    template <class T, class U> struct is_same : std::false_type
+    // IGRIS_STD_NS::is_same
+    template <class T, class U> struct is_same : IGRIS_STD_NS::false_type
     {
     };
 
-    template <class T> struct is_same<T, T> : std::true_type
+    template <class T> struct is_same<T, T> : IGRIS_STD_NS::true_type
     {
     };
 
     template <class T, class U> constexpr bool is_same_v = is_same<T, U>::value;
 
-    // std::remove_***
+    // IGRIS_STD_NS::remove_***
     template <class T> struct remove_const
     {
         typedef T type;
@@ -96,8 +98,8 @@ namespace std
 
     template <class T> struct remove_cv
     {
-        typedef typename std::remove_volatile<
-            typename std::remove_const<T>::type>::type type;
+        typedef typename IGRIS_STD_NS::remove_volatile<
+            typename IGRIS_STD_NS::remove_const<T>::type>::type type;
     };
 
     template <class T> using remove_cv_t = typename remove_cv<T>::type;
@@ -125,7 +127,7 @@ namespace std
 
     template <class T> struct remove_cvref
     {
-        typedef std::remove_cv_t<std::remove_reference_t<T>> type;
+        typedef IGRIS_STD_NS::remove_cv_t<IGRIS_STD_NS::remove_reference_t<T>> type;
     };
 
     template <class T> using remove_cvref_t = typename remove_cvref<T>::type;
@@ -140,19 +142,19 @@ namespace std
         typedef T type;
     };
 
-    template <class T, std::size_t N> struct remove_extent<T[N]>
+    template <class T, IGRIS_STD_NS::size_t N> struct remove_extent<T[N]>
     {
         typedef T type;
     };
 
     template <class T> using remove_extent_t = typename remove_extent<T>::type;
 
-    // std::add_pointer
+    // IGRIS_STD_NS::add_pointer
     namespace detail
     {
         template <class T>
         auto try_add_pointer(int)
-            -> type_identity<typename std::remove_reference<T>::type *>;
+            -> type_identity<typename IGRIS_STD_NS::remove_reference<T>::type *>;
         template <class T> auto try_add_pointer(...) -> type_identity<T>;
     } // namespace detail
 
@@ -161,7 +163,7 @@ namespace std
     {
     };
 
-    // std::add_rvalue_reference
+    // IGRIS_STD_NS::add_rvalue_reference
     namespace detail
     {
         template <class T>
@@ -235,7 +237,7 @@ namespace std
     {
     };
 
-    template <std::size_t Len, std::size_t Align = sizeof(int)>
+    template <IGRIS_STD_NS::size_t Len, IGRIS_STD_NS::size_t Align = sizeof(int)>
     struct aligned_storage
     {
         struct type

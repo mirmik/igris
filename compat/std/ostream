@@ -1,19 +1,20 @@
 #ifndef IGRIS_STD_OSTREAM_H
 #define IGRIS_STD_OSTREAM_H
+#include "igris_std_config.hpp"
 
 #include <iomanip>
 #include <ios>
 #include <streambuf>
 
-namespace std
+namespace IGRIS_STD_NS
 {
     class endl_class
     {
     };
     extern endl_class endl;
 
-    template <class CharT, class Traits = std::char_traits<CharT>>
-    class basic_ostream : virtual public std::basic_ios<CharT, Traits>
+    template <class CharT, class Traits = IGRIS_STD_NS::char_traits<CharT>>
+    class basic_ostream : virtual public IGRIS_STD_NS::basic_ios<CharT, Traits>
     {
         basic_streambuf<CharT, Traits> *streambuf = nullptr;
 
@@ -47,12 +48,12 @@ namespace std
             delete streambuf;
         }
 
-        explicit basic_ostream(std::basic_streambuf<CharT, Traits> *sb)
+        explicit basic_ostream(IGRIS_STD_NS::basic_streambuf<CharT, Traits> *sb)
         {
             init(sb);
         }
 
-        void init(std::basic_streambuf<CharT, Traits> *sb)
+        void init(IGRIS_STD_NS::basic_streambuf<CharT, Traits> *sb)
         {
             streambuf = sb;
         }
@@ -88,7 +89,7 @@ namespace std
 
     template <class CharT, class Traits>
     basic_ostream<CharT, Traits> &operator<<(basic_ostream<CharT, Traits> &os,
-                                             const std::string &data)
+                                             const IGRIS_STD_NS::string &data)
     {
         os.write(data.c_str(), data.size());
         return os;
@@ -326,7 +327,7 @@ namespace std
         return os;
     }
 
-    using ostream = basic_ostream<char, std::char_traits<char>>;
+    using ostream = basic_ostream<char, IGRIS_STD_NS::char_traits<char>>;
 }
 
 #endif

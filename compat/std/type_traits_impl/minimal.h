@@ -1,10 +1,11 @@
 #ifndef IGRIS_STD_TYPE_TRAITS_MINIMAL_H
 #define IGRIS_STD_TYPE_TRAITS_MINIMAL_H
+#include "../igris_std_config.hpp"
 
-#include <type_traits_impl/standalone.h>
-#include <utility_impl/minimal.h>
+#include "standalone.h"
+#include "../utility_impl/minimal.h"
 
-namespace std
+namespace IGRIS_STD_NS
 {
     template <class T> struct add_const
     {
@@ -18,7 +19,7 @@ namespace std
     template <class T> struct add_cv
     {
         typedef
-            typename std::add_volatile<typename std::add_const<T>::type>::type
+            typename IGRIS_STD_NS::add_volatile<typename IGRIS_STD_NS::add_const<T>::type>::type
                 type;
     };
 
@@ -61,7 +62,7 @@ namespace std
     };
 
     // fallback helper for when the true case won't compile - returns false_type
-    template <class T, class From> std::false_type is_assignable_impl(...)
+    template <class T, class From> IGRIS_STD_NS::false_type is_assignable_impl(...)
     {
         return {};
     }
@@ -70,9 +71,9 @@ namespace std
     // returns a true_type
     template <class T, class From>
     auto is_assignable_impl(int)
-        -> decltype(std::declval<T>() = std::declval<From>(),
+        -> decltype(IGRIS_STD_NS::declval<T>() = IGRIS_STD_NS::declval<From>(),
                     void(),
-                    std::true_type())
+                    IGRIS_STD_NS::true_type())
     {
         return {};
     }

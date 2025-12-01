@@ -1,21 +1,20 @@
 #ifndef IGRIS_CLONNER_H
 #define IGRIS_CLONNER_H
 
+#include <algorithm>
 #include <cerrno>
 #include <cstring>
 #include <fcntl.h>
-#include <pty.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
-#include <algorithm>
 #include <igris/datastruct/argvc.h>
 #include <igris/event/delegate.h>
 #include <igris/util/numconvert.h>
 #include <memory>
 #include <pty.h>
 #include <set>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
 #include <unistd.h>
 #include <vector>
 
@@ -32,7 +31,7 @@ namespace igris
     {
     public:
         int _pid = 0;
-        int _master_fd = -1;  // PTY master fd (для чтения и записи)
+        int _master_fd = -1; // PTY master fd (для чтения и записи)
 
         igris::delegate<void> on_close = {};
 
@@ -42,7 +41,7 @@ namespace igris
         {
             exec(data);
         }
-        
+
         ~subprocess()
         {
             close();
@@ -111,7 +110,6 @@ namespace igris
             }
         }
 
-        
         void exec(const std::string &name,
                   const std::vector<std::string> &args,
                   const std::vector<std::string> &env)
@@ -136,16 +134,16 @@ namespace igris
         {
             // Закрываем старый fd если был
             close();
-            
+
             int master_fd;
             int pid = forkpty(&master_fd, nullptr, nullptr, nullptr);
-            
+
             if (pid < 0)
             {
                 perror("forkpty");
                 return;
             }
-            
+
             if (pid == 0)
             {
                 // Child process
@@ -159,7 +157,7 @@ namespace igris
                     // execvpe - расширение GNU для execve с поиском в PATH
                     execvpe(name.c_str(), args.data(), env.data());
                 }
-                
+
                 // Если exec* не удался
                 perror("exec");
                 _exit(127);
@@ -172,12 +170,12 @@ namespace igris
 
         void exec(const char *ccmd)
         {
-            // Закрываем старый fd если был  
+            // Закрываем старый fd если был
             close();
-            
+
             int pipes_host_in_child_out[2];
             int pipes_host_out_child_in[2];
-            
+
             if (pipe(pipes_host_in_child_out) < 0)
             {
                 perror("pipe");
@@ -190,7 +188,7 @@ namespace igris
                 ::close(pipes_host_in_child_out[1]);
                 return;
             }
-            
+
             int pid = fork();
             if (pid < 0)
             {
@@ -201,17 +199,17 @@ namespace igris
                 ::close(pipes_host_out_child_in[1]);
                 return;
             }
-            
+
             if (pid == 0)
             {
                 // Child process
                 ::close(pipes_host_in_child_out[0]);
                 ::close(pipes_host_out_child_in[1]);
-                
+
                 dup2(pipes_host_in_child_out[1], STDOUT_FILENO);
                 dup2(pipes_host_in_child_out[1], STDERR_FILENO);
                 dup2(pipes_host_out_child_in[0], STDIN_FILENO);
-                
+
                 ::close(pipes_host_in_child_out[1]);
                 ::close(pipes_host_out_child_in[0]);
 

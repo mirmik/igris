@@ -1,9 +1,10 @@
 #ifndef IGRIS_STD_SIGNAL_H
 #define IGRIS_STD_SIGNAL_H
+#include "igris_std_config.hpp"
 
 #include <signal.h>
 
-namespace std
+namespace IGRIS_STD_NS
 {
 }
 

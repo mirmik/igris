@@ -1,9 +1,10 @@
 #ifndef IGRIS_STD_IOS_H
 #define IGRIS_STD_IOS_H
+#include "igris_std_config.hpp"
 
 #include <string>
 
-namespace std
+namespace IGRIS_STD_NS
 {
     class ios_base
     {
@@ -92,8 +93,8 @@ namespace std
         fmtflags _flags = {};
     };
 
-    template <class CharT, class Traits = std::char_traits<CharT>>
-    class basic_ios : public std::ios_base
+    template <class CharT, class Traits = IGRIS_STD_NS::char_traits<CharT>>
+    class basic_ios : public IGRIS_STD_NS::ios_base
     {
     };
 

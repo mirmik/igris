@@ -1,14 +1,16 @@
 #ifndef IGRIS_STD_EXCEPTION_H
 #define IGRIS_STD_EXCEPTION_H
+#include "igris_std_config.hpp"
 
 #include <string>
+#include "string"
 
-namespace std
+namespace IGRIS_STD_NS
 {
     class exception
     {
     public:
-        exception(const std::string &msg) : m_msg(msg)
+        exception(const IGRIS_STD_NS::string &msg) : m_msg(msg)
         {
             m_msg.c_str();
         }
@@ -19,7 +21,7 @@ namespace std
         }
 
     private:
-        std::string m_msg;
+        IGRIS_STD_NS::string m_msg;
     };
 
     bool uncaught_exception();

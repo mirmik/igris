@@ -1,9 +1,10 @@
-#ifndef _INITIALIZER_LIST
-#define _INITIALIZER_LIST
+#ifndef IGRIS_STD_INITIALIZER_LIST_H
+#define IGRIS_STD_INITIALIZER_LIST_H
+#include "igris_std_config.hpp"
 
 #include <cstddef>
 
-namespace std
+namespace IGRIS_STD_NS
 {
 	/// initializer_list
 	template<class _E>

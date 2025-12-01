@@ -1,5 +1,6 @@
 #ifndef IGRIS_STD_NUMERIC_H
 #define IGRIS_STD_NUMERIC_H
+#include "igris_std_config.hpp"
 
 #include <igris/util/types_extension.h>
 #include <stdint.h>
@@ -8,7 +9,7 @@
 
 #include <igris/limits.h>
 
-namespace std
+namespace IGRIS_STD_NS
 {
 	template <class T> struct numeric_limits;
 

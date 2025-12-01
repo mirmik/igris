@@ -1,9 +1,10 @@
 #ifndef STD_SPAN_H
 #define STD_SPAN_H
+#include "igris_std_config.hpp"
 
 #include <igris/container/span.h>
 
-namespace std
+namespace IGRIS_STD_NS
 {
     template <typename T> using igris::span;
 }

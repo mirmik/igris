@@ -55,6 +55,7 @@ if opts.igris_std:
     else:
         raise Exception("Unknown wordsize")
     DEFINES.extend([f"IGRIS_STUBARCH_WORDSIZE={wordsize}"])
+    DEFINES.append("IGRIS_COMPAT_STD_TO_STD")
 
 CCFLAGS = '-fPIC -Werror=all -Werror=extra -pedantic-errors -Wreturn-type -g -Wno-gnu-zero-variadic-macro-arguments'
 CXXFLAGS = cxx_flags + CCFLAGS
@@ -87,8 +88,10 @@ licant.cxx_application("runtests",
                            "tests/shell/*.cpp",
                            "tests/series/*.cpp",
                            "tests/archive/*.cpp",
-                       ],
-                       defines=DEFINES,
+                       "tests/support/*.cpp",
+                       "igris/sync/*.cpp",
+                   ],
+                   defines=DEFINES + ["IGRIS_FORCE_INTERNAL_SEMAPHORE=1"],
                        objects=["libigris.a"],
                        cxxstd="c++20",
                        ccstd="c11",

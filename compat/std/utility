@@ -1,15 +1,16 @@
 #ifndef GXX_STD_UTILITY
 #define GXX_STD_UTILITY
+#include "igris_std_config.hpp"
 
 #include <new>
-#include <move.h>
+#include "move.h"
 
 #include <type_traits>
 
-#include <utility_impl/pair.hpp>
-#include <utility_impl/minimal.h>
+#include "utility_impl/pair.hpp"
+#include "utility_impl/minimal.h"
 
-namespace std
+namespace IGRIS_STD_NS
 {
 	template<class T>
 	auto data(T& obj) 
@@ -23,7 +24,7 @@ namespace std
 		return obj.data();
 	}
 
-	template<std::size_t _Int>
+	template<IGRIS_STD_NS::size_t _Int>
 	struct __pair_get;
 
 	template<>
@@ -31,17 +32,17 @@ namespace std
 	{
 		template<typename _Tp1, typename _Tp2>
 		static constexpr _Tp1&
-		__get(std::pair<_Tp1, _Tp2>& __pair) noexcept
+		__get(IGRIS_STD_NS::pair<_Tp1, _Tp2>& __pair) noexcept
 		{ return __pair.first; }
 
 		template<typename _Tp1, typename _Tp2>
 		static constexpr _Tp1&&
-		__move_get(std::pair<_Tp1, _Tp2>&& __pair) noexcept
-		{ return std::forward<_Tp1>(__pair.first); }
+		__move_get(IGRIS_STD_NS::pair<_Tp1, _Tp2>&& __pair) noexcept
+		{ return IGRIS_STD_NS::forward<_Tp1>(__pair.first); }
 
 		template<typename _Tp1, typename _Tp2>
 		static constexpr const _Tp1&
-		__const_get(const std::pair<_Tp1, _Tp2>& __pair) noexcept
+		__const_get(const IGRIS_STD_NS::pair<_Tp1, _Tp2>& __pair) noexcept
 		{ return __pair.first; }
 	};
 
@@ -50,17 +51,17 @@ namespace std
 	{
 		template<typename _Tp1, typename _Tp2>
 		static constexpr _Tp2&
-		__get(std::pair<_Tp1, _Tp2>& __pair) noexcept
+		__get(IGRIS_STD_NS::pair<_Tp1, _Tp2>& __pair) noexcept
 		{ return __pair.second; }
 
 		template<typename _Tp1, typename _Tp2>
 		static constexpr _Tp2&&
-		__move_get(std::pair<_Tp1, _Tp2>&& __pair) noexcept
-		{ return std::forward<_Tp2>(__pair.second); }
+		__move_get(IGRIS_STD_NS::pair<_Tp1, _Tp2>&& __pair) noexcept
+		{ return IGRIS_STD_NS::forward<_Tp2>(__pair.second); }
 
 		template<typename _Tp1, typename _Tp2>
 		static constexpr const _Tp2&
-		__const_get(const std::pair<_Tp1, _Tp2>& __pair) noexcept
+		__const_get(const IGRIS_STD_NS::pair<_Tp1, _Tp2>& __pair) noexcept
 		{ return __pair.second; }
 	};
 
@@ -77,7 +78,7 @@ namespace std
 	template <typename _Tp, typename _Up>
 	constexpr _Tp&&
 	get(pair<_Tp, _Up>&& __p) noexcept
-	{ return std::move(__p.first); }
+	{ return IGRIS_STD_NS::move(__p.first); }
 
 	template <typename _Tp, typename _Up>
 	constexpr _Tp&
@@ -92,14 +93,14 @@ namespace std
 	template <typename _Tp, typename _Up>
 	constexpr _Tp&&
 	get(pair<_Up, _Tp>&& __p) noexcept
-	{ return std::move(__p.second); }
+	{ return IGRIS_STD_NS::move(__p.second); }
 
 
 	/// Assign @p __new_val to @p __obj and return its previous value.
 //  template <typename _Tp, typename _Up = _Tp>
 //    inline _Tp
 //   exchange(_Tp& __obj, _Up&& __new_val)
-//    { return std::__exchange(__obj, std::forward<_Up>(__new_val)); }
+//    { return IGRIS_STD_NS::__exchange(__obj, IGRIS_STD_NS::forward<_Up>(__new_val)); }
 //#endif
 
 	// Stores a tuple of indices.  Used by tuple and pair, and by bind() to
@@ -162,7 +163,7 @@ namespace std
 	using index_sequence_for = make_index_sequence<sizeof...(_Types)>;
 
 	/*template<class T>
-	typename std::add_rvalue_reference<T>::type declval() noexcept;*/
+	typename IGRIS_STD_NS::add_rvalue_reference<T>::type declval() noexcept;*/
 }
 
 #endif

@@ -1,5 +1,6 @@
 #ifndef IGRIS_STD_CMATH_H
 #define IGRIS_STD_CMATH_H
+#include "igris_std_config.hpp"
 
 #include <math.h>
 
@@ -14,7 +15,7 @@
 #undef isnan
 #undef isinf
 
-namespace std
+namespace IGRIS_STD_NS
 {
     static inline bool isnan(long double x)
     {

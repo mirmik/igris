@@ -1,7 +1,8 @@
 #ifndef GXX_STD_PAIR
 #define GXX_STD_PAIR
+#include "../igris_std_config.hpp"
 
-namespace std
+namespace IGRIS_STD_NS
 {
     template <typename T1, typename T2> class pair
     {

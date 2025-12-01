@@ -429,7 +429,7 @@ void debug_printdec_uint32(uint32_t x)
     debug_printdec_uint64((uint64_t)x);
 }
 
-void debug_asmlink_test()
+void debug_asmlink_test(void)
 {
     debug_putchar('A');
     debug_putchar('B');
@@ -443,19 +443,19 @@ void debug_asmlink_test()
     debug_putchar('5');
 }
 
-uint8_t debug_asmlink_ret8()
+uint8_t debug_asmlink_ret8(void)
 {
     return 0xFE;
 }
-uint16_t debug_asmlink_ret16()
+uint16_t debug_asmlink_ret16(void)
 {
     return 0xFEDC;
 }
-uint32_t debug_asmlink_ret32()
+uint32_t debug_asmlink_ret32(void)
 {
     return 0xFEDCBA98;
 }
-uint64_t debug_asmlink_ret64()
+uint64_t debug_asmlink_ret64(void)
 {
     return 0xFEDCBA9876543210;
 }

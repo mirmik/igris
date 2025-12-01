@@ -6,7 +6,11 @@
 __BEGIN_DECLS
 
 // Функция не делающая ничего.
+<<<<<<< HEAD
 extern void do_nothing();
+=======
+extern void do_nothing(void);
+>>>>>>> igr/master
 
 __END_DECLS
 

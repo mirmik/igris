@@ -50,7 +50,7 @@ static inline int debug_strlen(const char *c)
 // Print null-terminated string
 void debug_print(const char *c);
 
-static inline void debug_print_newline()
+static inline void debug_print_newline(void)
 {
     debug_putchar('\r');
     debug_putchar('\n');
@@ -308,26 +308,53 @@ int8_t:             debug_printdec_int8,    \
 
 #else
 
-static inline void dpr() {}
-static inline void dpr(char *obj) { debug_print(obj); }
-static inline void dpr(const char *obj) { debug_print(obj); }
+static inline void dpr(void) {}
+static inline void dpr(char *obj)
+{
+    debug_print(obj);
+}
+static inline void dpr(const char *obj)
+{
+    debug_print(obj);
+}
 
-static inline void dpr(unsigned char obj) { debug_printdec_unsigned_char(obj); }
+static inline void dpr(unsigned char obj)
+{
+    debug_printdec_unsigned_char(obj);
+}
 static inline void dpr(unsigned short obj)
 {
     debug_printdec_unsigned_short(obj);
 }
-static inline void dpr(unsigned int obj) { debug_printdec_unsigned_int(obj); }
-static inline void dpr(unsigned long obj) { debug_printdec_unsigned_long(obj); }
+static inline void dpr(unsigned int obj)
+{
+    debug_printdec_unsigned_int(obj);
+}
+static inline void dpr(unsigned long obj)
+{
+    debug_printdec_unsigned_long(obj);
+}
 static inline void dpr(unsigned long long obj)
 {
     debug_printdec_unsigned_long_long(obj);
 }
 
-static inline void dpr(signed char obj) { debug_printdec_signed_char(obj); }
-static inline void dpr(signed short obj) { debug_printdec_signed_short(obj); }
-static inline void dpr(signed int obj) { debug_printdec_signed_int(obj); }
-static inline void dpr(signed long obj) { debug_printdec_signed_long(obj); }
+static inline void dpr(signed char obj)
+{
+    debug_printdec_signed_char(obj);
+}
+static inline void dpr(signed short obj)
+{
+    debug_printdec_signed_short(obj);
+}
+static inline void dpr(signed int obj)
+{
+    debug_printdec_signed_int(obj);
+}
+static inline void dpr(signed long obj)
+{
+    debug_printdec_signed_long(obj);
+}
 static inline void dpr(signed long long obj)
 {
     debug_printdec_signed_long_long(obj);
@@ -337,17 +364,32 @@ static inline void dpr(int16_t obj)         { debug_printdec_int16(obj); }
 static inline void dpr(int32_t obj)         { debug_printdec_int32(obj); }
 static inline void dpr(int64_t obj)         { debug_printdec_int64(obj); }
 */
-static inline void dpr(double obj) { debug_printdec_double(obj); }
-static inline void dpr(long double obj) { debug_printdec_double(obj); }
-static inline void dpr(float obj) { debug_printdec_float(obj); }
-static inline void dpr(bool obj) { debug_print_bool(obj); }
+static inline void dpr(double obj)
+{
+    debug_printdec_double(obj);
+}
+static inline void dpr(long double obj)
+{
+    debug_printdec_double(obj);
+}
+static inline void dpr(float obj)
+{
+    debug_printdec_float(obj);
+}
+static inline void dpr(bool obj)
+{
+    debug_print_bool(obj);
+}
 
 /*static inline void dprhex(uint8_t obj)      { debug_printhex_uint8(obj); }
 static inline void dprhex(uint16_t obj)     { debug_printhex_uint16(obj); }
 static inline void dprhex(uint32_t obj)     { debug_printhex_uint32(obj); }
 static inline void dprhex(uint64_t obj)     { debug_printhex_uint64(obj); }*/
 
-static inline void dprhex(char obj) { debug_printhex_char(obj); }
+static inline void dprhex(char obj)
+{
+    debug_printhex_char(obj);
+}
 
 static inline void dprhex(unsigned char obj)
 {
@@ -370,29 +412,68 @@ static inline void dprhex(unsigned long long obj)
     debug_printhex_unsigned_long_long(obj);
 }
 
-static inline void dprhex(signed char obj) { debug_printhex_signed_char(obj); }
+static inline void dprhex(signed char obj)
+{
+    debug_printhex_signed_char(obj);
+}
 static inline void dprhex(signed short obj)
 {
     debug_printhex_signed_short(obj);
 }
-static inline void dprhex(signed int obj) { debug_printhex_signed_int(obj); }
-static inline void dprhex(signed long obj) { debug_printhex_signed_long(obj); }
+static inline void dprhex(signed int obj)
+{
+    debug_printhex_signed_int(obj);
+}
+static inline void dprhex(signed long obj)
+{
+    debug_printhex_signed_long(obj);
+}
 static inline void dprhex(signed long long obj)
 {
     debug_printhex_signed_long_long(obj);
 }
 
-static inline void dprhex(double obj) { debug_printhex_double(obj); }
-static inline void dprhex(float obj) { debug_printhex_float(obj); }
+static inline void dprhex(double obj)
+{
+    debug_printhex_double(obj);
+}
+static inline void dprhex(float obj)
+{
+    debug_printhex_float(obj);
+}
 
-static inline void dprbin(uint8_t obj) { debug_printbin_uint8(obj); }
-static inline void dprbin(uint16_t obj) { debug_printbin_uint16(obj); }
-static inline void dprbin(uint32_t obj) { debug_printbin_uint32(obj); }
-static inline void dprbin(uint64_t obj) { debug_printbin_uint64(obj); }
-static inline void dprbin(int8_t obj) { debug_printbin_int8(obj); }
-static inline void dprbin(int16_t obj) { debug_printbin_int16(obj); }
-static inline void dprbin(int32_t obj) { debug_printbin_int32(obj); }
-static inline void dprbin(int64_t obj) { debug_printbin_int64(obj); }
+static inline void dprbin(uint8_t obj)
+{
+    debug_printbin_uint8(obj);
+}
+static inline void dprbin(uint16_t obj)
+{
+    debug_printbin_uint16(obj);
+}
+static inline void dprbin(uint32_t obj)
+{
+    debug_printbin_uint32(obj);
+}
+static inline void dprbin(uint64_t obj)
+{
+    debug_printbin_uint64(obj);
+}
+static inline void dprbin(int8_t obj)
+{
+    debug_printbin_int8(obj);
+}
+static inline void dprbin(int16_t obj)
+{
+    debug_printbin_int16(obj);
+}
+static inline void dprbin(int32_t obj)
+{
+    debug_printbin_int32(obj);
+}
+static inline void dprbin(int64_t obj)
+{
+    debug_printbin_int64(obj);
+}
 // static inline void dprbin(double obj)       { debug_printbin_double(obj); }
 // static inline void dprbin(float obj)        { debug_printbin_float(obj); }
 
@@ -422,12 +503,12 @@ template <typename T> void dprbinln(const T &obj)
 #endif
 
 //Тесты для проверки ассемблерной линковки.
-void debug_asmlink_test();
+void debug_asmlink_test(void);
 
-uint8_t debug_asmlink_ret8();
-uint16_t debug_asmlink_ret16();
-uint32_t debug_asmlink_ret32();
-uint64_t debug_asmlink_ret64();
+uint8_t debug_asmlink_ret8(void);
+uint16_t debug_asmlink_ret16(void);
+uint32_t debug_asmlink_ret32(void);
+uint64_t debug_asmlink_ret64(void);
 
 void debug_asmlink_args8x1(uint8_t a);
 void debug_asmlink_args8x2(uint8_t a, uint8_t b);

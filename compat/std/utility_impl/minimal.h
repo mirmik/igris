@@ -1,20 +1,21 @@
 #ifndef IGRIS_STD_UTILITY_MINIMAL_H
 #define IGRIS_STD_UTILITY_MINIMAL_H
+#include "../igris_std_config.hpp"
 
-#include <type_traits_impl/standalone.h>
+#include "../type_traits_impl/standalone.h"
 
-namespace std
+namespace IGRIS_STD_NS
 {
-    // std::declval
+    // IGRIS_STD_NS::declval
     template <class T>
-    typename std::add_rvalue_reference<T>::type declval() noexcept;
+    typename IGRIS_STD_NS::add_rvalue_reference<T>::type declval() noexcept;
 
-    // std::forward
+    // IGRIS_STD_NS::forward
     template <class T>
-    constexpr T &&forward(typename std::remove_reference<T>::type &t) noexcept;
+    constexpr T &&forward(typename IGRIS_STD_NS::remove_reference<T>::type &t) noexcept;
 
     template <class T>
-    constexpr T &&forward(typename std::remove_reference<T>::type &&t) noexcept;
+    constexpr T &&forward(typename IGRIS_STD_NS::remove_reference<T>::type &&t) noexcept;
 }
 
 #endif

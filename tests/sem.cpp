@@ -4,22 +4,22 @@
 #ifndef WIN32
 TEST_CASE("semaphore")
 {
-    sem_t sem;
+    igris_sem_t sem;
     int val;
-    sem_init(&sem, 0, 1);
+    igris_sem_init(&sem, 0, 1);
 
-    sem_wait(&sem);
-    sem_getvalue(&sem, &val);
+    igris_sem_wait(&sem);
+    igris_sem_getvalue(&sem, &val);
     CHECK_EQ(val, 0);
 
-    sem_post(&sem);
-    sem_getvalue(&sem, &val);
+    igris_sem_post(&sem);
+    igris_sem_getvalue(&sem, &val);
     CHECK_EQ(val, 1);
 
-    sem_post(&sem);
-    sem_getvalue(&sem, &val);
+    igris_sem_post(&sem);
+    igris_sem_getvalue(&sem, &val);
     CHECK_EQ(val, 2);
 
-    sem_destroy(&sem);
+    igris_sem_destroy(&sem);
 }
 #endif*/
