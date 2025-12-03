@@ -519,6 +519,13 @@ namespace IGRIS_STD_NS
         return buf;
     }
 
+    static inline IGRIS_STD_NS::string to_string(long double val)
+    {
+        char buf[64];
+        igris_ftoa(val, buf, 5);
+        return buf;
+    }
+
     template <> struct hash<string>
     {
         size_t operator()(const string &value) const noexcept
