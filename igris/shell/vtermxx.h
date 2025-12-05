@@ -1,12 +1,5 @@
-/**
-@file
-Компонент vterm реализует алгоритм обработки терминального ввода в виде
-автомата состояний и предназначен для реализации обработки терминального
-ввода в составе какого-либо процесса обработчика, или в качестве
-самостоятельного обработчика, если система не оперирует процессами.
-
-Компонент основан на машине состояний igris/shell/readline.
-*/
+// VT100-совместимый обработчик терминала для встраиваемых систем.
+// Реализует обработку ввода как машину состояний поверх igris::readline.
 
 #ifndef IGRIS_SHELL_VTERM_H
 #define IGRIS_SHELL_VTERM_H
@@ -15,63 +8,96 @@
 #include <igris/event/delegate.h>
 #include <igris/shell/readlinexx.h>
 
-#define VTERMXX_INIT_STEP (-1)
-
 namespace igris
 {
     class vtermxx
     {
-        igris::delegate<void, const char *, unsigned int> execute_callback = {};
-        igris::delegate<void, const char *, unsigned int> write_callback = {};
-        igris::delegate<void, int> signal_callback = {};
+    public:
+        using write_callback_t =
+            igris::delegate<void, const char *, unsigned int>;
+        using execute_callback_t =
+            igris::delegate<void, const char *, unsigned int>;
+        using signal_callback_t = igris::delegate<void, int>;
 
-        int state = 0;
-        uint8_t echo = 1;
-        const char *prefix_string = {};
-        igris::readline rl = {};
+        static constexpr int16_t INIT_STEP = -1;
+
+    private:
+        enum class State : int
+        {
+            ShowPrompt = 0,
+            AfterNewline = 1,
+            WaitInput = 2,
+            ProcessChar = 3
+        };
+
+        execute_callback_t _execute_callback = {};
+        write_callback_t _write_callback = {};
+        signal_callback_t _signal_callback = {};
+
+        State _state = State::ShowPrompt;
+        bool _echo = true;
+        const char *_prompt = "$ ";
+        readline _rl = {};
 
     public:
-        void init(unsigned int buffer_size, unsigned int history_size);
+        vtermxx() = default;
 
+        vtermxx(unsigned int buffer_size, unsigned int history_size)
+        {
+            init(buffer_size, history_size);
+        }
+
+        void init(unsigned int buffer_size, unsigned int history_size);
         void newdata(int16_t c);
+
+        void start()
+        {
+            newdata(INIT_STEP);
+        }
 
         void set_prompt(const char *str)
         {
-            prefix_string = str;
+            _prompt = str;
+        }
+        const char *prompt() const
+        {
+            return _prompt;
         }
 
-        void set_echo(uint8_t val)
+        void set_echo(bool enabled)
         {
-            echo = val;
+            _echo = enabled;
+        }
+        bool echo() const
+        {
+            return _echo;
         }
 
-        void set_write_callback(
-            igris::delegate<void, const char *, unsigned int> callback)
-
+        void set_write_callback(write_callback_t cb)
         {
-            write_callback = callback;
+            _write_callback = cb;
+        }
+        void set_execute_callback(execute_callback_t cb)
+        {
+            _execute_callback = cb;
+        }
+        void set_signal_callback(signal_callback_t cb)
+        {
+            _signal_callback = cb;
         }
 
-        void set_execute_callback(
-            igris::delegate<void, const char *, unsigned int> callback)
-
+        [[deprecated("Использовать start()")]] void init_step()
         {
-            execute_callback = callback;
-        }
-
-        void set_signal_callback(igris::delegate<void, int> callback)
-        {
-            signal_callback = callback;
-        }
-
-        void init_step()
-        {
-            newdata(VTERMXX_INIT_STEP);
+            start();
         }
 
     private:
-        void newline();
+        void execute_line();
+        void write(const char *data, unsigned int len);
+        void write_str(const char *str);
+        void handle_readline_result(ReadlineResult result, char c);
     };
+
 }
 
 #endif

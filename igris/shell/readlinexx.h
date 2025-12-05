@@ -1,15 +1,6 @@
-/**
-@file
-Расширение драйвера datastruct/sline, реализующее логику работы командной строки
-в парадигме readline. Драйвер умеет преобразовывать управляющие входные
-последовательности в команды sline и реализует механизм работы с историей
-предыдущих команд.
-
-Драйвер реализован в виде callback-less машины состояний и предполагает
-наличие внешнего уровня, интерпретирующего возвращаемые машиной статусы.
-
-TODO: Вынести драйвер работы с историей как отдельный объект.
-*/
+// Readline-машина состояний для встраиваемых терминалов.
+// Преобразует escape-последовательности в команды sline и реализует историю
+// команд.
 
 #ifndef IGRIS_SHELL_READLINE_H
 #define IGRIS_SHELL_READLINE_H
@@ -17,66 +8,71 @@ TODO: Вынести драйвер работы с историей как от
 #include <algorithm>
 #include <igris/container/sline.h>
 #include <igris/container/unbounded_array.h>
-#include <igris/defs/ascii.h>
 #include <igris/util/bug.h>
-
-#define READLINE_OVERFLOW -1
-
-#define READLINE_NOTHING 0
-#define READLINE_ECHOCHAR 1
-
-#define READLINE_NEWLINE 2
-#define READLINE_BACKSPACE 3
-#define READLINE_DELETE 4
-#define READLINE_HOME 5
-#define READLINE_END 6
-
-#define READLINE_UPDATELINE 7
-
-#define READLINE_LEFT 8
-#define READLINE_RIGHT 9
-
-#define READLINE_STATE_NORMAL 0
-#define READLINE_STATE_ESCSEQ 1
-#define READLINE_STATE_ESCSEQ_MOVE 2
-#define READLINE_STATE_ESCSEQ_MOVE_WAIT_7E 3
 
 namespace igris
 {
+    // Коды возврата readline::newdata()
+    enum class ReadlineResult : int
+    {
+        Overflow = -1,
+        Nothing = 0,
+        EchoChar = 1,
+        Newline = 2,
+        Backspace = 3,
+        Delete = 4,
+        Home = 5,
+        End = 6,
+        UpdateLine = 7,
+        Left = 8,
+        Right = 9
+    };
+
+    // ASCII управляющие символы
+    struct Ascii
+    {
+        static constexpr char BS = '\b';
+        static constexpr char DEL = 0x7F; // Многие терминалы шлют DEL вместо BS
+        static constexpr char ESC = 0x1B;
+        static constexpr char CR = '\r';
+        static constexpr char LF = '\n';
+    };
+
     class readline
     {
+        // Состояния автомата
+        enum class State : int
+        {
+            Normal = 0,
+            EscSeq = 1,      // Получен ESC, ждём '['
+            EscSeqMove = 2,  // Получен ESC[, ждём команду
+            EscSeqWait7E = 3 // Ждём '~'
+        };
+
         igris::sline _line = {};
-        int _state = 0;
+        State _state = State::Normal;
 
         char _last = 0;
-        int _lastsize = 0;
-
-        // char *_history_space; // Указатель на буффер истории.
-        // uint8_t _history_size; // Количество строк в буффере истории.
+        size_t _lastsize = 0;
 
         igris::unbounded_array<char> _history_space = {};
         igris::unbounded_array<char> _buffer_space = {};
 
-        uint8_t _headhist = 0; // Индекс в массиве, куда будет перезаписываться
-                               // новая строка истории.
-        uint8_t _curhist = 0; // Индекс выбора строки истории (0-пустая,
-                              // 1-последняя, 2-предпоследняя и т.д.)
+        uint8_t _headhist = 0; // Индекс для записи следующей строки истории
+        uint8_t _curhist = 0; // Текущий выбор истории (0 = текущий ввод)
 
     public:
-        size_t lastsize()
-        {
-            return _lastsize;
-        }
+        readline() = default;
 
-        sline &line()
+        readline(size_t maxsize, size_t history_deep)
         {
-            return _line;
+            init(maxsize, history_deep);
         }
 
         void init(size_t maxsize, size_t history_deep)
         {
             _last = 0;
-            _state = 0;
+            _state = State::Normal;
             _curhist = 0;
             _headhist = 0;
             _buffer_space.resize(maxsize);
@@ -86,51 +82,206 @@ namespace igris
             _line.init(maxsize);
         }
 
+        // Обработка входного символа
+        ReadlineResult newdata(char c)
+        {
+            ReadlineResult result;
+
+            switch (_state)
+            {
+            case State::Normal:
+                result = process_normal(c);
+                break;
+            case State::EscSeq:
+                result = process_escape_seq(c);
+                break;
+            case State::EscSeqMove:
+                result = process_escape_move(c);
+                break;
+            case State::EscSeqWait7E:
+                result = process_escape_wait_7e(c);
+                break;
+            default:
+                _state = State::Normal;
+                result = ReadlineResult::Nothing;
+            }
+
+            _last = c;
+            return result;
+        }
+
+        // Сброс буфера для новой строки
         void newline_reset()
         {
-            // Когда случается новая линия, сбрасываем буффер ввода и скидываем
-            // переключатель строки истории на последнюю строку.
             _line.reset();
             _curhist = 0;
         }
 
-        size_t history_size()
+        sline &line()
         {
+            return _line;
+        }
+        const sline &line() const
+        {
+            return _line;
+        }
+        size_t lastsize() const
+        {
+            return _lastsize;
+        }
+
+        // Копирование текущей строки во внешний буфер
+        int linecpy(char *data, size_t size) const
+        {
+            int len = static_cast<int>(size) - 1 >
+                              static_cast<int>(_line.current_size())
+                          ? static_cast<int>(_line.current_size())
+                          : static_cast<int>(size) - 1;
+            memcpy(data, _line.data(), len);
+            data[len] = 0;
+            return len;
+        }
+
+    private:
+        ReadlineResult process_normal(char c)
+        {
+            switch (c)
+            {
+            case Ascii::CR:
+            case Ascii::LF:
+                return process_newline(c);
+            case Ascii::BS:
+            case Ascii::DEL:
+                return process_backspace();
+            case Ascii::ESC:
+                _state = State::EscSeq;
+                return ReadlineResult::Nothing;
+            default:
+                _line.newdata(c);
+                return ReadlineResult::EchoChar;
+            }
+        }
+
+        ReadlineResult process_newline(char c)
+        {
+            // Игнорируем вторую часть CR+LF / LF+CR
+            if ((_last == Ascii::LF || _last == Ascii::CR) && _last != c)
+            {
+                _last = 0;
+                return ReadlineResult::Nothing;
+            }
+
+            // Сохраняем в историю если есть что сохранять и отличается от
+            // последней
+            if (_history_space.size() > 0 && _line.current_size() > 0 &&
+                is_different_from_last_history())
+            {
+                push_current_line_to_history();
+            }
+
+            _curhist = 0;
+            return ReadlineResult::Newline;
+        }
+
+        ReadlineResult process_backspace()
+        {
+            int ret = _line.backspace(1);
+            return ret ? ReadlineResult::Backspace : ReadlineResult::Nothing;
+        }
+
+        ReadlineResult process_escape_seq(char c)
+        {
+            if (c == 0x5B)
+                _state = State::EscSeqMove;
+            else
+                _state = State::Normal;
+            return ReadlineResult::Nothing;
+        }
+
+        ReadlineResult process_escape_move(char c)
+        {
+            ReadlineResult result = ReadlineResult::Nothing;
+
+            switch (c)
+            {
+            case 0x41: // Вверх
+                if (history_up())
+                    result = ReadlineResult::UpdateLine;
+                break;
+            case 0x42: // Вниз
+                if (history_down())
+                    result = ReadlineResult::UpdateLine;
+                break;
+            case 0x43: // Вправо
+                if (_line.right())
+                    result = ReadlineResult::Right;
+                break;
+            case 0x44: // Влево
+                if (_line.left())
+                    result = ReadlineResult::Left;
+                break;
+            case 0x33: // Delete (ESC [ 3 ~)
+                if (_line.del(1))
+                    result = ReadlineResult::Delete;
+                _state = State::EscSeqWait7E;
+                return result;
+            case 0x48: // Home
+                // TODO
+                break;
+            case 0x46: // End
+                // TODO
+                break;
+            }
+
+            _state = State::Normal;
+            return result;
+        }
+
+        ReadlineResult process_escape_wait_7e(char c)
+        {
+            (void)c;
+            _state = State::Normal;
+            return ReadlineResult::Nothing;
+        }
+
+        // --- История ---
+
+        size_t history_size() const
+        {
+            if (_buffer_space.size() == 0)
+                return 0;
             return _history_space.size() / _buffer_space.size();
         }
 
-        // Указатель на строку, взятую от последней пришедшей. (1 - последняя)
         char *history_pointer(int num)
         {
             int idx = (_headhist + history_size() - num) % history_size();
             return _history_space.data() + idx * _buffer_space.size();
         }
 
-        // Вернуть указатель на строку истории, на которую указывает _curhist.
-        // Вызывается на кнопки вверх/вниз
+        const char *history_pointer(int num) const
+        {
+            int idx = (_headhist + history_size() - num) % history_size();
+            return _history_space.data() + idx * _buffer_space.size();
+        }
+
         char *current_history_pointer()
         {
             return history_pointer(_curhist);
         }
 
-        void _push_line_to_history(const char *str, size_t len)
+        bool is_different_from_last_history() const
+        {
+            return !_line.equal(history_pointer(1));
+        }
+
+        void push_current_line_to_history()
         {
             char *ptr =
                 _history_space.data() + _headhist * _buffer_space.size();
-            memcpy(ptr, str, len);
-            *(ptr + len) = '\0';
+            memcpy(ptr, _line.data(), _line.current_size());
+            ptr[_line.current_size()] = '\0';
             _headhist = (_headhist + 1) % history_size();
-        }
-
-        void _push_line_to_history(const char *str)
-        {
-            _push_line_to_history(str, strlen(str));
-        }
-
-        // Обновить историю, записав туда новую строку.
-        void _push_current_line_to_history()
-        {
-            _push_line_to_history(_line.data(), _line.current_size());
         }
 
         void load_history_line()
@@ -144,182 +295,44 @@ namespace igris
                 return;
             }
 
-            unsigned int sz = (unsigned int)strlen(current_history_pointer());
+            const char *hist = current_history_pointer();
+            if (hist[0] == '\0')
+                return;
 
-            memcpy(_line.data(), current_history_pointer(), sz);
+            size_t sz = strlen(hist);
+            memcpy(_line.data(), hist, sz);
             _line.set_size_and_cursor(sz, sz);
         }
 
-        int history_up()
+        bool history_up()
         {
-            // DTRACE();
-            if (_history_space.size() == 0)
-                return 0;
+            if (history_size() == 0)
+                return false;
+            if (_curhist >= history_size())
+                return false;
 
-            if (_curhist == history_size())
-                return 0;
+            const char *next_hist = history_pointer(_curhist + 1);
+            if (next_hist[0] == '\0')
+                return false;
 
             _curhist++;
-
             load_history_line();
-            return 1;
+            return true;
         }
 
-        int is_not_same_as_last()
+        bool history_down()
         {
-            return !_line.equal(history_pointer(1));
-        }
-
-        int history_down()
-        {
-            if (_history_space.size() == 0)
-                return 0;
-
+            if (history_size() == 0)
+                return false;
             if (_curhist == 0)
-                return 0;
+                return false;
 
             _curhist--;
-
             load_history_line();
-            return 1;
-        }
-
-        int newdata(char c)
-        {
-            int ret;
-            int retcode;
-
-            switch (_state)
-            {
-            case READLINE_STATE_NORMAL:
-                switch (c)
-                {
-                case '\r':
-                case '\n':
-                    // TODO: Возможно тут некорректно отрабатывается комбинация
-                    // rnrnrnrn
-                    if ((_last == '\n' || _last == '\r') && _last != c)
-                    {
-                        _last = 0;
-                        retcode = READLINE_NOTHING;
-                    }
-                    else
-                    {
-                        if (_history_space.size() && _line.current_size() &&
-                            is_not_same_as_last())
-                        {
-                            // Если есть буффер истории и введенная строка не
-                            // нулевая и отличается от последней, сохраняем
-                            // строку в историю.
-                            _push_current_line_to_history();
-                        }
-                        _curhist = 0;
-
-                        retcode = READLINE_NEWLINE;
-                    }
-                    break;
-
-                case ASCII_BS:
-                    ret = _line.backspace(1);
-                    retcode = ret ? READLINE_BACKSPACE : READLINE_NOTHING;
-                    break;
-
-                case ASCII_ESC:
-                    _state = READLINE_STATE_ESCSEQ;
-                    retcode = READLINE_NOTHING;
-                    break;
-
-                default:
-                    _line.newdata(c);
-                    retcode = READLINE_ECHOCHAR;
-                    break;
-                }
-                break;
-
-            case READLINE_STATE_ESCSEQ:
-                switch (c)
-                {
-                case 0x5B:
-                    _state = READLINE_STATE_ESCSEQ_MOVE;
-                    break;
-
-                default:
-                    // dprln("?warning in readline?");
-                    _state = READLINE_STATE_NORMAL;
-                    break;
-                }
-                retcode = READLINE_NOTHING;
-                break;
-
-            case READLINE_STATE_ESCSEQ_MOVE:
-                retcode = READLINE_NOTHING;
-                switch (c)
-                {
-                case 0x41: // up
-                    if (history_up())
-                        retcode = READLINE_UPDATELINE;
-                    break;
-                case 0x42: // down
-                    if (history_down())
-                        retcode = READLINE_UPDATELINE;
-                    break;
-                case 0x43: // right
-                    ret = _line.right();
-                    if (ret)
-                        retcode = READLINE_RIGHT;
-                    break;
-                case 0x44: // left
-                    ret = _line.left();
-                    if (ret)
-                        retcode = READLINE_LEFT;
-                    break;
-                case 0x33:
-                    ret = _line.del(1);
-                    if (ret)
-                        retcode = READLINE_DELETE;
-                    _state = READLINE_STATE_ESCSEQ_MOVE_WAIT_7E;
-                    _last = c;
-                    return retcode;
-                default:
-                    // dpr("unr esc: hex:");
-                    // dprhex(c);
-                    // dpr(" dec:");
-                    // dprln((int)c);
-                    ;
-                }
-                _state = READLINE_STATE_NORMAL;
-                break;
-
-            case READLINE_STATE_ESCSEQ_MOVE_WAIT_7E:
-                // if (c != '\x7E')
-                //    dprln("?esc?");
-                _state = READLINE_STATE_NORMAL;
-                retcode = READLINE_NOTHING;
-                break;
-
-            default:
-                // автомат находится в непредусмотренном состоянии
-                // сбрасываем состояние и завершаем автомат.
-                _state = READLINE_STATE_NORMAL;
-                retcode = READLINE_NOTHING;
-            }
-
-            _last = c;
-            return retcode;
-        }
-
-        int linecpy(char *data, size_t size)
-        {
-            int len = (int)size - 1 > (int)_line.current_size()
-                          ? (int)_line.current_size()
-                          : (int)size - 1;
-
-            memcpy(data, _line.data(), len);
-            data[len] = 0;
-
-            return len;
+            return true;
         }
     };
+
 }
 
 #endif

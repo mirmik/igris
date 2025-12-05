@@ -2,210 +2,172 @@
 #include <igris/defs/vt100.h>
 #include <igris/shell/vtermxx.h>
 
-void igris::vtermxx::init(unsigned int buffer_size, unsigned int history_size)
+namespace igris
 {
-    state = 0;
-    echo = 1;
-    prefix_string = "$ ";
 
-    write_callback = NULL;
-    execute_callback = NULL;
-    signal_callback = NULL;
-
-    rl.init(buffer_size, history_size);
-}
-
-void igris::vtermxx::newline()
-{
-    execute_callback(rl.line().getline(), rl.line().current_size());
-    state = 1;
-}
-
-void igris::vtermxx::newdata(int16_t input_c)
-{
-    char c = 0;
-    int ret;
-    int return_flag = 0;
-
-    while (return_flag == 0)
+    void vtermxx::init(unsigned int buffer_size, unsigned int history_size)
     {
-        switch (state)
+        _state = State::ShowPrompt;
+        _echo = true;
+        _prompt = "$ ";
+        _write_callback = {};
+        _execute_callback = {};
+        _signal_callback = {};
+        _rl.init(buffer_size, history_size);
+    }
+
+    void vtermxx::write(const char *data, unsigned int len)
+    {
+        if (_write_callback)
+            _write_callback(data, len);
+    }
+
+    void vtermxx::write_str(const char *str)
+    {
+        write(str, static_cast<unsigned int>(strlen(str)));
+    }
+
+    void vtermxx::execute_line()
+    {
+        if (_execute_callback)
+            _execute_callback(_rl.line().getline(), _rl.line().current_size());
+        _state = State::AfterNewline;
+    }
+
+    void vtermxx::newdata(int16_t input_c)
+    {
+        char c = 0;
+
+        while (true)
         {
-        case 0:
-        case 1:
-            rl.newline_reset();
-            if (echo)
+            switch (_state)
             {
-                write_callback(prefix_string,
-                               (unsigned int)strlen(prefix_string));
-            }
-            state = 2;
-            break;
-
-        case 2:
-            if (input_c < 0)
-            {
-                return_flag = 1;
+            case State::ShowPrompt:
+            case State::AfterNewline:
+                _rl.newline_reset();
+                if (_echo)
+                    write_str(_prompt);
+                _state = State::WaitInput;
                 break;
-            }
-            else
-            {
-                c = (char)input_c;
+
+            case State::WaitInput:
+                if (input_c < 0)
+                    return;
+                c = static_cast<char>(input_c);
                 input_c = -1;
-                state = 3;
-            }
-            break;
-
-        case 3:
-            // CTRL + C
-            if (c == 3)
-            {
-                if (echo)
-                    write_callback("^C\r\n", 4);
-                state = 1;
-
-                if (signal_callback)
-                    signal_callback(SIGINT);
-                break;
-            }
-
-            ret = rl.newdata(c);
-
-            switch (ret)
-            {
-            case READLINE_ECHOCHAR:
-            {
-                if (echo)
-                    write_callback(&c, 1);
-
-                if (!rl.line().in_rightpos())
-                {
-                    char buf[16];
-
-                    if (echo)
-                    {
-                        write_callback(rl.line().rightpart(),
-                                       rl.line().rightsize());
-
-                        ret = vt100_left(buf, rl.line().rightsize());
-
-                        write_callback(buf, ret);
-                    }
-                }
-            }
-            break;
-
-            case READLINE_NEWLINE:
-                state = 1;
-                if (echo)
-                    write_callback("\r\n", 2);
-                newline();
-                return_flag = 1;
-                goto __recycle__;
-
-            case READLINE_BACKSPACE:
-            {
-                if (echo)
-                {
-                    write_callback(VT100_LEFT, 3);
-
-                    write_callback(VT100_ERASE_LINE_AFTER_CURSOR, 3);
-                }
-                if (!rl.line().in_rightpos())
-                {
-                    char buf[16];
-
-                    if (echo)
-                    {
-                        write_callback(rl.line().rightpart(),
-                                       rl.line().rightsize());
-
-                        ret = vt100_left(buf, rl.line().rightsize());
-
-                        write_callback(buf, ret);
-                    }
-                }
-
-                break;
-            }
-
-            case READLINE_RIGHT:
-                if (echo)
-                    write_callback(VT100_RIGHT, 3);
+                _state = State::ProcessChar;
                 break;
 
-            case READLINE_LEFT:
-                if (echo)
-                    write_callback(VT100_LEFT, 3);
-                break;
-
-            case READLINE_NOTHING:
-                break;
-
-            case READLINE_UPDATELINE:
+            case State::ProcessChar:
             {
-                char buf[16];
-
-                if (rl.lastsize())
+                // Ctrl+C
+                if (c == 0x03)
                 {
-                    if (echo)
-                    {
-                        ret = vt100_left(buf, rl.lastsize());
-
-                        write_callback(buf, ret);
-
-                        write_callback(VT100_ERASE_LINE_AFTER_CURSOR, 3);
-                    }
+                    if (_echo)
+                        write("^C\r\n", 4);
+                    _state = State::AfterNewline;
+                    if (_signal_callback)
+                        _signal_callback(SIGINT);
+                    break;
                 }
 
-                if (rl.line().data())
-                    if (echo)
-                        write_callback(rl.line().data(),
-                                       rl.line().current_size());
+                ReadlineResult result = _rl.newdata(c);
+                handle_readline_result(result, c);
 
-                break;
-            }
+                if (result == ReadlineResult::Newline)
+                    return;
 
-            case READLINE_DELETE:
-            {
-                if (echo)
-                {
-                    write_callback(VT100_ERASE_LINE_AFTER_CURSOR, 3);
-                }
-                if (!rl.line().in_rightpos())
-                {
-                    char buf[16];
-
-                    if (echo)
-                    {
-                        write_callback(rl.line().rightpart(),
-                                       rl.line().rightsize());
-
-                        ret = vt100_left(buf, rl.line().rightsize());
-
-                        write_callback(buf, ret);
-                    }
-                }
-
+                _state = State::WaitInput;
                 break;
             }
 
             default:
-                // readline вернул странный код
-                // делаем вид, что всё впорядке.
-                ;
+                _state = State::ShowPrompt;
+                return;
+            }
+        }
+    }
+
+    void vtermxx::handle_readline_result(ReadlineResult result, char c)
+    {
+        switch (result)
+        {
+        case ReadlineResult::EchoChar:
+            if (_echo)
+                write(&c, 1);
+
+            // Перерисовка правой части если курсор не в конце
+            if (!_rl.line().in_rightpos() && _echo)
+            {
+                write(_rl.line().rightpart(), _rl.line().rightsize());
+                char buf[16];
+                int len = vt100_left(buf, _rl.line().rightsize());
+                write(buf, len);
+            }
+            break;
+
+        case ReadlineResult::Newline:
+            if (_echo)
+                write("\r\n", 2);
+            execute_line();
+            break;
+
+        case ReadlineResult::Backspace:
+            if (_echo)
+            {
+                write(VT100_LEFT, 3);
+                write(VT100_ERASE_LINE_AFTER_CURSOR, 3);
             }
 
-            state = 2;
+            if (!_rl.line().in_rightpos() && _echo)
+            {
+                write(_rl.line().rightpart(), _rl.line().rightsize());
+                char buf[16];
+                int len = vt100_left(buf, _rl.line().rightsize());
+                write(buf, len);
+            }
+            break;
+
+        case ReadlineResult::Delete:
+            if (_echo)
+                write(VT100_ERASE_LINE_AFTER_CURSOR, 3);
+
+            if (!_rl.line().in_rightpos() && _echo)
+            {
+                write(_rl.line().rightpart(), _rl.line().rightsize());
+                char buf[16];
+                int len = vt100_left(buf, _rl.line().rightsize());
+                write(buf, len);
+            }
+            break;
+
+        case ReadlineResult::Right:
+            if (_echo)
+                write(VT100_RIGHT, 3);
+            break;
+
+        case ReadlineResult::Left:
+            if (_echo)
+                write(VT100_LEFT, 3);
+            break;
+
+        case ReadlineResult::UpdateLine:
+            // Навигация по истории — перерисовка всей строки
+            if (_rl.lastsize() > 0 && _echo)
+            {
+                char buf[16];
+                int len = vt100_left(buf, _rl.lastsize());
+                write(buf, len);
+                write(VT100_ERASE_LINE_AFTER_CURSOR, 3);
+            }
+
+            if (_rl.line().data() && _rl.line().current_size() > 0 && _echo)
+                write(_rl.line().data(), _rl.line().current_size());
             break;
 
         default:
-            // автомат находится в непредусмотренном состоянии
-            // сбрасываем состояние и завершаем итерацию.
-            state = 0;
-            return;
+            break;
         }
-
-    __recycle__:;
     }
+
 }
