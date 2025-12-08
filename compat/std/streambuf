@@ -10,6 +10,7 @@ namespace IGRIS_STD_NS
     template <class CharT, class Traits = IGRIS_STD_NS::char_traits<CharT>>
     class basic_streambuf
     {
+    public:
         using int_type = int;
         using char_type = CharT;
 
