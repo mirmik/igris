@@ -1,6 +1,7 @@
 #ifndef IGRIS_TYPE_TRAITS_IMPL_IS_CONSTRUCTIBLE_H
 #define IGRIS_TYPE_TRAITS_IMPL_IS_CONSTRUCTIBLE_H
 #include "../igris_std_config.hpp"
+#include "is.h"
 
 namespace IGRIS_STD_NS
 {

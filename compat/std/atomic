@@ -2,15 +2,30 @@
 #define IGRIS_STD_ATOMIC_H
 #include "igris_std_config.hpp"
 
+#ifdef IGRIS_STD_AS_STD
+#include <atomic>
+#else
 namespace IGRIS_STD_NS
 {
+    enum memory_order
+    {
+        memory_order_relaxed,
+        memory_order_consume,
+        memory_order_acquire,
+        memory_order_release,
+        memory_order_acq_rel,
+        memory_order_seq_cst
+    };
+
     template <typename T> class atomic
     {
-        T val;
+        T val = 0;
 
     public:
-        atomic() {}
-        atomic(T val) : val(val) {}
+        atomic() = default;
+        constexpr atomic(T v) : val(v) {}
+        atomic(const atomic &) = delete;
+        atomic &operator=(const atomic &) = delete;
 
         operator T() const
         {
@@ -26,59 +41,120 @@ namespace IGRIS_STD_NS
         {
             return val++;
         }
+
+        T load(memory_order = memory_order_seq_cst) const
+        {
+            return val;
+        }
+
+        void store(T desired, memory_order = memory_order_seq_cst)
+        {
+            val = desired;
+        }
+
+        T exchange(T desired, memory_order = memory_order_seq_cst)
+        {
+            T old = val;
+            val = desired;
+            return old;
+        }
+
+        T fetch_add(T arg, memory_order = memory_order_seq_cst)
+        {
+            T old = val;
+            val += arg;
+            return old;
+        }
+
+        T fetch_sub(T arg, memory_order = memory_order_seq_cst)
+        {
+            T old = val;
+            val -= arg;
+            return old;
+        }
+
+        T fetch_and(T arg, memory_order = memory_order_seq_cst)
+        {
+            T old = val;
+            val &= arg;
+            return old;
+        }
+
+        T fetch_or(T arg, memory_order = memory_order_seq_cst)
+        {
+            T old = val;
+            val |= arg;
+            return old;
+        }
+
+        T fetch_xor(T arg, memory_order = memory_order_seq_cst)
+        {
+            T old = val;
+            val ^= arg;
+            return old;
+        }
     };
 
-    template <typename T> T load(T &val)
+    template <typename T>
+    T load(T &val, memory_order = memory_order_seq_cst)
     {
         return val;
     }
 
-    template <typename T> void store(T &val, T newval)
+    template <typename T>
+    void store(T &val, T newval, memory_order = memory_order_seq_cst)
     {
         val = newval;
     }
 
-    template <typename T> T exchange(T &val, T newval)
+    template <typename T>
+    T exchange(T &val, T newval, memory_order = memory_order_seq_cst)
     {
         T oldval = val;
         val = newval;
         return oldval;
     }
 
-    template <typename T> T fetch_add(T &val, T addval)
+    template <typename T>
+    T fetch_add(T &val, T addval, memory_order = memory_order_seq_cst)
     {
         T oldval = val;
         val += addval;
         return oldval;
     }
 
-    template <typename T> T fetch_sub(T &val, T subval)
+    template <typename T>
+    T fetch_sub(T &val, T subval, memory_order = memory_order_seq_cst)
     {
         T oldval = val;
         val -= subval;
         return oldval;
     }
 
-    template <typename T> T fetch_and(T &val, T andval)
+    template <typename T>
+    T fetch_and(T &val, T andval, memory_order = memory_order_seq_cst)
     {
         T oldval = val;
         val &= andval;
         return oldval;
     }
 
-    template <typename T> T fetch_or(T &val, T orval)
+    template <typename T>
+    T fetch_or(T &val, T orval, memory_order = memory_order_seq_cst)
     {
         T oldval = val;
         val |= orval;
         return oldval;
     }
 
-    template <typename T> T fetch_xor(T &val, T xorval)
+    template <typename T>
+    T fetch_xor(T &val, T xorval, memory_order = memory_order_seq_cst)
     {
         T oldval = val;
         val ^= xorval;
         return oldval;
     }
 }
+#endif
 
 #endif
