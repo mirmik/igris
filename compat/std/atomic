@@ -2,9 +2,6 @@
 #define IGRIS_STD_ATOMIC_H
 #include "igris_std_config.hpp"
 
-#ifdef IGRIS_STD_AS_STD
-#include <atomic>
-#else
 namespace IGRIS_STD_NS
 {
     enum memory_order
@@ -155,6 +152,5 @@ namespace IGRIS_STD_NS
         return oldval;
     }
 }
-#endif
 
 #endif
