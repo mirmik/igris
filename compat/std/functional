@@ -5,8 +5,10 @@
 #include <cstddef>
 
 #include "type_traits_impl/is.h"
+#include "type_traits_impl/decay.h"
 #include "utility_impl/minimal.h"
 #include "type_traits_impl/result.h"
+#include "move.h"
 
 namespace IGRIS_STD_NS
 {
@@ -525,24 +527,42 @@ namespace IGRIS_STD_NS
     class function<R(Args...)> : public function_base
     {
     public:
-        function() : m_invoker(nullptr) {}
-        function(IGRIS_STD_NS::nullptr_t) : m_invoker(nullptr) {}
-        template <class F> function(F f) : m_invoker(new invoker<F>(f)) {}
-        function(const function &other) : m_invoker(other.m_invoker->clone()) {}
-        function(function &&other) : m_invoker(other.m_invoker)
+        using result_type = R;
+
+        function() noexcept : m_invoker(nullptr) {}
+        function(IGRIS_STD_NS::nullptr_t) noexcept : m_invoker(nullptr) {}
+
+        template <class F,
+                  class = typename IGRIS_STD_NS::enable_if<
+                      !IGRIS_STD_NS::is_same<typename IGRIS_STD_NS::decay<F>::type,
+                                             function>::value>::type>
+        function(F &&f)
+            : m_invoker(new invoker<typename IGRIS_STD_NS::decay<F>::type>(
+                  IGRIS_STD_NS::forward<F>(f)))
+        {
+        }
+
+        function(const function &other)
+            : m_invoker(other.m_invoker ? other.m_invoker->clone() : nullptr)
+        {
+        }
+
+        function(function &&other) noexcept : m_invoker(other.m_invoker)
         {
             other.m_invoker = nullptr;
         }
+
         function &operator=(const function &other)
         {
             if (this != &other)
             {
                 delete m_invoker;
-                m_invoker = other.m_invoker->clone();
+                m_invoker = other.m_invoker ? other.m_invoker->clone() : nullptr;
             }
             return *this;
         }
-        function &operator=(function &&other)
+
+        function &operator=(function &&other) noexcept
         {
             if (this != &other)
             {
@@ -552,17 +572,46 @@ namespace IGRIS_STD_NS
             }
             return *this;
         }
+
+        function &operator=(IGRIS_STD_NS::nullptr_t) noexcept
+        {
+            delete m_invoker;
+            m_invoker = nullptr;
+            return *this;
+        }
+
+        template <class F,
+                  class = typename IGRIS_STD_NS::enable_if<
+                      !IGRIS_STD_NS::is_same<typename IGRIS_STD_NS::decay<F>::type,
+                                             function>::value>::type>
+        function &operator=(F &&f)
+        {
+            delete m_invoker;
+            m_invoker = new invoker<typename IGRIS_STD_NS::decay<F>::type>(
+                IGRIS_STD_NS::forward<F>(f));
+            return *this;
+        }
+
         ~function()
         {
             delete m_invoker;
         }
+
         R operator()(Args... args) const
         {
-            return m_invoker->invoke(args...);
+            return m_invoker->invoke(IGRIS_STD_NS::forward<Args>(args)...);
         }
-        explicit operator bool() const
+
+        explicit operator bool() const noexcept
         {
             return m_invoker != nullptr;
+        }
+
+        void swap(function &other) noexcept
+        {
+            invoker_base *tmp = m_invoker;
+            m_invoker = other.m_invoker;
+            other.m_invoker = tmp;
         }
 
     private:
@@ -570,25 +619,35 @@ namespace IGRIS_STD_NS
         {
             virtual ~invoker_base() {}
             virtual invoker_base *clone() const = 0;
-            virtual R invoke(Args...) const = 0;
+            virtual R invoke(Args &&...) const = 0;
         };
 
         template <class F> struct invoker : public invoker_base
         {
-            invoker(F f) : m_f(f) {}
-            invoker_base *clone() const
+            invoker(const F &f) : m_f(f) {}
+            invoker(F &&f) : m_f(IGRIS_STD_NS::move(f)) {}
+
+            invoker_base *clone() const override
             {
                 return new invoker(m_f);
             }
-            R invoke(Args... args) const
+
+            R invoke(Args &&... args) const override
             {
-                return m_f(args...);
+                return m_f(IGRIS_STD_NS::forward<Args>(args)...);
             }
-            F m_f;
+
+            mutable F m_f;
         };
 
         invoker_base *m_invoker;
     };
+
+    template <class R, class... Args>
+    void swap(function<R(Args...)> &lhs, function<R(Args...)> &rhs) noexcept
+    {
+        lhs.swap(rhs);
+    }
 }
 
 // These are SGI extensions which are checked for by some conformance checks.

@@ -4,6 +4,7 @@
 
 #include "is.h"
 #include "standalone.h"
+#include "../utility_impl/minimal.h"
 
 namespace IGRIS_STD_NS
 {
