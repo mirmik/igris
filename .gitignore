@@ -79,3 +79,5 @@ tests/build
 .ninja_*
 
 jjj
+
+.codex
