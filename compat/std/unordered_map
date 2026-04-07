@@ -464,6 +464,11 @@ namespace IGRIS_STD_NS
             return it->second;
         }
 
+        size_type count(const key_type &key) const
+        {
+            return find(key) != cend() ? 1 : 0;
+        }
+
         size_type erase(const key_type &key)
         {
             if (m_bucket_count == 0)

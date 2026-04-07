@@ -2,7 +2,6 @@
 #define GXX_STD_MOVE_H
 #include "igris_std_config.hpp"
 
-#include <type_traits>
 #include "type_traits_impl/standalone.h"
 
 namespace IGRIS_STD_NS
