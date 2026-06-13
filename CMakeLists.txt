@@ -1,7 +1,14 @@
 cmake_minimum_required(VERSION 3.12)
 project(igris)
 
-message("${CMAKE_INSTALL_INCLUDEDIR}/igris")
+include(GNUInstallDirs)
+
+set(IGRIS_TOP_LEVEL OFF)
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+	set(IGRIS_TOP_LEVEL ON)
+endif()
+
+option(IGRIS_BUILD_TESTS "Build igris tests" ${IGRIS_TOP_LEVEL})
 
 # Используем CONFIGURE_DEPENDS чтобы cmake автоматически 
 # перезапускался при изменении файлов
@@ -75,10 +82,10 @@ list(APPEND SOURCES_TEST
     ${CMAKE_CURRENT_SOURCE_DIR}/tests/support/test_wait.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/tests/support/cooperative_threads_test.cpp)
 
-if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
+if(IGRIS_TOP_LEVEL)
 
 	set(CMAKE_VERBOSE_MAKEFILE on )
-	set(CMAKE_CC_STANDARD 11)
+	set(CMAKE_C_STANDARD 11)
 	set(CMAKE_CXX_STANDARD 20)
 	
 	if (${STATIC_LIBS})
@@ -91,16 +98,20 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 	endif()
 	
         add_library(igris SHARED ${IGRIS_SOURCES} ${PLATFORM_SOURCES} igris/dprint/dprint_stdout.c)
-        target_include_directories(igris PRIVATE .)
-	
-	if (NOT DEFINED WITHOUT_TESTS)
-                add_executable(igris_test ${SOURCES_TEST})
-                target_include_directories(igris_test PRIVATE . tests)
-                target_compile_definitions(igris_test PRIVATE IGRIS_FORCE_INTERNAL_SEMAPHORE=1)
-		#target_link_libraries(igris_test rt pthread)
-		target_link_libraries(igris_test pthread)
-		#target_link_libraries(igris_test)
-	endif()
+        target_include_directories(igris
+			PUBLIC
+				$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+				$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+		)
+		
+		if (IGRIS_BUILD_TESTS)
+	                add_executable(igris_test ${SOURCES_TEST})
+	                target_include_directories(igris_test PRIVATE . tests)
+	                target_compile_definitions(igris_test PRIVATE IGRIS_FORCE_INTERNAL_SEMAPHORE=1)
+			#target_link_libraries(igris_test rt pthread)
+			target_link_libraries(igris_test pthread)
+			#target_link_libraries(igris_test)
+		endif()
 
 	#set_target_properties(igris PROPERTIES PUBLIC_HEADER 
 	#	"${IGRIS_HEADERS}"
@@ -109,26 +120,30 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 	if (WIN32)	
 		install (TARGETS ${PROJECT_NAME}
 		EXPORT ${PROJECT_NAME}
-		LIBRARY DESTINATION /)
+		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 		install (EXPORT ${PROJECT_NAME}
 			NAMESPACE ${PROJECT_NAME}::
 			FILE ${PROJECT_NAME}-config.cmake
-			DESTINATION lib/cmake/${PROJECT_NAME})
+			DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
 
 		install(DIRECTORY ${PROJECT_NAME}
-	    	    DESTINATION "C:/Program Files (x86)/${PROJECT_NAME}/include"
+	    	    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 	    	    PATTERN "*HIDE*" EXCLUDE
 	   	)
 	endif()
 
 	if (UNIX AND NOT APPLE)
 		install(TARGETS ${PROJECT_NAME}
-			LIBRARY DESTINATION /usr/lib
+			LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+			ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+			RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 		)
 	
 		install(DIRECTORY ${PROJECT_NAME}
-	    	    DESTINATION /usr/local/include/
+	    	    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 	    	    PATTERN "*HIDE*" EXCLUDE
 	   	)
 	endif()
@@ -136,17 +151,21 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 	
 	if (APPLE)
 		install(TARGETS ${PROJECT_NAME}
-			LIBRARY DESTINATION /usr/local/lib
+			LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+			ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+			RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 		)
 	
 		install(DIRECTORY ${PROJECT_NAME}
-	    	    DESTINATION /usr/local/include
+	    	    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 	    	    PATTERN "*HIDE*" EXCLUDE
 	   	)
 	endif()
 	
-	enable_testing()
-	add_test(NAME igris_test COMMAND igris_test)
+	if (IGRIS_BUILD_TESTS)
+		enable_testing()
+		add_test(NAME igris_test COMMAND igris_test)
+	endif()
 
 else()
 	set(IGRIS_SOURCES 
