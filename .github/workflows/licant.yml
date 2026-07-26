@@ -6,36 +6,33 @@ on:
   pull_request:
     branches: [master]
 
-env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
-
 jobs:
   build:
-    # The CMake configure and build commands are platform agnostic and should work equally
-    # well on Windows or Mac.  You can convert this to a matrix build if you need
-    # cross-platform coverage.
-    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ubuntu-latest
-
+    timeout-minutes: 15
     strategy:
+      fail-fast: false
       matrix:
         compiler:
-          - { CXX: g++, CC: gcc }
-          - { CXX: clang++, CC: clang }
+          - { cc: gcc, cxx: g++ }
+          - { cc: clang, cxx: clang++ }
+
+    env:
+      CC: ${{ matrix.compiler.cc }}
+      CXX: ${{ matrix.compiler.cxx }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: mirmik/licant
+          path: .ci/licant
 
-      - name: Setup dependencies
-        run: |
-          sudo apt-get update && sudo apt-get install -y g++ clang
-          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/${{matrix.compiler.CXX}} 100
-          sudo update-alternatives --install /usr/bin/cc  cc  /usr/bin/${{matrix.compiler.CC}} 100
-          sudo python3 -m pip install licant
+      - name: Install licant
+        run: python3 -m pip install ./.ci/licant
 
-      - name: Build
-        run: python3 ./make.py
+      - name: Build tests
+        run: timeout 10m python3 ./make.py -j2 runtests
 
       - name: Test
-        run: ./runtests
+        run: timeout 2m ./runtests
