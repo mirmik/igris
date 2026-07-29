@@ -112,13 +112,27 @@ static inline int ring_putc(struct ring_head *r, char *buffer, char c)
     return 1;
 }
 
-static inline int ring_getc(struct ring_head *r, const char *buffer)
+/*
+ * Extract one byte without reserving a byte value as an empty marker.
+ * Returns 1 on success and 0 when the ring is empty.
+ */
+static inline int
+ring_try_getc(struct ring_head *r, const char *buffer, char *result)
 {
     if (ring_empty(r))
-        return -1;
-    char c = *(buffer + r->tail);
+        return 0;
+    *result = *(buffer + r->tail);
     ring_move_tail_one(r);
-    return c;
+    return 1;
+}
+
+static inline int ring_getc(struct ring_head *r, const char *buffer)
+{
+    char c;
+    if (!ring_try_getc(r, buffer, &c))
+        return -1;
+    /* Keep -1 distinct from every possible byte value. */
+    return (unsigned char)c;
 }
 
 static inline int ring_read(struct ring_head *r,
@@ -126,14 +140,10 @@ static inline int ring_read(struct ring_head *r,
                             char *data,
                             unsigned int size)
 {
-    int c;
     int ret = 0;
-    while (size--)
+    while (size-- && ring_try_getc(r, buffer, data))
     {
-        c = ring_getc(r, buffer);
-        if (c == -1)
-            return ret;
-        *data++ = c;
+        data++;
         ret++;
     }
     return ret;
