@@ -1,12 +1,12 @@
 #include <doctest/doctest.h>
 #include <igris/container/vector2.h>
 
-struct A
+struct VectorElement
 {
     int a;
-    A() : a(0) {}
-    A(int _a) : a(_a) {}
-    A(const A &) = default;
+    VectorElement() : a(0) {}
+    VectorElement(int _a) : a(_a) {}
+    VectorElement(const VectorElement &) = default;
 };
 
 struct vector2_tracked
@@ -25,13 +25,13 @@ int vector2_tracked::alive = 0;
 TEST_CASE("vector2")
 {
 
-    igris::vector2<A> vec;
+    igris::vector2<VectorElement> vec;
 
-    vec.push_back(A(33));
-    vec.push_back(A(42));
-    vec.push_back(A(54));
-    vec.push_back(A(78));
-    vec.push_back(A(22));
+    vec.push_back(VectorElement(33));
+    vec.push_back(VectorElement(42));
+    vec.push_back(VectorElement(54));
+    vec.push_back(VectorElement(78));
+    vec.push_back(VectorElement(22));
 
     CHECK_EQ(vec.size(), 5);
     CHECK_EQ(vec[0].a, 33);
@@ -46,12 +46,12 @@ TEST_CASE("vector2")
 
 TEST_CASE("vector2 copy assignment and resize")
 {
-    igris::vector2<A> source;
-    source.push_back(A(1));
-    source.push_back(A(2));
+    igris::vector2<VectorElement> source;
+    source.push_back(VectorElement(1));
+    source.push_back(VectorElement(2));
 
-    igris::vector2<A> target;
-    target.push_back(A(9));
+    igris::vector2<VectorElement> target;
+    target.push_back(VectorElement(9));
     target = source;
     CHECK_EQ(target.size(), 2);
     CHECK_EQ(target[0].a, 1);
