@@ -1,6 +1,22 @@
 #include <doctest/doctest.h>
 #include <igris/container/vector.h>
 
+namespace
+{
+    struct vector_tracked
+    {
+        static int alive;
+        int value = 0;
+        vector_tracked(int value = 0) : value(value) { ++alive; }
+        vector_tracked(const vector_tracked &oth) : value(oth.value) { ++alive; }
+        vector_tracked(vector_tracked &&oth) noexcept : value(oth.value) { ++alive; }
+        vector_tracked &operator=(const vector_tracked &) = default;
+        vector_tracked &operator=(vector_tracked &&) = default;
+        ~vector_tracked() { --alive; }
+    };
+    int vector_tracked::alive = 0;
+}
+
 TEST_CASE("vector")
 {
     igris::vector<double> vec;
@@ -91,6 +107,28 @@ TEST_CASE("vector.erase")
     CHECK_EQ(vec.size(), 0);
 }
 
+TEST_CASE("vector copy assignment and object lifetime")
+{
+    vector_tracked::alive = 0;
+    {
+        igris::vector<vector_tracked> source;
+        source.emplace_back(1);
+        source.emplace_back(2);
+        source.emplace_back(3);
+
+        igris::vector<vector_tracked> target;
+        target.emplace_back(9);
+        target = source;
+        CHECK_EQ(target.size(), 3);
+        CHECK_EQ(target[1].value, 2);
+
+        target.insert(target.begin() + 1, vector_tracked(7));
+        target.erase(target.begin() + 2, target.end());
+        CHECK_EQ(target.size(), 2);
+    }
+    CHECK_EQ(vector_tracked::alive, 0);
+}
+
 TEST_CASE("vector.insert")
 {
     igris::vector<double> vec;
@@ -113,6 +151,14 @@ TEST_CASE("vector.insert")
     CHECK_EQ(vec[5], 15.25);
     CHECK_EQ(vec[6], 3);
     CHECK_EQ(vec[7], 2);
+}
+
+TEST_CASE("vector inserts into an empty container")
+{
+    igris::vector<int> vec;
+    vec.insert(vec.begin(), 42);
+    CHECK_EQ(vec.size(), 1);
+    CHECK_EQ(vec.front(), 42);
 }
 
 TEST_CASE("vector.reserve")

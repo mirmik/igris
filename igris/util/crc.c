@@ -1,4 +1,5 @@
 #include <igris/util/crc.h>
+#include <string.h>
 
 // Dow-CRC using polynomial X^8 + X^5 + X^4 + X^0
 // Tiny 2x16 entry CRC table created by Arjen Lentz
@@ -95,14 +96,16 @@ uint32_t igris_crc32(const void *data, uint32_t length, uint32_t crc_init)
 
     uint32_t crc = crc_init;
 
-    const uint32_t *pData = (const uint32_t *)data;
+    const uint8_t *pData = (const uint8_t *)data;
     uint32_t bodySize = length / 4;
     uint32_t tailSize = length % 4;
 
     for (uint32_t i = 0; i < bodySize; i++)
     {
+        uint32_t word;
+        memcpy(&word, pData + i * sizeof(word), sizeof(word));
 
-        crc = crc ^ pData[i];
+        crc = crc ^ word;
         crc = (crc << 4) ^ crcTable[crc >> 28];
         crc = (crc << 4) ^ crcTable[crc >> 28];
         crc = (crc << 4) ^ crcTable[crc >> 28];
@@ -115,7 +118,9 @@ uint32_t igris_crc32(const void *data, uint32_t length, uint32_t crc_init)
 
     if (tailSize)
     {
-        crc = crc ^ (pData[bodySize] & ((1 << tailSize * 8) - 1));
+        uint32_t word = 0;
+        memcpy(&word, pData + bodySize * sizeof(word), tailSize);
+        crc = crc ^ word;
         crc = (crc << 4) ^ crcTable[crc >> 28];
         crc = (crc << 4) ^ crcTable[crc >> 28];
         crc = (crc << 4) ^ crcTable[crc >> 28];

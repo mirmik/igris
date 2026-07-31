@@ -48,8 +48,8 @@ namespace IGRIS_STD_NS
         unique_ptr &operator=(const unique_ptr &) = delete;
         unique_ptr &operator=(unique_ptr &&other)
         {
-            ptr = other.ptr;
-            other.ptr = nullptr;
+            if (this != &other)
+                reset(other.release());
             return *this;
         }
         ~unique_ptr()
@@ -67,7 +67,7 @@ namespace IGRIS_STD_NS
             return *ptr;
         }
 
-        T *get()
+        T *get() const
         {
             return ptr;
         }
@@ -79,12 +79,14 @@ namespace IGRIS_STD_NS
         }
         void reset(T *ptr)
         {
+            if (this->ptr == ptr)
+                return;
             if (this->ptr)
                 delete this->ptr;
             this->ptr = ptr;
         }
 
-        operator bool()
+        explicit operator bool() const
         {
             return ptr != nullptr;
         }

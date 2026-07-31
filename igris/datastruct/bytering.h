@@ -25,7 +25,7 @@ bytering_init(struct bytering_head *r, void *buf, unsigned int size)
 static inline void __bytering_fixup(struct bytering_head *r,
                                     unsigned char **fixed)
 {
-    if (r->end >= *fixed)
+    if (*fixed >= r->end)
         *fixed = r->start;
 }
 
@@ -36,7 +36,14 @@ static inline int bytering_empty(struct bytering_head *r)
 
 static inline int bytering_full(struct bytering_head *r)
 {
-    return r->head == (r->tail == r->start ? r->end : r->tail) - 1;
+    if (r->start == r->end)
+        return 1;
+
+    unsigned char *next = r->tail + 1;
+    if (next >= r->end)
+        next = r->start;
+
+    return next == r->head;
 }
 
 static inline int bytering_pop_nocheck(struct bytering_head *r)
@@ -51,6 +58,7 @@ static inline int bytering_push_nocheck(struct bytering_head *r,
 {
     *r->tail++ = c;
     __bytering_fixup(r, &r->tail);
+    return 0;
 }
 
 static inline int bytering_pop(struct bytering_head *r)

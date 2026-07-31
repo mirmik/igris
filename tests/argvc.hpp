@@ -29,6 +29,19 @@ TEST_CASE("spaces_test")
 	free(str);
 }
 
+TEST_CASE("argvc bounded unterminated input")
+{
+    char data[] = {'a', 'b', ' ', 'c'};
+    char *argv[4] = {};
+    CHECK_EQ(argvc_internal_split_n(data, sizeof(data), argv, 4), 2);
+    CHECK(argv[0] == data);
+    CHECK(argv[1] == data + 3);
+    CHECK_EQ(argvc_internal_split_n(data, 0, argv, 4), 0);
+
+    char limited[] = "one two three";
+    CHECK_EQ(argvc_internal_split_n(limited, sizeof(limited), argv, 1), 1);
+}
+
 TEST_CASE("spaces_test 2")
 {
 	char* argv[10];

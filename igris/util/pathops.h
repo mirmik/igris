@@ -12,9 +12,8 @@
 
 static inline int path_is_single_dot(const char *path)
 {
-    char nc = *(path + 1);
-
-    return *path == '.' && (nc == '/' || nc == '\0');
+    return path && path[0] == '.' &&
+           (path[1] == '/' || path[1] == '\0');
 }
 
 // Промотать указатель до следующего элемента пути.
@@ -56,6 +55,8 @@ static inline const char *path_next(const char *path, unsigned int *p_len)
 
 static inline const char *path_skip_slashes_and_single_dots(const char *path)
 {
+    if (!path)
+        return NULL;
     while (*path == '/' || path_is_single_dot(path))
     {
         ++path;
@@ -89,13 +90,13 @@ static inline const char *path_iterate(const char *path)
 
 static inline int path_is_double_dot(const char *path)
 {
-    return *path == '.' && *(path + 1) == '.' &&
-           (*(path + 2) == '/' || *(path + 2) == '\0');
+    return path && path[0] == '.' && path[1] == '.' &&
+           (path[2] == '/' || path[2] == '\0');
 }
 
 static inline int path_is_abs(const char *path)
 {
-    return path[0] == '/';
+    return path && path[0] == '/';
 }
 
 static inline int path_is_simple(const char *path)
@@ -112,6 +113,8 @@ static inline int path_is_simple(const char *path)
 
 static inline const char *path_last_node(const char *path)
 {
+    if (!path || !*path)
+        return path;
     const char *it = path + strlen(path);
 
     do
@@ -156,6 +159,9 @@ static inline int path_compare_node(const char *a, const char *b)
 static inline const char *path_remove_prefix(const char *path,
                                              const char *prefix)
 {
+    if (!path || !prefix)
+        return path;
+
     while (*prefix != 0 || *path != 0)
     {
         int cmp = path_compare_node(path, prefix);
@@ -164,6 +170,8 @@ static inline const char *path_remove_prefix(const char *path,
         {
             path = path_iterate(path);
             prefix = path_iterate(prefix);
+            if (!path || !prefix)
+                return prefix ? NULL : path;
         }
 
         else

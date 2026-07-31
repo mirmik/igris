@@ -6,7 +6,9 @@
 #include <igris/container/unbounded_array.h>
 #include <igris/datastruct/ring.h>
 #include <memory>
+#include <limits>
 #include <new>
+#include <stdexcept>
 #include <utility>
 #include <vector>
 
@@ -34,7 +36,9 @@ namespace igris
 
         void resize(size_t sz)
         {
-            buffer.resize(sz);
+            if (sz == std::numeric_limits<size_t>::max())
+                throw std::length_error("ring capacity is too large");
+            buffer.resize(sz + 1);
             ring_init(&r, sz + 1);
         }
 
@@ -73,6 +77,8 @@ namespace igris
 
         size_t write(const T *buf, size_t sz)
         {
+            if (r.size == 0)
+                return 0;
             size_t a = ring_write(&r, buffer.data(), buf, sz);
             return a;
         }
@@ -84,13 +90,17 @@ namespace igris
 
         void push(const T &obj)
         {
-            new (buffer.data() + r.head) T(obj);
+            if (room() == 0)
+                return;
+            buffer[r.head] = obj;
             ring_move_head_one(&r);
         }
 
         template <typename... Args> void emplace(Args &&... args)
         {
-            new (buffer.data() + r.head) T(std::forward<Args>(args)...);
+            if (room() == 0)
+                return;
+            buffer[r.head] = T(std::forward<Args>(args)...);
             ring_move_head_one(&r);
         }
 
@@ -104,20 +114,22 @@ namespace igris
 
         void pop()
         {
-            int idx = r.tail;
-            buffer[idx].~T();
+            if (empty())
+                return;
             ring_move_tail_one(&r);
         }
 
         __ALWAYS_INLINE
         void move_tail_one()
         {
-            ring_move_tail_one(&r);
+            if (r.size)
+                ring_move_tail_one(&r);
         }
 
         void move_head_one()
         {
-            ring_move_head_one(&r);
+            if (r.size)
+                ring_move_head_one(&r);
         }
 
         unsigned int avail()
@@ -127,7 +139,7 @@ namespace igris
 
         unsigned int room()
         {
-            return ring_room(&r);
+            return r.size ? ring_room(&r) : 0;
         }
 
         unsigned int size()
@@ -175,7 +187,12 @@ namespace igris
 
         int fixup_index(int index)
         {
-            return ring_fixup_index(&r, index);
+            if (r.size == 0)
+                return 0;
+            index %= (int)r.size;
+            if (index < 0)
+                index += r.size;
+            return index;
         }
 
         T &head_place()

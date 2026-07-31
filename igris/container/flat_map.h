@@ -37,6 +37,30 @@ namespace igris
 
     private:
         std::vector<value_type, Alloc> storage = {};
+        Compare comp = {};
+
+        bool equivalent(const Key &a, const Key &b) const
+        {
+            return !comp(a, b) && !comp(b, a);
+        }
+
+        iterator lower_bound(const Key &key)
+        {
+            return std::lower_bound(storage.begin(), storage.end(), key,
+                                    [this](const value_type &value,
+                                           const Key &candidate) {
+                                        return comp(value.first, candidate);
+                                    });
+        }
+
+        const_iterator lower_bound(const Key &key) const
+        {
+            return std::lower_bound(storage.begin(), storage.end(), key,
+                                    [this](const value_type &value,
+                                           const Key &candidate) {
+                                        return comp(value.first, candidate);
+                                    });
+        }
 
     public:
         flat_map() = default;
@@ -47,6 +71,16 @@ namespace igris
 
         flat_map(const std::initializer_list<value_type> &init) : storage(init)
         {
+            std::sort(storage.begin(), storage.end(),
+                      [this](const value_type &a, const value_type &b) {
+                          return comp(a.first, b.first);
+                      });
+            storage.erase(
+                std::unique(storage.begin(), storage.end(),
+                            [this](const value_type &a, const value_type &b) {
+                                return equivalent(a.first, b.first);
+                            }),
+                storage.end());
         }
 
         bool operator==(const flat_map &other) const
@@ -138,45 +172,27 @@ namespace igris
         void swap(flat_map &other)
         {
             storage.swap(other.storage);
+            std::swap(comp, other.comp);
         }
 
         T &operator[](const Key &key)
         {
-            auto it = std::find_if(
-                storage.begin(), storage.end(), [&key](const value_type &p) {
-                    return p.first == key;
-                });
+            auto it = lower_bound(key);
 
-            if (it == storage.end())
-            {
-                storage.push_back(value_type(key, T()));
-                return storage.back().second;
-            }
+            if (it == storage.end() || !equivalent(it->first, key))
+                it = storage.insert(it, value_type(key, T()));
 
             return it->second;
         }
 
         const T &operator[](const Key &key) const
         {
-            auto it = std::find_if(
-                storage.begin(), storage.end(), [&key](const value_type &p) {
-                    return p.first == key;
-                });
-
-            if (it == storage.end())
-            {
-                return T();
-            }
-
-            return it->second;
+            return at(key);
         }
 
         T &at(const Key &key)
         {
-            auto it = std::find_if(
-                storage.begin(), storage.end(), [&key](const value_type &p) {
-                    return p.first == key;
-                });
+            auto it = find(key);
 
             if (it == storage.end())
             {
@@ -188,10 +204,7 @@ namespace igris
 
         const T &at(const Key &key) const
         {
-            auto it = std::find_if(
-                storage.begin(), storage.end(), [&key](const value_type &p) {
-                    return p.first == key;
-                });
+            auto it = find(key);
 
             if (it == storage.end())
             {
@@ -203,62 +216,44 @@ namespace igris
 
         iterator find(const Key &key)
         {
-            return std::find_if(
-                storage.begin(), storage.end(), [&key](const value_type &p) {
-                    return p.first == key;
-                });
+            auto it = lower_bound(key);
+            return it != storage.end() && equivalent(it->first, key)
+                       ? it
+                       : storage.end();
         }
 
         const_iterator find(const Key &key) const
         {
-            return std::find_if(
-                storage.begin(), storage.end(), [&key](const value_type &p) {
-                    return p.first == key;
-                });
+            auto it = lower_bound(key);
+            return it != storage.end() && equivalent(it->first, key)
+                       ? it
+                       : storage.end();
         }
 
         size_type count(const Key &key) const
         {
-            return std::count_if(
-                storage.begin(), storage.end(), [&key](const value_type &p) {
-                    return p.first == key;
-                });
+            return find(key) == storage.end() ? 0 : 1;
         }
 
         template <class... Args>
         std::pair<iterator, bool> emplace(Key key, Args &&... args)
         {
-            auto it = std::find_if(
-                storage.begin(),
-                (iterator)storage.end(),
-                [&key](const value_type &p) { return p.first == key; });
-            if (it != storage.end())
+            auto it = lower_bound(key);
+            if (it != storage.end() && equivalent(it->first, key))
             {
                 return std::make_pair(it, false);
             }
-            storage.push_back(std::pair(key, T(std::forward<Args>(args)...)));
-            return std::make_pair(storage.end() - 1, true);
+            it = storage.insert(
+                it, std::pair(key, T(std::forward<Args>(args)...)));
+            return std::make_pair(it, true);
         }
 
         iterator insert(const value_type &value)
         {
-            auto it = std::find_if(storage.begin(),
-                                   (iterator)storage.end(),
-                                   [&value](const value_type &p) {
-                                       return p.first == value.first;
-                                   });
-            if (it != storage.end())
-            {
+            auto it = lower_bound(value.first);
+            if (it != storage.end() && equivalent(it->first, value.first))
                 return it;
-            }
-            return storage.insert(
-                std::upper_bound(storage.begin(),
-                                 (iterator)storage.end(),
-                                 value,
-                                 [](const value_type &a, const value_type &b) {
-                                     return a.first < b.first;
-                                 }),
-                value);
+            return storage.insert(it, value);
         }
     };
 }

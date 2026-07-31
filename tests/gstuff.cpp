@@ -13,3 +13,13 @@ TEST_CASE("gstuffing")
 
     CHECK(sbuffer.size() == 14);
 }
+
+TEST_CASE("gstuff vector output covers worst case")
+{
+    gstuff_context ctx;
+    const char data[] = {ctx.GSTUFF_START, ctx.GSTUFF_STUB, ctx.GSTUFF_STOP};
+    auto encoded = gstuffing(igris::buffer(data, sizeof(data)), ctx);
+    CHECK(encoded.size() <= sizeof(data) * 2 + 4);
+    CHECK(encoded.front() == static_cast<uint8_t>(ctx.GSTUFF_START));
+    CHECK(encoded.back() == static_cast<uint8_t>(ctx.GSTUFF_STOP));
+}

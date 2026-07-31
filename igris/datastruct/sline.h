@@ -23,7 +23,11 @@ __BEGIN_DECLS
 
 static inline const char *sline_getline(struct sline *sl)
 {
-    sl->buf[sl->len] = '\0';
+    if (sl->buf != NULL && sl->cap != 0)
+    {
+        unsigned int pos = sl->len < sl->cap ? sl->len : sl->cap - 1;
+        sl->buf[pos] = '\0';
+    }
     return sl->buf;
 }
 
@@ -128,7 +132,7 @@ static inline int sline_empty(struct sline *sl)
 
 static inline int sline_avail(struct sline *sl)
 {
-    return sl->cap - sl->len;
+    return sl->cap > sl->len + 1 ? sl->cap - sl->len - 1 : 0;
 }
 
 static inline int sline_size(struct sline *sl)
@@ -138,7 +142,7 @@ static inline int sline_size(struct sline *sl)
 
 static inline int sline_putchar(struct sline *sl, char c)
 {
-    if (sl->len >= sl->cap - 1)
+    if (sl->buf == NULL || sl->cap == 0 || sl->len >= sl->cap - 1)
         return 0;
 
     if (sl->cursor != sl->len)
@@ -156,6 +160,8 @@ static inline int sline_putchar(struct sline *sl, char c)
 
 static inline int sline_newdata(struct sline *sl, const char *data, int len)
 {
+    if (len <= 0 || data == NULL || sl->buf == NULL)
+        return 0;
     if (len > sline_avail(sl))
         len = sline_avail(sl);
 

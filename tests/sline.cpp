@@ -5,6 +5,19 @@
 
 using namespace std::string_literals;
 
+TEST_CASE("sline reserves terminator and rejects negative length")
+{
+    char buffer[4] = {};
+    sline line;
+    sline_init(&line, buffer, sizeof(buffer));
+    CHECK_EQ(sline_newdata(&line, "abcd", 4), 3);
+    CHECK_EQ(std::string(sline_getline(&line)), "abc");
+    CHECK_EQ(sline_newdata(&line, "x", -1), 0);
+
+    sline_init(&line, nullptr, 0);
+    CHECK_EQ(sline_putchar(&line, 'x'), 0);
+}
+
 TEST_CASE("sline")
 {
     char buf[3];

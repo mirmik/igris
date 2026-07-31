@@ -64,18 +64,20 @@ argvc_internal_split_n(char *data, int maxlen, char **argv, int argcmax)
 {
     const char *ws = " \r\n\t";
     int argc = 0;
+    if (data == NULL || argv == NULL || maxlen <= 0 || argcmax <= 0)
+        return 0;
     char *eptr = data + maxlen;
 
 newarg_search:
-    while (strchr(ws, *data) && data != eptr)
+    while (data != eptr && strchr(ws, *data))
         ++data;
-    if (*data == '\0' || argc >= argcmax || data == eptr)
+    if (data == eptr || *data == '\0' || argc >= argcmax)
         return argc;
 
     argv[argc++] = data;
-    while (!strchr(ws, *data) && data != eptr)
+    while (data != eptr && *data != '\0' && !strchr(ws, *data))
         ++data;
-    if (strchr(ws, *data))
+    if (data != eptr && strchr(ws, *data))
     {
         *data++ = '\0';
         goto newarg_search;
