@@ -1,38 +1,35 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-if (-not ('ClipboardDiagnostics.NativeMethods' -as [type])) {
-    Add-Type @'
+if (-not ('ClipboardDiagnosticsNativeMethods' -as [type])) {
+    Add-Type -TypeDefinition @'
 using System;
 using System.Runtime.InteropServices;
 
-namespace ClipboardDiagnostics
+public static class ClipboardDiagnosticsNativeMethods
 {
-    public static class NativeMethods
-    {
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr GetOpenClipboardWindow();
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr GetOpenClipboardWindow();
 
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern uint GetWindowThreadProcessId(
-            IntPtr windowHandle,
-            out uint processId
-        );
-    }
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern uint GetWindowThreadProcessId(
+        IntPtr windowHandle,
+        out uint processId
+    );
 }
 '@
 }
 
-$windowHandle = [ClipboardDiagnostics.NativeMethods]::GetOpenClipboardWindow()
+$windowHandle = [ClipboardDiagnosticsNativeMethods]::GetOpenClipboardWindow()
 
 if ($windowHandle -eq [IntPtr]::Zero) {
-    Write-Output 'Окно, удерживающее буфер обмена, не найдено.'
-    Write-Output 'Возможно, блокировка уже исчезла или приложение открыло буфер без привязки к окну.'
+    Write-Output 'No window currently holding the clipboard was found.'
+    Write-Output 'The lock may have disappeared, or the application may have opened the clipboard without a window handle.'
     exit 2
 }
 
 [uint32]$processId = 0
-[void][ClipboardDiagnostics.NativeMethods]::GetWindowThreadProcessId(
+[void][ClipboardDiagnosticsNativeMethods]::GetWindowThreadProcessId(
     $windowHandle,
     [ref]$processId
 )
@@ -40,14 +37,14 @@ if ($windowHandle -eq [IntPtr]::Zero) {
 try {
     $process = Get-Process -Id $processId
 } catch {
-    Write-Error "Окно найдено, но получить процесс с ID $processId не удалось: $($_.Exception.Message)"
+    Write-Error "A window was found, but process ID $processId could not be inspected: $($_.Exception.Message)"
     exit 1
 }
 
 $processPath = try {
     $process.Path
 } catch {
-    '<недоступно>'
+    '<unavailable>'
 }
 
 [pscustomobject]@{
