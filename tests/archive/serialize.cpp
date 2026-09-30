@@ -2,7 +2,7 @@
 #include <igris/serialize/serialize.h>
 #include <igris/serialize/stdtypes.h>
 
-struct A
+struct SerializableRecord
 {
     int a = 34;
     uint8_t b = 83;
@@ -15,7 +15,7 @@ struct A
         r &c;
     }
 
-    bool operator==(const A &oth) const
+    bool operator==(const SerializableRecord &oth) const
     {
         return a == oth.a && b == oth.b && c == oth.c;
     }
@@ -45,13 +45,15 @@ TEST_CASE("serialize_type_float")
 
 TEST_CASE("serialize_object")
 {
-    A a;
-    A b;
+    SerializableRecord a;
+    SerializableRecord b;
 
     auto s = igris::serialize(a);
-    auto r = igris::deserialize<A>(s);
+    auto r = igris::deserialize<SerializableRecord>(s);
 
-    CHECK_EQ(s.size(), sizeof(A::a) + sizeof(A::b) + sizeof(A::c));
+    CHECK_EQ(s.size(), sizeof(SerializableRecord::a) +
+                           sizeof(SerializableRecord::b) +
+                           sizeof(SerializableRecord::c));
     CHECK_EQ(r, b);
 }
 

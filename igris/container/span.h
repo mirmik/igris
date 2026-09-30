@@ -14,6 +14,7 @@ namespace igris
     public:
         span() : _data(nullptr), _size(0) {}
         span(T *data, size_t size) : _data(data), _size(size) {}
+        span(const span<T> &) = default;
         template <size_t N> span(T (&arr)[N]) : _data(arr), _size(N) {}
         template <size_t N>
         span(std::array<T, N> &arr) : _data(arr.data()), _size(arr.size())

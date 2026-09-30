@@ -3,6 +3,7 @@
 
 #include <igris/container/array_view.h>
 #include <memory>
+#include <utility>
 
 namespace igris
 {
@@ -34,7 +35,7 @@ namespace igris
         unbounded_array() : m_data(nullptr), m_size(0) {}
 
         unbounded_array(size_t sz)
-            : alloc{}, m_data(alloc.allocate(sz)), m_size(sz)
+            : alloc{}, m_data(sz ? alloc.allocate(sz) : nullptr), m_size(sz)
         {
             for (size_t i = 0; i < sz; ++i)
             {
@@ -57,9 +58,11 @@ namespace igris
         {
         }
 
-        unbounded_array(const unbounded_array &oth)
-            : unbounded_array(oth.data(), oth.size())
+        unbounded_array(const unbounded_array &oth) : alloc(oth.alloc)
         {
+            create_buffer(oth.size());
+            for (size_t i = 0; i < oth.size(); ++i)
+                m_data[i] = oth.m_data[i];
         }
 
         void clear()
@@ -77,15 +80,11 @@ namespace igris
 
         unbounded_array &operator=(const unbounded_array &oth)
         {
-            m_data = alloc.allocate(oth.size());
-            m_size = oth.size();
-
-            auto ptr = m_data;
-            for (const auto &ref : oth)
-            {
-                new (ptr++) T(ref);
-            }
-
+            if (this == &oth)
+                return *this;
+            unbounded_array tmp(oth);
+            std::swap(m_data, tmp.m_data);
+            std::swap(m_size, tmp.m_size);
             return *this;
         }
 
@@ -96,6 +95,19 @@ namespace igris
             arr.m_data = nullptr;
         }
 
+        unbounded_array &operator=(unbounded_array &&arr)
+        {
+            if (this == &arr)
+                return *this;
+            invalidate();
+            alloc = std::move(arr.alloc);
+            m_data = arr.m_data;
+            m_size = arr.m_size;
+            arr.m_data = nullptr;
+            arr.m_size = 0;
+            return *this;
+        }
+
         void resize(size_t size)
         {
             invalidate();
@@ -104,8 +116,10 @@ namespace igris
 
         void create_buffer(size_t size)
         {
-            m_data = alloc.allocate(size);
+            m_data = size ? alloc.allocate(size) : nullptr;
             m_size = size;
+            for (size_t i = 0; i < size; ++i)
+                new (m_data + i) T();
         }
 
         void invalidate()
@@ -114,7 +128,8 @@ namespace igris
             {
                 m_data[i].~T();
             }
-            alloc.deallocate(m_data, m_size);
+            if (m_data)
+                alloc.deallocate(m_data, m_size);
             m_data = nullptr;
             m_size = 0;
         }

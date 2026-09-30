@@ -69,8 +69,10 @@ namespace igris
                 push_back(a);
         }
 
-        vector(const vector &other) : m_size(other.m_size)
+        vector(const vector &other) : m_size(other.m_size), m_alloc(other.m_alloc)
         {
+            if (m_size == 0)
+                return;
             m_data = m_alloc.allocate(m_size);
             m_capacity = m_size;
             for (auto ip = other.m_data, op = m_data;
@@ -92,7 +94,7 @@ namespace igris
 
         vector(vector &&other)
             : m_data(other.m_data), m_capacity(other.m_capacity),
-              m_size(other.m_size)
+              m_size(other.m_size), m_alloc(std::move(other.m_alloc))
         {
             other.m_data = nullptr;
             other.m_capacity = 0;
@@ -104,17 +106,13 @@ namespace igris
             if (this == &other)
                 return *this;
 
-            invalidate();
-
-            m_data = m_alloc.allocate(m_size);
-            m_size = other.m_size;
-            m_capacity = m_size;
-            for (auto ip = other.m_data, op = m_data;
-                 ip != other.m_data + other.m_size;
-                 ip++, op++)
-            {
-                igris::constructor(op, *ip);
-            }
+            vector tmp(m_alloc);
+            tmp.reserve(other.size());
+            for (const auto &value : other)
+                tmp.push_back(value);
+            std::swap(m_data, tmp.m_data);
+            std::swap(m_capacity, tmp.m_capacity);
+            std::swap(m_size, tmp.m_size);
 
             return *this;
         }
@@ -126,6 +124,7 @@ namespace igris
 
             invalidate();
 
+            m_alloc = std::move(other.m_alloc);
             m_data = other.m_data;
             m_capacity = other.m_capacity;
             m_size = other.m_size;
@@ -278,57 +277,46 @@ namespace igris
         template <typename... Args>
         iterator emplace(const_iterator pos, Args &&... args)
         {
-            // TODO insert optimization
-            size_t _pos = pos - m_data;
-
+            size_t _pos = m_data ? pos - m_data : 0;
+            T value(std::forward<Args>(args)...);
             reserve(m_size + 1);
-            m_size++;
-
             iterator first = m_data + _pos;
-            iterator last = std::prev((iterator)end());
-            std::move_backward(first, last, end());
-            new (first) T(std::forward<Args>(args)...);
+
+            if (_pos == m_size)
+            {
+                igris::move_constructor(m_data + m_size, std::move(value));
+            }
+            else
+            {
+                igris::move_constructor(m_data + m_size,
+                                        std::move(m_data[m_size - 1]));
+                std::move_backward(first, m_data + m_size - 1,
+                                   m_data + m_size);
+                *first = std::move(value);
+            }
+            ++m_size;
 
             return first;
         }
 
         iterator insert(const_iterator pos, const T &value)
         {
-            // TODO insert optimization
-            size_t _pos = pos - m_data;
-
-            reserve(m_size + 1);
-            m_size++;
-
-            iterator first = m_data + _pos;
-            iterator last = std::prev((iterator)end());
-            std::move_backward(first, last, (iterator)end());
-            *first = value;
-
-            return first;
+            return emplace(pos, value);
         }
 
         iterator insert(iterator pos, const_iterator first, const_iterator last)
         {
-            size_t _pos = pos - m_data;
-            size_t _first = first - m_data;
-            size_t _last = last - m_data;
-
-            size_t sz = _last - _first;
-            reserve(m_size + sz);
-            m_size += sz;
-
-            iterator first_it = m_data + _pos;
-            iterator last_it = std::prev((iterator)end(), sz);
-            std::move_backward(first_it, last_it, (iterator)end());
-            std::copy(m_data + _first, m_data + _last, first_it);
-
-            return first_it;
+            size_t _pos = m_data ? pos - m_data : 0;
+            vector values(first, last);
+            reserve(m_size + values.size());
+            for (const auto &value : values)
+                insert(m_data + _pos++, value);
+            return m_data + (_pos - values.size());
         }
 
         iterator insert(int pos, const T &value)
         {
-            return insert(m_data + pos, value);
+            return insert(m_data ? m_data + pos : nullptr, value);
         }
 
         iterator insert_sorted(T const &item)
@@ -360,17 +348,16 @@ namespace igris
 
         void erase(iterator newend)
         {
+            igris::array_destructor(newend, end());
             m_size = newend - m_data;
         }
 
         void erase(iterator first, iterator last)
         {
-            size_t sz = last - first;
-            for (size_t i = 0; i < sz; ++i)
-            {
-                igris::destructor(first + i);
-            }
-            std::move(last, end(), first);
+            const size_t sz = last - first;
+            iterator oldend = end();
+            iterator newend = std::move(last, oldend, first);
+            igris::array_destructor(newend, oldend);
             m_size -= sz;
         }
 

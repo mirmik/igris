@@ -52,6 +52,9 @@ namespace igris
 
         static_vector &operator=(const static_vector &other)
         {
+            if (this == &other)
+                return *this;
+            clear();
             m_size = other.m_size;
             for (std::size_t pos = 0; pos < m_size; ++pos)
             {
@@ -62,6 +65,9 @@ namespace igris
 
         static_vector &operator=(static_vector &&other)
         {
+            if (this == &other)
+                return *this;
+            clear();
             m_size = other.m_size;
             for (std::size_t pos = 0; pos < m_size; ++pos)
             {
@@ -83,6 +89,8 @@ namespace igris
         {
             for (auto &obj : lst)
             {
+                if (m_size == N)
+                    break;
                 new (&_data[m_size]) T(obj);
                 ++m_size;
             }
@@ -186,19 +194,23 @@ namespace igris
 
         void erase(iterator first, iterator last)
         {
-            size_t sz = last - first;
-            for (size_t i = 0; i < sz; ++i)
-            {
-                igris::destructor(first + i);
-            }
-            std::move(last, end(), first);
+            const size_t sz = last - first;
+            iterator oldend = end();
+            iterator newend = std::move(last, oldend, first);
+            igris::array_destructor(newend, oldend);
             m_size -= sz;
         }
 
         void resize(size_t newsize)
         {
-            if (newsize >= N)
+            if (newsize > N)
                 newsize = N;
+
+            if (newsize < m_size)
+            {
+                for (size_t i = newsize; i < m_size; ++i)
+                    igris::destructor(data() + i);
+            }
 
             for (size_t i = m_size; i < newsize; ++i)
             {
@@ -210,6 +222,7 @@ namespace igris
 
         void clear()
         {
+            igris::array_destructor(begin(), end());
             m_size = 0;
         }
     };

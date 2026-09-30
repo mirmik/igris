@@ -1882,13 +1882,27 @@ namespace igris
 
         basic_string &copy(const char *cstr, size_t length)
         {
+            if (!cstr && length)
+            {
+                invalidate();
+                return *this;
+            }
+            size_t offset = 0;
+            bool aliased = cstr && m_data &&
+                           (uintptr_t)cstr >= (uintptr_t)m_data &&
+                           (uintptr_t)cstr <= (uintptr_t)(m_data + m_size);
+            if (aliased)
+                offset = cstr - m_data;
             if (!reserve(length))
             {
                 invalidate();
                 return *this;
             }
+            if (aliased)
+                cstr = m_data + offset;
             m_size = length;
-            memcpy(m_data, cstr, length);
+            if (length)
+                memmove(m_data, cstr, length);
             return *this;
         }
 
@@ -1935,7 +1949,10 @@ namespace igris
 
         basic_string &operator=(const char *str)
         {
-            copy(str, strlen(str));
+            if (str)
+                copy(str, strlen(str));
+            else
+                invalidate();
             return *this;
         }
 
@@ -1987,7 +2004,8 @@ namespace igris
         const char *c_str() const
         {
             basic_string *self = (basic_string *)this;
-            self->reserve(m_size + 1);
+            if (!self->reserve(m_size + 1))
+                return "";
             *(self->m_data + self->m_size) = 0;
             return self->begin();
         };
@@ -2039,47 +2057,65 @@ namespace igris
 
         size_type find(const char *str, size_t pos = 0) const
         {
-            if (pos >= m_size)
-                return -1;
+            if (!str || pos > m_size)
+                return npos;
             auto len = strlen(str);
             if (len == 0)
-                return -1;
-            if (len > m_size)
-                return -1;
-            for (size_t i = pos; i < m_size - len; i++)
+                return pos;
+            if (len > m_size - pos)
+                return npos;
+            for (size_t i = pos; i <= m_size - len; i++)
             {
                 if (memcmp(m_data + i, str, len) == 0)
                     return i;
             }
-            return -1;
+            return npos;
         }
 
         unsigned char changeBuffer(size_t maxStrLen)
         {
             size_t oldcap = m_capacity;
-            char *newbuf = (char *)m_alloc.allocate(maxStrLen);
-            char *oldbuf = m_data;
-            memcpy(newbuf, oldbuf, m_size);
-            if (newbuf)
+            if (maxStrLen == 0)
             {
-                m_data = newbuf;
-                m_capacity = maxStrLen;
-                m_alloc.deallocate(oldbuf, oldcap);
+                if (m_data)
+                    m_alloc.deallocate(m_data, m_capacity);
+                m_data = nullptr;
+                m_capacity = 0;
                 return 1;
             }
-            return 0;
+            char *newbuf = (char *)m_alloc.allocate(maxStrLen);
+            char *oldbuf = m_data;
+            if (!newbuf)
+                return 0;
+            if (m_size)
+                memcpy(newbuf, oldbuf, m_size);
+            m_data = newbuf;
+            m_capacity = maxStrLen;
+            if (oldbuf)
+                m_alloc.deallocate(oldbuf, oldcap);
+            return 1;
         }
 
         unsigned char append(const char *cstr, size_t length)
         {
-            size_t newlen = m_size + length;
-            if (cstr == nullptr)
+            if (!cstr)
                 return 0;
             if (length == 0)
                 return 1;
+            if (length > SIZE_MAX - m_size)
+                return 0;
+            size_t offset = 0;
+            bool aliased = m_data &&
+                           (uintptr_t)cstr >= (uintptr_t)m_data &&
+                           (uintptr_t)cstr <= (uintptr_t)(m_data + m_size);
+            if (aliased)
+                offset = cstr - m_data;
+            size_t newlen = m_size + length;
             if (!reserve(newlen))
                 return 0;
-            memcpy(m_data + m_size, cstr, length);
+            if (aliased)
+                cstr = m_data + offset;
+            memmove(m_data + m_size, cstr, length);
             m_size = newlen;
             return 1;
         }
@@ -2140,9 +2176,8 @@ namespace igris
 
         bool operator<(const basic_string &other) const
         {
-            int ret = strncmp(data(),
-                              other.data(),
-                              size() > other.size() ? size() : other.size());
+            size_t common = size() < other.size() ? size() : other.size();
+            int ret = common ? memcmp(data(), other.data(), common) : 0;
             if (ret == 0)
                 return size() < other.size();
             else
@@ -2163,15 +2198,19 @@ namespace igris
 
         basic_string &resize(size_t sz)
         {
-            reserve(sz);
-            assert(sz <= m_capacity);
-            m_size = sz;
+            if (reserve(sz))
+                m_size = sz;
             return *this;
         }
 
         basic_string substr(size_t start, size_t len) const
         {
             basic_string ret;
+            if (start >= m_size)
+                return ret;
+            size_t available = m_size - start;
+            if (len == npos || len > available)
+                len = available;
             ret.reserve(len);
             for (size_t i = start; i < start + len; i++)
             {
@@ -2182,10 +2221,10 @@ namespace igris
 
         ssize_t find_last_not_of(char c)
         {
-            for (auto i = rbegin(); i != rend(); i--)
+            for (size_t i = m_size; i > 0; --i)
             {
-                if (*i != c)
-                    return i - begin();
+                if (m_data[i - 1] != c)
+                    return i - 1;
             }
             return npos;
         }

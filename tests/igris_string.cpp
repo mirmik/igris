@@ -23,6 +23,17 @@ TEST_CASE("string2")
     CHECK_EQ(spl[3], "kkk");
 }
 
+TEST_CASE("portable string boundary and aliasing operations")
+{
+    igris::string str("abc");
+    str += str;
+    CHECK_EQ(str, "abcabc");
+    CHECK_EQ(str.find("abc", 3), 3);
+    CHECK_EQ(str.find(""), 0);
+    CHECK_EQ(str.substr(4, 100), "bc");
+    CHECK(str.substr(100, 2).empty());
+}
+
 TEST_CASE("vector_of_strings")
 {
     igris::vector<igris::string> vec;

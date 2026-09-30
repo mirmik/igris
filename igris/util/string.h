@@ -8,6 +8,11 @@ __BEGIN_DECLS
 
 void *igris_memmem(const void *l, size_t l_len, const void *s, size_t s_len);
 
+/**
+ * Заменяет подстроки и всегда ограничивает запись maxsize байтами.
+ * При недостатке места результат молча обрезается и завершается NUL, если
+ * maxsize больше нуля. Функция не сообщает требуемый размер.
+ */
 void replace_substrings(char *buffer,
                         size_t maxsize,
                         const char *input,

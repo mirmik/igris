@@ -13,15 +13,20 @@ void replace_substrings(char *buffer,
                         const char *rep,
                         size_t replen)
 {
+    if (buffer == NULL || maxsize == 0)
+        return;
+
     const char *strit = input;
     const char *streit = input + inlen;
     char *bufit = buffer;
+    size_t room = maxsize - 1;
 
     if (sublen == 0)
     {
-        size_t len = __MIN__(maxsize - 1, inlen);
-        memcpy(buffer, input, len);
+        size_t len = __MIN__(room, inlen);
+        memmove(buffer, input, len);
         buffer[len] = 0;
+        return;
     }
 
     char *finded;
@@ -29,16 +34,21 @@ void replace_substrings(char *buffer,
     {
         ptrdiff_t step = finded - strit;
 
-        memcpy(bufit, strit, step);
-        bufit += step;
+        size_t copy = __MIN__(room, (size_t)step);
+        memmove(bufit, strit, copy);
+        bufit += copy;
+        room -= copy;
         strit += step;
 
-        memcpy(bufit, rep, replen);
-        bufit += replen;
+        copy = __MIN__(room, replen);
+        memmove(bufit, rep, copy);
+        bufit += copy;
+        room -= copy;
         strit += sublen;
     };
 
     ptrdiff_t lastlen = streit - strit;
-    memcpy(bufit, strit, lastlen);
-    *(bufit + lastlen) = 0;
+    size_t copy = __MIN__(room, (size_t)lastlen);
+    memmove(bufit, strit, copy);
+    bufit[copy] = 0;
 }

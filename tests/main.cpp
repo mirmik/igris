@@ -18,15 +18,13 @@ extern "C" void debug_write(const char *c, int i)
         debug_putchar(*c++);
 }
 
-/*#include "argvc.hpp"
-#include "bits.hpp"
+// Старые bits.hpp, container/unbounded_array.hpp и osutil.hpp не подключаем:
+// этих файлов больше нет; их актуальные сценарии живут в обычных *.cpp-тестах.
+#include "argvc.hpp"
 #include "chunked_vector.hpp"
 #include "container/array_view.hpp"
-#include "container/unbounded_array.hpp"
 #include "dprint.hpp"
 #include "event.hpp"
-#include "osutil.hpp"
 #include "signature.hpp"
 #include "sync.hpp"
 #include "util.hpp"
-*/

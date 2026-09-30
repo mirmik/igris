@@ -22,6 +22,16 @@ TEST_CASE("string.replace1")
     CHECK_EQ(std::string(buffer), std::string(input));
 }
 
+TEST_CASE("string.replace respects output capacity")
+{
+    char guarded[8] = {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'Z'};
+    replace_substrings(guarded, 7, "aaaa", 4, "a", 1, "bbbb", 4);
+    CHECK_EQ(std::string(guarded), "bbbbbb");
+    CHECK_EQ(guarded[7], 'Z');
+
+    replace_substrings(nullptr, 0, "a", 1, "a", 1, "b", 1);
+}
+
 TEST_CASE("string.replace2")
 {
     std::string input = "Hello abc worabcldabc";

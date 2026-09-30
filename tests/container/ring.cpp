@@ -69,3 +69,33 @@ TEST_CASE("ring container")
 
     r.push("Lalala");
 }
+
+TEST_CASE("ring resize and negative index wrap")
+{
+    igris::ring<int> r;
+    r.resize(3);
+    CHECK_EQ(r.room(), 3);
+    CHECK_EQ(r.fixup_index(-1), 3);
+
+    r.push(1);
+    r.push(2);
+    r.push(3);
+    r.push(4);
+    CHECK_EQ(r.avail(), 3);
+    CHECK_EQ(r.tail(), 1);
+}
+
+TEST_CASE("ring zero and one element capacities")
+{
+    igris::ring<int> r;
+    CHECK_EQ(r.room(), 0);
+    r.push(1);
+    CHECK(r.empty());
+
+    r.resize(0);
+    CHECK_EQ(r.room(), 0);
+    r.resize(1);
+    CHECK_EQ(r.room(), 1);
+    r.push(7);
+    CHECK_EQ(r.last(), 7);
+}

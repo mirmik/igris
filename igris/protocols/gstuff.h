@@ -90,7 +90,7 @@ public:
     Собрать пакет gstuff.
     @param data - входной буффер
     @param size - длина входного буффер
-    @param outdata - выходной буффер (рекомендованная длина 2*size+2)
+    @param outdata - выходной буффер ёмкостью не менее 2*size+4
     @return результирующая длина пакета.
  */
 int gstuffing(const char *data, size_t size, char *outdata, 
@@ -102,7 +102,8 @@ std::vector<uint8_t> gstuffing(igris::buffer buf,
     Собрать пакет gstuff.
     @param vec - входной вектор
     @param n - количество элементов в векторе
-    @param outdata - выходной буффер (рекомендованная длина 2*size+2)
+    @param outdata - выходной буффер ёмкостью не менее
+                     2*сумма(vec[i].iov_len)+4
     @return результирующая длина пакета.
  */
 int gstuffing_v(struct iovec *vec, size_t n, char *outdata, 

@@ -76,14 +76,10 @@ namespace igris
 
         vector2(const vector2 &other) : m_size(other.m_size)
         {
-            m_data = malloc(m_size * sizeof(T));
+            m_data = m_size ? (T *)malloc(m_size * sizeof(T)) : nullptr;
             m_capacity = m_size;
-            for (auto ip = other.m_data, op = m_data;
-                 ip != other.m_data + other.m_size;
-                 ip++, op++)
-            {
-                new (op) T(*ip);
-            }
+            for (size_type i = 0; i < other.m_size; ++i)
+                new (m_data + i) T(other.m_data[i]);
         }
 
         template <class I, class O> vector2(I first, O last)
@@ -109,17 +105,18 @@ namespace igris
             if (this == &other)
                 return *this;
 
-            invalidate();
+            T *newdata = other.m_size
+                             ? (T *)malloc(other.m_size * sizeof(T))
+                             : nullptr;
+            if (other.m_size && newdata == nullptr)
+                return *this;
+            for (size_type i = 0; i < other.m_size; ++i)
+                new (newdata + i) T(other.m_data[i]);
 
-            m_data = malloc(m_size * sizeof(T));
+            invalidate();
+            m_data = newdata;
             m_size = other.m_size;
             m_capacity = m_size;
-            for (auto ip = other.m_data, op = m_data;
-                 ip != other.m_data + other.m_size;
-                 ip++, op++)
-            {
-                new (op) T(*ip);
-            }
 
             return *this;
         }
@@ -128,6 +125,7 @@ namespace igris
         {
             if (this == &other)
                 return *this;
+            invalidate();
             m_data = other.m_data;
             m_capacity = other.m_capacity;
             m_size = other.m_size;
@@ -355,7 +353,7 @@ namespace igris
             {
                 for (size_type i = n; i < oldsize; ++i)
                 {
-                    new (m_data + i) T();
+                    (m_data + i)->~T();
                 }
             }
             m_size = n;
@@ -363,6 +361,8 @@ namespace igris
 
         void erase(iterator newend)
         {
+            for (iterator it = newend; it != end(); ++it)
+                it->~T();
             m_size = newend - m_data;
         }
 
@@ -422,6 +422,8 @@ namespace igris
         {
             // size_type oldcapacity = m_capacity;
             auto newbuf = (T *)(malloc(sz * sizeof(T)));
+            if (newbuf == nullptr)
+                return 0;
             m_capacity = sz;
             if (m_data == nullptr)
             {
@@ -433,8 +435,7 @@ namespace igris
             auto op = newbuf;
             for (auto ip = begin(); ip != ie; op++, ip++)
             {
-                // igris::move_constructor(op, std::move(*ip));
-                *op = (T &&) * ip;
+                new (op) T((T &&)*ip);
             }
 
             {

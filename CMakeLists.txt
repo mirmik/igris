@@ -9,6 +9,7 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 endif()
 
 option(IGRIS_BUILD_TESTS "Build igris tests" ${IGRIS_TOP_LEVEL})
+option(IGRIS_ENABLE_SANITIZERS "Enable AddressSanitizer and UndefinedBehaviorSanitizer" OFF)
 
 # Используем CONFIGURE_DEPENDS чтобы cmake автоматически 
 # перезапускался при изменении файлов
@@ -36,6 +37,7 @@ file(GLOB IGRIS_SOURCES CONFIGURE_DEPENDS
 	igris/string/replace.cpp
 	igris/string/hexascii_string.cpp
 	igris/string/memmem.c
+	igris/shell/*.cpp
 	igris/shell/mshell.c
 	igris/time/time_posix.cpp
 	igris/osinter/wait.cpp
@@ -72,9 +74,11 @@ file(GLOB SOURCES_TEST CONFIGURE_DEPENDS
         ${IGRIS_SOURCES}
         tests/*.cpp
         tests/igris_std/*.cpp
-        container/*.cpp
-        shell/*.cpp
-        series/*.cpp
+        tests/archive/*.cpp
+        tests/archive20/*.cpp
+        tests/container/*.cpp
+        tests/shell/*.cpp
+        tests/series/*.cpp
 )
 list(REMOVE_ITEM SOURCES_TEST
     ${CMAKE_CURRENT_SOURCE_DIR}/igris/osinter/wait-linux.cpp)
@@ -99,6 +103,21 @@ if(IGRIS_BUILD_TESTS)
     find_package(Threads REQUIRED)
     target_link_libraries(igris_test PRIVATE Threads::Threads)
     add_test(NAME igris_test COMMAND igris_test)
+endif()
+if(IGRIS_ENABLE_SANITIZERS)
+    if(NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        message(FATAL_ERROR "IGRIS_ENABLE_SANITIZERS requires GCC or Clang")
+    endif()
+    foreach(target igris igris_test)
+        if(TARGET ${target})
+            target_compile_options(${target} PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer)
+            target_link_options(${target} PRIVATE -fsanitize=address,undefined)
+        endif()
+    endforeach()
+    if(IGRIS_BUILD_TESTS)
+        # LeakSanitizer is incompatible with makecontext/swapcontext tests.
+        set_tests_properties(igris_test PROPERTIES ENVIRONMENT "ASAN_OPTIONS=detect_leaks=0")
+    endif()
 endif()
 install(TARGETS igris EXPORT igris-targets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

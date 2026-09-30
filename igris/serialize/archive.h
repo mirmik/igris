@@ -7,6 +7,7 @@
 
 #include <igris/buffer.h>
 #include <igris/serialize/helper.h>
+#include <stdexcept>
 
 #if __has_include(<string_view>)
 #include <string_view>
@@ -65,15 +66,19 @@ namespace igris
             void dump(long double i) { dump_data((char *)&i, sizeof(i)); }
             void dump(igris::buffer buf)
             {
+                if (buf.size() > UINT16_MAX)
+                    throw std::length_error("serialized buffer is too large");
                 dump((uint16_t)buf.size());
-                dump_data(buf.data(), buf.size());
+                dump_data(buf.data(), (uint16_t)buf.size());
             }
 
 #if __has_include(<string_view>)
             void dump(std::string_view buf)
             {
+                if (buf.size() > UINT16_MAX)
+                    throw std::length_error("serialized string is too large");
                 dump((uint16_t)buf.size());
-                dump_data(buf.data(), buf.size());
+                dump_data(buf.data(), (uint16_t)buf.size());
             }
 #endif
 
@@ -105,13 +110,21 @@ namespace igris
 
             void dump_data(const char *dat, uint16_t size) override
             {
+                if (size == 0)
+                    return;
+                if (!dat || !ptr || !_end)
+                    throw std::invalid_argument("binary_buffer_writer null buffer");
+                if (ptr > _end || static_cast<size_t>(_end - ptr) < size)
+                    throw std::out_of_range("binary_buffer_writer overflow");
                 memcpy(ptr, dat, size);
                 ptr += size;
             }
 
             binary_buffer_writer(char *str, size_t size)
-                : ptr(str), _end(str + size)
+                : ptr(str), _end(str ? str + size : nullptr)
             {
+                if (!str && size)
+                    throw std::invalid_argument("binary_buffer_writer null buffer");
             }
 
             binary_buffer_writer(const binary_buffer_writer&) = default;
@@ -155,9 +168,9 @@ namespace igris
             {
                 uint16_t sz;
                 load(sz);
-                if (sz > maxsz)
-                    sz = maxsz;
-                load_data(dat, sz);
+                uint16_t readsize = sz > maxsz ? maxsz : sz;
+                load_data(dat, readsize);
+                skip(sz - readsize);
             }
 
             void load(int8_t &i) { load_data((char *)&i, sizeof(i)); }
@@ -202,6 +215,7 @@ namespace igris
 
                 int readsize = buf.size() < len ? buf.size() : len;
                 load_data((char *)buf.data(), readsize);
+                skip(len - readsize);
 
                 buf = igris::buffer(buf.data(), readsize);
             }
@@ -240,18 +254,32 @@ namespace igris
 
             void load_data(char *dat, uint16_t size) override
             {
+                if (size == 0)
+                    return;
+                if (!dat || !ptr || !_end)
+                    throw std::invalid_argument("binary_buffer_reader null buffer");
+                if (ptr > _end || static_cast<size_t>(_end - ptr) < size)
+                    throw std::out_of_range("binary_buffer_reader underflow");
                 memcpy(dat, ptr, size);
                 ptr += size;
             }
 
-            void skip(int size) override { ptr += size; }
+            void skip(int size) override
+            {
+                if (size < 0 || ptr > _end ||
+                    static_cast<size_t>(_end - ptr) < static_cast<size_t>(size))
+                    throw std::out_of_range("binary_buffer_reader skip overflow");
+                ptr += size;
+            }
 
             void *pointer() override { return (void *)ptr; }
             const void *end() override { return _end; }
 
             binary_buffer_reader(const char *str, size_t size)
-                : ptr(str), _end(str + size)
+                : ptr(str), _end(str ? str + size : nullptr)
             {
+                if (!str && size)
+                    throw std::invalid_argument("binary_buffer_reader null buffer");
             }
             binary_buffer_reader(igris::buffer buf)
                 : ptr(buf.data()), _end(buf.data() + buf.size())

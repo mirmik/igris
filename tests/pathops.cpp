@@ -63,3 +63,15 @@ TEST_CASE("pathops.remove_prefix_3")
 
     CHECK(strcmp(c, "mirm/null") == 0);
 }
+
+TEST_CASE("pathops boundary inputs")
+{
+    const char *empty = "";
+    CHECK_FALSE(path_is_single_dot(""));
+    CHECK(path_is_single_dot("."));
+    CHECK(path_is_single_dot("./"));
+    CHECK_FALSE(path_is_double_dot("."));
+    CHECK(path_is_double_dot(".."));
+    CHECK_EQ(path_iterate(""), (const char *)NULL);
+    CHECK_EQ(path_last_node(empty), empty);
+}

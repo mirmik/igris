@@ -1,5 +1,7 @@
 #include <igris/protocols/gstuff.h>
 #include <igris/util/crc.h>
+#include <limits>
+#include <stdexcept>
 #include <vector>
 
 int gstuffing(const char *data, size_t size, char *outdata, const gstuff_context& ctx)
@@ -215,9 +217,13 @@ std::vector<uint8_t> gstuffing_v(struct iovec *vec, size_t n, const gstuff_conte
     for (size_t i = 0; i < n; ++i)
     {
         struct iovec *v = vec + i;
+        if (v->iov_len > std::numeric_limits<size_t>::max() - sz)
+            throw std::length_error("gstuffing input is too large");
         sz += v->iov_len;
     }
-    ret.resize(sz * 2 + 2);
+    if (sz > (std::numeric_limits<size_t>::max() - 4) / 2)
+        throw std::length_error("gstuffing output is too large");
+    ret.resize(sz * 2 + 4);
     size_t sz2 = gstuffing_v(vec, n, (char *)&ret[0], ctx);
     ret.resize(sz2);
     return ret;
@@ -226,7 +232,9 @@ std::vector<uint8_t> gstuffing_v(struct iovec *vec, size_t n, const gstuff_conte
 std::vector<uint8_t> gstuffing(igris::buffer buf, const gstuff_context& ctx)
 {
     std::vector<uint8_t> ret;
-    ret.resize(buf.size() * 2 + 2);
+    if (buf.size() > (std::numeric_limits<size_t>::max() - 4) / 2)
+        throw std::length_error("gstuffing output is too large");
+    ret.resize(buf.size() * 2 + 4);
     size_t sz2 = gstuffing(buf.data(), buf.size(), (char *)&ret[0], ctx);
     ret.resize(sz2);
     return ret;
