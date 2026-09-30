@@ -1,0 +1,7 @@
+@PACKAGE_INIT@
+include(CMakeFindDependencyMacro)
+find_dependency(Threads)
+include("${CMAKE_CURRENT_LIST_DIR}/igris-targets.cmake")
+if(NOT TARGET igris)
+    add_library(igris ALIAS igris::igris)
+endif()
